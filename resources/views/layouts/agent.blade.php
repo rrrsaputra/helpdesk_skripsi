@@ -31,8 +31,8 @@
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
-  <x-admin.navbar/>
-  <x-admin.sidebar/>
+  <x-agent.navbar/>
+  <x-agent.sidebar/>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -59,7 +59,6 @@
   <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
-
 
 <!-- jQuery -->
 <script src="{{asset('AdminLTE-3.2.0/plugins/jquery/jquery.min.js')}}"></script>

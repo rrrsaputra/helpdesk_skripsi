@@ -11,6 +11,10 @@ Route::get('/', function () {
     return view('admin/article/create');
 });
 
+Route::get('/agent', function () {
+    return view('agent.index');
+});
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
