@@ -1,14 +1,21 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use Coderflex\LaravelTicket\Models\Ticket;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Coderflex\LaravelTicket\Models\Category;
 use Coderflex\LaravelTicket\Models\Label;
+use Coderflex\LaravelTicket\Models\Ticket;
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\ProfileController;
+use Coderflex\LaravelTicket\Models\Category;
+
 
 Route::get('/', function () {
-    return view('admin/article/create');
+    return view('welcome')->name('home');
+});
+Route::middleware('auth')->group(function () {
+    
+    Route::get('/create', [ArticleController::class, 'create'])->name('admin.article.create');
 });
 
 Route::get('/agent', function () {
@@ -16,7 +23,13 @@ Route::get('/agent', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    if (auth()->user->roles == 'admin') {
+        redirect('admin.article.create');
+    }
+    else {
+        redirect('home');
+    }
+    
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
