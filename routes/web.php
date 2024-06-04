@@ -8,7 +8,7 @@ use Coderflex\LaravelTicket\Models\Category;
 use Coderflex\LaravelTicket\Models\Label;
 
 Route::get('/', function () {
-    return view('admin/index');
+    return view('admin/article/create');
 });
 
 Route::get('/dashboard', function () {
