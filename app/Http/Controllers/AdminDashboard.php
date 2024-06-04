@@ -2,19 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Article;
-use App\Models\Category;
 use Illuminate\Http\Request;
-use App\Models\ArticleCategory;
 
-class ArticleController extends Controller
+class AdminDashboard extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('admin.article.index');
+        return view('admin.dashboard');
     }
 
     /**
@@ -22,34 +19,15 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        $articleCategories = ArticleCategory::all();
-        return view('admin.article.create', compact('articleCategories'));
+        //
     }
 
     /**
      * Store a newly created resource in storage.
      */
-
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'title' => 'required',
-            'content' => 'required',
-            'category' => 'required',
-            // 'tags' => 'required',
-        ]);
-
-        $articleData = [
-            'title' => $validatedData['title'],
-            'content' => $validatedData['content'],
-            'article_category_id' => $validatedData['category'],
-            // 'tags_id' => $validatedData['tags'],
-            'user_id' => auth()->id(),
-        ];
-
-        Article::create($articleData);
-
-        return redirect()->route('admin.article.index');
+        //
     }
 
     /**

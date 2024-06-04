@@ -11,34 +11,50 @@
         </div>
 
         <!-- form start -->
-        <form>
+        {{-- <form action="{{ route('article.store') }}" method="POST">
+            @csrf
+            <div>
+                <label for="title">Judul:</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+            <div>
+                <label for="content">Konten:</label>
+                <textarea id="content" name="content" required></textarea>
+            </div>
+            <div>
+                <label for="category">Kategori:</label>
+                <input type="text" id="category" name="category" required>
+            </div>
+            <div>
+                <label for="tags">Tag:</label>
+                <input type="text" id="tags" name="tags">
+            </div>
+            <button type="submit">Simpan</button>
+        </form> --}}
+
+        <form method="POST" action="{{ route('article.store') }}">
+            @csrf
             <div class="card-body">
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Title</label>
-                    <input type="title" class="form-control" id="inputTitle" placeholder="Enter title">
+                    <label for="title">Title</label>
+                    <input type="text" name="title" class="form-control" id="title" placeholder="Enter title">
                 </div>
                 <div class="form-group">
                     <label for="category">Category</label>
-                    <select class="form-control" id="category">
-                        <option value="1">Category 1</option>
-                        <option value="2">Category 2</option>
-                        <option value="3">Category 3</option>
+                    <select class="form-control" id="category" name="category">
+                        @foreach($articleCategories as $articleCategory)
+                            <option value="{{ $articleCategory->id }}">{{ $articleCategory->name }}</option>
+                        @endforeach
                     </select>
                 </div>
-                <div class="form-group">
-                    <label for="category">Tag</label>
-                    <select class="form-control" id="tag">
-                        <option value="1">Tag 1</option>
-                        <option value="2">Tag 2</option>
-                        <option value="3">Tag 3</option>
-                    </select>
-                </div>
-                {{-- Summernote component --}}
                 <x-admin.summernote />
-
                 <div class="card-footer">
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
+            </div>
         </form>
     </div>
 @endsection
+
+
+

@@ -18,24 +18,38 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 Route::middleware('auth')->group(function () {
-    
+    Route::get('/articles', [ArticleController::class, 'index'])->name('admin.article.index');
     Route::get('/create', [ArticleController::class, 'create'])->name('admin.article.create');
-    Route::get('/agent', function () {return view('agent.index');})->name('agent.index');
+    
+    Route::get('/agent', function () {
+        return view('agent.index');
+    })->name('agent.index');
 });
+
+Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/articles', [ArticleController::class, 'index'])->name('article.index');
+    
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/admin/dashboard', function () {
+        return view('admin.dashboard');
+    })->name('admin.dashboard');
+});
+
+Route::resource('article', ArticleController::class);
+
 
 
 
 Route::get('/dashboard', function () {
     if (Auth::user()->roles->pluck('name')[0] == 'admin') {
-        return redirect()->route('admin.article.create');
-    } 
-    else if (Auth::user()->roles->pluck('name')[0] == 'agent') {
+        return redirect()->route('admin.dashboard');
+    } else if (Auth::user()->roles->pluck('name')[0] == 'agent') {
         return redirect()->route('agent.index');
-    } 
-    else {
+    } else {
         return redirect('home');
     }
-    
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -44,4 +58,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
