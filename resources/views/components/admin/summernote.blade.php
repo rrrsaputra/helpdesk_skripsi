@@ -12,7 +12,7 @@
     <div id="summernote"></div>
     <script>
     $('#summernote').summernote({
-        placeholder: 'Hello Bootstrap 4',
+        placeholder: 'Create your own articles',
         tabsize: 2,
         height: 100
     });
