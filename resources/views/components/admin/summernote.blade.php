@@ -9,12 +9,19 @@
 
 
 <div>
-    <div id="summernote"></div>
+    <input type="text" id="summernote" name="content" class="form-control">
     <script>
     $('#summernote').summernote({
         placeholder: 'Create your own articles',
         tabsize: 2,
-        height: 100
+        height: 100,
+        callbacks: {
+            onChange: function(contents, $editable) {
+                $('#summernote').val(contents); // Mengubah 'summernote' menjadi 'contents'
+            }
+        }
     });
     </script>
 </div>
+
+

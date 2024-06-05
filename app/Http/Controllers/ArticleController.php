@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Models\ArticleCategory;
 
 class ArticleController extends Controller
 {
@@ -11,7 +14,9 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        return view('admin.article.index');
+        $articles = Article::all();
+
+        return view('admin.article.index', compact('articles'));
     }
 
     /**
@@ -19,15 +24,34 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        return view('admin.article.create');
+        $articleCategories = ArticleCategory::all();
+        return view('admin.article.create', compact('articleCategories'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
+
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'title' => 'required',
+            'content' => 'required',
+            'category' => 'required',
+            // 'tags' => 'required',
+        ]);
+
+        $articleData = [
+            'title' => $validatedData['title'],
+            'content' => $validatedData['content'],
+            'article_category_id' => $validatedData['category'],
+            // 'tags_id' => $validatedData['tags'],
+            'user_id' => auth()->id(),
+        ];
+
+        Article::create($articleData);
+
+        return redirect()->route('admin.article.index');
     }
 
     /**
@@ -35,7 +59,9 @@ class ArticleController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $articles = Article::all();
+        
+        return view('admin.article.index', compact('articles'));
     }
 
     /**
@@ -43,7 +69,10 @@ class ArticleController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $article = Article::find($id);
+        $articleCategories = ArticleCategory::all();
+        
+        return view('admin.article.edit', compact('article', 'articleCategories'));
     }
 
     /**
@@ -51,7 +80,16 @@ class ArticleController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $article = Article::find($id);
+        $article->title = $request->title;
+        $article->content = $request->content;
+        $article->article_category_id = $request->category;
+        if ($request->hasFile('image')) {
+            $file = $request->file('image')->store('articles');
+            $article->image = $file;
+        }
+        $article->save();
+        return redirect()->route('admin.article.index');
     }
 
     /**
@@ -59,6 +97,8 @@ class ArticleController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $article = Article::find($id);
+        $article->delete();
+        return redirect()->route('admin.article.index');
     }
 }

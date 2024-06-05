@@ -11,23 +11,26 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserTicketController;
 use Coderflex\LaravelTicket\Models\Category;
+use Spatie\Permission\Middleware\RoleMiddleware;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
-
-
-
 
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
-Route::middleware('auth')->group(function () {
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::resource('/articles', ArticleController::class)->names('admin.article');
     
-    Route::get('/create', [ArticleController::class, 'create'])->name('admin.article.create');
-    
+    Route::get('/admin/dashboard', function () {
+        return view('admin.dashboard');
+    })->name('admin.dashboard');
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth','role:agent'])->group(function () {
     Route::get('/agent', [AgentController::class, 'index'])->name('agent.index');
+
+    
 });
 
 Route::middleware('auth')->group(function () {
@@ -38,7 +41,7 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/dashboard', function () {
     if (Auth::user()->roles->pluck('name')[0] == 'admin') {
-        return redirect()->route('admin.article.create');
+        return redirect()->route('admin.dashboard');
     } 
     else if (Auth::user()->roles->pluck('name')[0] == 'agent') {
         return redirect()->route('agent.index');
@@ -58,4 +61,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
