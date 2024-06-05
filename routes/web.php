@@ -1,23 +1,24 @@
 <?php
 
-use App\Http\Controllers\AdminTicketController;
-use App\Http\Controllers\AgentController;
-use App\Http\Controllers\AgentTicketController;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Spatie\Permission\Models\Permission;
+use App\Http\Controllers\AgentController;
 use Coderflex\LaravelTicket\Models\Label;
 use Coderflex\LaravelTicket\Models\Ticket;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\UserTicketController;
+use App\Http\Controllers\UserHomeController;
 use Coderflex\LaravelTicket\Models\Category;
+use App\Http\Controllers\UserTicketController;
+use App\Http\Controllers\AdminTicketController;
+use App\Http\Controllers\AgentTicketController;
 use Spatie\Permission\Middleware\RoleMiddleware;
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 
-Route::get('/article', function () {
-    return view('user.article');
-})->name('article');
+// Route::get('/article', function () {
+//     return view('user.article');
+// })->name('article');
 
 Route::get('/ticket', function () {
     return view('user.tickets.ticket');
@@ -30,6 +31,9 @@ Route::get('/ticket-submit', function () {
 Route::get('/', function () {
     return view('user.home');
 })->name('home');
+
+Route::get('/article', [UserHomeController::class, 'index'])->name('article.index');
+
 
 
 

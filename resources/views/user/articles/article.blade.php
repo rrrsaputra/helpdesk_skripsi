@@ -1,3 +1,7 @@
+@php
+use Illuminate\Support\Str;
+@endphp
+
 @extends('layouts.user')
 
 @section('content')
@@ -10,173 +14,23 @@
                         <div class="dx-box dx-box-decorated">
                             <div class="dx-blog-post">
                                 <div class="dx-blog-post-box pt-30 pb-30">
-                                    <h2 class="h4 mnt-5 mb-8">Browse Article Categories</h2>
-                                    <!-- START: Breadcrumbs -->
-                                    <ul class="dx-breadcrumbs text-left dx-breadcrumbs-dark mnb-8">
-                                        <li><a href="help-center.html">Support Home</a></li>
-                                        <li>Articles</li>
-                                    </ul>
-                                    <!-- END: Breadcrumbs -->
+                                    <h2 class="h4 mnt-5 mb-5">Browse Article</h2>
                                 </div>
                                 <div class="dx-separator"></div>
                                 <div class="dx-blog-post-box">
-                                    <div class="row vertical-gap lg-gap">
-                                        <div class="col-sm-6">
-                                            <div class="dx-article dx-article-list">
-                                                <h3 class="h6 dx-article-title">Quantial</h3>
-                                                <ul class="dx-list">
-                                                    <li><a href="single-article.html">Make menu dropdown working without
-                                                            JavaScript</a></li>
-                                                    <li><a href="single-article.html">Google Analytics</a></li>
-                                                    <li><a href="single-article.html">How to manually import Demo data (if
-                                                            you faced with problems in one-click demo import)</a></li>
-                                                </ul>
-                                                <a href="single-article-category.html"
-                                                    class="dx-btn dx-btn-xs dx-btn-grey-1 dx-article-btn">4 Articles</a>
+                                    @foreach ($articles as $article)
+                                        <div class="row vertical-gap lg-gap mb-4">
+                                            <div class="col-md-12">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">{{ $article->title }}</h5>
+                                                        <div class="card-text">{{ Str::limit(strip_tags($article->content), 150) }}</div>
+                                                        <a href="#" class="btn btn-primary mt-10">Read More</a>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-6">
-                                            <div class="dx-article dx-article-list">
-                                                <h3 class="h6 dx-article-title">Sensific</h3>
-                                                <ul class="dx-list">
-                                                    <li><a href="single-article.html">Google Analytics</a></li>
-                                                    <li><a href="single-article.html">How to manually import Demo data (if
-                                                            you faced with problems in one-click demo import)</a></li>
-                                                    <li><a href="single-article.html">Make menu dropdown working witho</a>
-                                                    </li>
-                                                </ul>
-                                                <a href="single-article-category.html"
-                                                    class="dx-btn dx-btn-xs dx-btn-grey-1 dx-article-btn">4 Articles</a>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="dx-article dx-article-list">
-                                                <h3 class="h6 dx-article-title">Minist</h3>
-                                                <ul class="dx-list">
-                                                    <li><a href="single-article.html">WordPress Themes FAQ</a></li>
-                                                    <li><a href="single-article.html">Change navbar background color</a>
-                                                    </li>
-                                                    <li><a href="single-article.html">Change images and banners overlay
-                                                            color</a></li>
-                                                </ul>
-                                                <a href="single-article-category.html"
-                                                    class="dx-btn dx-btn-xs dx-btn-grey-1 dx-article-btn">8 Articles</a>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="dx-article dx-article-list">
-                                                <h3 class="h6 dx-article-title">Desty</h3>
-                                                <ul class="dx-list">
-                                                    <li><a href="single-article.html">Make menu dropdown working without
-                                                            JavaScript</a></li>
-                                                    <li><a href="single-article.html">Google Map API Warning (NoApiKeys)</a>
-                                                    </li>
-                                                </ul>
-                                                <a href="single-article-category.html"
-                                                    class="dx-btn dx-btn-xs dx-btn-grey-1 dx-article-btn">2 Articles</a>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="dx-article dx-article-list">
-                                                <h3 class="h6 dx-article-title">Silies</h3>
-                                                <ul class="dx-list">
-                                                    <li><a href="single-article.html">Add top menu link inside dropdown on
-                                                            mobile devices</a></li>
-                                                    <li><a href="single-article.html">Google Map API Warning (NoApiKeys)</a>
-                                                    </li>
-                                                    <li><a href="single-article.html">Make dropdown items links working</a>
-                                                    </li>
-                                                </ul>
-                                                <a href="single-article-category.html"
-                                                    class="dx-btn dx-btn-xs dx-btn-grey-1 dx-article-btn">3 Articles</a>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="dx-article dx-article-list">
-                                                <h3 class="h6 dx-article-title">Interra</h3>
-                                                <ul class="dx-list">
-                                                    <li><a href="single-article.html">WordPress Themes FAQ</a></li>
-                                                    <li><a href="single-article.html">Make menu dropdown working without
-                                                            JavaScript</a></li>
-                                                    <li><a href="single-article.html">Google Analytics</a></li>
-                                                </ul>
-                                                <a href="single-article-category.html"
-                                                    class="dx-btn dx-btn-xs dx-btn-grey-1 dx-article-btn">3 Articles</a>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="dx-article dx-article-list">
-                                                <h3 class="h6 dx-article-title">Explora</h3>
-                                                <ul class="dx-list">
-                                                    <li><a href="single-article.html">Google Map API Warning (NoApiKeys)</a>
-                                                    </li>
-                                                    <li><a href="single-article.html">Make menu dropdown working without
-                                                            JavaScript</a></li>
-                                                </ul>
-                                                <a href="single-article-category.html"
-                                                    class="dx-btn dx-btn-xs dx-btn-grey-1 dx-article-btn">2 Articles</a>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="dx-article dx-article-list">
-                                                <h3 class="h6 dx-article-title">Thoute</h3>
-                                                <ul class="dx-list">
-                                                    <li><a href="single-article.html">Make menu dropdown working without
-                                                            JavaScript</a></li>
-                                                    <li><a href="single-article.html">Google Map API Warning (NoApiKeys)</a>
-                                                    </li>
-                                                </ul>
-                                                <a href="single-article-category.html"
-                                                    class="dx-btn dx-btn-xs dx-btn-grey-1 dx-article-btn">2 Articles</a>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="dx-article dx-article-list">
-                                                <h3 class="h6 dx-article-title">Accountry</h3>
-                                                <ul class="dx-list">
-                                                    <li><a href="single-article.html">Google Analytics</a></li>
-                                                    <li><a href="single-article.html">How to open image by click on
-                                                            slider</a></li>
-                                                    <li><a href="single-article.html">WordPress Themes FAQ</a></li>
-                                                </ul>
-                                                <a href="single-article-category.html"
-                                                    class="dx-btn dx-btn-xs dx-btn-grey-1 dx-article-btn">3 Articles</a>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="dx-article dx-article-list">
-                                                <h3 class="h6 dx-article-title">Mained</h3>
-                                                <ul class="dx-list">
-                                                    <li><a href="single-article.html">Google Analytics</a></li>
-                                                    <li><a href="single-article.html">WordPress Themes FAQ</a></li>
-                                                </ul>
-                                                <a href="single-article-category.html"
-                                                    class="dx-btn dx-btn-xs dx-btn-grey-1 dx-article-btn">2 Articles</a>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="dx-article dx-article-list">
-                                                <h3 class="h6 dx-article-title">Treate</h3>
-                                                <ul class="dx-list">
-                                                    <li><a href="single-article.html">Google Map API Warning
-                                                            (NoApiKeys)</a></li>
-                                                </ul>
-                                                <a href="single-article-category.html"
-                                                    class="dx-btn dx-btn-xs dx-btn-grey-1 dx-article-btn">1 Articles</a>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="dx-article dx-article-list">
-                                                <h3 class="h6 dx-article-title">Priety</h3>
-                                                <ul class="dx-list">
-                                                    <li><a href="single-article.html">Google Map API Warning
-                                                            (NoApiKeys)</a></li>
-                                                </ul>
-                                                <a href="single-article-category.html"
-                                                    class="dx-btn dx-btn-xs dx-btn-grey-1 dx-article-btn">1 Articles</a>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
