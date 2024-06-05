@@ -9,37 +9,34 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserTicketController;
 use Coderflex\LaravelTicket\Models\Category;
+use Spatie\Permission\Middleware\RoleMiddleware;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
-Route::middleware('auth')->group(function () {
-    Route::get('/articles', [ArticleController::class, 'index'])->name('admin.article.index');
-    Route::get('/create', [ArticleController::class, 'create'])->name('admin.article.create');
-    
-    Route::get('/agent', function () {
-        return view('agent.index');
-    })->name('agent.index');
-});
 
-Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/articles', [ArticleController::class, 'index'])->name('article.index');
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::resource('/articles', ArticleController::class)->names('admin.article');
     
-});
-Route::middleware('auth')->group(function () {
-    Route::get('/agent', [AgentController::class, 'index'])->name('agent.index');
     Route::get('/admin/dashboard', function () {
         return view('admin.dashboard');
     })->name('admin.dashboard');
-    Route::resource('/user/ticket', UserTicketController::class)->names('user.ticket');
 });
-Route::resource('article', ArticleController::class);
+
+Route::middleware(['auth','role:agent'])->group(function () {
+    Route::get('/agent', [AgentController::class, 'index'])->name('agent.index');
+
+    
+});
+
+Route::resource('/user/ticket', UserTicketController::class)->names('user.ticket');
+
 
 Route::get('/dashboard', function () {
     if (Auth::user()->roles->pluck('name')[0] == 'admin') {
-        return redirect()->route('admin.article.create');
+        return redirect()->route('admin.dashboard');
     } 
     else if (Auth::user()->roles->pluck('name')[0] == 'agent') {
         return redirect()->route('agent.index');

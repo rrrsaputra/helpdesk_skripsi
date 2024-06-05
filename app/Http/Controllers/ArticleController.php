@@ -14,7 +14,9 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        return view('admin.article.index');
+        $articles = Article::all();
+
+        return view('admin.article.index', compact('articles'));
     }
 
     /**
@@ -57,7 +59,9 @@ class ArticleController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $articles = Article::all();
+        
+        return view('admin.article.index', compact('articles'));
     }
 
     /**
@@ -65,7 +69,10 @@ class ArticleController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $article = Article::find($id);
+        $articleCategories = ArticleCategory::all();
+        
+        return view('admin.article.edit', compact('article', 'articleCategories'));
     }
 
     /**
@@ -73,7 +80,16 @@ class ArticleController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $article = Article::find($id);
+        $article->title = $request->title;
+        $article->content = $request->content;
+        $article->article_category_id = $request->category;
+        if ($request->hasFile('image')) {
+            $file = $request->file('image')->store('articles');
+            $article->image = $file;
+        }
+        $article->save();
+        return redirect()->route('admin.article.index');
     }
 
     /**
@@ -81,6 +97,8 @@ class ArticleController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $article = Article::find($id);
+        $article->delete();
+        return redirect()->route('admin.article.index');
     }
 }
