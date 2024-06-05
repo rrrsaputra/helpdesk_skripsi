@@ -25,7 +25,7 @@ use Illuminate\Support\Str;
                                                     <div class="card-body">
                                                         <h5 class="card-title">{{ $article->title }}</h5>
                                                         <div class="card-text">{{ Str::limit(strip_tags($article->content), 150) }}</div>
-                                                        <a href="#" class="btn btn-primary mt-10">Read More</a>
+                                                        <a href="/single-article" class="btn btn-primary mt-10">Read More</a>
                                                     </div>
                                                 </div>
                                             </div>

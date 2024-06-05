@@ -11,8 +11,8 @@
                             </a>
                         </div>
                         <div class="dx-widget-text">
-                            <p class="mb-0">&copy; 2019 <span class="dib">All rights reserved.</span> <span
-                                    class="dib">Dexad &amp; nK.</span></p>
+                            <p class="mb-0">&copy; 2024 <span class="dib">All rights reserved.</span> <span
+                                    class="dib">Earthqualizer</span></p>
                         </div>
                         <div class="dx-widget-text">
                             <ul class="dx-social-links mnt-3">
@@ -24,51 +24,28 @@
                         </div>
                     </div>
                 </div>
+                
                 <div class="col-sm-6 col-lg-3">
                     <div class="dx-widget-footer">
-                        <div class="dx-widget-title"> Useful Links </div>
-                        <ul class="dx-widget-list">
-                            <li><a href="store.html">Store</a></li>
-                            <li><a href="checkout.html">Checkout</a></li>
-                            <li><a href="forums.html">Forums</a></li>
-                            <li><a href="blog.html">Blog</a></li>
-                        </ul>
-                        <ul class="dx-widget-list">
-                            <li><a href="help-center.html">Help Center</a></li>
-                            <li>
-                                <a data-fancybox data-touch="false" data-close-existing="true" data-src="#signup"
-                                    href="javascript:;">Sign Up</a>
-                            </li>
-                            <li>
-                                <a data-fancybox data-touch="false" data-close-existing="true" data-src="#login"
-                                    href="javascript:;">Log In</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-lg-3">
-                    <div class="dx-widget-footer">
-                        <div class="dx-widget-title"> Latest Products </div>
+                        <div class="dx-widget-title"> HEADQUARTERS </div>
                         <div class="dx-widget-portfolio">
-                            <a href="product.html">Quantial – Moving Upon Signs Moveth Lesser</a>
-                            <a href="product.html">Sensific – Saying Beast Lesser for in Fruitful</a>
-                            <a href="product.html">Minist – Subdue Above for Signs Dry is Have Great</a>
+                            <a href="#">Jln. Anggrek No. 6</a>
+                            <a href="#">Pontianak City,</a>
+                            <a href="#">West Kalimantan, Indonesia</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-6 col-lg-3">
                     <div class="dx-widget-footer">
-                        <div class="dx-widget-title"> Latest Posts </div>
+                        <div class="dx-widget-title"> CONTACT </div>
                         <a href="single-post.html" class="dx-widget-post">
                             <span class="dx-widget-post-text">
-                                <span class="dx-widget-post-title">The Big Thing in Design</span>
-                                <span class="dx-widget-post-date">25 Sep 2018</span>
+                                <span class="dx-widget-post-title">+62 (251) 837 1219</span>
                             </span>
                         </a>
                         <a href="single-post.html" class="dx-widget-post">
                             <span class="dx-widget-post-text">
-                                <span class="dx-widget-post-title">Will Coding Ever Rule the World?</span>
-                                <span class="dx-widget-post-date">24 Sep 2018</span>
+                                <span class="dx-widget-post-title">secretariat@earthqualizer.org</span>
                             </span>
                         </a>
                     </div>
