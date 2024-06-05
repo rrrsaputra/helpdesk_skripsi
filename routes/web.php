@@ -31,6 +31,10 @@ Route::get('/', function () {
 
 Route::get('/article', [UserHomeController::class, 'index'])->name('article.index');
 
+Route::get('/single-article', function () {
+    return view('user.articles.single-article');
+})->name('single-article');
+
 
 Route::get('/ticket', function () {
     return view('user.tickets.ticket');
