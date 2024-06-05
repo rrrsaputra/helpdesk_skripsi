@@ -1,7 +1,7 @@
 <header class="dx-header dx-box-1">
     <div class="container">
         <div class="bg-image bg-image-parallax">
-            <img src="assets/images/bg-header-4.png" class="jarallax-img" alt="">
+            <img src="{{asset('image/background.jpg')}}" class="jarallax-img" alt="">
             <div style="background-color: rgba(27, 27, 27, .8);"></div>
         </div>
         <div class="row justify-content-center">
