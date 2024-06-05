@@ -31,7 +31,7 @@
                   </tr>
                 </thead>
                 <tbody>
-  
+                  
                   @if(is_array($articles) || is_object($articles))
                     @foreach($articles as $article)
                     <tr style="cursor: pointer">

@@ -1,3 +1,5 @@
+@props(['columns', 'data', 'columnSizes' => []])
+
 <!-- Font Awesome -->
 <link rel="stylesheet" href="{{asset('AdminLTE-3.2.0/plugins/fontawesome-free/css/all.min.css')}}">
 <!-- DataTables -->
@@ -16,26 +18,52 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-              <table id="example2" class="table table-bordered table-hover">
-                <thead>
-                  <tr>
-                    <th>Rendering engine</th>
-                    <th>Browser</th>
-                    <th>Platform(s)</th>
-                    <th>Engine version</th>
-                    <th>CSS grade</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr style="cursor: pointer" onclick="window.location='https://google.com'">
-                    <td>Trident</td>
-                    <td>Internet Explorer 4.0</td>
-                    <td>Win 95+</td>
-                    <td> 4</td>
-                    <td>X</td>
-                  </tr>
-                </tbody>
-              </table>
+              <div class="table-responsive">
+                <table id="example2" class="table table-hover">
+                  <thead>
+                    <tr>
+                      @foreach($columns as $index => $column)
+                      <th style="width: {{ isset($columnSizes[$index]) ? $columnSizes[$index] : 'auto' }}">{{ $column }}</th>
+                      @endforeach
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @if(is_array($data) || is_object($data))
+                      @foreach($data as $row)
+                        <tr style="cursor: pointer" onclick="window.location='{{ $row['url'] }}'">
+                          @foreach($row['values'] as $value)
+                            <td>
+                              @if(is_array($value))
+                                @foreach($value as $index => $subValue)
+                                  <div>
+                                    @php
+                                      // Convert column size percentage to an approximate character limit
+                                      $charLimit = isset($columnSizes[$index]) && is_numeric($columnSizes[$index]) ? intval($columnSizes[$index] * 0.5) : 70; // Assuming 1% ~ 0.5 characters
+                                    @endphp
+                                    @if($index === 0)
+                                      <strong>
+                                        {!! strlen($subValue) > $charLimit ? substr($subValue, 0, $charLimit) . '...' : $subValue !!}
+                                      </strong>
+                                    @else
+                                      {!! strlen($subValue) > $charLimit ? substr($subValue, 0, $charLimit) . '...' : $subValue !!}
+                                    @endif
+                                  </div>
+                                @endforeach
+                              @else
+                                {{ $value }}
+                              @endif
+                            </td>
+                          @endforeach
+                        </tr>
+                      @endforeach
+                    @else
+                      <tr>
+                        <td colspan="5">No articles available</td>
+                      </tr>
+                    @endif
+                  </tbody>
+                </table>
+              </div>
             </div>
             <!-- /.card-body -->
           </div>
@@ -44,7 +72,6 @@
         <!-- /.col -->
       </div>
   </div>
-
   <!-- jQuery -->
   <script src="{{asset('AdminLTE-3.2.0/plugins/jquery/jquery.min.js')}}"></script>
   <!-- Bootstrap 4 -->

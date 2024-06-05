@@ -20,9 +20,6 @@ use Spatie\Permission\Middleware\RoleMiddleware;
 //     return view('user.article');
 // })->name('article');
 
-Route::get('/ticket', function () {
-    return view('user.tickets.ticket');
-})->name('home');
 
 Route::get('/ticket-submit', function () {
     return view('user.tickets.ticket-submit');
@@ -33,6 +30,11 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/article', [UserHomeController::class, 'index'])->name('article.index');
+
+
+Route::get('/ticket', function () {
+    return view('user.tickets.ticket');
+})->name('ticket');
 
 
 
@@ -65,7 +67,7 @@ Route::get('/dashboard', function () {
         return redirect()->route('agent.index');
     } 
     else if (Auth::user()->roles->pluck('name')[0] == 'user') {
-        return redirect()->route('user.ticket');
+        return redirect()->route('home');
     } 
     else {
         return redirect('home');

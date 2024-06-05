@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Coderflex\LaravelTicket\Models\Ticket;
 use Coderflex\LaravelTicket\Models\Category;
 use Coderflex\LaravelTicket\Models\Label;
+use Illuminate\Support\Facades\Auth;
 
 class UserTicketController extends Controller
 {
@@ -20,6 +21,7 @@ class UserTicketController extends Controller
     /**
      * Show the form for creating a new resource.
      */
+
     public function create()
     {
         
@@ -30,7 +32,19 @@ class UserTicketController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = Auth::user();
+        $ticket = Ticket::create([
+            'user_id' => $user->id,
+            'title' => $request->title,
+            'message' => $request->message,
+        ]);
+        $ticket->categories()->create(
+            [
+                'name' => $request->category,
+                'slug' => \Illuminate\Support\Str::slug($request->category)
+            ]);
+        
+        return redirect(route('ticket-submit'));
     }
 
     /**
