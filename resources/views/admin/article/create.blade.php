@@ -32,7 +32,7 @@
             <button type="submit">Simpan</button>
         </form> --}}
 
-        <form method="POST" action="{{ route('article.store') }}">
+        <form method="POST" action="{{ route('admin.article.store') }}">
             @csrf
             <div class="card-body">
                 <div class="form-group">
