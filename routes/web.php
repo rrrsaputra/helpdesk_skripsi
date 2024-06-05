@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\AdminTicketController;
 use App\Http\Controllers\AgentController;
+use App\Http\Controllers\AgentTicketController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Coderflex\LaravelTicket\Models\Label;
@@ -30,6 +32,8 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::resource('/user/ticket', UserTicketController::class)->names('user.ticket');
+    Route::resource('/agent/ticket', AgentTicketController::class)->names('agent.ticket');
+
 });
 
 Route::get('/dashboard', function () {

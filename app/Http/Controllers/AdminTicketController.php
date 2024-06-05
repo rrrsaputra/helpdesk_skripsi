@@ -27,7 +27,7 @@ class AdminTicketController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**

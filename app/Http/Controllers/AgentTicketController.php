@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Coderflex\LaravelTicket\Models\Ticket;
+use Coderflex\LaravelTicket\Models\Category;
+use Coderflex\LaravelTicket\Models\Label;
 
 class AgentTicketController extends Controller
 {
@@ -19,7 +23,7 @@ class AgentTicketController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -27,7 +31,13 @@ class AgentTicketController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = Auth::user();
+        Ticket::create([
+            'user_id' => $user->id,
+            'title' => $request->input('title'),
+        ]);
+        
+        return redirect(route('agent.index'));
     }
 
     /**
