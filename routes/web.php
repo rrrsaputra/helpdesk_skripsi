@@ -19,13 +19,17 @@ Route::get('/article', function () {
     return view('user.article');
 })->name('article');
 
-Route::get('/', function () {
-    return view('user.index');
+Route::get('/ticket', function () {
+    return view('user.tickets.ticket');
 })->name('home');
 
-// Route::get('/', function () {
-//     return view('user.dashboard');
-// })->name('dashboard');
+Route::get('/ticket-submit', function () {
+    return view('user.tickets.ticket-submit');
+})->name('ticket-submit');
+
+Route::get('/', function () {
+    return view('user.home');
+})->name('home');
 
 
 

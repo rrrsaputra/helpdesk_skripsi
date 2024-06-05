@@ -173,12 +173,40 @@
                     </div>
                 </li>
                 <li class="dx-nav-item">
-                    <a class="dx-nav-link" data-fancybox data-touch="false" data-close-existing="true"
+                    @if (Route::has('login'))
+                            <nav class="-mx-3 flex flex-1 justify-end">
+                                @auth
+                                    <a
+                                        href="{{ url('/') }}"
+                                        class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                                    >
+                                        Dashboard
+                                    </a>
+                                @else
+                                    <a
+                                        href="{{ route('login') }}"
+                                        class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                                    >
+                                        Log in
+                                    </a>
+
+                                    @if (Route::has('register'))
+                                        <a
+                                            href="{{ route('register') }}"
+                                            class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                                        >
+                                            Register
+                                        </a>
+                                    @endif
+                                @endauth
+                            </nav>
+                        @endif
+                    {{-- <a class="dx-nav-link" data-fancybox data-touch="false" data-close-existing="true"
                         data-src="#login" href="javascript:;">Log In</a>
                 </li>
                 <li class="dx-nav-item">
                     <span><a data-fancybox data-touch="false" data-close-existing="true" data-src="#signup"
-                            href="javascript:;" class="dx-btn dx-btn-md dx-btn-transparent">Sign Up</a></span>
+                            href="javascript:;" class="dx-btn dx-btn-md dx-btn-transparent">Sign Up</a></span> --}}
                 </li>
             </ul>
         </div>

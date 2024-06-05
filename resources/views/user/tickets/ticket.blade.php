@@ -14,7 +14,7 @@
                         <div class="dx-separator ml-10 mr-10"></div>
                     </div>
                     <div class="col-auto">
-                        <a href="ticket-submit.html" class="dx-btn dx-btn-md">Submit a ticket</a>
+                        <a href="/ticket-submit" class="dx-btn dx-btn-md">Submit a ticket</a>
                     </div>
                 </div>
                 <a href="single-ticket.html" class="dx-ticket-item dx-ticket-new dx-ticket-open dx-block-decorated">
