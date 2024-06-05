@@ -15,9 +15,23 @@ use Spatie\Permission\Middleware\RoleMiddleware;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/article', function () {
+    return view('user.article');
+})->name('article');
+
+Route::get('/ticket', function () {
+    return view('user.tickets.ticket');
 })->name('home');
+
+Route::get('/ticket-submit', function () {
+    return view('user.tickets.ticket-submit');
+})->name('ticket-submit');
+
+Route::get('/', function () {
+    return view('user.home');
+})->name('home');
+
+
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('/articles', ArticleController::class)->names('admin.article');
