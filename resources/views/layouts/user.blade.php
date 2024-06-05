@@ -60,7 +60,7 @@
 -->
     <x-user.navbar/>        
     <x-user.header/>   
-    <x-user.navigation/>  
+
     
     @yield('content')
     
