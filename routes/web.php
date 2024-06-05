@@ -16,7 +16,7 @@ use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('user.index');
 })->name('home');
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
