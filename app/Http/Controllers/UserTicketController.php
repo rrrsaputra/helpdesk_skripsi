@@ -37,6 +37,8 @@ class UserTicketController extends Controller
             'user_id' => $user->id,
             'title' => $request->title,
             'message' => $request->message,
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
         ]);
         $ticket->categories()->create(
             [
