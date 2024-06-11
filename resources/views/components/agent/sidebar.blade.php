@@ -48,7 +48,7 @@
                     </a>
                     <ul class="nav nav-treeview" style="display: block;">
                         <li class="nav-item">
-                            <a href="{{ route('agent.index', ['inbox' => 'unassigned']) }}" class="nav-link">
+                            <a href="{{ route('agent.index', ['inbox' => 'unassigned']) }}" class="nav-link {{ request()->input('inbox') == 'unassigned' ? 'active' : '' }} {{ request()->input('inbox') == '' ? 'active' : '' }}">
                                 @if(request()->has('inbox') && request()->input('inbox') == 'unassigned')
                                     <i class="fas fa-circle nav-icon"></i>
                                 @elseif(request()->input('inbox') == '')
@@ -61,7 +61,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('agent.index', ['inbox' => 'mine']) }}" class="nav-link">
+                            <a href="{{ route('agent.index', ['inbox' => 'mine']) }}" class="nav-link {{ request()->input('inbox') == 'mine' ? 'active' : '' }} ">
                                 @if(request()->has('inbox') && request()->input('inbox') == 'mine')
                                     <i class="fas fa-circle nav-icon"></i>
                                 @else
@@ -72,7 +72,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('agent.index', ['inbox' => 'assigned']) }}" class="nav-link">
+                            <a href="{{ route('agent.index', ['inbox' => 'assigned']) }}" class="nav-link {{ request()->input('inbox') == 'assigned' ? 'active' : '' }} ">
                                 @if(request()->has('inbox') && request()->input('inbox') == 'assigned')
                                     <i class="fas fa-circle nav-icon"></i>
                                 @else
@@ -83,7 +83,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('agent.index', ['inbox' => 'closed']) }}" class="nav-link">
+                            <a href="{{ route('agent.index', ['inbox' => 'closed']) }}" class="nav-link {{ request()->input('inbox') == 'closed' ? 'active' : '' }} " >
                                 @if(request()->has('inbox') && request()->input('inbox') == 'closed')
                                     <i class="fas fa-circle nav-icon"></i>
                                 @else

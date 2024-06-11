@@ -64,6 +64,10 @@ Route::middleware(['auth','role:agent'])->group(function () {
 Route::middleware('auth')->group(function () {
     Route::resource('/user/ticket', UserTicketController::class)->names('user.ticket');
     Route::resource('/agent/ticket', AgentTicketController::class)->names('agent.ticket');
+    Route::patch('/agent/ticket/get/{ticket}', [AgentTicketController::class, 'get'])->name('agent.ticket.get');
+    Route::patch('/agent/ticket/unassign/{ticket}', [AgentTicketController::class, 'unassign'])->name('agent.ticket.unassign');
+    Route::patch('/agent/ticket/close/{ticket}', [AgentTicketController::class, 'close'])->name('agent.ticket.close');
+    Route::patch('/agent/ticket/reopen/{ticket}', [AgentTicketController::class, 'reopen_ticket'])->name('agent.ticket.reopen_ticket');
 
 });
 

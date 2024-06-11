@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use Coderflex\LaravelTicket\Models\Ticket;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AgentController extends Controller
 {
@@ -19,6 +20,7 @@ class AgentController extends Controller
             return view('agent.index',compact('tickets','inbox'));
         }
         else if ($inbox == 'mine') {
+            $tickets = Ticket::opened()->where('assigned_to', Auth::id())->get();
             return view('agent.index', compact('tickets','inbox'));
         } else if ($inbox == 'assigned') {
             $tickets = Ticket::opened()->where('assigned_to',!null)->get();
