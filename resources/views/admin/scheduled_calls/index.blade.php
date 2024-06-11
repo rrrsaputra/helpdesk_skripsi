@@ -6,7 +6,7 @@
 @section('content')
     <a href="{{ route('admin.scheduled_call.create') }}" class="btn btn-primary mb-10">Create Article</a>
     @php
-        $columns = ['', 'Customer', 'Summary', '', 'Number'];
+        $columns = ['', 'Customer', 'Summary', '', 'Number', 'Assigned To', 'Assigned From', 'Link'];
         $data = $scheduledCalls
             ->map(function ($scheduledCall) {
                 return [
@@ -18,6 +18,9 @@
                         [$scheduledCall->title, $scheduledCall->message ?? ''],
                         '',
                         $scheduledCall->id,
+                        $scheduledCall->assigned_to,
+                        $scheduledCall->assigned_from,
+                        $scheduledCall->link,
                     ],
                 ];
             })
@@ -90,15 +93,18 @@
                                             </td>
                                         </tr>
                                         <!-- Modal -->
-                                        <form method="POST" action="{{ route('admin.scheduled_call.update', $row['id']) }}">
+                                        <form method="POST"
+                                            action="{{ route('admin.scheduled_call.update', $row['id']) }}">
                                             @csrf
                                             @method('PATCH')
-                                            <div class="modal fade" id="assignToModal" tabindex="-1" role="dialog" aria-labelledby="assignToModalLabel" aria-hidden="true">
+                                            <div class="modal fade" id="assignToModal" tabindex="-1" role="dialog"
+                                                aria-labelledby="assignToModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
                                                             <h5 class="modal-title" id="assignToModalLabel">Assign To</h5>
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
                                                         </div>
@@ -106,13 +112,16 @@
                                                             <label for="agentSelect">Pilih Agent:</label>
                                                             <select id="agentSelect" name="agent_id" class="form-control">
                                                                 @foreach ($agents as $agent)
-                                                                    <option value="{{ $agent->id }}">{{ $agent->name }} ({{ $agent->email }})</option>
+                                                                    <option value="{{ $agent->id }}">
+                                                                        {{ $agent->name }} ({{ $agent->email }})</option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                            <button type="submit" class="btn btn-primary">Save changes</button>
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-primary">Save
+                                                                changes</button>
                                                         </div>
                                                     </div>
                                                 </div>
