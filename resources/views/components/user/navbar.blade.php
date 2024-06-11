@@ -15,12 +15,15 @@
                 <li><a href="{{ route('ticket') }}"
                         style="color: white; transition: color 0.3s;"onmouseover="this.style.color='grey'"
                         onmouseout="this.style.color='white'">Ticket System</a></li>
-                <li><a href="{{ route('article.index') }}"
-                        style="color: white; transition: color 0.3s;"onmouseover="this.style.color='grey'"
-                        onmouseout="this.style.color='white'">Articles</a></li>
                 <li><a href="{{ route('scheduled_call') }}"
                         style="color: white; transition: color 0.3s;"onmouseover="this.style.color='grey'"
                         onmouseout="this.style.color='white'">Scheduled Calls</a></li>
+                <li><a href="{{ route('article.index') }}"
+                        style="color: white; transition: color 0.3s;"onmouseover="this.style.color='grey'"
+                        onmouseout="this.style.color='white'">Articles</a></li>
+                <li><a href="{{ route('user.feedback.index') }}"
+                        style="color: white; transition: color 0.3s;"onmouseover="this.style.color='grey'"
+                        onmouseout="this.style.color='white'">Feedback</a></li>
 
             </ul>
             <ul class="dx-nav dx-nav-align-right">
