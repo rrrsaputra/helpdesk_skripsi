@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('scheduled_calls', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->onDelete('cascade');
-            $table->foreignId('admin_id')->onDelete('cascade');
-            $table->foreignId('agent_id')->nullable()->onDelete('cascade');
             $table->string('title');
             $table->text('message');
             $table->string('link')->nullable();
+            $table->foreignId('assigned_to')->nullable();
+            $table->foreignId('assigned_from')->nullable();
             $table->string('status')->default('pending'); //status = pending and delegate
             $table->timestamps();
         });

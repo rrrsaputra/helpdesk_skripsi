@@ -2,18 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\ScheduledCall;
 use Illuminate\Support\Facades\Auth;
 
-class UserScheduledCallController extends Controller
+class AdminScheduledCallController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $scheduledCalls = ScheduledCall::all();
+        // $categories = Category::all();
+        $agents = User::role('agent')->get();
+
+        return view('admin.scheduled_calls.index', compact('scheduledCalls', 'agents'));
     }
 
     /**
@@ -27,16 +32,10 @@ class UserScheduledCallController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request,string $id)
     {
-        $user = Auth::user();
-        $scheduledCall = ScheduledCall::create([
-            'user_id' => $user->id,
-            'title' => $request->title,
-            'message' => $request->message,
-        ]);
 
-        return redirect(route('scheduled_call'));
+
     }
 
     /**
@@ -52,15 +51,24 @@ class UserScheduledCallController extends Controller
      */
     public function edit(string $id)
     {
-        //
     }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-    {
-        //
+    {   
+        $scheduledCall = ScheduledCall::find($id);
+        if ($scheduledCall) {
+            $scheduledCall->assigned_to = $request->agent_id;
+            $scheduledCall->assigned_from = Auth::id();
+            $scheduledCall->save();
+        } else {
+            return redirect()->route('admin.scheduled_call.index')->with('error', 'Scheduled call not found.');
+        }
+    
+        return redirect()->route('admin.scheduled_call.index')->with('success', 'Scheduled call created successfully.');
+
     }
 
     /**

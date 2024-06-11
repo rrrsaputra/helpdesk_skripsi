@@ -8,10 +8,10 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-xl-7">
-                        <form action="{{ route('user.ticket.store') }}" method="POST" class="dx-form">
+                        <form action="{{ route('user.scheduled-ticket.store') }}" method="POST" class="dx-form">
                             <div class="dx-box dx-box-decorated">
                                 <div class="dx-box-content">
-                                    <h2 class="h6 mb-6">Submit a Ticket</h2>
+                                    <h2 class="h6 mb-6">Scheduled a Call</h2>
                                     <!-- START: Breadcrumbs -->
                                     <ul class="dx-breadcrumbs text-left dx-breadcrumbs-dark mnb-6 fs-14">
                                         <li><a href="help-center.html">Support Home</a></li>
@@ -57,7 +57,7 @@
                                             placeholder="Enter Subject" name='title'>
                                     </div>
                                     <div class="dx-form-group">
-                                        <label class="mnt-7">Description</label>
+                                        <label class="mnt-7">Message</label>
                                         <div class="dx-editors" data-editor-height="150" data-editor-maxheight="250"
                                             style="min-height: 150px; max-height: 250px;">
                                         </div>
@@ -76,62 +76,6 @@
                                         <input type="hidden" name="message" id="message">
                                     </div>
                                 </div>
-                                <div class="dx-separator"></div>
-                                <div class="dx-box-content">
-                                    <button type="button" class="btn btn-primary" id="get_location">Get Current
-                                        Location</button>
-                                    <div id="map" style="height: 400px;"></div>
-                                    <input type="hidden" name="latitude" id="latitude">
-                                    <input type="hidden" name="longitude" id="longitude">
-                                </div>
-                                <link href='https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css' rel='stylesheet' />
-                                <script src='https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js'></script>
-                                <script>
-                                    document.addEventListener('DOMContentLoaded', function() {
-                                        mapboxgl.accessToken = '{{ env('MAPBOX_ACCESS_TOKEN') }}';
-                                        var map = new mapboxgl.Map({
-                                            container: 'map',
-                                            style: 'mapbox://styles/mapbox/streets-v11',
-                                            center: [0, 0],
-                                            zoom: 2
-                                        });
-
-                                        var marker;
-
-                                        document.getElementById('get_location').addEventListener('click', function() {
-                                            if (navigator.geolocation) {
-                                                navigator.geolocation.getCurrentPosition(function(position) {
-                                                    var lat = position.coords.latitude;
-                                                    var lng = position.coords.longitude;
-                                                    var coordinates = [lng, lat];
-
-                                                    if (!marker) {
-                                                        marker = new mapboxgl.Marker()
-                                                            .setLngLat(coordinates)
-                                                            .addTo(map);
-                                                    } else {
-                                                        marker.setLngLat(coordinates);
-                                                    }
-
-                                                    map.setCenter(coordinates);
-                                                    map.setZoom(13);
-
-                                                    // Set the latitude and longitude values in the hidden inputs
-                                                    document.getElementById('latitude').value = lat;
-                                                    document.getElementById('longitude').value = lng;
-                                                }, function(error) {
-                                                    alert("Error getting location: " + error.message);
-                                                }, {
-                                                    enableHighAccuracy: true,
-                                                    timeout: 5000,
-                                                    maximumAge: 0
-                                                });
-                                            } else {
-                                                alert("Geolocation is not supported by this browser.");
-                                            }
-                                        });
-                                    });
-                                </script>
                             </div>
 
                             <div class="pt-0">

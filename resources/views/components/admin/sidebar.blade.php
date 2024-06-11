@@ -36,7 +36,7 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                 data-accordion="false">
-                <li class="nav-item menu-open">
+                <li class="nav-item menu-close">
                     <a href="{{ route('admin.dashboard') }}" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
@@ -129,6 +129,15 @@
                             </a>
                         </li>
                     </ul>
+                </li>
+                <li class="nav-item menu-close">
+                    <a href="{{ route('admin.scheduled_call.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-phone-alt"></i>
+                        <p>
+                            SCHEDULED CALLS
+                            <span class="badge badge-warning right">6</span>
+                        </p>
+                    </a>
                 </li>
 
             </ul>

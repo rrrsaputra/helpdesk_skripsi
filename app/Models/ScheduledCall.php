@@ -11,12 +11,16 @@ class ScheduledCall extends Model
 
     protected $fillable = [
         'user_id',
-        'admin_id',
-        'agent_id',
+        'assigned_from',
+        'assigned_to',
         'title',
         'message',
         'link'
-    ]
+    ];
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 
 
 }

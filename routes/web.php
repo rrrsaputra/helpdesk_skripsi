@@ -15,6 +15,8 @@ use App\Http\Controllers\UserTicketController;
 use App\Http\Controllers\AdminTicketController;
 use App\Http\Controllers\AgentTicketController;
 use Spatie\Permission\Middleware\RoleMiddleware;
+use App\Http\Controllers\UserScheduledCallController;
+use App\Http\Controllers\AdminScheduledCallController;
 
 // Route::get('/article', function () {
 //     return view('user.article');
@@ -55,6 +57,8 @@ Route::get('/scheduled-call-submit', function () {
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('/articles', ArticleController::class)->names('admin.article');
     
+    Route::resource('/scheduled-call', AdminScheduledCallController::class)->names('admin.scheduled_call');
+    
     Route::get('/admin/dashboard', function () {
         return view('admin.dashboard');
     })->name('admin.dashboard');
@@ -68,6 +72,7 @@ Route::middleware(['auth','role:agent'])->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::resource('/user/ticket', UserTicketController::class)->names('user.ticket');
+    Route::resource('/user/scheduled-ticket', UserScheduledCallController::class)->names('user.scheduled-ticket');
     Route::resource('/agent/ticket', AgentTicketController::class)->names('agent.ticket');
 
 });
