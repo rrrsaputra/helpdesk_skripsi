@@ -57,7 +57,7 @@ Route::get('/scheduled-call-submit', function () {
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('/articles', ArticleController::class)->names('admin.article');
     
-    Route::resource('/scheduled-call', AdminScheduledCallController::class)->names('admin.scheduled_call');
+    Route::resource('/admin/scheduled-call', AdminScheduledCallController::class)->names('admin.scheduled_call');
     
     Route::get('/admin/dashboard', function () {
         return view('admin.dashboard');
