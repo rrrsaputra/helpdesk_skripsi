@@ -178,9 +178,33 @@
                                             </td>
                                         @endforeach
                                         <td> <!-- Added Actions buttons -->
-                                            <button class="btn btn-primary btn-sm">Edit</button>
-                                            <button class="btn btn-danger btn-sm">Delete</button>
-                                            <button class="btn btn-info btn-sm">View</button>
+                                            <button class="btn btn-primary btn-sm" onclick="event.stopPropagation();">View</button>
+                                            @if(request()->input('inbox') == 'unassigned' || request()->input('inbox') == '')
+                                            <form action="{{ route('agent.ticket.get', $row['id']) }}" method="POST" style="display:inline;" onclick="event.stopPropagation();">
+                                                @csrf
+                                                @method('PATCH')
+                                                <button type="submit" class="btn btn-success btn-sm">Get</button>
+                                            </form>
+                                            @elseif(request()->input('inbox') == 'mine')
+                                            <form action="{{ route('agent.ticket.close', $row['id']) }}" method="POST" style="display:inline;" onclick="event.stopPropagation();">
+                                                @csrf
+                                                @method('PATCH')
+                                      
+                                                <button type="submit" class="btn btn-success btn-sm">Close</button>
+                                            </form>
+                                            <button class="btn btn-info btn-sm" onclick="event.stopPropagation();">Assign to</button>
+                                            <form action="{{ route('agent.ticket.unassign', $row['id']) }}" method="POST" style="display:inline;" onclick="event.stopPropagation();">
+                                                @csrf
+                                                @method('PATCH')
+                                                <button type="submit" class="btn btn-danger btn-sm">Unassign</button>
+                                            </form>
+                                            @elseif(request()->input('inbox') == 'closed')
+                                            <form action="{{ route('agent.ticket.reopen_ticket', $row['id']) }}" method="POST" style="display:inline;" onclick="event.stopPropagation();">
+                                                @csrf
+                                                @method('PATCH')
+                                                <button type="submit" class="btn btn-info btn-sm">Reopen</button>
+                                            </form>
+                                            @endif
                                         </td>
                                     </tr>
                                 @empty

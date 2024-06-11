@@ -32,6 +32,7 @@ class AgentTicketController extends Controller
     public function store(Request $request)
     {
         $user = Auth::user();
+       
         Ticket::create([
             'user_id' => $user->id,
             'title' => $request->input('title'),
@@ -40,6 +41,44 @@ class AgentTicketController extends Controller
         return redirect(route('agent.index'));
     }
 
+
+    public function get(string $id)
+    {
+        $user = Auth::user();
+        $ticket = Ticket::where('id', $id)->first();
+        $ticket->assigned_to = $user->id;
+        $ticket->save();
+
+        
+        return redirect(route('agent.index'));
+    }
+    public function unassign(string $id)
+    {
+        $ticket = Ticket::where('id', $id)->first();
+        $ticket->assigned_to = null;
+        $ticket->save();
+
+        
+        return redirect(route('agent.index', ['inbox' => 'mine']));
+    }
+    public function close(string $id)
+    {
+        $ticket = Ticket::where('id', $id)->first();
+        $ticket->status = "closed";
+        $ticket->save();
+
+        return redirect(route('agent.index', ['inbox' => 'mine']));
+    }
+    public function reopen_ticket(string $id)
+    {
+
+        $ticket = Ticket::where('id', $id)->first();
+        $ticket->status = "open";
+        $ticket->save();
+
+        
+        return redirect(route('agent.index',['inbox' => 'closed']));
+    }
     /**
      * Display the specified resource.
      */
