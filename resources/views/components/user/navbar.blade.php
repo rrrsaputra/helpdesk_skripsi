@@ -8,38 +8,46 @@
             <span></span><span></span><span></span>
         </button>
         <div class="dx-navbar-content">
-            <ul class="dx-nav " >
-      
-                    <li><a href="/" style="color: white; transition: color 0.3s;" onmouseover="this.style.color='grey'" onmouseout="this.style.color='white'">Home</a></li>
-                    <li><a href="{{ route('ticket') }}"  style="color: white; transition: color 0.3s;"onmouseover="this.style.color='grey'" onmouseout="this.style.color='white'" >Ticket System</a></li>
-                    <li><a href="{{ route('article.index') }}"  style="color: white; transition: color 0.3s;"onmouseover="this.style.color='grey'" onmouseout="this.style.color='white'" >Articles</a></li>
-                    <li><a href="{{ route('scheduled_call') }}"  style="color: white; transition: color 0.3s;"onmouseover="this.style.color='grey'" onmouseout="this.style.color='white'" >Scheduled Calls</a></li>
-     
+            <ul class="dx-nav ">
+
+                <li><a href="/" style="color: white; transition: color 0.3s;"
+                        onmouseover="this.style.color='grey'" onmouseout="this.style.color='white'">Home</a></li>
+                <li><a href="{{ route('ticket') }}"
+                        style="color: white; transition: color 0.3s;"onmouseover="this.style.color='grey'"
+                        onmouseout="this.style.color='white'">Ticket System</a></li>
+                <li><a href="{{ route('article.index') }}"
+                        style="color: white; transition: color 0.3s;"onmouseover="this.style.color='grey'"
+                        onmouseout="this.style.color='white'">Articles</a></li>
+                <li><a href="{{ route('scheduled_call') }}"
+                        style="color: white; transition: color 0.3s;"onmouseover="this.style.color='grey'"
+                        onmouseout="this.style.color='white'">Scheduled Calls</a></li>
+
             </ul>
             <ul class="dx-nav dx-nav-align-right">
-               
+
                 <li class="dx-nav-item">
                     @if (Route::has('login'))
                         <nav class="-mx-3 flex flex-1 justify-end">
                             @auth
-                               
+
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
 
-                                    <button  style="color: white; transition: color 0.3s;" onmouseover="this.style.color='grey'" onmouseout="this.style.color='white'" 
+                                    <button style="color: white; transition: color 0.3s;"
+                                        onmouseover="this.style.color='grey'" onmouseout="this.style.color='white'"
                                         class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-black dark:hover:text-black/80 dark:focus-visible:ring-black">
                                         Log Out
                                     </button>
 
                                 </form>
                             @else
-                                <a href="{{ route('login') }}"  
-                                    class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white" >
+                                <a href="{{ route('login') }}"
+                                    class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
                                     Log in
                                 </a>
 
                                 @if (Route::has('register'))
-                                    <a href="{{ route('register') }}" 
+                                    <a href="{{ route('register') }}"
                                         class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
                                         Register
                                     </a>
