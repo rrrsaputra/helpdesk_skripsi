@@ -17,6 +17,7 @@ use App\Http\Controllers\AgentTicketController;
 use Spatie\Permission\Middleware\RoleMiddleware;
 use App\Http\Controllers\UserScheduledCallController;
 use App\Http\Controllers\AdminScheduledCallController;
+use App\Http\Controllers\AgentScheduledCallController;
 use App\Http\Controllers\FeedbackController;
 use App\Models\Feedback;
 
@@ -62,6 +63,12 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 Route::middleware('auth','role:agent')->group(function () {
     Route::get('/agent', [AgentController::class, 'index'])->name('agent.index');
+    Route::resource('/agent/schedule-call', AgentScheduledCallController::class)->names('agent.scheduled_call');
+
+    
+});
+
+Route::middleware('auth')->group(function () {
     Route::resource('/user/ticket', UserTicketController::class)->names('user.ticket');
     Route::resource('/user/scheduled-ticket', UserScheduledCallController::class)->names('user.scheduled-ticket');
     Route::resource('/agent/ticket', AgentTicketController::class)->names('agent.ticket');
