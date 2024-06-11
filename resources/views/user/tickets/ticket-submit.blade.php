@@ -88,7 +88,7 @@
                                 <script src='https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js'></script>
                                 <script>
                                     document.addEventListener('DOMContentLoaded', function() {
-                                        mapboxgl.accessToken = 'pk.eyJ1IjoiYmFtYmFuZzI4MDIiLCJhIjoiY2x4OXQyaWwzMm45MjJrcTFzYzk1eHZ6OSJ9.Zihvf37yHEfgcSrcwUOUqQ';
+                                        mapboxgl.accessToken = '{{ env('MAPBOX_ACCESS_TOKEN') }}';
                                         var map = new mapboxgl.Map({
                                             container: 'map',
                                             style: 'mapbox://styles/mapbox/streets-v11',

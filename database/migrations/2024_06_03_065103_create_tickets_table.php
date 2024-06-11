@@ -18,8 +18,8 @@ return new class extends Migration
             $table->foreignId('user_id');
             $table->string('title');
             $table->string('message')->nullable();
-            $table->decimal('latitude');
-            $table->decimal('longitude');
+            $table->decimal('latitude', 10,7)->nullable();
+            $table->decimal('longitude',10,7)->nullable();
             $table->string('priority')->default('low');
             $table->string('status')->default('open');
             $table->boolean('is_resolved')->default(false);
