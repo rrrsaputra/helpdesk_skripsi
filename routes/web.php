@@ -17,15 +17,8 @@ use App\Http\Controllers\AgentTicketController;
 use Spatie\Permission\Middleware\RoleMiddleware;
 use App\Http\Controllers\UserScheduledCallController;
 use App\Http\Controllers\AdminScheduledCallController;
-
-// Route::get('/article', function () {
-//     return view('user.article');
-// })->name('article');
-
-
-Route::get('/ticket-submit', function () {
-    return view('user.tickets.ticket-submit');
-})->name('ticket-submit');
+use App\Http\Controllers\FeedbackController;
+use App\Models\Feedback;
 
 Route::get('/', function () {
     return view('user.home');
@@ -38,21 +31,24 @@ Route::get('/single-article', function () {
 })->name('single-article');
 
 
-Route::get('/ticket', function () {
-    return view('user.tickets.ticket');
-})->name('ticket');
+Route::middleware(['auth', 'role:user'])->group(function () {
+    Route::resource('/feedback', FeedbackController::class)->names('user.feedback');
+    
+    Route::get('/ticket', function () {
+        return view('user.tickets.ticket');
+    })->name('ticket');
+    Route::get('/ticket-submit', function () {
+        return view('user.tickets.ticket-submit');
+    })->name('ticket-submit');
 
-Route::get('/scheduled-call', function () {
-    return view('user.scheduled_calls.scheduled_call');
-})->name('scheduled_call');
+    Route::get('/scheduled-call', function () {
+        return view('user.scheduled_calls.scheduled_call');
+    })->name('scheduled_call');
 
-Route::get('/scheduled-call-submit', function () {
-    return view('user.scheduled_calls.scheduled_call_submit');
-})->name('scheduled_call_submit');
-
-
-
-
+    Route::get('/scheduled-call-submit', function () {
+        return view('user.scheduled_calls.scheduled_call_submit');
+    })->name('scheduled_call_submit');
+});
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('/articles', ArticleController::class)->names('admin.article');
@@ -64,13 +60,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     })->name('admin.dashboard');
 });
 
-Route::middleware(['auth','role:agent'])->group(function () {
+Route::middleware('auth','role:agent')->group(function () {
     Route::get('/agent', [AgentController::class, 'index'])->name('agent.index');
-
-    
-});
-
-Route::middleware('auth')->group(function () {
     Route::resource('/user/ticket', UserTicketController::class)->names('user.ticket');
     Route::resource('/user/scheduled-ticket', UserScheduledCallController::class)->names('user.scheduled-ticket');
     Route::resource('/agent/ticket', AgentTicketController::class)->names('agent.ticket');
