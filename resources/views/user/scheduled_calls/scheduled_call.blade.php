@@ -8,13 +8,13 @@
             <div class="container">
                 <div class="row align-items-center justify-content-between vertical-gap mnt-30 sm-gap mb-50">
                     <div class="col-auto">
-                        <h2 class="h4 mb-0 mt-0">Your Tickets</h2>
+                        <h2 class="h4 mb-0 mt-0">Your Scheduled Calls</h2>
                     </div>
                     <div class="col pl-30 pr-30 d-none d-sm-block">
                         <div class="dx-separator ml-10 mr-10"></div>
                     </div>
                     <div class="col-auto">
-                        <a href="{{ route('ticket-submit') }}" class="dx-btn dx-btn-md">Submit a ticket</a>
+                        <a href="{{ route('scheduled_call_submit') }}" class="dx-btn dx-btn-md">Book a Call</a>
                     </div>
                 </div>
                 <a href="single-ticket.html" class="dx-ticket-item dx-ticket-new dx-ticket-open dx-block-decorated">
