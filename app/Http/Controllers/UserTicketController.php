@@ -31,7 +31,7 @@ class UserTicketController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
+    {   
         $user = Auth::user();
         $ticket = Ticket::create([
             'user_id' => $user->id,
