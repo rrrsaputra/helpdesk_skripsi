@@ -40,6 +40,10 @@ Route::get('/ticket', function () {
     return view('user.tickets.ticket');
 })->name('ticket');
 
+Route::get('/map', function () {
+    return view('agent.map');
+})->name('map');
+
 
 
 
