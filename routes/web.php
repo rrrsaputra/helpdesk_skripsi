@@ -40,9 +40,14 @@ Route::get('/ticket', function () {
     return view('user.tickets.ticket');
 })->name('ticket');
 
-Route::get('/map', function () {
-    return view('agent.map');
-})->name('map');
+Route::get('/scheduled-call', function () {
+    return view('user.scheduled_calls.scheduled_call');
+})->name('scheduled_call');
+
+Route::get('/scheduled-call-submit', function () {
+    return view('user.scheduled_calls.scheduled_call_submit');
+})->name('scheduled_call_submit');
+
 
 
 
