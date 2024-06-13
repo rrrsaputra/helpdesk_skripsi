@@ -69,10 +69,14 @@ Replace `your_mapbox_key` with the corresponding values from your [Mapbox](https
 
 To run the application, use the following commands:
 
+Run the laravel app:
 ```javascript
 php artisan serve
 ```
-and
+Run the npm:
 ```javascript
 npm run dev
+```
+```javascript
+npm install
 ```
