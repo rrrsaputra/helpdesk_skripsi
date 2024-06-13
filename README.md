@@ -6,28 +6,35 @@
    git clone https://github.com/bambangsy/ticketing_hd
    ```
 
+
+2. Get inside the folder:
+
+   ```sh
+   cd ticketing_hd
+   ```
+
 3. Install Composer Dependencies:
 
    ```sh
    composer install   
    ```
 
-3. Copy the Environment File:
+4. Copy the Environment File:
    
    ```sh
    cp .env.example .env
    ````
-4. Generate Application Key:
+5. Generate Application Key:
 
    ```sh
    php artisan key:generate
    ```
-5. Run Database Migrations and Seed the Databse:
+6. Run Database Migrations and Seed the Databse:
    
    ```sh
    php artisan migrate:fresh --seed
    ```
-6. Link Storage:
+7. Link Storage:
 
    ```sh
    php artisan storage:link
