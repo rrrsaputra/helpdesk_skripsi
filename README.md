@@ -57,15 +57,13 @@ DB_PASSWORD=
 
 Replace everything with your actual database credentials.
 
-### Google Login Configuration
+### Mapbox Login Configuration
 
 ```sh
 MAPBOX_ACCESS_TOKEN=your_mapbox_key
 ```
 
 Replace `your_mapbox_key` with the corresponding values from your [Mapbox](https://www.mapbox.com/). Also, update `APP_URL` with the actual URL where your Laravel application is hosted.
-Or just use my key: 
-pk.eyJ1IjoiYmFtYmFuZzI4MDIiLCJhIjoiY2x4OXQyaWwzMm45MjJrcTFzYzk1eHZ6OSJ9.Zihvf37yHEfgcSrcwUOUqQ
  
 ## Usage
 
