@@ -74,3 +74,7 @@ To run the application, use the following commands:
 ```javascript
 php artisan serve
 ```
+and
+```javascript
+npm run dev
+```
