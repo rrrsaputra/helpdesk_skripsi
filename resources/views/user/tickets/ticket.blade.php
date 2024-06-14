@@ -19,17 +19,14 @@
                 </div>
                 @foreach($tickets as $ticket)
                 <a href="#{{-- {{ route('user.ticket.show', $ticket->id) }} --}}" class="dx-ticket-item dx-ticket-new dx-ticket-open dx-block-decorated">
-                    <span class="dx-ticket-img">
-                        <img src="{{ asset('assets/images/avatar-1.png') }}" alt="">
-                    </span>
+                    
                     <span class="dx-ticket-cont">
                         <span class="dx-ticket-name">{{ $ticket->user->name }}</span>
                         <span class="dx-ticket-title h5">{{ $ticket->title }}</span>
-                        <span class="dx-ticket-title h8">{{ Str::limit(strip_tags($ticket->message), 150) }}</span>
+                        <p class="dx-ticket-paragraph">{{ strip_tags($ticket->message) }}</p>
                         <ul class="dx-ticket-info">
                             <li>Update: {{ $ticket->updated_at->format('d M Y') }}</li>
                             <li>Category: {{ $ticket->category }}</li>
-                            <li>Comments: {{ $ticket->comments_count }}</li>
                             @if($ticket->is_new)
                                 <li class="dx-ticket-new">New</li>
                             @endif

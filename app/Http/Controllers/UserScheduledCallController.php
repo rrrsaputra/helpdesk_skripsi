@@ -13,7 +13,10 @@ class UserScheduledCallController extends Controller
      */
     public function index()
     {
-        //
+        $user = Auth::user();
+        $scheduledCalls = ScheduledCall::where('user_id', $user->id)->get();
+
+        return view('user.scheduled_calls.scheduled_call', compact('scheduledCalls'));
     }
 
     /**
@@ -44,7 +47,9 @@ class UserScheduledCallController extends Controller
      */
     public function show(string $id)
     {
-        //
+    $scheduledCall = ScheduledCall::find($id);
+
+    return view('user.scheduled_calls.single-scheduled-call', compact('scheduledCall'));
     }
 
     /**

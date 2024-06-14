@@ -32,22 +32,22 @@ Route::get('/single-article', function () {
 })->name('single-article');
 
 
+
 Route::middleware(['auth', 'role:user'])->group(function () {
     Route::resource('/feedback', FeedbackController::class)->names('user.feedback');
-    // Route::resource('/ticket', UserTicketController::class)->names('user.ticket');
-    Route::get('/tickets', [UserTicketController::class, 'index'])->name('tickets.index');
-    
-    // Route::get('/ticket', function () {
-    //     return view('user.tickets.ticket');
-    // })->name('ticket');
+    Route::resource('/tickets', UserTicketController::class)->names('tickets');
+    Route::resource('/scheduled-calls', UserScheduledCallController::class)->names('scheduled_call');
 
+
+    // Route::get('/user/scheduled_calls/{id}', [UserScheduledCallController::class, 'show'])->name('user.scheduled_calls.single-scheduled-call');
+    
     Route::get('/ticket-submit', function () {
         return view('user.tickets.ticket-submit');
     })->name('ticket-submit');
 
-    Route::get('/scheduled-call', function () {
-        return view('user.scheduled_calls.scheduled_call');
-    })->name('scheduled_call');
+    // Route::get('/scheduled-call', function () {
+    //     return view('user.scheduled_calls.scheduled_call');
+    // })->name('scheduled_call');
 
     Route::get('/scheduled-call-submit', function () {
         return view('user.scheduled_calls.scheduled_call_submit');

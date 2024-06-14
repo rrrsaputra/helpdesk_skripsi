@@ -15,7 +15,7 @@
                 <li><a href="{{ route('tickets.index') }}"
                         style="color: white; transition: color 0.3s;"onmouseover="this.style.color='grey'"
                         onmouseout="this.style.color='white'">Ticket System</a></li>
-                <li><a href="{{ route('scheduled_call') }}"
+                <li><a href="{{ route('scheduled_call.index') }}"
                         style="color: white; transition: color 0.3s;"onmouseover="this.style.color='grey'"
                         onmouseout="this.style.color='white'">Scheduled Calls</a></li>
                 <li><a href="{{ route('article.index') }}"

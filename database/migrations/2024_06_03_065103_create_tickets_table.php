@@ -17,7 +17,7 @@ return new class extends Migration
             $table->uuid('uuid')->nullable();
             $table->foreignId('user_id');
             $table->string('title');
-            $table->string('message')->nullable();
+            $table->text('message')->nullable();
             $table->decimal('latitude', 10,7)->nullable();
             $table->decimal('longitude',10,7)->nullable();
             $table->string('priority')->default('low');

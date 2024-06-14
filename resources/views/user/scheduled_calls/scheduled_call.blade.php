@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="dx-main">
-        
+
         <div class="dx-separator"></div>
         <div class="dx-box-5 bg-grey-6">
             <div class="container">
@@ -17,38 +17,27 @@
                         <a href="{{ route('scheduled_call_submit') }}" class="dx-btn dx-btn-md">Book a Call</a>
                     </div>
                 </div>
-                <a href="single-ticket.html" class="dx-ticket-item dx-ticket-new dx-ticket-open dx-block-decorated">
-                    <span class="dx-ticket-img">
-                        <img src="assets/images/avatar-1.png" alt="">
-                    </span>
-                    <span class="dx-ticket-cont">
-                        <span class="dx-ticket-name"> John Leonard </span>
-                        <span class="dx-ticket-title h5"> Need help with customization. Some options are not appearing...
+                @foreach ($scheduledCalls as $scheduledCall)
+                    <a href="{{ route('scheduled_call.show', $scheduledCall->id) }}" class="dx-ticket-item dx-ticket-new dx-ticket-open dx-block-decorated" style="transition: background-color 0.3s;" onmouseover="this.style.backgroundColor=''" onmouseout="this.style.backgroundColor=''">
+
+                        <span class="dx-ticket-cont">
+                            <span class="dx-ticket-name">{{ $scheduledCall->user->name }}</span>
+                            <span class="dx-ticket-title h5" style="color: black">{{ $scheduledCall->title }}</span>
+                            <p class="dx-ticket-paragraph mt-8" style="color: black">{{ Str::limit(strip_tags($scheduledCall->message), 150) }}</p>
+                            
+                            <ul class="dx-ticket-info">
+                                <li>Update: {{ $scheduledCall->updated_at->format('d M Y') }}</li>
+                                <li>Category: {{ $scheduledCall->category }}</li>
+                                <li>Link: {{ $scheduledCall->link }}</li>
+                                @if ($scheduledCall->is_new)
+                                    <li class="dx-ticket-new">New</li>
+                                @endif
+                            </ul>
                         </span>
-                        <ul class="dx-ticket-info">
-                            <li>Update: 5 Nov 2018</li>
-                            <li>Product: Quantial</li>
-                            <li>Comments: 2</li>
-                            <li class="dx-ticket-new">New</li>
-                        </ul>
-                    </span>
-                    <span class="dx-ticket-status"> Open </span>
-                </a>
-                <a href="single-ticket.html" class="dx-ticket-item dx-ticket-closed dx-block-decorated">
-                    <span class="dx-ticket-img">
-                        <img src="assets/images/avatar-default.svg" alt="">
-                    </span>
-                    <span class="dx-ticket-cont">
-                        <span class="dx-ticket-name"> Bruno Rice </span>
-                        <span class="dx-ticket-title h5"> Theme not updating in downloads </span>
-                        <ul class="dx-ticket-info">
-                            <li>Update: 4 Nov 2018</li>
-                            <li>Product: Sensific</li>
-                            <li>Comments: 11</li>
-                        </ul>
-                    </span>
-                    <span class="dx-ticket-status"> Closed </span>
-                </a>
+                        <span class="dx-ticket-status"
+                    >{{ $scheduledCall->status }}</span>
+                    </a>
+                @endforeach
             </div>
         </div>
         <div class="dx-separator"></div>
