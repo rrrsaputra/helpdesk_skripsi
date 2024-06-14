@@ -17,38 +17,28 @@
                         <a href="{{ route('ticket-submit') }}" class="dx-btn dx-btn-md">Submit a ticket</a>
                     </div>
                 </div>
-                <a href="single-ticket.html" class="dx-ticket-item dx-ticket-new dx-ticket-open dx-block-decorated">
+                @foreach($tickets as $ticket)
+                <a href="#{{-- {{ route('user.ticket.show', $ticket->id) }} --}}" class="dx-ticket-item dx-ticket-new dx-ticket-open dx-block-decorated">
                     <span class="dx-ticket-img">
-                        <img src="assets/images/avatar-1.png" alt="">
+                        <img src="{{ asset('assets/images/avatar-1.png') }}" alt="">
                     </span>
                     <span class="dx-ticket-cont">
-                        <span class="dx-ticket-name"> John Leonard </span>
-                        <span class="dx-ticket-title h5"> Need help with customization. Some options are not appearing...
-                        </span>
+                        <span class="dx-ticket-name">{{ $ticket->user->name }}</span>
+                        <span class="dx-ticket-title h5">{{ $ticket->title }}</span>
+                        <span class="dx-ticket-title h8">{{ Str::limit(strip_tags($ticket->message), 150) }}</span>
                         <ul class="dx-ticket-info">
-                            <li>Update: 5 Nov 2018</li>
-                            <li>Product: Quantial</li>
-                            <li>Comments: 2</li>
-                            <li class="dx-ticket-new">New</li>
+                            <li>Update: {{ $ticket->updated_at->format('d M Y') }}</li>
+                            <li>Category: {{ $ticket->category }}</li>
+                            <li>Comments: {{ $ticket->comments_count }}</li>
+                            @if($ticket->is_new)
+                                <li class="dx-ticket-new">New</li>
+                            @endif
                         </ul>
                     </span>
-                    <span class="dx-ticket-status"> Open </span>
+                    <span class="dx-ticket-status">{{ $ticket->status }}</span>
                 </a>
-                <a href="single-ticket.html" class="dx-ticket-item dx-ticket-closed dx-block-decorated">
-                    <span class="dx-ticket-img">
-                        <img src="assets/images/avatar-default.svg" alt="">
-                    </span>
-                    <span class="dx-ticket-cont">
-                        <span class="dx-ticket-name"> Bruno Rice </span>
-                        <span class="dx-ticket-title h5"> Theme not updating in downloads </span>
-                        <ul class="dx-ticket-info">
-                            <li>Update: 4 Nov 2018</li>
-                            <li>Product: Sensific</li>
-                            <li>Comments: 11</li>
-                        </ul>
-                    </span>
-                    <span class="dx-ticket-status"> Closed </span>
-                </a>
+                @endforeach
+                
             </div>
         </div>
         <div class="dx-separator"></div>

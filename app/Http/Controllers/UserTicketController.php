@@ -15,7 +15,11 @@ class UserTicketController extends Controller
      */
     public function index()
     {
-        return view('user.index');
+        
+        $user = Auth::user();
+        $tickets = Ticket::where('user_id', $user->id)->get();
+    
+        return view('user.tickets.ticket', compact('tickets'));
     }
 
     /**
@@ -54,7 +58,7 @@ class UserTicketController extends Controller
      */
     public function show(string $id)
     {
-        //
+        
     }
 
     /**

@@ -34,10 +34,13 @@ Route::get('/single-article', function () {
 
 Route::middleware(['auth', 'role:user'])->group(function () {
     Route::resource('/feedback', FeedbackController::class)->names('user.feedback');
+    // Route::resource('/ticket', UserTicketController::class)->names('user.ticket');
+    Route::get('/tickets', [UserTicketController::class, 'index'])->name('tickets.index');
     
-    Route::get('/ticket', function () {
-        return view('user.tickets.ticket');
-    })->name('ticket');
+    // Route::get('/ticket', function () {
+    //     return view('user.tickets.ticket');
+    // })->name('ticket');
+
     Route::get('/ticket-submit', function () {
         return view('user.tickets.ticket-submit');
     })->name('ticket-submit');
