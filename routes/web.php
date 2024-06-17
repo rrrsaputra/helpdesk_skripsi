@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Feedback;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -9,27 +10,27 @@ use Coderflex\LaravelTicket\Models\Label;
 use Coderflex\LaravelTicket\Models\Ticket;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\UserHomeController;
 use Coderflex\LaravelTicket\Models\Category;
 use App\Http\Controllers\UserTicketController;
 use App\Http\Controllers\AdminTicketController;
 use App\Http\Controllers\AgentTicketController;
+use App\Http\Controllers\UserArticleController;
 use Spatie\Permission\Middleware\RoleMiddleware;
 use App\Http\Controllers\UserScheduledCallController;
 use App\Http\Controllers\AdminScheduledCallController;
 use App\Http\Controllers\AgentScheduledCallController;
-use App\Http\Controllers\FeedbackController;
-use App\Models\Feedback;
 
 Route::get('/', function () {
     return view('user.home');
 })->name('home');
 
-Route::get('/article', [UserHomeController::class, 'index'])->name('article.index');
+Route::resource('/article', UserArticleController::class)->names('article');
 
-Route::get('/single-article', function () {
-    return view('user.articles.single-article');
-})->name('single-article');
+// Route::get('/single-article', function () {
+//     return view('user.articles.single-article');
+// })->name('single-article');
 
 
 
@@ -55,7 +56,7 @@ Route::middleware(['auth', 'role:user'])->group(function () {
 });
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::resource('/articles', ArticleController::class)->names('admin.article');
+    Route::resource('/admin/articles', ArticleController::class)->names('admin.article');
     
     Route::resource('/admin/scheduled-call', AdminScheduledCallController::class)->names('admin.scheduled_call');
     

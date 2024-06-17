@@ -1,5 +1,5 @@
 @php
-use Illuminate\Support\Str;
+    use Illuminate\Support\Str;
 @endphp
 
 @extends('layouts.user')
@@ -21,11 +21,14 @@ use Illuminate\Support\Str;
                                     @foreach ($articles as $article)
                                         <div class="row vertical-gap lg-gap mb-4">
                                             <div class="col-md-12">
-                                                <div class="card">
+                                                <div class="card shadow-sm border-0">
                                                     <div class="card-body">
-                                                        <h5 class="card-title">{{ $article->title }}</h5>
-                                                        <div class="card-text">{{ Str::limit(strip_tags($article->content), 150) }}</div>
-                                                        <a href="/single-article" class="btn btn-primary mt-10">Read More</a>
+                                                        <h5 class="card-title ">{{ $article->title }}</h5>
+                                                        <div class="card-text text-muted">
+                                                            {{ Str::limit(strip_tags($article->content), 150) }}
+                                                        </div>
+                                                        <a href="{{ route('article.show', $article->id) }}"
+                                                            class="btn btn-outline-primary mt-10">Read More</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -117,138 +120,9 @@ use Illuminate\Support\Str;
                                     <span class="dx-widget-link-date">27 Aug 2018</span>
                                 </a>
                             </div>
-                            <div class="dx-widget dx-box dx-box-decorated">
-                                <div class="dx-widget-title"> Latest Forum Topics </div>
-                                <a href="single-article.html" class="dx-widget-link">
-                                    <span class="dx-widget-link-text">Need help with customization. Some options are not
-                                        appearing...</span>
-                                    <span class="dx-widget-link-date">6 Sep 2018</span>
-                                </a>
-                                <a href="single-article.html" class="dx-widget-link">
-                                    <span class="dx-widget-link-text">My images on profile and item pages doesnt show up?!
-                                        Whats the matter?</span>
-                                    <span class="dx-widget-link-date">2 Sep 2018</span>
-                                </a>
-                                <a href="single-article.html" class="dx-widget-link">
-                                    <span class="dx-widget-link-text">Theme not updating in downloads</span>
-                                    <span class="dx-widget-link-date">27 Aug 2018</span>
-                                </a>
-                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-    <div class="dx-popup dx-popup-signin" id="login">
-        <button type="button" data-fancybox-close class="fancybox-button fancybox-close-small" title="Close"><svg
-                xmlns="http://www.w3.org/2000/svg" version="1" viewBox="0 0 24 24">
-                <path d="M13 12l5-5-1-1-5 5-5-5-1 1 5 5-5 5 1 1 5-5 5 5 1-1z"></path>
-            </svg></button>
-        <div class="dx-signin-content dx-signin text-center">
-            <h1 class="h3 text-white mb-30">Log In</h1>
-            <form action="#" class="dx-form">
-                <div class="dx-form-group-md">
-                    <a href="account.html"
-                        class="dx-btn dx-btn-block dx-btn-popup dx-btn-envato d-flex align-items-center justify-content-center">
-                        <span class="fas fa-leaf mr-20"></span><span>Log in with Envato</span>
-                    </a>
-                </div>
-                <div class="dx-form-group-md">
-                    <div class="dx-signin-or">OR</div>
-                </div>
-                <div class="dx-form-group-md">
-                    <input type="text" class="form-control form-control-style-4" placeholder="Username Or Email">
-                </div>
-                <div class="dx-form-group-md">
-                    <input type="password" class="form-control form-control-style-4" placeholder="Password">
-                </div>
-                <div class="dx-form-group-md">
-                    <a href="account.html" class="dx-btn dx-btn-block dx-btn-popup">Log In</a>
-                </div>
-                <div class="dx-form-group-md">
-                    <div class="d-flex justify-content-between">
-                        <a data-fancybox data-touch="false" data-close-existing="true" data-src="#reset-password"
-                            href="javascript:;">Reset your password</a>
-                        <a data-fancybox data-touch="false" data-close-existing="true" data-src="#signup"
-                            href="javascript:;">Sign Up</a>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="dx-popup dx-popup-signin" id="signup">
-        <button type="button" data-fancybox-close class="fancybox-button fancybox-close-small" title="Close"><svg
-                xmlns="http://www.w3.org/2000/svg" version="10" viewBox="0 0 24 24">
-                <path d="M13 12l5-5-1-1-5 5-5-5-1 1 5 5-5 5 1 1 5-5 5 5 1-1z"></path>
-            </svg></button>
-        <div class="dx-popup-content dx-signin text-center">
-            <h1 class="h3 text-white mb-30">Sign Up</h1>
-            <form action="#" class="dx-form">
-                <div class="dx-form-group-md">
-                    <a href="account.html"
-                        class="dx-btn dx-btn-block dx-btn-popup dx-btn-envato d-flex align-items-center justify-content-center">
-                        <span class="fas fa-leaf mr-20"></span><span>Sign Up with Envato</span>
-                    </a>
-                </div>
-                <div class="dx-form-group-md">
-                    <div class="dx-signin-or">OR</div>
-                </div>
-                <div class="dx-form-group-md">
-                    <input type="text" class="form-control form-control-style-4" placeholder="Username">
-                </div>
-                <div class="dx-form-group-md">
-                    <input type="email" class="form-control form-control-style-4" aria-describedby="emailHelp"
-                        placeholder="Email">
-                </div>
-                <div class="dx-form-group-md">
-                    <input type="password" class="form-control form-control-style-4" placeholder="Password">
-                </div>
-                <div class="dx-form-group-md">
-                    <input type="password" class="form-control form-control-style-4" placeholder="Confirm password">
-                </div>
-                <div class="dx-form-group-md">
-                    <a href="account.html" class="dx-btn dx-btn-block dx-btn-popup">Sign Up</a>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="dx-popup dx-popup-signin" id="reset-password">
-        <button type="button" data-fancybox-close class="fancybox-button fancybox-close-small" title="Close"><svg
-                xmlns="http://www.w3.org/2000/svg" version="1" viewBox="0 0 24 24">
-                <path d="M13 12l5-5-1-1-5 5-5-5-1 1 5 5-5 5 1 1 5-5 5 5 1-1z"></path>
-            </svg></button>
-        <div class="dx-popup-content dx-signin text-center">
-            <h1 class="h3 text-white mb-30">Reset Password</h1>
-            <form action="#" class="dx-form">
-                <div class="dx-form-group-md">
-                    <input type="email" class="form-control form-control-style-4" aria-describedby="emailHelp"
-                        placeholder="Email">
-                </div>
-                <div class="dx-form-group-md">
-                    <button class="dx-btn dx-btn-block dx-btn-popup">Reset My Password</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div id="subscribe" class="dx-popup dx-popup-modal dx-popup-subscribe">
-        <button type="button" data-fancybox-close class="fancybox-button fancybox-close-small" title="Close"><svg
-                xmlns="http://www.w3.org/2000/svg" version="1" viewBox="0 0 24 24">
-                <path d="M13 12l5-5-1-1-5 5-5-5-1 1 5 5-5 5 1 1 5-5 5 5 1-1z"></path>
-            </svg></button>
-        <div class="dx-box dx-box-decorated">
-            <div class="dx-box-content">
-                <h6 class="mnt-5 mnb-5">Subscribe to Newsletter</h6>
-            </div>
-            <div class="dx-separator"></div>
-            <div class="dx-box-content">
-                <p class="mnt-5 fs-15">Join the newsletter to receive news, updates, new products and freebies in your
-                    inbox.</p>
-                <form action="#" class="dx-form dx-form-group-inputs">
-                    <input type="email" name="" value="" aria-describedby="emailHelp"
-                        class="form-control form-control-style-2" placeholder="Your Email Address">
-                    <button class="dx-btn dx-btn-lg dx-btn-icon"><span class="icon fas fa-paper-plane"></span></button>
-                </form>
             </div>
         </div>
     </div>

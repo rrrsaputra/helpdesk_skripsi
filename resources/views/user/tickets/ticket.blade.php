@@ -22,8 +22,8 @@
                     
                     <span class="dx-ticket-cont">
                         <span class="dx-ticket-name">{{ $ticket->user->name }}</span>
-                        <span class="dx-ticket-title h5">{{ $ticket->title }}</span>
-                        <p class="dx-ticket-paragraph">{{ strip_tags($ticket->message) }}</p>
+                        <span class="dx-ticket-title h5" style="color: black">{{ $ticket->title }}</span>
+                        <p class="dx-ticket-paragraph mt-8" style="color: black">{{ strip_tags($ticket->message) }}</p>
                         <ul class="dx-ticket-info">
                             <li>Update: {{ $ticket->updated_at->format('d M Y') }}</li>
                             <li>Category: {{ $ticket->category }}</li>
