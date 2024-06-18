@@ -140,6 +140,16 @@
                     </a>
                 </li>
 
+                <li class="nav-item menu-close">
+                    <a href="{{ route('admin.business_hour.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-phone-alt"></i>
+                        <p>
+                            BUSINESS HOURS
+                            <span class="badge badge-warning right">6</span>
+                        </p>
+                    </a>
+                </li>
+
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

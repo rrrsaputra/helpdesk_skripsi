@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\BusinessHour;
 use Illuminate\Http\Request;
 use App\Models\ScheduledCall;
 use Illuminate\Support\Facades\Auth;
@@ -15,10 +16,11 @@ class AdminScheduledCallController extends Controller
     public function index()
     {
         $scheduledCalls = ScheduledCall::all();
+        $businessHours = BusinessHour::all();
         // $categories = Category::all();
         $agents = User::role('agent')->get();
 
-        return view('admin.scheduled_calls.index', compact('scheduledCalls', 'agents'));
+        return view('admin.scheduled_calls.index', compact('scheduledCalls', 'agents', 'businessHours'));
     }
 
     /**
