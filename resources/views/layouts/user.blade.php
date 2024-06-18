@@ -46,6 +46,7 @@
         <!-- END: Styles -->
         <!-- jQuery -->
         <script src="{{ asset('amdesk/dist/assets/vendor/jquery/dist/jquery.min.js') }}"></script>
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body>
         <!--
