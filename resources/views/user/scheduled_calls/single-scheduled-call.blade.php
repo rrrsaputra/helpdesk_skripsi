@@ -27,7 +27,7 @@
                                                 class="dx-blog-post-info-title">Category</span>{{ $scheduledCall->categoty }}</span>
                                     </li>
                                     <li><span><span
-                                                class="dx-blog-post-info-title">Link</span><a href="{{ $scheduledCall->link }}">{{ $scheduledCall->link }}</a></span>
+                                                class="dx-blog-post-info-title">Link</span> <a href="{{ strpos($scheduledCall->link, 'http') === 0 ? $scheduledCall->link : 'http://' . $scheduledCall->link }}" target="_blank">{{ $scheduledCall->link }}</a></span>
                                     </li>
                                 </ul>
                             </div>

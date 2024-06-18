@@ -6,7 +6,17 @@
 @section('content')
 
     @php
-        $columns = ['Customer', 'Summary', 'Number','Duration', 'Start Time', 'Finish Time', 'Assigned To', 'Assigned From', 'Link'];
+        $columns = [
+            'Customer',
+            'Summary',
+            'Number',
+            'Duration',
+            'Start Time',
+            'Finish Time',
+            'Assigned To',
+            'Assigned From',
+            'Link',
+        ];
         $data = $scheduledCalls
             ->map(function ($scheduledCall) {
                 return [
@@ -88,7 +98,7 @@
                                             @endforeach
                                             <td> <!-- Added Actions buttons -->
                                                 <button class="btn btn-primary btn-sm" data-toggle="modal"
-                                                    data-target="#assignToModal">Add Meet</button>
+                                                    data-target="#assignToModal{{ $row['id'] }}">Add Meet</button>
                                                 <button class="btn btn-danger btn-sm">Delete</button>
                                                 <button class="btn btn-info btn-sm">View</button>
                                             </td>
@@ -98,12 +108,12 @@
                                             action="{{ route('agent.scheduled_call.update', $row['id']) }}">
                                             @csrf
                                             @method('PATCH')
-                                            <div class="modal fade" id="assignToModal" tabindex="-1" role="dialog"
-                                                aria-labelledby="assignToModalLabel" aria-hidden="true">
+                                            <div class="modal fade" id="assignToModal{{ $row['id'] }}" tabindex="-1" role="dialog"
+                                                aria-labelledby="assignToModalLabel{{ $row['id'] }}" aria-hidden="true">
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="assignToModalLabel">Add Meet</h5>
+                                                            <h5 class="modal-title" id="assignToModalLabel{{ $row['id'] }}">Add Meet</h5>
                                                             <button type="button" class="close" data-dismiss="modal"
                                                                 aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
@@ -112,7 +122,7 @@
                                                         <div class="modal-body">
                                                             <div class="form-group">
                                                                 <label for="link">Link</label>
-                                                                <input type="text" class="form-control" id="link"
+                                                                <input type="text" class="form-control" id="link{{ $row['id'] }}"
                                                                     name="link" placeholder="Enter link">
                                                             </div>
                                                         </div>
@@ -126,10 +136,10 @@
                                                 </div>
                                             </div>
                                         </form>
-                                    @empty
+                                        @empty
                                         <tr>
-                                            <td colspan="8">No articles available</td>
-                                            <!-- Updated colspan to 8 to include Actions column -->
+                                            <td colspan="9">No articles available</td>
+                                            <!-- Updated colspan to 9 to include Actions column -->
                                         </tr>
                                     @endforelse
                                 </tbody>

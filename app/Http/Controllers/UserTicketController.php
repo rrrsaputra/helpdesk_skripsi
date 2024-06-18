@@ -55,7 +55,7 @@ class UserTicketController extends Controller
             'ticket_id' => $ticket->id,
             'message' => $request->message,
         ]);
-        return redirect(route('ticket-submit'));
+        return redirect(route('user.ticket.index'));
     }
 
     /**
