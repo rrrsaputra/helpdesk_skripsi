@@ -32,6 +32,7 @@
   <link rel="stylesheet" href="{{asset('AdminLTE-3.2.0/plugins/dropzone/min/dropzone.min.css')}}">
   <!-- Theme style -->  
   <link rel="stylesheet" href="{{asset('AdminLTE-3.2.0/dist/css/adminlte.min.css')}}">
+  @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
