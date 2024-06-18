@@ -18,7 +18,6 @@ class AgentScheduledCallController extends Controller
         $scheduledCalls = ScheduledCall::where('assigned_to', $agent->id)->get();
         return view('agent.scheduled_calls.index', compact('scheduledCalls'));
     }
-
     /**
      * Show the form for creating a new resource.
      */

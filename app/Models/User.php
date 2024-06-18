@@ -48,4 +48,8 @@ class User extends Authenticatable implements CanUseTickets
             'password' => 'hashed',
         ];
     }
+    public function businessHours()
+    {
+        return $this->hasMany(BusinessHour::class);
+    }
 }

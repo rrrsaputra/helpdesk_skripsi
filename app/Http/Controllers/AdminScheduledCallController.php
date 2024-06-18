@@ -15,10 +15,12 @@ class AdminScheduledCallController extends Controller
      */
     public function index()
     {
-        $scheduledCalls = ScheduledCall::all();
-        $businessHours = BusinessHour::all();
+
+        
+        $businessHours = BusinessHour::where('day', '>=', now()->format('Y-m-d'))->select('day')->get();
         // $categories = Category::all();
         $agents = User::role('agent')->get();
+        $scheduledCalls = ScheduledCall::all();
 
         return view('admin.scheduled_calls.index', compact('scheduledCalls', 'agents', 'businessHours'));
     }
@@ -43,7 +45,64 @@ class AdminScheduledCallController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $scheduledCall = ScheduledCall::find($id);
+        $agents = User::role('agent')->get();
+
+        $agentId = request()->query('agent', null);
+        $date = request()->query('date', null);
+
+        if ($agentId && $date) {
+            $scheduledCall->agent_id = $agentId;
+            $scheduledCall->date = $date;
+
+            // Get business hours for the specific date
+            $businessHours = BusinessHour::where('day', $date)->first();
+            if ($businessHours) {
+                $startTime = new \DateTime($businessHours->from);
+                $endTime = new \DateTime($businessHours->to);
+                $step = $businessHours->step ?? 30; // Default to 30 minutes if step is not set
+                
+                // Create a list of intervals within the business hours
+                $availableTimes = [];
+                while ($startTime < $endTime) {
+                    $availableTimes[] = $startTime->format('H:i');
+                    $startTime->modify("+{$step} minutes");
+                }
+
+                // Remove duplicate times and sort
+                $availableTimes = array_unique($availableTimes);
+                sort($availableTimes);
+                
+            } else {
+                $availableTimes = [];
+            }
+            $existingCalls = ScheduledCall::where('assigned_to', $agentId)
+                ->whereDate('start_time', $date)
+                ->get();
+
+            $blockedTimes = [];
+            foreach ($existingCalls as $call) {
+                $startTime = new \DateTime($call->start_time);
+                $duration = $call->duration;
+                while ($duration > 0) {
+                    $blockedTimes[] = $startTime->format('H:i');
+                    $startTime->modify('+30 minutes');
+                    $duration -= 30;
+                }
+            }
+            // Filter out available times that are in the blocked times
+            $availableTimes = array_filter($availableTimes, function($time) use ($blockedTimes) {
+                return !in_array($time, $blockedTimes);
+            });
+            
+
+            $businessHours = BusinessHour::where('day', '>=', now()->format('Y-m-d'))->select('day')->get();
+            return view('admin.scheduled_calls.show', compact('scheduledCall', 'agents', 'businessHours', 'availableTimes'));
+        } else {
+            $businessHours = BusinessHour::where('day', '>=', now()->format('Y-m-d'))->select('day')->get();
+            return view('admin.scheduled_calls.show', compact('scheduledCall', 'agents', 'businessHours'));
+        }
+
     }
 
     /**
@@ -52,16 +111,21 @@ class AdminScheduledCallController extends Controller
     public function edit(string $id)
     {
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+   
+    public function get_time(Request $request)
     {
+        dd($request);
+    }              
+    public function update(Request $request, string $id)
+    {   
+       
         $scheduledCall = ScheduledCall::find($id);
         if ($scheduledCall) {
-            $scheduledCall->start_time = $request->start_time;
-            $scheduledCall->finish_time = $request->finish_time;
+            $startDateTime = new \DateTime($request->date . ' ' . $request->time);
+            $scheduledCall->start_time = $startDateTime->format('Y-m-d H:i:s');
+            $endDateTime = clone $startDateTime;
+            $endDateTime->modify('+' . $scheduledCall->duration . ' minutes');
+            $scheduledCall->finish_time = $endDateTime->format('Y-m-d H:i:s');
             $scheduledCall->assigned_to = $request->agent_id;
             $scheduledCall->assigned_from = Auth::id();
             $scheduledCall->save();

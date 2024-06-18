@@ -4,7 +4,6 @@
 @endsection
 
 @section('content')
-    <a href="{{ route('admin.scheduled_call.create') }}" class="btn btn-primary mb-10">Create Article</a>
     @php
         $columns = ['Customer', 'Summary', 'Number','Duration','Start Time','Finish Time', 'Assigned To', 'Assigned From', 'Link'];
         $data = $scheduledCalls
@@ -45,9 +44,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">DataTable with minimal features & hover style</h3>
-                    </div>
+           
                     <div class="card-body">
                         <div class="table-responsive">
                             <table id="example2" class="table table-hover">
@@ -87,8 +84,9 @@
                                                 </td>
                                             @endforeach
                                             <td> <!-- Added Actions buttons -->
-                                                <button class="btn btn-primary btn-sm" data-toggle="modal"
-                                                    data-target="#assignToModal">Assign To</button>
+                                                {{-- <button class="btn btn-primary btn-sm" data-toggle="modal"
+                                                    data-target="#assignToModal">Assign To</button> --}}
+                                                <a href="{{ route('admin.scheduled_call.show', $row['id']) }}" class="btn btn-primary btn-sm">View</a>
                                                 <button class="btn btn-danger btn-sm">Delete</button>
                                                 <button class="btn btn-info btn-sm">View</button>
                                             </td>
@@ -112,20 +110,22 @@
                                                         <div class="modal-body">
                                                             <label for="agentSelect">Choose Agent:</label>
                                                             <select id="agentSelect" name="agent_id" class="form-control">
+                                                                <option value="" selected disabled>Pick Agent</option>
                                                                 @foreach ($agents as $agent)
                                                                     <option value="{{ $agent->id }}">
                                                                         {{ $agent->name }} ({{ $agent->email }})</option>
                                                                 @endforeach
                                                             </select>
                                                             <label for="start_time">Start Time:</label>
-                                                            <select id="start_time" name="start_time" class="form-control">
+                                                            <select id="start_time" name="start_time" class="form-control" >
+                                                                <option value="" selected disabled>Select an agent first</option>
                                                                 @foreach ($businessHours as $businessHour)
                                                                     <option value="{{ $businessHour->day }} {{ $businessHour->from }}">
                                                                         {{ $businessHour->day }} {{ $businessHour->from }}
                                                                     </option>
                                                                 @endforeach
                                                             </select>
-                                                            <label for="finish_time">Finish Time:</label>
+                                                            <label for="finish_time">Hour</label>
                                                             <select id="finish_time" name="finish_time" class="form-control">
                                                                 @foreach ($businessHours as $businessHour)
                                                                     <option value="{{ $businessHour->day }} {{ $businessHour->to }}">
@@ -184,5 +184,13 @@
     <!-- AdminLTE for demo purposes -->
     <script src="{{ asset('AdminLTE-3.2.0/dist/js/demo.js') }}"></script>
     <!-- Page specific script -->
+    <script>
+        $(function () {
+            $("#example2").DataTable({
+                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+            }).buttons().container().appendTo('#example2_wrapper .col-md-6:eq(0)');
+        });
 
+    </script>
 @endsection

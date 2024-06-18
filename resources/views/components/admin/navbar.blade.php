@@ -9,7 +9,7 @@
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
-      <
+      
       <form method="POST" action="{{ route('logout') }}">
         @csrf
         <li class="nav-item">
