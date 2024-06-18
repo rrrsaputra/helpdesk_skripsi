@@ -22,8 +22,6 @@
         <!-- START: Styles -->
         <!-- Google Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:400,600,700%7cMaven+Pro:400,500,700" rel="stylesheet"><!-- %7c -->
-        {{-- Flowbite --}}
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
         <!-- Bootstrap -->
         <link rel="stylesheet" href="{{ asset('amdesk/dist/assets/vendor/bootstrap/dist/css/bootstrap.min.css') }}">
         <!-- Fancybox -->
@@ -104,8 +102,6 @@
         <!-- The Amdesk -->
         <script src="{{ asset('amdesk/dist/assets/js/amdesk.min.js') }}"></script>
         <script src="{{ asset('amdesk/dist/assets/js/amdesk-init.js') }}"></script>
-        {{-- Flowbite --}}
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
         <!--Start of Tawk.to Script-->
         <script type="text/javascript">
             var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
