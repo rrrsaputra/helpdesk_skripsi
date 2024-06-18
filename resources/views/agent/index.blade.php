@@ -27,6 +27,8 @@
     }, $columns);
 @endphp
 
+
+
 <link href='https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css' rel='stylesheet' />
 <script src='https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js'></script>
 <style>
@@ -140,9 +142,7 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">DataTable with minimal features & hover style</h3>
-                </div>
+       
                 <div class="card-body">
                     <div class="table-responsive">
                         <table id="example2" class="table table-hover">
@@ -178,7 +178,10 @@
                                             </td>
                                         @endforeach
                                         <td> <!-- Added Actions buttons -->
-                                            <button class="btn btn-primary btn-sm" onclick="event.stopPropagation();">View</button>
+                                            <form action="{{ route('agent.messages.show', $row['id']) }}" method="GET" style="display:inline;" onclick="event.stopPropagation();">
+                                                <button type="submit" class="btn btn-primary btn-sm">View</button>
+                                            </form>
+                                            </form>
                                             @if(request()->input('inbox') == 'unassigned' || request()->input('inbox') == '')
                                             <form action="{{ route('agent.ticket.get', $row['id']) }}" method="POST" style="display:inline;" onclick="event.stopPropagation();">
                                                 @csrf

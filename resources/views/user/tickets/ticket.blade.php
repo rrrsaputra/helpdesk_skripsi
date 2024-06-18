@@ -18,7 +18,7 @@
                     </div>
                 </div>
                 @foreach($tickets as $ticket)
-                <a href="#{{-- {{ route('user.ticket.show', $ticket->id) }} --}}" class="dx-ticket-item dx-ticket-new dx-ticket-open dx-block-decorated">
+                <a href=" {{ route('user.ticket.show', $ticket->id) }} " class="dx-ticket-item dx-ticket-new dx-ticket-open dx-block-decorated">
                     
                     <span class="dx-ticket-cont">
                         <span class="dx-ticket-name">{{ $ticket->user->name }}</span>

@@ -20,11 +20,19 @@ use App\Http\Controllers\UserArticleController;
 use Spatie\Permission\Middleware\RoleMiddleware;
 use App\Http\Controllers\UserScheduledCallController;
 use App\Http\Controllers\AdminScheduledCallController;
+use App\Http\Controllers\AgentMessagesController;
 use App\Http\Controllers\AgentScheduledCallController;
+use App\Http\Controllers\HomeController;
 
-Route::get('/', function () {
-    return view('user.home');
-})->name('home');
+
+
+Route::get('/', [HomeController::class, 'index'])
+    ->name('home');
+    
+Route::get('/messages', [HomeController::class, 'messages'])
+    ->name('messages');
+
+
 
 Route::resource('/article', UserArticleController::class)->names('article');
 
@@ -69,10 +77,11 @@ Route::middleware('auth','role:agent')->group(function () {
     Route::get('/agent', [AgentController::class, 'index'])->name('agent.index');
     Route::resource('/agent/schedule-call', AgentScheduledCallController::class)->names('agent.scheduled_call');
 
-    
 });
 
 Route::middleware('auth')->group(function () {
+    Route::resource('/messages', AgentMessagesController::class)->only(['index', 'create', 'show', 'edit', 'update', 'destroy'])->names('agent.messages');
+    Route::post('/messages/{id}', [AgentMessagesController::class, 'store'])->name('agent.messages.store');
     Route::resource('/user/ticket', UserTicketController::class)->names('user.ticket');
     Route::resource('/user/scheduled-ticket', UserScheduledCallController::class)->names('user.scheduled-ticket');
     Route::resource('/agent/ticket', AgentTicketController::class)->names('agent.ticket');
