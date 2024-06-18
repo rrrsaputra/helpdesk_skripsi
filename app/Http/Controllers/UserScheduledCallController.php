@@ -35,11 +35,12 @@ class UserScheduledCallController extends Controller
         $user = Auth::user();
         $scheduledCall = ScheduledCall::create([
             'user_id' => $user->id,
+            'duration' => $request->duration,
             'title' => $request->title,
             'message' => $request->message,
         ]);
 
-        return redirect(route('scheduled_call'));
+        return redirect(route('scheduled_call.index'));
     }
 
     /**

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\ScheduledCall;
+use Illuminate\Support\Facades\Auth;
 
 class AgentScheduledCallController extends Controller
 {
@@ -13,10 +14,9 @@ class AgentScheduledCallController extends Controller
      */
     public function index()
     {
-        $scheduledCalls = ScheduledCall::all();
-        // $categories = Category::all();
-        $agents = User::role('agent')->get();
-        return view('agent.scheduled_calls.index', compact('scheduledCalls', 'agents'));
+        $agent = Auth::user();
+        $scheduledCalls = ScheduledCall::where('assigned_to', $agent->id)->get();
+        return view('agent.scheduled_calls.index', compact('scheduledCalls'));
     }
 
     /**
@@ -59,6 +59,7 @@ class AgentScheduledCallController extends Controller
         $scheduledCall = ScheduledCall::find($id);
         if ($scheduledCall) {
             $scheduledCall->link = $request->link;
+            $scheduledCall->status = 'Scheduled';
             $scheduledCall->save();
         } else {
             return redirect()->route('agent.scheduled_call.index')->with('error', 'Scheduled call not found.');

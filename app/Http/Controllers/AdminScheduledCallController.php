@@ -32,10 +32,8 @@ class AdminScheduledCallController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request,string $id)
+    public function store(Request $request, string $id)
     {
-
-
     }
 
     /**
@@ -57,18 +55,19 @@ class AdminScheduledCallController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-    {   
+    {
         $scheduledCall = ScheduledCall::find($id);
         if ($scheduledCall) {
+            $scheduledCall->start_time = $request->start_time;
+            $scheduledCall->finish_time = $request->finish_time;
             $scheduledCall->assigned_to = $request->agent_id;
             $scheduledCall->assigned_from = Auth::id();
             $scheduledCall->save();
         } else {
             return redirect()->route('admin.scheduled_call.index')->with('error', 'Scheduled call not found.');
         }
-    
-        return redirect()->route('admin.scheduled_call.index')->with('success', 'Scheduled call created successfully.');
 
+        return redirect()->route('admin.scheduled_call.index')->with('success', 'Scheduled call created successfully.');
     }
 
     /**
@@ -78,4 +77,7 @@ class AdminScheduledCallController extends Controller
     {
         //
     }
+
+    // Controller
+
 }

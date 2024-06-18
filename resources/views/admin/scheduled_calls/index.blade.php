@@ -6,18 +6,19 @@
 @section('content')
     <a href="{{ route('admin.scheduled_call.create') }}" class="btn btn-primary mb-10">Create Article</a>
     @php
-        $columns = ['', 'Customer', 'Summary', '', 'Number', 'Assigned To', 'Assigned From', 'Link'];
+        $columns = ['Customer', 'Summary', 'Number','Duration','Start Time','Finish Time', 'Assigned To', 'Assigned From', 'Link'];
         $data = $scheduledCalls
             ->map(function ($scheduledCall) {
                 return [
                     'id' => $scheduledCall->id,
                     'url' => '/path/to/resource1',
                     'values' => [
-                        '',
                         $scheduledCall->user->name,
                         [$scheduledCall->title, $scheduledCall->message ?? ''],
-                        '',
                         $scheduledCall->id,
+                        $scheduledCall->duration . ' minutes',
+                        $scheduledCall->start_time,
+                        $scheduledCall->finish_time,
                         $scheduledCall->assigned_to,
                         $scheduledCall->assigned_from,
                         $scheduledCall->link,
@@ -26,7 +27,7 @@
             })
             ->toArray();
         $columnSizes = array_map(function ($column) {
-            return $column === 'Summary' ? '40%' : 'auto';
+            return $column === 'Summary' ? '30%' : 'auto';
         }, $columns);
     @endphp
 
@@ -109,13 +110,17 @@
                                                             </button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <label for="agentSelect">Pilih Agent:</label>
+                                                            <label for="agentSelect">Choose Agent:</label>
                                                             <select id="agentSelect" name="agent_id" class="form-control">
                                                                 @foreach ($agents as $agent)
                                                                     <option value="{{ $agent->id }}">
                                                                         {{ $agent->name }} ({{ $agent->email }})</option>
                                                                 @endforeach
                                                             </select>
+                                                            <label for="start_time">Start Time:</label>
+                                                            <input type="datetime-local" id="start_time" name="start_time" class="form-control">
+                                                            <label for="finish_time">Finish Time:</label>
+                                                            <input type="datetime-local" id="finish_time" name="finish_time" class="form-control">
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary"
