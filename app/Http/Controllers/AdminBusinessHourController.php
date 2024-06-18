@@ -2,21 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BusinessHour;
 use Illuminate\Http\Request;
-use App\Models\ScheduledCall;
-use Illuminate\Support\Facades\Auth;
 
-class UserScheduledCallController extends Controller
+class AdminBusinessHourController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $user = Auth::user();
-        $scheduledCalls = ScheduledCall::where('user_id', $user->id)->get();
-
-        return view('user.scheduled_calls.scheduled_call', compact('scheduledCalls'));
+        $businessHours = BusinessHour::all();
+        return view('admin.business_hours.index', compact('businessHours'));
     }
 
     /**
@@ -24,7 +21,24 @@ class UserScheduledCallController extends Controller
      */
     public function create()
     {
-        //
+        $startDate = new \DateTime('2024-01-01');
+        $endDate = new \DateTime('2026-01-01');
+        $interval = new \DateInterval('P1D');
+        $period = new \DatePeriod($startDate, $interval, $endDate);
+
+        foreach ($period as $date) {
+            $dayOfWeek = $date->format('N'); // 1 (for Monday) through 7 (for Sunday)
+            if ($dayOfWeek < 6) { // Exclude weekends
+                BusinessHour::create([
+                    'day' => $date->format('Y-m-d'),
+                    'from' => '09:00:00',
+                    'to' => '17:00:00',
+                    'step' => 30,
+                    'off' => false,
+                ]);
+            }
+        }
+        
     }
 
     /**
@@ -32,15 +46,7 @@ class UserScheduledCallController extends Controller
      */
     public function store(Request $request)
     {
-        $user = Auth::user();
-        $scheduledCall = ScheduledCall::create([
-            'user_id' => $user->id,
-            'duration' => $request->duration,
-            'title' => $request->title,
-            'message' => $request->message,
-        ]);
-
-        return redirect(route('scheduled_call.index'));
+        //
     }
 
     /**
@@ -48,9 +54,7 @@ class UserScheduledCallController extends Controller
      */
     public function show(string $id)
     {
-    $scheduledCall = ScheduledCall::find($id);
-
-    return view('user.scheduled_calls.single-scheduled-call', compact('scheduledCall'));
+        //
     }
 
     /**

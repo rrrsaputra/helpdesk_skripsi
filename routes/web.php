@@ -18,6 +18,7 @@ use App\Http\Controllers\AdminTicketController;
 use App\Http\Controllers\AgentTicketController;
 use App\Http\Controllers\UserArticleController;
 use Spatie\Permission\Middleware\RoleMiddleware;
+use App\Http\Controllers\AdminBusinessHourController;
 use App\Http\Controllers\UserScheduledCallController;
 use App\Http\Controllers\AdminScheduledCallController;
 use App\Http\Controllers\AgentMessagesController;
@@ -67,6 +68,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('/admin/articles', ArticleController::class)->names('admin.article');
     
     Route::resource('/admin/scheduled-call', AdminScheduledCallController::class)->names('admin.scheduled_call');
+    Route::resource('/admin/business-hour', AdminBusinessHourController::class)->names('admin.business_hour');
     
     Route::get('/admin/dashboard', function () {
         return view('admin.dashboard');

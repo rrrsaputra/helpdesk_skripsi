@@ -15,7 +15,10 @@ class ScheduledCall extends Model
         'assigned_to',
         'title',
         'message',
-        'link'
+        'link',
+        'duration',
+        'start_time',
+        'finish_time'
     ];
 
     public function user(){

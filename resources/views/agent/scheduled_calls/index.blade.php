@@ -6,18 +6,19 @@
 @section('content')
 
     @php
-        $columns = ['', 'Customer', 'Summary', '', 'Number', 'Assigned To', 'Assigned From', 'Link'];
+        $columns = ['Customer', 'Summary', 'Number','Duration', 'Start Time', 'Finish Time', 'Assigned To', 'Assigned From', 'Link'];
         $data = $scheduledCalls
             ->map(function ($scheduledCall) {
                 return [
                     'id' => $scheduledCall->id,
                     'url' => '/path/to/resource1',
                     'values' => [
-                        '',
                         $scheduledCall->user->name,
                         [$scheduledCall->title, $scheduledCall->message ?? ''],
-                        '',
                         $scheduledCall->id,
+                        $scheduledCall->duration . ' minutes',
+                        $scheduledCall->start_time,
+                        $scheduledCall->finish_time,
                         $scheduledCall->assigned_to,
                         $scheduledCall->assigned_from,
                         $scheduledCall->link,
@@ -26,7 +27,7 @@
             })
             ->toArray();
         $columnSizes = array_map(function ($column) {
-            return $column === 'Summary' ? '40%' : 'auto';
+            return $column === 'Summary' ? '25%' : 'auto';
         }, $columns);
     @endphp
 
@@ -45,7 +46,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">DataTable with minimal features & hover style</h3>
+                        <h3 class="card-title">Scheduled Calls</h3>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">

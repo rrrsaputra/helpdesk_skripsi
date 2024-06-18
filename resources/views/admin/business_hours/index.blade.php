@@ -1,27 +1,23 @@
 @extends('layouts.admin')
 @section('header')
-    <x-admin.header title="List of Schedule Calls" />
+    <x-admin.header title="Business Hour" />
 @endsection
 
 @section('content')
-    <a href="{{ route('admin.scheduled_call.create') }}" class="btn btn-primary mb-10">Create Article</a>
+    <a href="{{ route('admin.business_hour.create') }}" class="btn btn-primary mb-10">Add Business Hour</a>
     @php
-        $columns = ['Customer', 'Summary', 'Number','Duration','Start Time','Finish Time', 'Assigned To', 'Assigned From', 'Link'];
-        $data = $scheduledCalls
-            ->map(function ($scheduledCall) {
+        $columns = ['Day', 'From', 'To', 'Step', 'Off'];
+        $data = $businessHours
+            ->map(function ($businessHour) {
                 return [
-                    'id' => $scheduledCall->id,
+                    'id' => $businessHour->id,
                     'url' => '/path/to/resource1',
                     'values' => [
-                        $scheduledCall->user->name,
-                        [$scheduledCall->title, $scheduledCall->message ?? ''],
-                        $scheduledCall->id,
-                        $scheduledCall->duration . ' minutes',
-                        $scheduledCall->start_time,
-                        $scheduledCall->finish_time,
-                        $scheduledCall->assigned_to,
-                        $scheduledCall->assigned_from,
-                        $scheduledCall->link,
+                        $businessHour->day,
+                        $businessHour->from,
+                        $businessHour->to,
+                        $businessHour->step,
+                        $businessHour->off,
                     ],
                 ];
             })
@@ -94,59 +90,10 @@
                                             </td>
                                         </tr>
                                         <!-- Modal -->
-                                        <form method="POST"
-                                            action="{{ route('admin.scheduled_call.update', $row['id']) }}">
-                                            @csrf
-                                            @method('PATCH')
-                                            <div class="modal fade" id="assignToModal" tabindex="-1" role="dialog"
-                                                aria-labelledby="assignToModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="assignToModalLabel">Assign To</h5>
-                                                            <button type="button" class="close" data-dismiss="modal"
-                                                                aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <label for="agentSelect">Choose Agent:</label>
-                                                            <select id="agentSelect" name="agent_id" class="form-control">
-                                                                @foreach ($agents as $agent)
-                                                                    <option value="{{ $agent->id }}">
-                                                                        {{ $agent->name }} ({{ $agent->email }})</option>
-                                                                @endforeach
-                                                            </select>
-                                                            <label for="start_time">Start Time:</label>
-                                                            <select id="start_time" name="start_time" class="form-control">
-                                                                @foreach ($businessHours as $businessHour)
-                                                                    <option value="{{ $businessHour->day }} {{ $businessHour->from }}">
-                                                                        {{ $businessHour->day }} {{ $businessHour->from }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                            <label for="finish_time">Finish Time:</label>
-                                                            <select id="finish_time" name="finish_time" class="form-control">
-                                                                @foreach ($businessHours as $businessHour)
-                                                                    <option value="{{ $businessHour->day }} {{ $businessHour->to }}">
-                                                                        {{ $businessHour->day }} {{ $businessHour->to }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary"
-                                                                data-dismiss="modal">Close</button>
-                                                            <button type="submit" class="btn btn-primary">Save
-                                                                changes</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
                                     @empty
                                         <tr>
-                                            <td colspan="8">No articles available</td>
+                                            <td colspan="8">No business hour available
+                                            </td>
                                             <!-- Updated colspan to 8 to include Actions column -->
                                         </tr>
                                     @endforelse
