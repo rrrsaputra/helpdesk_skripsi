@@ -38,6 +38,7 @@ class UserTicketController extends Controller
     public function store(Request $request)
     {   
         $user = Auth::user();
+        
         $ticket = Ticket::create([
             'user_id' => $user->id,
             'title' => $request->title,

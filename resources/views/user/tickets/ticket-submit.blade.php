@@ -9,6 +9,7 @@
                 <div class="row justify-content-center">
                     <div class="col-xl-7">
                         <form action="{{ route('user.ticket.store') }}" method="POST" class="dx-form">
+                            @csrf
                             <div class="dx-box dx-box-decorated">
                                 <div class="dx-box-content">
                                     <h2 class="h6 mb-6">Submit a Ticket</h2>
@@ -22,7 +23,7 @@
                                 </div>
                                 <div class="dx-separator"></div>
 
-                                @csrf
+                               
                                 <div class="dx-box-content">
                                     <div class="dx-form-group">
                                         <label for="category" class="mnt-7">Category</label>
@@ -66,12 +67,12 @@
                                     <div class="dx-form-group">
                                         <div class="row align-items-center">
                                             <div class="col-md-6">
-                                                <label for="latitude" class="mnt-7"></label>
+                                                <label for="latitude" class="mnt-7">Lat:</label>
                                                 <input type="text" class="form-control form-control-style-2"
                                                     id="latitude" placeholder="Enter Latitude" name='latitude'>
                                             </div>
                                             <div class="col-md-6">
-                                                <label for="longitude" class="mnt-7"></label>
+                                                <label for="longitude" class="mnt-7">Long:</label>
                                                 <input type="text" class="form-control form-control-style-2"
                                                     id="longitude" placeholder="Enter Longitude" name='longitude'>
                                             </div>
@@ -91,33 +92,13 @@
 
                                 <div class="dx-separator"></div>
 
-                                {{-- CHECK LOCATION --}}
-                                <script>
-                                    document.getElementById('check_location').addEventListener('click', function() {
-                                        var lat = document.getElementById('latitude').value;
-                                        var lng = document.getElementById('longitude').value;
-                                        if (lat && lng) {
-                                            var coordinates = [lng, lat];
-                                            if (!marker) {
-                                                marker = new mapboxgl.Marker()
-                                                    .setLngLat(coordinates)
-                                                    .addTo(map);
-                                            } else {
-                                                marker.setLngLat(coordinates);
-                                            }
-                                            map.setCenter(coordinates);
-                                            map.setZoom(13);
-                                        } else {
-                                            alert("Please enter both latitude and longitude.");
-                                        }
-                                    });
-                                </script>
+                             
 
                                 {{-- GET LOCATION --}}
                                 <div class="dx-box-content">
                                     <div id="map" style="height: 400px;"></div>
-                                    <input type="hidden" name="latitude" id="latitude">
-                                    <input type="hidden" name="longitude" id="longitude">
+                                    <input type="hidden" name="latitude" id="hidden_latitude">
+                                    <input type="hidden" name="longitude" id="hidden_longitude">
                                 </div>
                                 <link href='https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css' rel='stylesheet' />
                                 <script src='https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js'></script>
@@ -155,6 +136,8 @@
                                                     // Set the latitude and longitude values in the hidden inputs
                                                     document.getElementById('latitude').value = lat;
                                                     document.getElementById('longitude').value = lng;
+                                                    document.getElementById('hidden_latitude').value = lat;
+                                                    document.getElementById('hidden_longitude').value = lng;
                                                 }, function(error) {
                                                     alert("Error getting location: " + error.message);
                                                 }, {
@@ -165,6 +148,27 @@
                                             } else {
                                                 alert("Geolocation is not supported by this browser.");
                                             }
+                                        });
+
+                                        document.getElementById('check_location').addEventListener('click', function() {
+                                            var lat = document.getElementById('latitude').value;
+                                            var lng = document.getElementById('longitude').value;
+                                            var coordinates = [lng, lat];
+
+                                            if (!marker) {
+                                                marker = new mapboxgl.Marker()
+                                                    .setLngLat(coordinates)
+                                                    .addTo(map);
+                                            } else {
+                                                marker.setLngLat(coordinates);
+                                            }
+
+                                            map.setCenter(coordinates);
+                                            map.setZoom(13);
+
+                                            // Set the latitude and longitude values in the hidden inputs
+                                            document.getElementById('hidden_latitude').value = lat;
+                                            document.getElementById('hidden_longitude').value = lng;
                                         });
                                     });
                                 </script>

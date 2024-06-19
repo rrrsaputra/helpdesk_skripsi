@@ -14,7 +14,7 @@ class UserScheduledCallController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $scheduledCalls = ScheduledCall::where('user_id', $user->id)->get();
+        $scheduledCalls = ScheduledCall::where('user_id', $user->id)->orderBy('updated_at', 'desc')->get();
 
         return view('user.scheduled_calls.scheduled_call', compact('scheduledCalls'));
     }

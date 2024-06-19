@@ -243,9 +243,7 @@
 <script src="{{ asset('AdminLTE-3.2.0/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
 <!-- AdminLTE App -->
 <script src="{{ asset('AdminLTE-3.2.0/dist/js/adminlte.min.js') }}"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="{{ asset('AdminLTE-3.2.0/dist/js/demo.js') }}"></script>
-<!-- Page specific script -->
+
 <script>
     $(function() {
         $("#example1").DataTable({
