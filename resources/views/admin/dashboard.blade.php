@@ -6,9 +6,9 @@
 
 @section('content')
     <div class="card card-primary">
-        <div class="card-header">
+        {{-- <div class="card-header">
             <h3 class="card-title">Create Article</h3>
-        </div>
+        </div> --}}
 
         <!-- form start -->
         {{-- <form method="POST" action="{{ route('article.store') }}">

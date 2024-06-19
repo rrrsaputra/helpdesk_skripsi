@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.agent')
 @section('header')
     <x-admin.header title="List of Schedule Calls" />
 @endsection

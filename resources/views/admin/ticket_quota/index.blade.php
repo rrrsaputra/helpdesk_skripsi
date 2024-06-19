@@ -79,7 +79,7 @@
                                             @endforeach
                                             <td> <!-- Added Actions buttons -->
                                                 <button class="btn btn-primary btn-sm" data-toggle="modal"
-                                                    data-target="#assignToModal">Assign To</button>
+                                                    data-target="#assignToModal">Edit</button>
                                                 <button class="btn btn-danger btn-sm">Delete</button>
                                             </td>
                                         </tr>

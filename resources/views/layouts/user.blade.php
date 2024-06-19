@@ -13,7 +13,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Amdesk | Ticket</title>
+        <title>Earthqualizer Helpdesk</title>
         <meta name="description" content="Amdesk - Help Center HTML template for your digital products">
         <meta name="keywords" content="helpdesk, forum, template, HTML template, responsive, clean">
         <meta name="author" content="nK">

@@ -45,7 +45,7 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item menu-open">
+                <li class="nav-item menu-close">
                     <a href="{{ route('admin.article.index') }}" class="nav-link">
                         <i class="nav-icon fas fa-newspaper"></i>
                         <p>
@@ -54,7 +54,7 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item menu-open">
+                <li class="nav-item menu-close">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-inbox"></i>
                         <p>
@@ -94,42 +94,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-list"></i>
-                        <p>
-                            Category
-                            <i class="fas fa-angle-left right"></i>
-
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="../layout/top-nav.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Top Navigation</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="../layout/top-nav-sidebar.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Top Navigation + Sidebar</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="../layout/boxed.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Boxed</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="../layout/fixed-sidebar.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Fixed Sidebar</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                
                 <li class="nav-item menu-close">
                     <a href="{{ route('admin.scheduled_call.index') }}" class="nav-link">
                         <i class="nav-icon fas fa-phone-alt"></i>
@@ -142,7 +107,7 @@
 
                 <li class="nav-item menu-close">
                     <a href="{{ route('admin.business_hour.index') }}" class="nav-link">
-                        <i class="nav-icon fas fa-phone-alt"></i>
+                        <i class="nav-icon fas fa-business-time"></i>
                         <p>
                             BUSINESS HOURS
                             <span class="badge badge-warning right">6</span>
@@ -151,7 +116,7 @@
                 </li>
                 <li class="nav-item menu-close">
                     <a href="{{ route('admin.ticket_quota.index') }}" class="nav-link">
-                        <i class="nav-icon fas fa-phone-alt"></i>
+                        <i class="nav-icon fas fa-ticket-alt"></i>
                         <p>
                             TICKET QUOTA
                             <span class="badge badge-warning right">6</span>
