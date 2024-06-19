@@ -24,8 +24,7 @@ use App\Http\Controllers\AdminScheduledCallController;
 use App\Http\Controllers\AgentMessagesController;
 use App\Http\Controllers\AgentScheduledCallController;
 use App\Http\Controllers\HomeController;
-
-
+use App\Http\Controllers\UserTicketQuotaController;
 
 Route::get('/', [HomeController::class, 'index'])
     ->name('home');
@@ -71,6 +70,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/scheduled-call/get_time/{id}', [AdminScheduledCallController::class,'get_time'])->name('admin.scheduled_call.get_time');
     
     Route::resource('/admin/business-hour', AdminBusinessHourController::class)->names('admin.business_hour');
+    Route::resource('/admin/ticket_quota', UserTicketQuotaController::class)->names('admin.ticket_quota');
+
     
     Route::get('/admin/dashboard', function () {
         return view('admin.dashboard');

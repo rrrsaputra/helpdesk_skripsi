@@ -70,17 +70,7 @@
                                 <span class="badge badge-info right">3</span>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="{{ route('agent.index', ['inbox' => 'assigned']) }}" class="nav-link {{ request()->input('inbox') == 'assigned' ? 'active' : '' }} ">
-                                @if(request()->has('inbox') && request()->input('inbox') == 'assigned')
-                                    <i class="fas fa-circle nav-icon"></i>
-                                @else
-                                    <i class="far fa-circle nav-icon"></i>
-                                @endif
-                                <p>Assigned</p>
-                                <span class="badge badge-info right">3</span>
-                            </a>
-                        </li>
+                        
                         <li class="nav-item">
                             <a href="{{ route('agent.index', ['inbox' => 'closed']) }}" class="nav-link {{ request()->input('inbox') == 'closed' ? 'active' : '' }} " >
                                 @if(request()->has('inbox') && request()->input('inbox') == 'closed')

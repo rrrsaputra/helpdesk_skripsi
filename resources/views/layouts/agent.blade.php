@@ -169,10 +169,6 @@
   document.addEventListener('DOMContentLoaded', function () {
     window.stepper = new Stepper(document.querySelector('.bs-stepper'))
   })
-
-  // DropzoneJS Demo Code Start
-  Dropzone.autoDiscover = false
-
   // Get the template HTML and remove it from the doumenthe template HTML and remove it from the doument
   var previewNode = document.querySelector("#template")
   previewNode.id = ""
