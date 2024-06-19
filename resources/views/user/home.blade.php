@@ -15,9 +15,9 @@
                             <span class="icon pe-7s-ticket"></span>
                         </div>
                         <div class="dx-feature-cont">
-                            <div class="dx-feature-title"><a href="ticket.html">Ticket System</a></div>
-                            <div class="dx-feature-text">Vivamus sceleriue libero velit blandit, hendrerit nisl at,dapibus sollicitudin</div>
-                            <a href="ticket.html" class="dx-btn dx-btn-link d-flex dx-feature-link">Read More <span class="icon pe-7s-angle-right"></span></a>
+                            <div class="dx-feature-title"><a href="{{ route('tickets.index') }}">Ticket System</a></div>
+                            <div class="dx-feature-text">Report your issue and track your ticket status online</div>
+                            <a href="{{ route('tickets.index') }}" class="dx-btn dx-btn-link d-flex dx-feature-link">View Tickets<span class="icon pe-7s-angle-right"></span></a>
                         </div>
                     </div>
                 </div>
@@ -27,9 +27,9 @@
                             <span class="icon fas fa-phone-alt"></span>
                         </div>
                         <div class="dx-feature-cont">
-                            <div class="dx-feature-title"><a href="ticket.html">Scheduled Call</a></div>
-                            <div class="dx-feature-text">Vivamus sceleriue libero velit blandit, hendrerit nisl at,dapibus sollicitudin</div>
-                            <a href="ticket.html" class="dx-btn dx-btn-link d-flex dx-feature-link">Read More <span class="icon pe-7s-angle-right"></span></a>
+                            <div class="dx-feature-title"><a href="{{ route('scheduled_call.index') }}">Scheduled Call</a></div>
+                            <div class="dx-feature-text">Arrange a call with our team for immediate assistance</div>
+                            <a href="{{ route('scheduled_call.index') }}" class="dx-btn dx-btn-link d-flex dx-feature-link">Schedule a Call<span class="icon pe-7s-angle-right"></span></a>
                         </div>
                     </div>
                 </div>
@@ -39,9 +39,9 @@
                             <span class="icon pe-7s-notebook"></span>
                         </div>
                         <div class="dx-feature-cont">
-                            <div class="dx-feature-title"><a href="articles.html">Article</a></div>
-                            <div class="dx-feature-text">Aliquam id nisi sit amet massa mollis lobortis interdum felis integer</div>
-                            <a href="articles.html" class="dx-btn dx-btn-link d-flex dx-feature-link">Read More <span class="icon pe-7s-angle-right"></span></a>
+                            <div class="dx-feature-title"><a href="{{ route('article.index') }}">Article</a></div>
+                            <div class="dx-feature-text">Read the latest articles and find useful information here</div>
+                            <a href="{{ route('article.index') }}" class="dx-btn dx-btn-link d-flex dx-feature-link">Read Article<span class="icon pe-7s-angle-right"></span></a>
                         </div>
                     </div>
                 </div>
