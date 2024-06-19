@@ -25,24 +25,6 @@
                                 @csrf
                                 <div class="dx-box-content">
                                     <div class="dx-form-group">
-                                        {{-- <label for="select-product" class="mnt-7">Select Product</label>
-                                    <select class="form-control dx-select-ticket" name="" id="select-product">
-                                        <option value="1"
-                                            data-content='<img src="assets/images/product-1-xs.png" alt=""> Quantial'>
-                                        </option>
-                                        <option value="2"
-                                            data-content='<img src="assets/images/product-2-xs.png" alt=""> Sensific'>
-                                        </option>
-                                        <option value="3"
-                                            data-content='<img src="assets/images/product-3-xs.png" alt=""> Minist'>
-                                        </option>
-                                        <option value="4"
-                                            data-content='<img src="assets/images/product-4-xs.png" alt=""> Desty'>
-                                        </option>
-                                        <option value="5"
-                                            data-content='<img src="assets/images/product-5-xs.png" alt=""> Silies'>
-                                        </option>
-                                    </select> --}}
                                         <label for="category" class="mnt-7">Category</label>
                                         <input type="text" class="form-control form-control-style-2" id="category"
                                             placeholder="Enter Category" name='category'>
@@ -50,6 +32,7 @@
 
                                 </div>
                                 <div class="dx-separator"></div>
+
                                 <div class="dx-box-content">
                                     <div class="dx-form-group">
                                         <label for="subject" class="mnt-7">Subject</label>
@@ -76,28 +59,39 @@
                                         <input type="hidden" name="message" id="message">
                                     </div>
                                 </div>
+
                                 <div class="dx-separator"></div>
 
-                                <div class="dx-form-group">
-                                    <div class="row align-items-center">
-                                        <div class="col-md-6">
-                                            <label for="latitude" class="mnt-7"></label>
-                                            <input type="text" class="form-control form-control-style-2" id="latitude" placeholder="Enter Latitude" name='latitude'>
+                                <div class="dx-box-content">
+                                    <div class="dx-form-group">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-6">
+                                                <label for="latitude" class="mnt-7"></label>
+                                                <input type="text" class="form-control form-control-style-2"
+                                                    id="latitude" placeholder="Enter Latitude" name='latitude'>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="longitude" class="mnt-7"></label>
+                                                <input type="text" class="form-control form-control-style-2"
+                                                    id="longitude" placeholder="Enter Longitude" name='longitude'>
+                                            </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <label for="longitude" class="mnt-7"></label>
-                                            <input type="text" class="form-control form-control-style-2" id="longitude" placeholder="Enter Longitude" name='longitude'>
-                                        </div>
-                                    </div>
-                                    <div class="row align-items-center mt-3">
-                                        <div class="col-md-6">
-                                            <button type="button" class="btn btn-primary w-100" id="check_location">Check Location</button>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <button type="button" class="btn btn-primary w-100" id="get_location">Get Current Location</button>
+                                        <div class="row align-items-center mt-3">
+                                            <div class="col-md-6">
+                                                <button type="button" class="btn btn-primary w-100"
+                                                    id="check_location">Check Location</button>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <button type="button" class="btn btn-primary w-100" id="get_location">Get
+                                                    Current Location</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="dx-separator"></div>
+
+                                {{-- CHECK LOCATION --}}
                                 <script>
                                     document.getElementById('check_location').addEventListener('click', function() {
                                         var lat = document.getElementById('latitude').value;
@@ -118,8 +112,9 @@
                                         }
                                     });
                                 </script>
+
+                                {{-- GET LOCATION --}}
                                 <div class="dx-box-content">
-                                    
                                     <div id="map" style="height: 400px;"></div>
                                     <input type="hidden" name="latitude" id="latitude">
                                     <input type="hidden" name="longitude" id="longitude">
