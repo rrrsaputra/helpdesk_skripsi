@@ -5,7 +5,7 @@
 
 @section('content')
     @php
-        $columns = ['Customer', 'Summary', 'Number','Duration','Start Time','Finish Time', 'Assigned To', 'Assigned From', 'Link'];
+        $columns = ['Customer', 'Summary', 'Number','Duration','Start Time','Finish Time', 'Assigned To', 'Assigned From', 'Link', 'Status'];
         $data = $scheduledCalls
             ->map(function ($scheduledCall) {
                 return [
@@ -21,6 +21,7 @@
                         $scheduledCall->assigned_to,
                         $scheduledCall->assigned_from,
                         $scheduledCall->link,
+                        $scheduledCall->status,
                     ],
                 ];
             })
@@ -65,11 +66,7 @@
                                                         @foreach ($value as $index => $subValue)
                                                             <div>
                                                                 @php
-                                                                    $charLimit =
-                                                                        isset($columnSizes[$index]) &&
-                                                                        is_numeric($columnSizes[$index])
-                                                                            ? intval($columnSizes[$index] * 0.5)
-                                                                            : 70;
+                                                                    $charLimit = 70;
                                                                 @endphp
                                                                 @if ($index === 0)
                                                                     <strong>{!! strlen($subValue) > $charLimit ? substr($subValue, 0, $charLimit) . '...' : $subValue !!}</strong>
@@ -83,62 +80,65 @@
                                                     @endif
                                                 </td>
                                             @endforeach
+                                      
                                             <td> <!-- Added Actions buttons -->
-                                                {{-- <button class="btn btn-primary btn-sm" data-toggle="modal"
-                                                    data-target="#assignToModal">Assign To</button> --}}
-                                                <a href="{{ route('admin.scheduled_call.show', $row['id']) }}" class="btn btn-primary btn-sm">View</a>
+                                                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#assignToModal-{{ $row['id'] }}">Assign</button>
+                                                <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#rejectReasonModal-{{ $row['id'] }}">Reject</button>
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="rejectReasonModal-{{ $row['id'] }}" tabindex="-1" role="dialog" aria-labelledby="rejectReasonModalLabel-{{ $row['id'] }}" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="rejectReasonModalLabel-{{ $row['id'] }}">Reject Reason</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <form method="POST" action="{{ route('admin.scheduled_call.reject', $row['id']) }}">
+                                                                @csrf
+                                                                @method('PATCH')
+                                                                <div class="modal-body">
+                                                                    <div class="form-group">
+                                                                        <label for="rejectReason-{{ $row['id'] }}">Reason:</label>
+                                                                        <textarea id="rejectReason-{{ $row['id'] }}" name="reason" class="form-control" required></textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                    <button type="submit" class="btn btn-warning">Submit</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 <button class="btn btn-danger btn-sm">Delete</button>
-                                                <button class="btn btn-info btn-sm">View</button>
                                             </td>
                                         </tr>
                                         <!-- Modal -->
-                                        <form method="POST"
-                                            action="{{ route('admin.scheduled_call.update', $row['id']) }}">
+                                        <form method="POST" action="{{ route('admin.scheduled_call.update', $row['id']) }}">
                                             @csrf
                                             @method('PATCH')
-                                            <div class="modal fade" id="assignToModal" tabindex="-1" role="dialog"
-                                                aria-labelledby="assignToModalLabel" aria-hidden="true">
+                                            <div class="modal fade" id="assignToModal-{{ $row['id'] }}" tabindex="-1" role="dialog" aria-labelledby="assignToModalLabel-{{ $row['id'] }}" aria-hidden="true">
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="assignToModalLabel">Assign To</h5>
-                                                            <button type="button" class="close" data-dismiss="modal"
-                                                                aria-label="Close">
+                                                            <h5 class="modal-title" id="assignToModalLabel-{{ $row['id'] }}">Assign To</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <label for="agentSelect">Choose Agent:</label>
-                                                            <select id="agentSelect" name="agent_id" class="form-control">
+                                                            <label for="agentSelect-{{ $row['id'] }}">Choose Agent:</label>
+                                                            <select id="agentSelect-{{ $row['id'] }}" name="agent_id" class="form-control">
                                                                 <option value="" selected disabled>Pick Agent</option>
                                                                 @foreach ($agents as $agent)
-                                                                    <option value="{{ $agent->id }}">
-                                                                        {{ $agent->name }} ({{ $agent->email }})</option>
-                                                                @endforeach
-                                                            </select>
-                                                            <label for="start_time">Start Time:</label>
-                                                            <select id="start_time" name="start_time" class="form-control" >
-                                                                <option value="" selected disabled>Select an agent first</option>
-                                                                @foreach ($businessHours as $businessHour)
-                                                                    <option value="{{ $businessHour->day }} {{ $businessHour->from }}">
-                                                                        {{ $businessHour->day }} {{ $businessHour->from }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                            <label for="finish_time">Hour</label>
-                                                            <select id="finish_time" name="finish_time" class="form-control">
-                                                                @foreach ($businessHours as $businessHour)
-                                                                    <option value="{{ $businessHour->day }} {{ $businessHour->to }}">
-                                                                        {{ $businessHour->day }} {{ $businessHour->to }}
-                                                                    </option>
+                                                                    <option value="{{ $agent->id }}">{{ $agent->name }} ({{ $agent->email }})</option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary"
-                                                                data-dismiss="modal">Close</button>
-                                                            <button type="submit" class="btn btn-primary">Save
-                                                                changes</button>
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-primary">Save changes</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -146,8 +146,8 @@
                                         </form>
                                     @empty
                                         <tr>
-                                            <td colspan="8">No articles available</td>
-                                            <!-- Updated colspan to 8 to include Actions column -->
+                                            <td colspan="9">No articles available</td>
+                                            <!-- Updated colspan to 9 to include Actions column -->
                                         </tr>
                                     @endforelse
                                 </tbody>

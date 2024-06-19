@@ -33,13 +33,16 @@ class UserScheduledCallController extends Controller
     public function store(Request $request)
     {
         $user = Auth::user();
+        $startTime = date('Y-m-d H:i:s', strtotime($request->date . ' ' . $request->time));
+        $request->merge(['start_time' => $startTime]);
         $scheduledCall = ScheduledCall::create([
             'user_id' => $user->id,
             'duration' => $request->duration,
             'title' => $request->title,
             'message' => $request->message,
+            'start_time' => $request->start_time,
+            'finish_time' => date('Y-m-d H:i:s', strtotime($request->start_time) + ($request->duration * 60)),
         ]);
-
         return redirect(route('scheduled_call.index'));
     }
 

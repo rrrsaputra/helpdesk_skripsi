@@ -104,12 +104,36 @@ class AdminScheduledCallController extends Controller
         }
 
     }
+    
+    public function reject(Request $request, string $id)
+    {
+        $scheduledCall = ScheduledCall::find($id);
+        if ($scheduledCall) {
+            $scheduledCall->assigned_to = null;
+            $scheduledCall->assigned_from = null;
+            $scheduledCall->status = 'rejected';
+            $scheduledCall->rejected_by = Auth::id();
+            $scheduledCall->rejected_reason = $request->input('reason');
+            $scheduledCall->save();
 
+            return redirect()->route('admin.scheduled_call.index')->with('success', 'Scheduled call rejected successfully.');
+        } else {
+            return redirect()->route('admin.scheduled_call.index')->with('error', 'Scheduled call not found.');
+        }
+    }
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
+        $scheduledCall = ScheduledCall::find($id);
+        $agents = User::role('agent')->get();
+        $startTime = $scheduledCall->start_time;
+        $duration = $scheduledCall->duration;
+        return view('admin.scheduled_calls.edit', compact('scheduledCall', 'agents', 'startTime', 'duration'));
+
+
+
     }
    
     public function get_time(Request $request)
@@ -121,13 +145,9 @@ class AdminScheduledCallController extends Controller
        
         $scheduledCall = ScheduledCall::find($id);
         if ($scheduledCall) {
-            $startDateTime = new \DateTime($request->date . ' ' . $request->time);
-            $scheduledCall->start_time = $startDateTime->format('Y-m-d H:i:s');
-            $endDateTime = clone $startDateTime;
-            $endDateTime->modify('+' . $scheduledCall->duration . ' minutes');
-            $scheduledCall->finish_time = $endDateTime->format('Y-m-d H:i:s');
             $scheduledCall->assigned_to = $request->agent_id;
             $scheduledCall->assigned_from = Auth::id();
+            $scheduledCall->status = 'assigned';
             $scheduledCall->save();
         } else {
             return redirect()->route('admin.scheduled_call.index')->with('error', 'Scheduled call not found.');

@@ -9,9 +9,16 @@
                         <div class="dx-blog-post dx-ticket dx-ticket-open">
                             <div class="dx-blog-post-box pt-30 pb-30">
                                 <h2 class="h4 mnt-5 mb-9 dx-ticket-title">{{ $scheduledCall->title }}</h2>
-
-                                <span class="dx-ticket-status"></span>
+                                
                             </div>
+                            <div class="dx-separator"></div>
+                            <div class="dx-blog-post-box pt-30 pb-30">
+                                <strong>Status: {{ $scheduledCall->status }}</strong>
+                            @if($scheduledCall->status == 'rejected')
+                                <p>Reason for Rejection: {{ $scheduledCall->rejected_reason }}</p>
+                            @endif
+                            </div>
+                                
                             <div class="dx-separator"></div>
                             <div style="background-color: #fafafa;">
                                 <ul class="dx-blog-post-info dx-blog-post-info-style-2 mb-0 mt-0">

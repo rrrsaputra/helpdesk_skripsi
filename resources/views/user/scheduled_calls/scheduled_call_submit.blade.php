@@ -22,6 +22,36 @@
                                 </div>
 
                                 <div class="dx-separator"></div>
+
+                                <div class="dx-box-content">
+                                    <div class="dx-form-group">
+                                        <label for="date" class="mnt-7">Choose Date</label>
+                                        <input type="date" class="form-control form-control-style-2" id="date" name="date" min="{{ date('Y-m-d') }}">
+                                    </div>
+                                </div>
+                                <div class="dx-box-content">
+                                    <div class="dx-form-group">
+                                        <label for="time" class="mnt-7">Choose Time</label>
+                                        <select class="form-control form-control-style-2" id="time" name="time">
+                                            <option value="09:00">09:00 AM</option>
+                                            <option value="09:30">09:30 AM</option>
+                                            <option value="10:00">10:00 AM</option>
+                                            <option value="10:30">10:30 AM</option>
+                                            <option value="11:00">11:00 AM</option>
+                                            <option value="11:30">11:30 AM</option>
+                                            <option value="12:00">12:00 PM</option>
+                                            <option value="12:30">12:30 PM</option>
+                                            <option value="13:00">01:00 PM</option>
+                                            <option value="13:30">01:30 PM</option>
+                                            <option value="14:00">02:00 PM</option>
+                                            <option value="14:30">02:30 PM</option>
+                                            <option value="15:00">03:00 PM</option>
+                                            <option value="15:30">03:30 PM</option>
+                                            <option value="16:00">04:00 PM</option>
+                                            <option value="16:30">04:30 PM</option>
+                                        </select>
+                                    </div>
+                                </div>
                                 <div class="dx-box-content">
                                     <div class="dx-form-group">
                                         <label for="duration" class="mnt-7">Choose Duration</label>

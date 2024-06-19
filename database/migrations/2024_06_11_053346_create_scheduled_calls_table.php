@@ -22,7 +22,9 @@ return new class extends Migration
             $table->datetime('finish_time')->nullable();
             $table->foreignId('assigned_to')->nullable();
             $table->foreignId('assigned_from')->nullable();
-            $table->string('status')->default('pending'); //status = pending and delegate
+            $table->string('status')->default('pending'); 
+            $table->foreignId('rejected_by')->nullable();
+            $table->text('rejected_reason')->nullable();
             $table->timestamps();
         });
     }

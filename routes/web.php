@@ -67,6 +67,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('/admin/articles', ArticleController::class)->names('admin.article');
     
     Route::resource('/admin/scheduled-call', AdminScheduledCallController::class)->names('admin.scheduled_call');
+    Route::patch('/admin/scheduled-call/reject/{id}', [AdminScheduledCallController::class, 'reject'])->name('admin.scheduled_call.reject');
     Route::get('/admin/scheduled-call/get_time/{id}', [AdminScheduledCallController::class,'get_time'])->name('admin.scheduled_call.get_time');
     
     Route::resource('/admin/business-hour', AdminBusinessHourController::class)->names('admin.business_hour');
