@@ -4,6 +4,7 @@ use App\Models\Feedback;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use Spatie\Permission\Models\Permission;
 use App\Http\Controllers\AgentController;
 use Coderflex\LaravelTicket\Models\Label;
@@ -18,13 +19,13 @@ use App\Http\Controllers\AdminTicketController;
 use App\Http\Controllers\AgentTicketController;
 use App\Http\Controllers\UserArticleController;
 use Spatie\Permission\Middleware\RoleMiddleware;
+use App\Http\Controllers\AgentMessagesController;
+use App\Http\Controllers\UserTicketQuotaController;
 use App\Http\Controllers\AdminBusinessHourController;
 use App\Http\Controllers\UserScheduledCallController;
 use App\Http\Controllers\AdminScheduledCallController;
-use App\Http\Controllers\AgentMessagesController;
 use App\Http\Controllers\AgentScheduledCallController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\UserTicketQuotaController;
+use App\Http\Controllers\AdminArticleCategoryController;
 
 Route::get('/', [HomeController::class, 'index'])
     ->name('home');
@@ -72,6 +73,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     
     Route::resource('/admin/business-hour', AdminBusinessHourController::class)->names('admin.business_hour');
     Route::resource('/admin/ticket_quota', UserTicketQuotaController::class)->names('admin.ticket_quota');
+
+    Route::resource('/admin/article-category', AdminArticleCategoryController::class)->names('admin.article_category');
 
     
     Route::get('/admin/dashboard', function () {

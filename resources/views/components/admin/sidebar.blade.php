@@ -123,6 +123,15 @@
                         </p>
                     </a>
                 </li>
+                <li class="nav-item menu-close">
+                    <a href="{{ route('admin.article_category.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-list"></i>
+                        <p>
+                            ARTICLE CATEGORIES
+                            <span class="badge badge-warning right">6</span>
+                        </p>
+                    </a>
+                </li>
 
             </ul>
         </nav>
