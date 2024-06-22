@@ -2,6 +2,11 @@
 
 @section('content')
     <div class="dx-main">
+        @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
 
         <div class="dx-separator"></div>
         <div class="dx-box-5 pb-100 bg-grey-6">
@@ -23,7 +28,7 @@
                                 </div>
                                 <div class="dx-separator"></div>
 
-                               
+
                                 <div class="dx-box-content">
                                     <div class="dx-form-group">
                                         <label for="category" class="mnt-7">Category</label>
@@ -92,7 +97,7 @@
 
                                 <div class="dx-separator"></div>
 
-                             
+
 
                                 {{-- GET LOCATION --}}
                                 <div class="dx-box-content">
@@ -197,6 +202,6 @@
                 </div>
             </div>
         </div>
-    </div>
+        
     </div>
 @endsection

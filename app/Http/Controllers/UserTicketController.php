@@ -39,6 +39,11 @@ class UserTicketController extends Controller
     {   
         $user = Auth::user();
         
+        // Cek apakah user memiliki ticket quota yang cukup
+        if ($user->ticket_quota <= 0) {
+            return redirect()->back()->with('error', 'You do not have enough ticket quota to create a new ticket. Please contact admin.');
+        }
+
         $ticket = Ticket::create([
             'user_id' => $user->id,
             'title' => $request->title,
@@ -56,6 +61,11 @@ class UserTicketController extends Controller
             'ticket_id' => $ticket->id,
             'message' => $request->message,
         ]);
+
+        // Kurangi ticket quota user
+        $user->ticket_quota -= 1;
+        $user->save();
+
         return redirect(route('user.ticket.index'));
     }
 

@@ -110,7 +110,11 @@
                 </div>
             </div>
         </div>
-
+        @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
     </div>
     <div class="dx-popup dx-popup-signin" id="login">
         <button type="button" data-fancybox-close class="fancybox-button fancybox-close-small" title="Close"><svg
