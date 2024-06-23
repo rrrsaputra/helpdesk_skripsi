@@ -38,7 +38,11 @@
                     >{{ $scheduledCall->status }}</span>
                     </a>
                 @endforeach
+                <div class="mt-20">
+                    {{ $scheduledCalls->links() }}
+                </div>
             </div>
+            
         </div>
         <div class="dx-separator"></div>
         <div class="dx-box-5 pb-100">
