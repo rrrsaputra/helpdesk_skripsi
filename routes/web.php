@@ -52,9 +52,9 @@ Route::middleware(['auth', 'role:user'])->group(function () {
 
     // Route::get('/user/scheduled_calls/{id}', [UserScheduledCallController::class, 'show'])->name('user.scheduled_calls.single-scheduled-call');
     
-    Route::get('/ticket-submit', function () {
-        return view('user.tickets.ticket-submit');
-    })->name('ticket-submit');
+    // Route::get('/ticket-submit', function () {
+    //     return view('user.tickets.ticket-submit');
+    // })->name('ticket-submit');
 
     // Route::get('/scheduled-call', function () {
     //     return view('user.scheduled_calls.scheduled_call');

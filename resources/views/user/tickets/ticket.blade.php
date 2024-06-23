@@ -14,7 +14,7 @@
                         <div class="dx-separator ml-10 mr-10"></div>
                     </div>
                     <div class="col-auto">
-                        <a href="{{ route('ticket-submit') }}" class="dx-btn dx-btn-md">Submit a ticket</a>
+                        <a href="{{ route('user.ticket.create') }}" class="dx-btn dx-btn-md">Submit a ticket</a>
                     </div>
                 </div>
 
@@ -31,7 +31,7 @@
                         <p class="dx-ticket-paragraph mt-8" style="color: black">{{ strip_tags($ticket->message) }}</p>
                         <ul class="dx-ticket-info">
                             <li>Created: {{ $ticket->updated_at->format('d M Y') }}</li>
-                            <li>Category: {{ $ticket->category }}</li>
+                            <li>Category: </li>
                             @if($ticket->is_new)
                                 <li class="dx-ticket-new">New</li>
                             @endif

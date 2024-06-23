@@ -44,9 +44,10 @@
                                     <div class="dx-form-group">
                                         <label for="category" class="mnt-7">Ticket Category</label>
                                         <select class="form-control form-control-style-2" id="category" name="category">
-                                            <option value="Category 1">Category 1</option>
-                                            <option value="Category 2">Category 2</option>
-                                            <option value="Category 3">Category 3</option>
+                                            @foreach ($ticketCategories as $ticketCategory)
+                                                <option value="{{ $ticketCategory->name }}">{{ $ticketCategory->name }}
+                                                </option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
