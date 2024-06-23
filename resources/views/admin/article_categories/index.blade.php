@@ -1,7 +1,8 @@
 @extends('layouts.admin')
 @section('header')
     @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert" style="opacity: 1; transition: opacity 0.5s;">
+        <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert"
+            style="opacity: 1; transition: opacity 0.5s;">
             {{ session('success') }}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -22,13 +23,16 @@
 @section('content')
     <a href="{{ route('admin.article_category.create') }}" class="btn btn-primary mb-10">Add Article Category</a>
     @php
-        $columns = ['Category Name'];
+        $columns = ['Category Name', 'Slug'];
         $data = $articleCategories
             ->map(function ($articleCategory) {
                 return [
                     'id' => $articleCategory->id,
                     'url' => '/path/to/resource1',
-                    'values' => [$articleCategory->name],
+                    'values' => [
+                        $articleCategory->name,
+                        $articleCategory->slug
+                    ],
                 ];
             })
             ->toArray();

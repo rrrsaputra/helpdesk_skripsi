@@ -26,11 +26,12 @@ use App\Http\Controllers\AdminBusinessHourController;
 use App\Http\Controllers\UserScheduledCallController;
 use App\Http\Controllers\AdminScheduledCallController;
 use App\Http\Controllers\AgentScheduledCallController;
-use App\Http\Controllers\AdminArticleCategoryController;
 use App\Http\Controllers\AdminTicketCategoryController;
+use App\Http\Controllers\UserArticleCategoryController;
+use App\Http\Controllers\AdminArticleCategoryController;
 
-Route::get('/', [HomeController::class, 'index'])
-    ->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
+// Route::get('/category/{slug}', [HomeController::class, 'show'])->name('category.show');
     
 Route::get('/messages', [HomeController::class, 'messages'])
     ->name('messages');
@@ -38,6 +39,8 @@ Route::get('/messages', [HomeController::class, 'messages'])
 
 
 Route::resource('/article', UserArticleController::class)->names('article');
+Route::get('/category/{slug}', [UserArticleCategoryController::class, 'show'])->name('category.show');
+
 
 // Route::get('/single-article', function () {
 //     return view('user.articles.single-article');

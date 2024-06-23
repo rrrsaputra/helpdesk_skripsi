@@ -49,8 +49,8 @@
                                     <h3 class="h5 mnt-6 mnb-6">Was this helpful to you?</h3>
                                 </div>
                                 <div class="col-auto d-flex">
-                                    <a href="#" class="dx-btn dx-btn-md dx-btn-main-1">Yes</a>
-                                    <a href="#" class="dx-btn dx-btn-md dx-btn-grey-2 ml-20">No</a>
+                                    <a href="{{ route('user.feedback.index') }}" class="dx-btn dx-btn-md dx-btn-main-1">Yes</a>
+                                    <a href="{{ route('user.feedback.index') }}" class="dx-btn dx-btn-md dx-btn-grey-2 ml-20">No</a>
                                 </div>
                             </div>
                         </div>
@@ -75,7 +75,7 @@
                                                 <span
                                                     class="dx-widget-categories-category">{{ $articleCategory->name }}</span>
                                                 <span
-                                                    class="dx-widget-categories-badge">({{ $articleCategory->articles_count }})</span>
+                                                    class="dx-widget-categories-badge">{{ $articleCategory->articles->count() }}</span>
                                             </a>
                                         </li>
                                     @endforeach
@@ -84,7 +84,7 @@
                             <div class="dx-widget dx-box dx-box-decorated">
                                 <div class="dx-widget-title"> Latest Articles </div>
                                 @foreach ($articles as $article)
-                                    <a href="" class="dx-widget-link">
+                                    <a href="{{ route('article.show', $article->id) }}" class="dx-widget-link">
                                         <span class="dx-widget-link-text">{{ $article->title }}</span>
                                         <span
                                             class="dx-widget-link-date">{{ $article->created_at->format('d F Y') }}</span>

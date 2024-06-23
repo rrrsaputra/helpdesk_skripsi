@@ -17,7 +17,7 @@
             }, 5000);
         </script>
     @endif
-    <x-admin.header title="Ticker Category" />
+    <x-admin.header title="Ticket Category" />
 @endsection
 
 @section('content')

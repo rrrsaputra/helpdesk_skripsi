@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\ArticleCategory;
 
@@ -35,7 +36,9 @@ class AdminArticleCategoryController extends Controller
             'name' => 'required|string|max:255'
         ]);
 
-        $articleCategory = ArticleCategory::create($validatedData);
+        $slug = Str::slug($validatedData['name']);
+        $articleCategory = ArticleCategory::create(array_merge($validatedData, ['slug' => $slug]));
+        $articleCategory->save();
 
         return redirect()->route('admin.article_category.index')->with('success', 'Article category added successfully.');
     }
@@ -45,7 +48,6 @@ class AdminArticleCategoryController extends Controller
      */
     public function show(string $id)
     {
-
     }
 
     /**
@@ -67,8 +69,9 @@ class AdminArticleCategoryController extends Controller
             'name' => 'required|string|max:255'
         ]);
 
-        $articleCategory = ArticleCategory::findOrFail($id);
-        $articleCategory->update($validatedData);
+        $slug = Str::slug($validatedData['name']);
+        $articleCategory = ArticleCategory::find($id);
+        $articleCategory->update(array_merge($validatedData, ['slug' => $slug]));
 
         return redirect()->route('admin.article_category.index')->with('success', 'Article category updated successfully.');
     }
@@ -78,7 +81,7 @@ class AdminArticleCategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        $articleCategory = ArticleCategory::findOrFail($id);
+        $articleCategory = ArticleCategory::find($id);
         $articleCategory->delete();
 
         return redirect()->route('admin.article_category.index');
