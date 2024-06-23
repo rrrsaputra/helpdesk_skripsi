@@ -3,9 +3,20 @@
 @section('content')
     <div class="dx-main">
         @if (session('error'))
-        <div class="alert alert-danger">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert" id="danger-alert" style="opacity: 1; transition: opacity 0.5s;">
             {{ session('error') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
+        <script>
+            setTimeout(function() {
+                document.getElementById('danger-alert').style.opacity = '0';
+            }, 4500); // Mengurangi 500ms untuk transisi lebih halus
+            setTimeout(function() {
+                document.getElementById('danger-alert').style.display = 'none';
+            }, 5000);
+        </script>
     @endif
 
         <div class="dx-separator"></div>

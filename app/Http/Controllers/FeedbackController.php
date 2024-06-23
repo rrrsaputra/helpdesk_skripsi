@@ -30,9 +30,11 @@ class FeedbackController extends Controller
      */
     public function store(Request $request)
     {   
+        $category = $request->input('category');
         $feedback = $request->input('message');
         $subject = $request->input('subject');
         $feedbackModel = new Feedback();
+        $feedbackModel->category = $category;
         $feedbackModel->message = $feedback;
         $feedbackModel->subject = $subject;
         $feedbackModel->user_id = Auth::id();

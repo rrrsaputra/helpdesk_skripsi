@@ -19,6 +19,7 @@ use App\Http\Controllers\AdminTicketController;
 use App\Http\Controllers\AgentTicketController;
 use App\Http\Controllers\UserArticleController;
 use Spatie\Permission\Middleware\RoleMiddleware;
+use App\Http\Controllers\AdminFeedbackController;
 use App\Http\Controllers\AgentMessagesController;
 use App\Http\Controllers\UserTicketQuotaController;
 use App\Http\Controllers\AdminBusinessHourController;
@@ -75,6 +76,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('/admin/ticket_quota', UserTicketQuotaController::class)->names('admin.ticket_quota');
 
     Route::resource('/admin/article-category', AdminArticleCategoryController::class)->names('admin.article_category');
+
+    Route::resource('/admin/feedback', AdminFeedbackController::class)->names('admin.feedback');
 
     
     Route::get('/admin/dashboard', function () {

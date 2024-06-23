@@ -1,29 +1,28 @@
 @extends('layouts.admin')
 @section('header')
-    <x-admin.header title="Business Hour" />
+    <x-admin.header title="User Feedback" />
 @endsection
 
 @section('content')
-    <a href="{{ route('admin.business_hour.create') }}" class="btn btn-primary mb-10">Add Business Hour</a>
     @php
-        $columns = ['Day', 'From', 'To', 'Step', 'Off'];
-        $data = $businessHours
-            ->map(function ($businessHour) {
+        $columns = ['Category', 'User Name', 'Subject', 'Message', 'Date'];
+        $data = $feedbacks
+            ->map(function ($feedback) {
                 return [
-                    'id' => $businessHour->id,
+                    'id' => $feedback->id,
                     'url' => '/path/to/resource1',
                     'values' => [
-                        $businessHour->day,
-                        $businessHour->from,
-                        $businessHour->to,
-                        $businessHour->step,
-                        $businessHour->off,
+                        $feedback->category,
+                        $feedback->user->name,
+                        $feedback->subject,
+                        $feedback->message,
+                        $feedback->created_at->format('d M Y'),
                     ],
-                ];
+            ];
             })
             ->toArray();
         $columnSizes = array_map(function ($column) {
-            return $column === 'Summary' ? '30%' : 'auto';
+            return $column === 'Message' ? '40%' : 'auto';
         }, $columns);
     @endphp
 
@@ -41,6 +40,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
+
                     <div class="card-body">
                         <div class="table-responsive">
                             <table id="example2" class="table table-hover">
@@ -49,7 +49,6 @@
                                         @foreach ($columns as $index => $column)
                                             <th style="width: {{ $columnSizes[$index] ?? 'auto' }}">{{ $column }}</th>
                                         @endforeach
-                                        <th>Actions</th> <!-- Added Actions column -->
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -79,18 +78,13 @@
                                                     @endif
                                                 </td>
                                             @endforeach
-                                            <td> <!-- Added Actions buttons -->
-                                                <button class="btn btn-primary btn-sm" data-toggle="modal"
-                                                    data-target="#assignToModal">Assign To</button>
-                                                <button class="btn btn-danger btn-sm">Delete</button>
-                                                <button class="btn btn-info btn-sm">View</button>
-                                            </td>
+                                            
                                         </tr>
                                         <!-- Modal -->
+
                                     @empty
                                         <tr>
-                                            <td colspan="8">No business hour available
-                                            </td>
+                                            <td colspan="8">No articles available</td>
                                             <!-- Updated colspan to 8 to include Actions column -->
                                         </tr>
                                     @endforelse
@@ -126,6 +120,16 @@
     <!-- AdminLTE App -->
     <script src="{{ asset('AdminLTE-3.2.0/dist/js/adminlte.min.js') }}"></script>
     <!-- AdminLTE for demo purposes -->
-    <!-- Page specific script -->
 
+    <!-- Page specific script -->
+    <script>
+        $(function() {
+            $("#example2").DataTable({
+                "responsive": true,
+                "lengthChange": false,
+                "autoWidth": false,
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+            }).buttons().container().appendTo('#example2_wrapper .col-md-6:eq(0)');
+        });
+    </script>
 @endsection

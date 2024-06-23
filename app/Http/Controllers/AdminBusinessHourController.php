@@ -38,6 +38,8 @@ class AdminBusinessHourController extends Controller
                 ]);
             }
         }
+
+        return redirect()->route('admin.business_hour.index');
         
     }
 
