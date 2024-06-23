@@ -14,9 +14,14 @@
                         <div class="dx-separator ml-10 mr-10"></div>
                     </div>
                     <div class="col-auto">
-                        <a href="{{ route('ticket-submit') }}" class="dx-btn dx-btn-md">Submit a ticket</a>
+                        <a href="{{ route('user.ticket.create') }}" class="dx-btn dx-btn-md">Submit a ticket</a>
                     </div>
                 </div>
+
+                <div class="col-auto mb-10">
+                    <p class="mb-0">Remaining Tickets: {{ $remainingTickets->ticket_quota }}</p>
+                </div>
+
                 @foreach($tickets as $ticket)
                 <a href=" {{ route('user.ticket.show', $ticket->id) }} " class="dx-ticket-item dx-ticket-new dx-ticket-open dx-block-decorated">
                     
@@ -25,8 +30,8 @@
                         <span class="dx-ticket-title h5" style="color: black">{{ $ticket->title }}</span>
                         <p class="dx-ticket-paragraph mt-8" style="color: black">{{ strip_tags($ticket->message) }}</p>
                         <ul class="dx-ticket-info">
-                            <li>Update: {{ $ticket->updated_at->format('d M Y') }}</li>
-                            <li>Category: {{ $ticket->category }}</li>
+                            <li>Created: {{ $ticket->updated_at->format('d M Y') }}</li>
+                            <li>Category: </li>
                             @if($ticket->is_new)
                                 <li class="dx-ticket-new">New</li>
                             @endif

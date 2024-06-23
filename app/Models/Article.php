@@ -17,11 +17,12 @@ class Article extends Model
         // 'tags_id'
     ];
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
-    public function articleCategory(){
+    public function articleCategory()
+    {
         return $this->belongsTo(ArticleCategory::class, 'article_category_id');
     }
-
 }

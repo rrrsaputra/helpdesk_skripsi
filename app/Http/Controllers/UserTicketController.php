@@ -18,27 +18,29 @@ class UserTicketController extends Controller
     {
         $paginationCount = 5;
         $user = Auth::user();
-        $tickets = Ticket::where('user_id', $user->id)->paginate($paginationCount);
-    
-        return view('user.tickets.ticket', compact('tickets'));
-    }
+        $remainingTickets = $user;
+        $tickets = Ticket::where('user_id', $user->id)->orderBy('created_at', 'desc')->paginate($paginationCount);
+        // $ticketCategory = Category::whereIn('id', $tickets->pluck('category_id'))->paginate($paginationCount);
 
+        return view('user.tickets.ticket', compact('tickets', 'remainingTickets'));
+    }
     /**
      * Show the form for creating a new resource.
      */
-
     public function create()
     {
+        $ticketCategories = Category::where('is_visible', true)->get();
         
+        return view('user.tickets.ticket-submit', compact('ticketCategories'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {   
+    {
         $user = Auth::user();
-        
+
         // Cek apakah user memiliki ticket quota yang cukup
         if ($user->ticket_quota <= 0) {
             return redirect()->back()->with('error', 'You do not have enough ticket quota to create a new ticket. Please contact admin.');
@@ -46,16 +48,17 @@ class UserTicketController extends Controller
 
         $ticket = Ticket::create([
             'user_id' => $user->id,
+            'category' => $request->category,
             'title' => $request->title,
             'message' => $request->message,
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
         ]);
-        $ticket->categories()->create(
-            [
-                'name' => $request->category,
-                'slug' => \Illuminate\Support\Str::slug($request->category)
-            ]);
+        // $ticket->categories()->create(
+        //     [
+        //         'name' => $request->category,
+        //         'slug' => \Illuminate\Support\Str::slug($request->category)
+        //     ]);
         $message = Message::create([
             'user_id' =>  $user->id,
             'ticket_id' => $ticket->id,
@@ -89,14 +92,14 @@ class UserTicketController extends Controller
      * Display the specified resource.
      */
     public function show(string $id)
-    {   
+    {
         $ticket = Ticket::find($id);
         $ticket_id = $ticket->id;
         if (!$ticket) {
             return redirect()->back()->with('error', 'Ticket not found');
         }
         $messages = $ticket->messages;
-        return view('user.tickets.show-ticket',compact('messages','ticket_id'));
+        return view('user.tickets.show-ticket', compact('messages', 'ticket_id'));
     }
 
     /**
@@ -123,6 +126,3 @@ class UserTicketController extends Controller
         //
     }
 }
-
-
-

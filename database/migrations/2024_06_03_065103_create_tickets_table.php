@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->uuid('uuid')->nullable();
             $table->foreignId('user_id');
+            $table->enum('category', ['Category 1', 'Category 2', 'Category 3']);
             $table->string('title');
             $table->text('message')->nullable();
             $table->decimal('latitude', 10,7)->nullable();

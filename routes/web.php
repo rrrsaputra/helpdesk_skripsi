@@ -4,6 +4,7 @@ use App\Models\Feedback;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use Spatie\Permission\Models\Permission;
 use App\Http\Controllers\AgentController;
 use Coderflex\LaravelTicket\Models\Label;
@@ -18,13 +19,15 @@ use App\Http\Controllers\AdminTicketController;
 use App\Http\Controllers\AgentTicketController;
 use App\Http\Controllers\UserArticleController;
 use Spatie\Permission\Middleware\RoleMiddleware;
+use App\Http\Controllers\AdminFeedbackController;
+use App\Http\Controllers\AgentMessagesController;
+use App\Http\Controllers\UserTicketQuotaController;
 use App\Http\Controllers\AdminBusinessHourController;
 use App\Http\Controllers\UserScheduledCallController;
 use App\Http\Controllers\AdminScheduledCallController;
-use App\Http\Controllers\AgentMessagesController;
 use App\Http\Controllers\AgentScheduledCallController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\UserTicketQuotaController;
+use App\Http\Controllers\AdminArticleCategoryController;
+use App\Http\Controllers\AdminTicketCategoryController;
 
 Route::get('/', [HomeController::class, 'index'])
     ->name('home');
@@ -47,12 +50,11 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::resource('/tickets', UserTicketController::class)->names('tickets');
     Route::resource('/scheduled-calls', UserScheduledCallController::class)->names('scheduled_call');
 
-
     // Route::get('/user/scheduled_calls/{id}', [UserScheduledCallController::class, 'show'])->name('user.scheduled_calls.single-scheduled-call');
     
-    Route::get('/ticket-submit', function () {
-        return view('user.tickets.ticket-submit');
-    })->name('ticket-submit');
+    // Route::get('/ticket-submit', function () {
+    //     return view('user.tickets.ticket-submit');
+    // })->name('ticket-submit');
 
     // Route::get('/scheduled-call', function () {
     //     return view('user.scheduled_calls.scheduled_call');
@@ -61,6 +63,8 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/scheduled-call-submit', function () {
         return view('user.scheduled_calls.scheduled_call_submit');
     })->name('scheduled_call_submit');
+
+    
 });
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
@@ -72,6 +76,14 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     
     Route::resource('/admin/business-hour', AdminBusinessHourController::class)->names('admin.business_hour');
     Route::resource('/admin/ticket_quota', UserTicketQuotaController::class)->names('admin.ticket_quota');
+
+    Route::resource('/admin/article-category', AdminArticleCategoryController::class)->names('admin.article_category');
+
+    Route::resource('/admin/feedback', AdminFeedbackController::class)->names('admin.feedback');
+
+    Route::resource('/admin/ticket-category', AdminTicketCategoryController::class)->names('admin.ticket_category');
+    Route::get('admin/ticket_category/{id}/show_visible', [AdminTicketCategoryController::class, 'show_visible'])->name('admin.ticket_category.show_visible');
+    Route::get('admin/ticket_category/{id}/hide_visible', [AdminTicketCategoryController::class, 'hide_visible'])->name('admin.ticket_category.hide_visible');
 
     
     Route::get('/admin/dashboard', function () {

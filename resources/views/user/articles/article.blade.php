@@ -39,91 +39,34 @@
                         </div>
                     </div>
                     <div class="col-lg-4">
-                        <div class="dx-sticky dx-sidebar" data-sticky-offsetTop="120" data-sticky-offsetBot="40">
-                            <div class="dx-widget dx-box dx-box-decorated">
-                                <div class="dx-widget-title"> Subscribe to Newsletter </div>
-                                <div class="dx-widget-subscribe">
-                                    <div class="dx-widget-text">
-                                        <p>Join the newsletter to receive news, updates, new products and freebies in your
-                                            inbox.</p>
-                                    </div>
-                                    <form action="#" class="dx-form dx-form-group-inputs">
-                                        <input type="email" name="" value="" aria-describedby="emailHelp"
-                                            class="form-control form-control-style-2" placeholder="Your Email Address">
-                                        <button class="dx-btn dx-btn-lg dx-btn-icon"><span
-                                                class="icon fas fa-paper-plane"></span></button>
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="dx-widget dx-box dx-box-decorated">
-                                <form action="#" class="dx-form dx-form-group-inputs">
-                                    <input type="text" name="" value=""
-                                        class="form-control form-control-style-2" placeholder="Search...">
-                                    <button class="dx-btn dx-btn-lg dx-btn-grey dx-btn-grey-style-2 dx-btn-icon"><span
-                                            class="icon fas fa-search"></span></button>
-                                </form>
-                            </div>
-                            <div class="dx-widget dx-box dx-box-decorated">
-                                <div class="dx-widget-title">Articles Categories</div>
-                                <ul class="dx-widget-categories">
+
+                        <div class="dx-widget dx-box dx-box-decorated">
+                            <form action="#" class="dx-form dx-form-group-inputs">
+                                <input type="text" name="" value=""
+                                    class="form-control form-control-style-2" placeholder="Search...">
+                                <button class="dx-btn dx-btn-lg dx-btn-grey dx-btn-grey-style-2 dx-btn-icon"><span
+                                        class="icon fas fa-search"></span></button>
+                            </form>
+                        </div>
+                        <div class="dx-widget dx-box dx-box-decorated">
+                            <div class="dx-widget-title">Articles Categories</div>
+                            <ul class="dx-widget-categories">
+                                @foreach ($articleCategories as $articleCategory)
                                     <li>
-                                        <a href="single-article.html">
+                                        <a href="#">
                                             <span class="icon pe-7s-angle-right"></span>
-                                            <span class="dx-widget-categories-category">Quantial</span>
-                                            <span class="dx-widget-categories-badge">(4)</span>
+                                            <span class="dx-widget-categories-category">{{ $articleCategory->name }}</span>
+                                            {{-- <span class="dx-widget-categories-badge">({{ $articleCategory->articles_count}})</span> --}}
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href="single-article.html">
-                                            <span class="icon pe-7s-angle-right"></span>
-                                            <span class="dx-widget-categories-category">Sensific</span>
-                                            <span class="dx-widget-categories-badge">(4)</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="single-article.html">
-                                            <span class="icon pe-7s-angle-right"></span>
-                                            <span class="dx-widget-categories-category">Minist</span>
-                                            <span class="dx-widget-categories-badge">(8)</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="single-article.html">
-                                            <span class="icon pe-7s-angle-right"></span>
-                                            <span class="dx-widget-categories-category">Desty</span>
-                                            <span class="dx-widget-categories-badge">(2)</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="single-article.html">
-                                            <span class="icon pe-7s-angle-right"></span>
-                                            <span class="dx-widget-categories-category">Silies</span>
-                                            <span class="dx-widget-categories-badge">(3)</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="dx-widget dx-box dx-box-decorated">
-                                <div class="dx-widget-title"> Latest Articles </div>
-                                <a href="single-article.html" class="dx-widget-link">
-                                    <span class="dx-widget-link-text">How to manually import Demo data (if you faced with
-                                        problems in one-click demo import)</span>
-                                    <span class="dx-widget-link-date">6 Sep 2018</span>
-                                </a>
-                                <a href="single-article.html" class="dx-widget-link">
-                                    <span class="dx-widget-link-text">Make menu dropdown working without JavaScript</span>
-                                    <span class="dx-widget-link-date">2 Sep 2018</span>
-                                </a>
-                                <a href="single-article.html" class="dx-widget-link">
-                                    <span class="dx-widget-link-text">Add top menu link inside dropdown on mobile
-                                        devices</span>
-                                    <span class="dx-widget-link-date">27 Aug 2018</span>
-                                </a>
-                            </div>
+                                @endforeach
+                                
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 @endsection

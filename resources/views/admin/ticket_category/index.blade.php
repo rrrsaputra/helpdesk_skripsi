@@ -1,29 +1,45 @@
 @extends('layouts.admin')
 @section('header')
-    <x-admin.header title="Business Hour" />
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert"
+            style="opacity: 1; transition: opacity 0.5s;">
+            {{ session('success') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <script>
+            setTimeout(function() {
+                document.getElementById('success-alert').style.opacity = '0';
+            }, 4500); // Mengurangi 500ms untuk transisi lebih halus
+            setTimeout(function() {
+                document.getElementById('success-alert').style.display = 'none';
+            }, 5000);
+        </script>
+    @endif
+    <x-admin.header title="Ticker Category" />
 @endsection
 
 @section('content')
-    <a href="{{ route('admin.business_hour.create') }}" class="btn btn-primary mb-10">Add Business Hour</a>
+    <a href="{{ route('admin.ticket_category.create') }}" class="btn btn-primary mb-10">Add Ticket Category</a>
     @php
-        $columns = ['Day', 'From', 'To', 'Step', 'Off'];
-        $data = $businessHours
-            ->map(function ($businessHour) {
+        $columns = ['Category Name', 'Slug', 'Status'];
+        $data = $ticketCategories
+            ->map(function ($ticketCategory) {
                 return [
-                    'id' => $businessHour->id,
+                    'id' => $ticketCategory->id,
                     'url' => '/path/to/resource1',
                     'values' => [
-                        $businessHour->day,
-                        $businessHour->from,
-                        $businessHour->to,
-                        $businessHour->step,
-                        $businessHour->off,
+                        $ticketCategory->name, 
+                        $ticketCategory->slug, 
+                        $ticketCategory->is_visible ? 'Visible' : 'Hidden',
                     ],
+                    'is_visible' => $ticketCategory->is_visible,
                 ];
             })
             ->toArray();
         $columnSizes = array_map(function ($column) {
-            return $column === 'Summary' ? '30%' : 'auto';
+            return $column === 'Category Name' ? '30%' : 'auto';
         }, $columns);
     @endphp
 
@@ -41,6 +57,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
+
                     <div class="card-body">
                         <div class="table-responsive">
                             <table id="example2" class="table table-hover">
@@ -80,17 +97,39 @@
                                                 </td>
                                             @endforeach
                                             <td> <!-- Added Actions buttons -->
-                                                <button class="btn btn-primary btn-sm" data-toggle="modal"
-                                                    data-target="#assignToModal">Assign To</button>
-                                                <button class="btn btn-danger btn-sm">Delete</button>
-                                                <button class="btn btn-info btn-sm">View</button>
+                                                @if ($row['is_visible'])
+                                                    <a href="{{ route('admin.ticket_category.hide_visible', $row['id']) }}"
+                                                        class="btn btn-sm btn-warning">Hide</a>
+                                                @else
+                                                    <a href="{{ route('admin.ticket_category.show_visible', $row['id']) }}"
+                                                        class="btn btn-sm btn-warning">Show</a>
+                                                @endif
+
+                                                <a href="{{ route('admin.ticket_category.edit', $row['id']) }}"
+                                                    class="btn btn-sm btn-primary">Edit</a>
+
+                                                <form action="{{ route('admin.ticket_category.destroy', $row['id']) }}"
+                                                    method="POST" style="display:inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                                </form>
+
+                                                {{-- <button class="btn btn-danger btn-sm"
+                                                    onclick="event.preventDefault(); document.getElementById('delete-form-{{ $row['id'] }}').submit();">Delete</button>
+                                                <form id="delete-form-{{ $row['id'] }}"
+                                                    action="{{ route('admin.article_category.destroy', $row['id']) }}"
+                                                    method="POST" style="display: none;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                </form> --}}
                                             </td>
                                         </tr>
                                         <!-- Modal -->
+
                                     @empty
                                         <tr>
-                                            <td colspan="8">No business hour available
-                                            </td>
+                                            <td colspan="8">No articles available</td>
                                             <!-- Updated colspan to 8 to include Actions column -->
                                         </tr>
                                     @endforelse
@@ -126,6 +165,16 @@
     <!-- AdminLTE App -->
     <script src="{{ asset('AdminLTE-3.2.0/dist/js/adminlte.min.js') }}"></script>
     <!-- AdminLTE for demo purposes -->
-    <!-- Page specific script -->
 
+    <!-- Page specific script -->
+    <script>
+        $(function() {
+            $("#example2").DataTable({
+                "responsive": true,
+                "lengthChange": false,
+                "autoWidth": false,
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+            }).buttons().container().appendTo('#example2_wrapper .col-md-6:eq(0)');
+        });
+    </script>
 @endsection

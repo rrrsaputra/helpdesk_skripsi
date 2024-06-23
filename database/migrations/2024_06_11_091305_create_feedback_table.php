@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('feedback', function (Blueprint $table) {
             $table->id();
+            $table->enum('category', ['Complaint', 'Suggestion', 'Compliment']);
             $table->string('subject');
             $table->text('message');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');

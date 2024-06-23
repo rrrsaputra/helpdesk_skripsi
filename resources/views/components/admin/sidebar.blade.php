@@ -45,15 +45,7 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item menu-close">
-                    <a href="{{ route('admin.article.index') }}" class="nav-link">
-                        <i class="nav-icon fas fa-newspaper"></i>
-                        <p>
-                            ARTICLE
-                            <span class="badge badge-warning right">6</span>
-                        </p>
-                    </a>
-                </li>
+
                 <li class="nav-item menu-close">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-inbox"></i>
@@ -106,19 +98,60 @@
                 </li>
 
                 <li class="nav-item menu-close">
-                    <a href="{{ route('admin.business_hour.index') }}" class="nav-link">
-                        <i class="nav-icon fas fa-business-time"></i>
-                        <p>
-                            BUSINESS HOURS
-                            <span class="badge badge-warning right">6</span>
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item menu-close">
                     <a href="{{ route('admin.ticket_quota.index') }}" class="nav-link">
                         <i class="nav-icon fas fa-ticket-alt"></i>
                         <p>
                             TICKET QUOTA
+                            <span class="badge badge-warning right">6</span>
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item menu-close">
+                    <a href="{{ route('admin.ticket_category.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-tags"></i>
+                        <p>
+                            TICKET CATEGORY
+                            <span class="badge badge-warning right">6</span>
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item menu-close">
+                    <a href="{{ route('admin.article.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-newspaper"></i>
+                        <p>
+                            ARTICLE
+                            <span class="badge badge-warning right">6</span>
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item menu-close">
+                    <a href="{{ route('admin.article_category.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-list"></i>
+                        <p>
+                            ARTICLE CATEGORY
+                            <span class="badge badge-warning right">6</span>
+                        </p>
+                    </a>
+                </li>
+                
+                <li class="nav-item menu-close">
+                    <a href="{{ route('admin.feedback.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-comment"></i>
+                        <p>
+                            FEEDBACK
+                            <span class="badge badge-warning right">6</span>
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item menu-close">
+                    <a href="{{ route('admin.business_hour.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-business-time"></i>
+                        <p>
+                            BUSINESS HOURS
                             <span class="badge badge-warning right">6</span>
                         </p>
                     </a>
