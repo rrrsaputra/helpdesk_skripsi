@@ -17,11 +17,12 @@ class UserTicketController extends Controller
      */
     public function index()
     {
+        $paginationCount = 5;
         $user = Auth::user();
         $remainingTickets = $user;
-        $tickets = Ticket::where('user_id', $user->id)->orderBy('created_at', 'desc')->get();
+        $tickets = Ticket::where('user_id', $user->id)->orderBy('created_at', 'desc')->paginate($paginationCount);
         $articles = Article::all();
-        // $ticketCategory = Category::whereIn('id', $tickets->pluck('category_id'))->get();
+        // $ticketCategory = Category::whereIn('id', $tickets->pluck('category_id'))->paginate($paginationCount);
 
         return view('user.tickets.ticket', compact('tickets', 'remainingTickets', 'articles'));
     }
@@ -67,11 +68,27 @@ class UserTicketController extends Controller
         ]);
 
         // Kurangi ticket quota user
-        $user->ticket_quota -= 1;
-        $user->save();
+        if (!$this->decrementTicketQuota($user)) {
+            return redirect()->back()->with('error', 'You do not have enough ticket quota to create a new ticket. Please contact admin.');
+        }
 
         return redirect(route('user.ticket.index'));
     }
+
+    private function decrementTicketQuota($user)
+    {
+        // Cek apakah user memiliki ticket quota yang cukup
+        if ($user->ticket_quota <= 0) {
+            return false;
+        }
+
+        // Kurangi ticket quota user
+        $user->ticket_quota -= 1;
+        $user->save();
+
+        return true;
+    }
+
 
     /**
      * Display the specified resource.
