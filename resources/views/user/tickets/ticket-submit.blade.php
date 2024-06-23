@@ -3,21 +3,22 @@
 @section('content')
     <div class="dx-main">
         @if (session('error'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert" id="danger-alert" style="opacity: 1; transition: opacity 0.5s;">
-            {{ session('error') }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <script>
-            setTimeout(function() {
-                document.getElementById('danger-alert').style.opacity = '0';
-            }, 4500); // Mengurangi 500ms untuk transisi lebih halus
-            setTimeout(function() {
-                document.getElementById('danger-alert').style.display = 'none';
-            }, 5000);
-        </script>
-    @endif
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" id="danger-alert"
+                style="opacity: 1; transition: opacity 0.5s;">
+                {{ session('error') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <script>
+                setTimeout(function() {
+                    document.getElementById('danger-alert').style.opacity = '0';
+                }, 4500); // Mengurangi 500ms untuk transisi lebih halus
+                setTimeout(function() {
+                    document.getElementById('danger-alert').style.display = 'none';
+                }, 5000);
+            </script>
+        @endif
 
         <div class="dx-separator"></div>
         <div class="dx-box-5 pb-100 bg-grey-6">
@@ -39,15 +40,17 @@
                                 </div>
                                 <div class="dx-separator"></div>
 
-
                                 <div class="dx-box-content">
                                     <div class="dx-form-group">
-                                        <label for="category" class="mnt-7">Category</label>
-                                        <input type="text" class="form-control form-control-style-2" id="category"
-                                            placeholder="Enter Category" name='category'>
+                                        <label for="category" class="mnt-7">Ticket Category</label>
+                                        <select class="form-control form-control-style-2" id="category" name="category">
+                                            <option value="Category 1">Category 1</option>
+                                            <option value="Category 2">Category 2</option>
+                                            <option value="Category 3">Category 3</option>
+                                        </select>
                                     </div>
-
                                 </div>
+
                                 <div class="dx-separator"></div>
 
                                 <div class="dx-box-content">
@@ -213,6 +216,6 @@
                 </div>
             </div>
         </div>
-        
+
     </div>
 @endsection

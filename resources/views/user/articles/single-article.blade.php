@@ -13,8 +13,8 @@
                                 <div class="dx-blog-post-box pt-30 pb-30">
                                     <h1 class="h4 mnt-5 mb-8">{{ $article->title }}</h1>
                                     <ul class="dx-blog-post-info mnt-10 mnb-2">
-                                        <li>By {{ $article->user->name }}</li>
-                                        {{-- <li>By {{ $articleCategory->name }}</li> --}}
+                                        <li>By: {{ $article->user->name }}</li>
+                                        <li>Category: {{ $article->articleCategory->name }}</li>
                                         <li>Published {{ $article->created_at->format('d F Y') }}</li>
                                         <li>Views</li>
                                     </ul>
@@ -69,28 +69,27 @@
                                 <div class="dx-widget-title">Articles Categories</div>
                                 <ul class="dx-widget-categories">
                                     @foreach ($articleCategories as $articleCategory)
-                                    <li>
-                                        <a href="#">
-                                            <span class="icon pe-7s-angle-right"></span>
-                                            <span class="dx-widget-categories-category">{{ $articleCategory->name }}</span>
-                                            <span class="dx-widget-categories-badge">({{ $articleCategory->articles_count}})</span>
-                                        </a>
-                                    </li>
-                                @endforeach
+                                        <li>
+                                            <a href="#">
+                                                <span class="icon pe-7s-angle-right"></span>
+                                                <span
+                                                    class="dx-widget-categories-category">{{ $articleCategory->name }}</span>
+                                                <span
+                                                    class="dx-widget-categories-badge">({{ $articleCategory->articles_count }})</span>
+                                            </a>
+                                        </li>
+                                    @endforeach
                                 </ul>
                             </div>
                             <div class="dx-widget dx-box dx-box-decorated">
                                 <div class="dx-widget-title"> Latest Articles </div>
-                                <ul class="dx-widget-articles">
-                                    {{-- @foreach ($articles as $article)
-                                        <li>
-                                            <a href="{{ route('article.show', $article->id) }}">
-                                                <span class="dx-widget-link-text">{{ $article->title }}</span>
-                                                <span class="dx-widget-link-date">{{ $article->created_at->format('d M Y') }}</span>
-                                            </a>
-                                        </li>
-                                    @endforeach --}}
-                                </ul>
+                                @foreach ($articles as $article)
+                                    <a href="" class="dx-widget-link">
+                                        <span class="dx-widget-link-text">{{ $article->title }}</span>
+                                        <span
+                                            class="dx-widget-link-date">{{ $article->created_at->format('d F Y') }}</span>
+                                    </a>
+                                @endforeach
                             </div>
                         </div>
                     </div>

@@ -19,7 +19,7 @@ class UserTicketController extends Controller
         
         $user = Auth::user();
         $remainingTickets = auth()->user();
-        $tickets = Ticket::where('user_id', $user->id)->get();
+        $tickets = Ticket::where('user_id', $user->id)->orderBy('created_at', 'desc')->get();
     
         return view('user.tickets.ticket', compact('tickets', 'remainingTickets'));
     }
@@ -47,16 +47,17 @@ class UserTicketController extends Controller
 
         $ticket = Ticket::create([
             'user_id' => $user->id,
+            'category' => $request->category,
             'title' => $request->title,
             'message' => $request->message,
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
         ]);
-        $ticket->categories()->create(
-            [
-                'name' => $request->category,
-                'slug' => \Illuminate\Support\Str::slug($request->category)
-            ]);
+        // $ticket->categories()->create(
+        //     [
+        //         'name' => $request->category,
+        //         'slug' => \Illuminate\Support\Str::slug($request->category)
+        //     ]);
         $message = Message::create([
             'user_id' =>  $user->id,
             'ticket_id' => $ticket->id,

@@ -108,6 +108,16 @@
                 </li>
 
                 <li class="nav-item menu-close">
+                    <a href="{{ route('admin.ticket_category.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-tags"></i>
+                        <p>
+                            TICKET CATEGORY
+                            <span class="badge badge-warning right">6</span>
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item menu-close">
                     <a href="{{ route('admin.article.index') }}" class="nav-link">
                         <i class="nav-icon fas fa-newspaper"></i>
                         <p>
@@ -121,7 +131,7 @@
                     <a href="{{ route('admin.article_category.index') }}" class="nav-link">
                         <i class="nav-icon fas fa-list"></i>
                         <p>
-                            ARTICLE CATEGORIES
+                            ARTICLE CATEGORY
                             <span class="badge badge-warning right">6</span>
                         </p>
                     </a>

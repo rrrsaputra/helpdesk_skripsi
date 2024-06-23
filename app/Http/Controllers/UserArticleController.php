@@ -40,10 +40,11 @@ class UserArticleController extends Controller
      */
     public function show(string $id)
     {
+        $articles = Article::orderBy('created_at', 'desc')->get();
         $article = Article::find($id);
         $articleCategories = ArticleCategory::all();
 
-        return view('user.articles.single-article', compact('article', 'articleCategories'));
+        return view('user.articles.single-article', compact('article', 'articleCategories', 'articles'));
     }
 
     /**

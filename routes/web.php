@@ -27,6 +27,7 @@ use App\Http\Controllers\UserScheduledCallController;
 use App\Http\Controllers\AdminScheduledCallController;
 use App\Http\Controllers\AgentScheduledCallController;
 use App\Http\Controllers\AdminArticleCategoryController;
+use App\Http\Controllers\AdminTicketCategoryController;
 
 Route::get('/', [HomeController::class, 'index'])
     ->name('home');
@@ -79,6 +80,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('/admin/article-category', AdminArticleCategoryController::class)->names('admin.article_category');
 
     Route::resource('/admin/feedback', AdminFeedbackController::class)->names('admin.feedback');
+
+    Route::resource('/admin/ticket-category', AdminTicketCategoryController::class)->names('admin.ticket_category');
+    Route::get('admin/ticket_category/{id}/show_visible', [AdminTicketCategoryController::class, 'show_visible'])->name('admin.ticket_category.show_visible');
+    Route::get('admin/ticket_category/{id}/hide_visible', [AdminTicketCategoryController::class, 'hide_visible'])->name('admin.ticket_category.hide_visible');
 
     
     Route::get('/admin/dashboard', function () {
