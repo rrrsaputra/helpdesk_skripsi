@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
 use Illuminate\Http\Request;
 use App\Models\ScheduledCall;
 use Illuminate\Support\Facades\Auth;
@@ -15,8 +16,9 @@ class UserScheduledCallController extends Controller
     {
         $user = Auth::user();
         $scheduledCalls = ScheduledCall::where('user_id', $user->id)->orderBy('updated_at', 'desc')->get();
+        $articles = Article::all();
 
-        return view('user.scheduled_calls.scheduled_call', compact('scheduledCalls'));
+        return view('user.scheduled_calls.scheduled_call', compact('scheduledCalls', 'articles'));
     }
 
     /**
@@ -51,9 +53,9 @@ class UserScheduledCallController extends Controller
      */
     public function show(string $id)
     {
-    $scheduledCall = ScheduledCall::find($id);
+        $scheduledCall = ScheduledCall::find($id);
 
-    return view('user.scheduled_calls.single-scheduled-call', compact('scheduledCall'));
+        return view('user.scheduled_calls.single-scheduled-call', compact('scheduledCall'));
     }
 
     /**

@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
 use Illuminate\Http\Request;
-use Coderflex\LaravelTicket\Models\Ticket;
-use Coderflex\LaravelTicket\Models\Category;
-use Coderflex\LaravelTicket\Models\Label;
-use Coderflex\LaravelTicket\Models\Message;
 use Illuminate\Support\Facades\Auth;
+use Coderflex\LaravelTicket\Models\Label;
+use Coderflex\LaravelTicket\Models\Ticket;
+use Coderflex\LaravelTicket\Models\Message;
+use Coderflex\LaravelTicket\Models\Category;
 
 class UserTicketController extends Controller
 {
@@ -19,9 +20,10 @@ class UserTicketController extends Controller
         $user = Auth::user();
         $remainingTickets = $user;
         $tickets = Ticket::where('user_id', $user->id)->orderBy('created_at', 'desc')->get();
+        $articles = Article::all();
         // $ticketCategory = Category::whereIn('id', $tickets->pluck('category_id'))->get();
 
-        return view('user.tickets.ticket', compact('tickets', 'remainingTickets'));
+        return view('user.tickets.ticket', compact('tickets', 'remainingTickets', 'articles'));
     }
     /**
      * Show the form for creating a new resource.
