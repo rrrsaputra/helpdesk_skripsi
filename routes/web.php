@@ -49,7 +49,6 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::resource('/tickets', UserTicketController::class)->names('tickets');
     Route::resource('/scheduled-calls', UserScheduledCallController::class)->names('scheduled_call');
 
-
     // Route::get('/user/scheduled_calls/{id}', [UserScheduledCallController::class, 'show'])->name('user.scheduled_calls.single-scheduled-call');
     
     Route::get('/ticket-submit', function () {
@@ -63,6 +62,8 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/scheduled-call-submit', function () {
         return view('user.scheduled_calls.scheduled_call_submit');
     })->name('scheduled_call_submit');
+
+    
 });
 
 Route::middleware(['auth', 'role:admin'])->group(function () {

@@ -18,9 +18,10 @@ class UserTicketController extends Controller
     {
         
         $user = Auth::user();
+        $remainingTickets = auth()->user();
         $tickets = Ticket::where('user_id', $user->id)->get();
     
-        return view('user.tickets.ticket', compact('tickets'));
+        return view('user.tickets.ticket', compact('tickets', 'remainingTickets'));
     }
 
     /**

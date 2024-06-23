@@ -17,6 +17,11 @@
                         <a href="{{ route('ticket-submit') }}" class="dx-btn dx-btn-md">Submit a ticket</a>
                     </div>
                 </div>
+
+                <div class="col-auto mb-10">
+                    <p class="mb-0">Remaining Tickets: {{ $remainingTickets->ticket_quota }}</p>
+                </div>
+
                 @foreach($tickets as $ticket)
                 <a href=" {{ route('user.ticket.show', $ticket->id) }} " class="dx-ticket-item dx-ticket-new dx-ticket-open dx-block-decorated">
                     
