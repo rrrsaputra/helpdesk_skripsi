@@ -35,6 +35,9 @@
                     <span class="dx-ticket-status">{{ $ticket->status }}</span>
                 </a>
                 @endforeach
+                <div class="mt-20">
+                    {{ $tickets->links() }}
+                </div>
                 
             </div>
         </div>
