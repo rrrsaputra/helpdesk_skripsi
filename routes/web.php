@@ -89,6 +89,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('admin/ticket_category/{id}/show_visible', [AdminTicketCategoryController::class, 'show_visible'])->name('admin.ticket_category.show_visible');
     Route::get('admin/ticket_category/{id}/hide_visible', [AdminTicketCategoryController::class, 'hide_visible'])->name('admin.ticket_category.hide_visible');
 
+    Route::resource('/admin/ticket', AdminTicketController::class)->names('admin.ticket');
+
     
     Route::get('/admin/dashboard', function () {
         return view('admin.dashboard');
@@ -111,6 +113,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/agent/ticket/unassign/{ticket}', [AgentTicketController::class, 'unassign'])->name('agent.ticket.unassign');
     Route::patch('/agent/ticket/close/{ticket}', [AgentTicketController::class, 'close'])->name('agent.ticket.close');
     Route::patch('/agent/ticket/reopen/{ticket}', [AgentTicketController::class, 'reopen_ticket'])->name('agent.ticket.reopen_ticket');
+
+    Route::patch('/admin/ticket/unassign/{ticket}', [AdminTicketController::class, 'unassign'])->name('admin.ticket.unassign');
+    Route::patch('/admin/ticket/close/{ticket}', [AdminTicketController::class, 'close'])->name('admin.ticket.close');
+    Route::patch('/admin/ticket/reopen/{ticket}', [AdminTicketController::class, 'reopen_ticket'])->name('admin.ticket.reopen_ticket');
 
 });
 
