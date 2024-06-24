@@ -46,7 +46,7 @@
                     </a>
                 </li>
 
-                <li class="nav-item menu-close">
+                <li class="nav-item menu-open">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-inbox"></i>
                         <p>
@@ -57,29 +57,37 @@
                     </a>
                     <ul class="nav nav-treeview" style="display: block;">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
+                            <a href="{{ route('admin.ticket.index', ['inbox' => 'unassigned']) }}" class="nav-link {{ request()->input('inbox') == 'unassigned' ? 'active' : '' }} {{ request()->input('inbox') == '' ? 'active' : '' }}">
+                                @if(request()->has('inbox') && request()->input('inbox') == 'unassigned')
+                                    <i class="fas fa-circle nav-icon"></i>
+                                @elseif(request()->input('inbox') == '')
+                                    <i class="fas fa-circle nav-icon"></i>
+                                @else
+                                    <i class="far fa-circle nav-icon"></i>
+                                @endif
                                 <p>Unassigned</p>
                                 <span class="badge badge-info right">3</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Mine</p>
+                            <a href="{{ route('admin.ticket.index', ['inbox' => 'assigned']) }}" class="nav-link {{ request()->input('inbox') == 'assigned' ? 'active' : '' }} ">
+                                @if(request()->has('inbox') && request()->input('inbox') == 'assigned')
+                                    <i class="fas fa-circle nav-icon"></i>
+                                @else
+                                    <i class="far fa-circle nav-icon"></i>
+                                @endif
+                                <p>Assigned To</p>
                                 <span class="badge badge-info right">3</span>
                             </a>
                         </li>
+                        
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Assigned</p>
-                                <span class="badge badge-info right">3</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
+                            <a href="{{ route('admin.ticket.index', ['inbox' => 'closed']) }}" class="nav-link {{ request()->input('inbox') == 'closed' ? 'active' : '' }} " >
+                                @if(request()->has('inbox') && request()->input('inbox') == 'closed')
+                                    <i class="fas fa-circle nav-icon"></i>
+                                @else
+                                    <i class="far fa-circle nav-icon"></i>
+                                @endif
                                 <p>Closed</p>
                                 <span class="badge badge-info right">3</span>
                             </a>
