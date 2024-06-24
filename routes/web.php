@@ -29,6 +29,7 @@ use App\Http\Controllers\AgentScheduledCallController;
 use App\Http\Controllers\AdminTicketCategoryController;
 use App\Http\Controllers\UserArticleCategoryController;
 use App\Http\Controllers\AdminArticleCategoryController;
+use App\Http\Controllers\DropzoneController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 // Route::get('/category/{slug}', [HomeController::class, 'show'])->name('category.show');
@@ -130,9 +131,15 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::post('/dropzone/upload', [DropzoneController::class, 'upload'])->name('dropzone.upload');
+    Route::post('/dropzone/remove', [DropzoneController::class, 'remove'])->name('dropzone.remove');
+
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+
 
 require __DIR__ . '/auth.php';

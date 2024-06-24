@@ -25,7 +25,7 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-xl-7">
-                        <form action="{{ route('user.ticket.store') }}" method="POST" class="dx-form">
+                        <form action="{{ route('user.ticket.store') }}" method="POST" class="dx-form" enctype="multipart/form-data">
                             @csrf
                             <div class="dx-box dx-box-decorated">
                                 <div class="dx-box-content">
@@ -45,7 +45,7 @@
                                         <label for="category" class="mnt-7">Ticket Category</label>
                                         <select class="form-control form-control-style-2" id="category" name="category">
                                             @foreach ($ticketCategories as $ticketCategory)
-                                                <option value="{{ $ticketCategory->name }}">{{ $ticketCategory->name }}
+                                                <option value="{{ $ticketCategory->id }}">{{ $ticketCategory->name }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -62,6 +62,66 @@
                                     </div>
                                     <div class="dx-form-group">
                                         <label class="mnt-7">Description</label>
+
+                                        <div class="dx-box-content">
+                                            <div class="dx-form-group">
+                                                <label for="files" class="mnt-7">Attach Files</label>
+                                                <div class="dropzone" id="fileDropzone"></div>
+                                            </div>
+                                        </div>
+                                        
+                                        <script>
+                                            document.addEventListener('DOMContentLoaded', function() {
+                                                Dropzone.autoDiscover = false;
+                                                var uploadedFiles = [];
+                                                var removedFiles = [];
+                                                var fileDropzone = new Dropzone("#fileDropzone", {
+                                                    url: '{{ route('dropzone.upload') }}',
+                                                    maxFiles: 5,
+                                                    maxFilesize: 5, // Ukuran maksimal file dalam MB
+                                                    acceptedFiles: null, // Mengizinkan semua jenis file
+                                                    addRemoveLinks: true,
+                                                    init: function() {
+                                                        this.on("success", function(file, response) {
+                                                            var fileLink = document.createElement('a');
+                                                            fileLink.href = response;
+                                                            fileLink.textContent = file.name;
+                                                            fileLink.target = '_blank';
+                                                            file.previewElement.appendChild(fileLink);
+                                                            uploadedFiles.push(response);
+                                                            console.log('File uploaded to: ' + response);
+                                                            console.log('Updated uploadedFiles: ', uploadedFiles);
+                                                        });
+
+                                                        this.on("removedfile", function(file) {
+                                                            if (file.previewElement) {
+                                                                file.previewElement.remove();
+                                                            }
+                                                            var fileIndex = uploadedFiles.indexOf(file.upload.filename);
+                                                            if (fileIndex > -1) {
+                                                                removedFiles.push(uploadedFiles[fileIndex]);
+                                                                uploadedFiles.splice(fileIndex, 1);
+                                                            }
+                                                            console.log('File removed: ' + file.upload.filename);
+                                                            console.log('Updated removedFiles: ', removedFiles);
+                                                        });
+                                                    }
+                                                });
+                                        
+                                                fileDropzone.on("sending", function(file, xhr, formData) {
+                                                    var formElements = document.querySelector('form').elements;
+                                                    for (var i = 0; i < formElements.length; i++) {
+                                                        formData.append(formElements[i].name, formElements[i].value);
+                                                    }
+                                                });
+
+                                                fileDropzone.on("complete", function(file) {
+                                                    console.log(file);
+                                                });
+                                                
+                                            });
+                                        </script>
+
                                         <div class="dx-editors" data-editor-height="150" data-editor-maxheight="250"
                                             style="min-height: 150px; max-height: 250px;">
                                         </div>
