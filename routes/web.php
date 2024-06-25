@@ -11,6 +11,7 @@ use Coderflex\LaravelTicket\Models\Label;
 use Coderflex\LaravelTicket\Models\Ticket;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TriggerController;
 use App\Http\Controllers\DropzoneController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\UserHomeController;
@@ -21,8 +22,10 @@ use App\Http\Controllers\AgentTicketController;
 use App\Http\Controllers\UserArticleController;
 use Spatie\Permission\Middleware\RoleMiddleware;
 use App\Http\Controllers\AdminFeedbackController;
+use App\Http\Controllers\AdminTriggersController;
 use App\Http\Controllers\AgentMessagesController;
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AgentDashboardController;
 use App\Http\Controllers\UserTicketQuotaController;
 use App\Http\Controllers\AdminBusinessHourController;
 use App\Http\Controllers\UserScheduledCallController;
@@ -31,8 +34,6 @@ use App\Http\Controllers\AgentScheduledCallController;
 use App\Http\Controllers\AdminTicketCategoryController;
 use App\Http\Controllers\UserArticleCategoryController;
 use App\Http\Controllers\AdminArticleCategoryController;
-use App\Http\Controllers\AdminTriggersController;
-use App\Http\Controllers\TriggerController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 // Route::get('/category/{slug}', [HomeController::class, 'show'])->name('category.show');
@@ -105,8 +106,9 @@ Route::middleware('auth','role:agent')->group(function () {
     Route::get('/agent', [AgentController::class, 'index'])->name('agent.index');
     Route::get('/notifications/read/{id}', [AgentController::class, 'markAsRead'])->name('notifications.read');
 
-
     Route::resource('/agent/schedule-call', AgentScheduledCallController::class)->names('agent.scheduled_call');
+
+    Route::get('/agent/dashboard', [AgentDashboardController::class, 'index'])->name('agent.dashboard.index');
 
 });
 
@@ -132,7 +134,7 @@ Route::get('/dashboard', function () {
         return redirect()->route('admin.dashboard.index');
     } 
     else if (Auth::user()->roles->pluck('name')[0] == 'agent') {
-        return redirect()->route('agent.index');
+        return redirect()->route('agent.dashboard.index');
     } 
     else if (Auth::user()->roles->pluck('name')[0] == 'user') {
         return redirect()->route('home');

@@ -36,6 +36,14 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                 data-accordion="false">
+                <li class="nav-item menu-close">
+                    <a href="{{ route('agent.dashboard.index') }}" class="nav-link {{ request()->routeIs('agent.dashboard.index') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            DASHBOARD
+                        </p>
+                    </a>
+                </li>
                 
                 <li class="nav-item menu-close">
                     <a href="#" class="nav-link {{ request()->routeIs('agent.index') ? 'active' : ''}}">
@@ -90,7 +98,6 @@
                         <i class="nav-icon fas fa-phone-alt"></i>
                         <p>
                             SCHEDULED CALLS
-                            <span class="badge badge-warning right">6</span>
                         </p>
                     </a>
                 </li>

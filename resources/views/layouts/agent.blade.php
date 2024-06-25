@@ -88,6 +88,8 @@
 <!-- AdminLTE App -->
 <script src="{{asset('AdminLTE-3.2.0/dist/js/adminlte.min.js')}}"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <!-- Page specific script -->
 <script>
   $(function () {

@@ -1,7 +1,7 @@
-@extends('layouts.admin')
+@extends('layouts.agent')
 
 @section('header')
-    <x-admin.header title="Dashboard" />
+    <x-agent.header title="Dashboard" />
 @endsection
 
 @section('content')
@@ -10,7 +10,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <button id="save-pdf" class="btn btn-danger mb-3">Save as PDF</button>
-                    <form id="date-range-form" method="GET" action="{{ route('admin.dashboard.index') }}" class="mb-3">
+                    <form id="date-range-form" method="GET" action="{{ route('agent.dashboard.index') }}" class="mb-3">
                         <div class="form-row">
                             <div class="form-group col-md-12 d-flex flex-wrap align-items-end">
                                 <div class="col-md-5 mb-2">
@@ -74,9 +74,9 @@
                         <div class="icon">
                             <i class="ion ion-person-add"></i>
                         </div>
-
                     </div>
                 </div>
+                
                 <div class="col-lg-3 col-6">
                     <div class="small-box bg-danger">
                         <div class="inner">
@@ -86,7 +86,6 @@
                         <div class="icon">
                             <i class="ion ion-pie-graph"></i>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -223,6 +222,7 @@
                                 <canvas id="tickets-per-status-chart" height="300" style="height: 300px;"></canvas>
                             </div>
                         </div>
+                        
                         <script>
                             document.addEventListener('DOMContentLoaded', function() {
                                 var ctx = document.getElementById('tickets-per-status-chart').getContext('2d');
@@ -280,7 +280,7 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($agentPerformance as $performance)
-                                        <tr>
+                                        <tr @if($performance['name'] == Auth::user()->name) class="table-info" @endif>
                                             <td>{{ $performance['name'] }}</td>
                                             <td>{{ $performance['total'] }}</td>
                                             <td>{{ $performance['open'] }}</td>
@@ -304,7 +304,7 @@
 @endsection
 
 @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
