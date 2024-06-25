@@ -129,12 +129,13 @@
 
                                     @empty
                                         <tr>
-                                            <td colspan="8">No articles available</td>
+                                            <td colspan="8">No ticket categories found</td>
                                             <!-- Updated colspan to 8 to include Actions column -->
                                         </tr>
                                     @endforelse
                                 </tbody>
                             </table>
+                            {{ $ticketCategories->links() }}
                         </div>
                     </div>
                 </div>

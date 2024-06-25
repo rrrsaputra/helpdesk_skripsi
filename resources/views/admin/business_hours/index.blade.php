@@ -89,13 +89,14 @@
                                         <!-- Modal -->
                                     @empty
                                         <tr>
-                                            <td colspan="8">No business hour available
+                                            <td colspan="8">No business hour found
                                             </td>
                                             <!-- Updated colspan to 8 to include Actions column -->
                                         </tr>
                                     @endforelse
                                 </tbody>
                             </table>
+                            {{ $businessHours->links() }}
                         </div>
                     </div>
                 </div>

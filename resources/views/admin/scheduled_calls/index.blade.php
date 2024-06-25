@@ -80,7 +80,7 @@
                                                     @endif
                                                 </td>
                                             @endforeach
-                                      
+
                                             <td> <!-- Added Actions buttons -->
                                                 <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#assignToModal-{{ $row['id'] }}">Assign</button>
                                                 <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#rejectReasonModal-{{ $row['id'] }}">Reject</button>
@@ -146,12 +146,13 @@
                                         </form>
                                     @empty
                                         <tr>
-                                            <td colspan="9">No articles available</td>
+                                            <td colspan="9">No scheduled calls available</td>
                                             <!-- Updated colspan to 9 to include Actions column -->
                                         </tr>
                                     @endforelse
                                 </tbody>
                             </table>
+                            {{ $scheduledCalls->links() }}
                         </div>
                     </div>
                 </div>

@@ -15,9 +15,10 @@ class AgentScheduledCallController extends Controller
     
     public function index()
     {
+        $paginationCount=10;
         $notifications = Auth::user()->notifications;
         $agent = Auth::user();
-        $scheduledCalls = ScheduledCall::where('assigned_to', $agent->id)->get();
+        $scheduledCalls = ScheduledCall::where('assigned_to', $agent->id)->paginate($paginationCount);
         return view('agent.scheduled_calls.index', compact('scheduledCalls','notifications'));
     }
     /**

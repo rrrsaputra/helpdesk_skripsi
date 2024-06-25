@@ -55,9 +55,6 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Scheduled Calls</h3>
-                    </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table id="example2" class="table table-hover">
@@ -138,12 +135,13 @@
                                         </form>
                                         @empty
                                         <tr>
-                                            <td colspan="9">No articles available</td>
+                                            <td colspan="9">No scheduled calls available</td>
                                             <!-- Updated colspan to 9 to include Actions column -->
                                         </tr>
                                     @endforelse
                                 </tbody>
                             </table>
+                            {{ $scheduledCalls->links() }}
                         </div>
                     </div>
                 </div>

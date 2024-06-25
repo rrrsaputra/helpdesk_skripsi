@@ -12,7 +12,8 @@ class AdminBusinessHourController extends Controller
      */
     public function index()
     {
-        $businessHours = BusinessHour::all();
+        $paginationCount = 20;
+        $businessHours = BusinessHour::paginate($paginationCount);
         return view('admin.business_hours.index', compact('businessHours'));
     }
 
