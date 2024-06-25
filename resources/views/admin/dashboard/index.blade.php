@@ -12,26 +12,35 @@
                     <button id="save-pdf" class="btn btn-danger mb-3">Save as PDF</button>
                     <form id="date-range-form" method="GET" action="{{ route('admin.dashboard.index') }}" class="mb-3">
                         <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="start_date">Start Date:</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                            <div class="form-group col-md-12 d-flex flex-wrap align-items-end">
+                                <div class="col-md-5 mb-2">
+                                    <label for="start_date">Start Date:</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                        </div>
+                                        <input type="date" id="start_date" name="start_date" class="form-control"
+                                            value="{{ request('start_date') ?? now()->subWeek()->startOfDay()->format('Y-m-d') }}"
+                                            required>
                                     </div>
-                                    <input type="date" id="start_date" name="start_date" class="form-control" required>
                                 </div>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="end_date">End Date:</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                <div class="col-md-5 mb-2">
+                                    <label for="end_date">End Date:</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                        </div>
+                                        <input type="date" id="end_date" name="end_date" class="form-control"
+                                            value="{{ request('end_date') ?? now()->endOfDay()->format('Y-m-d') }}"
+                                            required>
                                     </div>
-                                    <input type="date" id="end_date" name="end_date" class="form-control" required>
+                                </div>
+                                <div class="col-md-2 mb-2">
+                                    <button type="submit" class="btn btn-primary" style="width: 103%">Filter</button>
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Filter</button>
+
                     </form>
                 </div>
                 <div class="col-lg-3 col-6">
@@ -71,8 +80,8 @@
                 <div class="col-lg-3 col-6">
                     <div class="small-box bg-danger">
                         <div class="inner">
-                            <h3>65</h3>
-                            <p>Average Response Time</p>
+                            <h3>{{ $agents->count() }}</h3>
+                            <p>Total Agents</p>
                         </div>
                         <div class="icon">
                             <i class="ion ion-pie-graph"></i>
@@ -264,6 +273,7 @@
                                 <thead>
                                     <tr>
                                         <th>Agent</th>
+                                        <th>Total Tickets</th>
                                         <th>Open Tickets</th>
                                         <th>Closed Tickets</th>
                                     </tr>
@@ -272,12 +282,16 @@
                                     @foreach ($agentPerformance as $performance)
                                         <tr>
                                             <td>{{ $performance['name'] }}</td>
+                                            <td>{{ $performance['total'] }}</td>
                                             <td>{{ $performance['open'] }}</td>
                                             <td>{{ $performance['closed'] }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
+                            <div class="mt-20">
+                                {{ $agents->links() }}
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -290,41 +304,42 @@
 @endsection
 
 @push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    <script>
+        document.getElementById('save-pdf').addEventListener('click', function() {
+            const {
+                jsPDF
+            } = window.jspdf;
+
+            html2canvas(document.querySelector('.container-fluid')).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const imgWidth = 210;
+                const pageHeight = 295;
+                const imgHeight = canvas.height * imgWidth / canvas.width;
+                let heightLeft = imgHeight;
+                let position = 0;
+
+                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+
+                while (heightLeft >= 0) {
+                    position = heightLeft - imgHeight;
+                    pdf.addPage();
+                    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+                }
+                pdf.save('dashboard.pdf');
+            });
+        });
+    </script>
+
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
         $(function() {
             $(".datepicker").datepicker({
                 dateFormat: "yy-mm-dd"
-            });
-        });
-    </script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
-    <script>
-        document.getElementById('save-pdf').addEventListener('click', function() {
-            html2canvas(document.body, {
-                onrendered: function(canvas) {
-                    var imgData = canvas.toDataURL('image/png');
-                    var pdf = new jsPDF('p', 'mm', 'a4');
-                    var imgWidth = 210;
-                    var pageHeight = 295;
-                    var imgHeight = canvas.height * imgWidth / canvas.width;
-                    var heightLeft = imgHeight;
-
-                    var position = 0;
-
-                    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-                    heightLeft -= pageHeight;
-
-                    while (heightLeft >= 0) {
-                        position = heightLeft - imgHeight;
-                        pdf.addPage();
-                        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-                        heightLeft -= pageHeight;
-                    }
-                    pdf.save('dashboard.pdf');
-                }
             });
         });
     </script>
