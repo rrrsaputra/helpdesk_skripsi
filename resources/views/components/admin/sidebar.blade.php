@@ -41,7 +41,6 @@
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             DASHBOARD
-                            <span class="badge badge-warning right">6</span>
                         </p>
                     </a>
                 </li>
@@ -52,7 +51,6 @@
                         <p>
                             INBOX
                             <i class="fas fa-angle-left right"></i>
-                            <span class="badge badge-warning right">6</span>
                         </p>
                     </a>
                     <ul class="nav nav-treeview" style="display: block;">
@@ -99,7 +97,6 @@
                         <i class="nav-icon fas fa-phone-alt"></i>
                         <p>
                             SCHEDULED CALLS
-                            <span class="badge badge-warning right">6</span>
                         </p>
                     </a>
                 </li>
@@ -109,7 +106,6 @@
                         <i class="nav-icon fas fa-ticket-alt"></i>
                         <p>
                             TICKET QUOTA
-                            <span class="badge badge-warning right">6</span>
                         </p>
                     </a>
                 </li>
@@ -119,7 +115,6 @@
                         <i class="nav-icon fas fa-tags"></i>
                         <p>
                             TICKET CATEGORY
-                            <span class="badge badge-warning right">6</span>
                         </p>
                     </a>
                 </li>
@@ -129,7 +124,6 @@
                         <i class="nav-icon fas fa-newspaper"></i>
                         <p>
                             ARTICLE
-                            <span class="badge badge-warning right">6</span>
                         </p>
                     </a>
                 </li>
@@ -139,7 +133,6 @@
                         <i class="nav-icon fas fa-list"></i>
                         <p>
                             ARTICLE CATEGORY
-                            <span class="badge badge-warning right">6</span>
                         </p>
                     </a>
                 </li>
@@ -149,7 +142,6 @@
                         <i class="nav-icon fas fa-comment"></i>
                         <p>
                             FEEDBACK
-                            <span class="badge badge-warning right">6</span>
                         </p>
                     </a>
                 </li>
@@ -159,11 +151,18 @@
                         <i class="nav-icon fas fa-business-time"></i>
                         <p>
                             BUSINESS HOURS
-                            <span class="badge badge-warning right">6</span>
                         </p>
                     </a>
                 </li>
 
+                <li class="nav-item menu-close">
+                    <a href="{{ route('admin.triggers.index') }}" class="nav-link {{ request()->routeIs('admin.triggers.index') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-bell"></i>
+                        <p>
+                            Triggers
+                        </p>
+                    </a>
+                </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

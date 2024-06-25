@@ -9,8 +9,8 @@ class AgentController extends Controller
 {
     public function index(Request $request)
     {   
-
         
+        $notifications = $request->user()->notifications;
         $inbox = $request->query('inbox', 'unassigned'); // 'default_value' can be replaced with a default value if 'inbox' is not provided
         if (is_null($inbox)) {
             // Redirect to the default URL with 'inbox=unassigned'
@@ -21,20 +21,30 @@ class AgentController extends Controller
 
         if ($inbox == 'unassigned') {
             $tickets = Ticket::opened()->where('assigned_to', null)->paginate($paginationCount); // Fixed pagination
-            return view('agent.index', compact('tickets', 'inbox'));
+            return view('agent.index', compact('tickets', 'inbox','notifications'));
         }
         else if ($inbox == 'mine') {
             $tickets = Ticket::opened()->where('assigned_to', Auth::id())->paginate($paginationCount); // Fixed pagination
-            return view('agent.index', compact('tickets', 'inbox'));
+            return view('agent.index', compact('tickets', 'inbox','notifications'));
         } else if ($inbox == 'assigned') {
             $tickets = Ticket::opened()->whereNotNull('assigned_to')->paginate($paginationCount); // Fixed pagination
-            return view('agent.index', compact('tickets', 'inbox'));
+            return view('agent.index', compact('tickets', 'inbox','notifications'));
         } else if ($inbox == 'closed') {
             $tickets = Ticket::closed()->paginate($paginationCount); // Fixed pagination
-            return view('agent.index', compact('tickets', 'inbox'));
+            return view('agent.index', compact('tickets', 'inbox','notifications'));
         }
 
         // Handle other cases or default view
         return view('agent.index');
+    }
+    public function markAsRead(Request $request, $id)
+    {
+        $notification = $request->user()->notifications()->find($id);
+
+        if ($notification) {
+            $notification->markAsRead();
+        }
+
+        return redirect()->back();
     }
 }

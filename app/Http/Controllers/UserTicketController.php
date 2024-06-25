@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\TicketCreated;
+use App\Events\TicketSent;
 use App\Models\Article;
-use App\Models\Notification;
+
 use App\Models\User;
 use App\Notifications\TicketNotification;
 use Illuminate\Http\Request;
@@ -12,6 +14,9 @@ use Coderflex\LaravelTicket\Models\Label;
 use Coderflex\LaravelTicket\Models\Ticket;
 use Coderflex\LaravelTicket\Models\Message;
 use Coderflex\LaravelTicket\Models\Category;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
+
 
 class UserTicketController extends Controller
 {
@@ -73,7 +78,20 @@ class UserTicketController extends Controller
             $query->where('name', 'agent');
         })->get();
   
-        #Notification::send($agents, new TicketNotification($ticket));
+        
+        foreach ($agents as $agent) {
+            $notification = [
+                'id' => (string) \Illuminate\Support\Str::uuid(),
+                'type' => 'App\Notifications\TicketNotification',
+                'notifiable_type' => 'App\Models\User',
+                'notifiable_id' => $agent->id,
+                'data' => json_encode(['ticket_id' => $ticket->id, 'message' => 'A new ticket has been created.']),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+            DB::table('notifications')->insert($notification);
+        }
+        event(new TicketSent($ticket));
         // Kurangi ticket quota user
         if (!$this->decrementTicketQuota($user)) {
             return redirect()->back()->with('error', 'You do not have enough ticket quota to create a new ticket. Please contact admin.');

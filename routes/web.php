@@ -31,10 +31,14 @@ use App\Http\Controllers\AgentScheduledCallController;
 use App\Http\Controllers\AdminTicketCategoryController;
 use App\Http\Controllers\UserArticleCategoryController;
 use App\Http\Controllers\AdminArticleCategoryController;
+use App\Http\Controllers\AdminTriggersController;
+use App\Http\Controllers\TriggerController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 // Route::get('/category/{slug}', [HomeController::class, 'show'])->name('category.show');
-    
+
+Route::get('/trigger', [TriggerController::class, 'index'])->name('trigger');
+
 Route::get('/messages', [HomeController::class, 'messages'])
     ->name('messages');
 
@@ -92,11 +96,16 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::resource('/admin/ticket', AdminTicketController::class)->names('admin.ticket');
 
+    Route::resource('/admin/triggers', AdminTriggersController::class)->names('admin.triggers');
+    
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard.index');
 });
 
 Route::middleware('auth','role:agent')->group(function () {
     Route::get('/agent', [AgentController::class, 'index'])->name('agent.index');
+    Route::get('/notifications/read/{id}', [AgentController::class, 'markAsRead'])->name('notifications.read');
+
+
     Route::resource('/agent/schedule-call', AgentScheduledCallController::class)->names('agent.scheduled_call');
 
 });
