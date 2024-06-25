@@ -45,7 +45,7 @@
                                         <label for="category" class="mnt-7">Ticket Category</label>
                                         <select class="form-control form-control-style-2" id="category" name="category">
                                             @foreach ($ticketCategories as $ticketCategory)
-                                                <option value="{{ $ticketCategory->id }}">{{ $ticketCategory->name }}
+                                                <option value="{{ $ticketCategory->name }}">{{ $ticketCategory->name }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -146,23 +146,23 @@
                                 <div class="dx-box-content">
                                     <div class="dx-form-group">
                                         <div class="row align-items-center">
-                                            <div class="col-md-6">
+                                            <div class="col-12 col-md-6 mb-20">
                                                 <label for="latitude" class="mnt-7">Lat:</label>
                                                 <input type="text" class="form-control form-control-style-2"
                                                     id="latitude" placeholder="Enter Latitude" name='latitude'>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-12 col-md-6 mb-20">
                                                 <label for="longitude" class="mnt-7">Long:</label>
                                                 <input type="text" class="form-control form-control-style-2"
                                                     id="longitude" placeholder="Enter Longitude" name='longitude'>
                                             </div>
                                         </div>
                                         <div class="row align-items-center mt-3">
-                                            <div class="col-md-6">
+                                            <div class="col-12 col-md-6 mb-20">
                                                 <button type="button" class="btn btn-primary w-100"
                                                     id="check_location">Check Location</button>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-12 col-md-6 mb-20">
                                                 <button type="button" class="btn btn-primary w-100" id="get_location">Get
                                                     Current Location</button>
                                             </div>

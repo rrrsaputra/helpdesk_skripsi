@@ -18,7 +18,7 @@
     <meta name="description" content="Amdesk - Help Center HTML template for your digital products">
     <meta name="keywords" content="helpdesk, forum, template, HTML template, responsive, clean">
     <meta name="author" content="nK">
-    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+    <link rel="icon" type="image/png" href="{{ asset('image/logoeq.png') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- START: Styles -->
     <!-- Google Fonts -->
@@ -53,11 +53,11 @@
     <script src="{{ asset('amdesk/dist/assets/vendor/jquery/dist/jquery.min.js') }}"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     
-    
 </head>
 
 
 <body>
+    
     
     <!--
     START: Navbar

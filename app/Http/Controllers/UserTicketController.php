@@ -73,7 +73,7 @@ class UserTicketController extends Controller
             $query->where('name', 'agent');
         })->get();
   
-        Notification::send($agents, new TicketNotification($ticket));
+        #Notification::send($agents, new TicketNotification($ticket));
         // Kurangi ticket quota user
         if (!$this->decrementTicketQuota($user)) {
             return redirect()->back()->with('error', 'You do not have enough ticket quota to create a new ticket. Please contact admin.');

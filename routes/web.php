@@ -11,6 +11,7 @@ use Coderflex\LaravelTicket\Models\Label;
 use Coderflex\LaravelTicket\Models\Ticket;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DropzoneController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\UserHomeController;
 use Coderflex\LaravelTicket\Models\Category;
@@ -21,6 +22,7 @@ use App\Http\Controllers\UserArticleController;
 use Spatie\Permission\Middleware\RoleMiddleware;
 use App\Http\Controllers\AdminFeedbackController;
 use App\Http\Controllers\AgentMessagesController;
+use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\UserTicketQuotaController;
 use App\Http\Controllers\AdminBusinessHourController;
 use App\Http\Controllers\UserScheduledCallController;
@@ -29,7 +31,6 @@ use App\Http\Controllers\AgentScheduledCallController;
 use App\Http\Controllers\AdminTicketCategoryController;
 use App\Http\Controllers\UserArticleCategoryController;
 use App\Http\Controllers\AdminArticleCategoryController;
-use App\Http\Controllers\DropzoneController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 // Route::get('/category/{slug}', [HomeController::class, 'show'])->name('category.show');
@@ -91,10 +92,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::resource('/admin/ticket', AdminTicketController::class)->names('admin.ticket');
 
-    
-    Route::get('/admin/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
+    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard.index');
 });
 
 Route::middleware('auth','role:agent')->group(function () {
@@ -122,7 +120,7 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/dashboard', function () {
     if (Auth::user()->roles->pluck('name')[0] == 'admin') {
-        return redirect()->route('admin.dashboard');
+        return redirect()->route('admin.dashboard.index');
     } 
     else if (Auth::user()->roles->pluck('name')[0] == 'agent') {
         return redirect()->route('agent.index');
