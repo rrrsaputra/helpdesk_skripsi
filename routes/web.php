@@ -29,11 +29,15 @@ use App\Http\Controllers\AgentScheduledCallController;
 use App\Http\Controllers\AdminTicketCategoryController;
 use App\Http\Controllers\UserArticleCategoryController;
 use App\Http\Controllers\AdminArticleCategoryController;
+use App\Http\Controllers\AdminTriggersController;
 use App\Http\Controllers\DropzoneController;
+use App\Http\Controllers\TriggerController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 // Route::get('/category/{slug}', [HomeController::class, 'show'])->name('category.show');
-    
+
+Route::get('/trigger', [TriggerController::class, 'index'])->name('trigger');
+
 Route::get('/messages', [HomeController::class, 'messages'])
     ->name('messages');
 
@@ -91,7 +95,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::resource('/admin/ticket', AdminTicketController::class)->names('admin.ticket');
 
-    
+    Route::resource('/admin/triggers', AdminTriggersController::class)->names('admin.triggers');
     Route::get('/admin/dashboard', function () {
         return view('admin.dashboard');
     })->name('admin.dashboard');
