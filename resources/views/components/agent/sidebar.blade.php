@@ -1,7 +1,7 @@
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="{{ route('agent.index') }}">
+    <a href="{{ route('agent.index', ['inbox' => 'unassigned']) }}">
         <img src="{{ asset('image/logoeq.png')}}" alt="AdminLTE Logo" width="200px" class="mt-3 mx-auto d-block mb-4">
         
     </a>
@@ -15,7 +15,7 @@
                     src="{{ asset('image/profil.png') }}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">Alexander Pierce</a>
+                <a href="#" class="d-block">{{ Auth::user()->name }}</a>
             </div>
         </div>
 
@@ -36,8 +36,9 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                 data-accordion="false">
-                <li class="nav-item menu-open">
-                    <a href="#" class="nav-link">
+                
+                <li class="nav-item menu-close">
+                    <a href="#" class="nav-link {{ request()->routeIs('agent.index') ? 'active' : ''}}">
                         <i class="nav-icon fas fa-inbox"></i>
                         <p>
                             INBOX
@@ -47,11 +48,10 @@
                     </a>
                     <ul class="nav nav-treeview" style="display: block;">
                         <li class="nav-item">
-                            <a href="{{ route('agent.index', ['inbox' => 'unassigned']) }}" class="nav-link {{ request()->input('inbox') == 'unassigned' ? 'active' : '' }} {{ request()->input('inbox') == '' ? 'active' : '' }}">
+                            <a href="{{ route('agent.index', ['inbox' => 'unassigned']) }}" class="nav-link {{ request()->input('inbox') == 'unassigned' ? 'active' : '' }}">
                                 @if(request()->has('inbox') && request()->input('inbox') == 'unassigned')
                                     <i class="fas fa-circle nav-icon"></i>
-                                @elseif(request()->input('inbox') == '')
-                                    <i class="fas fa-circle nav-icon"></i>
+                                
                                 @else
                                     <i class="far fa-circle nav-icon"></i>
                                 @endif
@@ -86,7 +86,7 @@
                 </li>
                 
                 <li class="nav-item menu-close">
-                    <a href="{{ route('agent.scheduled_call.index') }}" class="nav-link">
+                    <a href="{{ route('agent.scheduled_call.index') }}" class="nav-link {{ request()->routeIs('agent.scheduled_call.index') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-phone-alt"></i>
                         <p>
                             SCHEDULED CALLS
