@@ -56,8 +56,9 @@ class UserScheduledCallController extends Controller
     public function show(string $id)
     {
         $scheduledCall = ScheduledCall::find($id);
+        $articles = Article::orderBy('created_at', 'desc')->get();
 
-        return view('user.scheduled_calls.single-scheduled-call', compact('scheduledCall'));
+        return view('user.scheduled_calls.single-scheduled-call', compact('scheduledCall', 'articles'));
     }
 
     /**

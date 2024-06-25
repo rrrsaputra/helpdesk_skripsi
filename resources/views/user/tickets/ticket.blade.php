@@ -32,7 +32,7 @@
                             <p class="dx-ticket-paragraph mt-8" style="color: black">{{ strip_tags($ticket->message) }}</p>
                             <ul class="dx-ticket-info">
                                 <li>Created: {{ $ticket->updated_at->format('d M Y') }}</li>
-                                <li>Category: </li>
+                                <li>Category: {{ $ticket->category }}</li>
                                 @if ($ticket->is_new)
                                     <li class="dx-ticket-new">New</li>
                                 @endif
