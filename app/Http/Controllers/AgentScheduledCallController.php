@@ -12,11 +12,13 @@ class AgentScheduledCallController extends Controller
     /**
      * Display a listing of the resource.
      */
+    
     public function index()
     {
+        $notifications = Auth::user()->notifications;
         $agent = Auth::user();
         $scheduledCalls = ScheduledCall::where('assigned_to', $agent->id)->get();
-        return view('agent.scheduled_calls.index', compact('scheduledCalls'));
+        return view('agent.scheduled_calls.index', compact('scheduledCalls','notifications'));
     }
     /**
      * Show the form for creating a new resource.

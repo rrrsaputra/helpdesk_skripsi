@@ -145,6 +145,7 @@
     <link rel="stylesheet" href="{{ asset('AdminLTE-3.2.0/dist/css/adminlte.min.css') }}">
 
     <div class="card">
+        
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -243,10 +244,10 @@
                                 </tbody>
 
                             </table>
-                           
-                                {{ $tickets->links() }}
-                          
-                            
+
+                            {{ $tickets->links() }}
+
+
                         </div>
                     </div>
                 </div>

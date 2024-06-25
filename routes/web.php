@@ -99,6 +99,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 Route::middleware('auth','role:agent')->group(function () {
     Route::get('/agent', [AgentController::class, 'index'])->name('agent.index');
+    Route::get('/notifications/read/{id}', [AgentController::class, 'markAsRead'])->name('notifications.read');
+
+
     Route::resource('/agent/schedule-call', AgentScheduledCallController::class)->names('agent.scheduled_call');
 
 });
