@@ -9,6 +9,8 @@ class AgentController extends Controller
 {
     public function index(Request $request)
     {   
+
+        
         $inbox = $request->query('inbox', 'unassigned'); // 'default_value' can be replaced with a default value if 'inbox' is not provided
         if (is_null($inbox)) {
             // Redirect to the default URL with 'inbox=unassigned'

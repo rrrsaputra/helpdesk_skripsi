@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\Notification;
+use App\Models\User;
+use App\Notifications\TicketNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Coderflex\LaravelTicket\Models\Label;
@@ -42,7 +45,7 @@ class UserTicketController extends Controller
     public function store(Request $request)
     {
         $user = Auth::user();
-
+      
         // Cek apakah user memiliki ticket quota yang cukup
         if ($user->ticket_quota <= 0) {
             return redirect()->back()->with('error', 'You do not have enough ticket quota to create a new ticket. Please contact admin.');
@@ -66,7 +69,11 @@ class UserTicketController extends Controller
             'ticket_id' => $ticket->id,
             'message' => $request->message,
         ]);
-
+        $agents = User::whereHas('roles', function($query) {
+            $query->where('name', 'agent');
+        })->get();
+  
+        Notification::send($agents, new TicketNotification($ticket));
         // Kurangi ticket quota user
         if (!$this->decrementTicketQuota($user)) {
             return redirect()->back()->with('error', 'You do not have enough ticket quota to create a new ticket. Please contact admin.');
