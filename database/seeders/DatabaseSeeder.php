@@ -40,14 +40,25 @@ class DatabaseSeeder extends Seeder
         // Assigning the admin role to the user
         $admin->assignRole($adminRole);
 
-        $agent = User::create([
-            'name' => 'Agent User',
-            'email' => 'agent@gmail.com',
-            'password' => bcrypt('password'),
-        ]);
+        $agent = User::create(
+            [
+                'name' => 'Agent User',
+                'email' => 'agent@gmail.com',
+                'password' => bcrypt('password'),
+            ]
+        );
 
         // Assigning the admin role to the user
         $agent->assignRole($agentRole);
+        $agent = User::create(
+            [
+                'name' => 'Agent User2',
+                'email' => 'agent2@gmail.com',
+                'password' => bcrypt('password'),
+            ]
+        );
 
+        // Assigning the admin role to the user
+        $agent->assignRole($agentRole);
     }
 }

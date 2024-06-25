@@ -205,7 +205,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">
-                                <i class="fas fa-chart-bar mr-1"></i>
+                                <i class="fas fa-chart-pie mr-1"></i>
                                 Tickets per Status
                             </h3>
                         </div>

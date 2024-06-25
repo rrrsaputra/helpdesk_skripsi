@@ -45,10 +45,12 @@ class AdminDashboardController extends Controller
 
         // Proses data untuk tabel Agent Performance
         // Proses data untuk tabel Agent Performance
-        $agentPerformance = $tickets->groupBy('agent.id')->map(function ($agentTickets) {
-            $agent = $agentTickets->first()->agent;
+        $agents = User::role('agent')->get();
+        $agentPerformance = $agents->map(function ($agent) use ($tickets) {
+            $agentTickets = $tickets->where('assigned_to', $agent->id);
+            
             return [
-                'name' => $agent ? $agent->name : 'Unassigned',
+                'name' => $agent->name,
                 'open' => $agentTickets->where('status', 'open')->count(),
                 'closed' => $agentTickets->where('status', 'closed')->count(),
             ];
