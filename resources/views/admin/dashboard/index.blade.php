@@ -43,8 +43,8 @@
 
                     </form>
                 </div>
-                <div class="col-lg-3 col-6">
-                    <div class="small-box bg-info">
+                <div class="col-lg-2 col-6">
+                    <div class="small-box bg-primary">
                         <div class="inner">
                             <h3>{{ $tickets->count() }}</h3>
                             <p>Total Tickets</p>
@@ -54,7 +54,18 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-6">
+                <div class="col-lg-2 col-6">
+                    <div class="small-box bg-secondary">
+                        <div class="inner">
+                            <h3>{{ $tickets->where('assigned_to', null)->count() }}</h3>
+                            <p>Unassigned Tickets</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-bag"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-6">
                     <div class="small-box bg-success">
                         <div class="inner">
                             <h3>{{ $tickets->where('status', 'open')->count() }}</h3>
@@ -65,7 +76,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-6">
+                <div class="col-lg-2 col-6">
                     <div class="small-box bg-warning">
                         <div class="inner">
                             <h3>{{ $tickets->where('status', 'closed')->count() }}</h3>
@@ -74,10 +85,9 @@
                         <div class="icon">
                             <i class="ion ion-person-add"></i>
                         </div>
-
                     </div>
                 </div>
-                <div class="col-lg-3 col-6">
+                <div class="col-lg-2 col-6">
                     <div class="small-box bg-danger">
                         <div class="inner">
                             <h3>{{ $agents->count() }}</h3>
@@ -86,7 +96,17 @@
                         <div class="icon">
                             <i class="ion ion-pie-graph"></i>
                         </div>
-
+                    </div>
+                </div>
+                <div class="col-lg-2 col-6">
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3>{{ $users->count() }}</h3>
+                            <p>Total Users</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-pie-graph"></i>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -303,7 +323,7 @@
     <!-- End Generation Here -->
 @endsection
 
-@push('scripts')
+@section('script')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
@@ -345,4 +365,4 @@
             });
         });
     </script>
-@endpush
+@endsection
