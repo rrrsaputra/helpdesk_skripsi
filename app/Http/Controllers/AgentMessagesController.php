@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MessageSent;
 use Illuminate\Http\Request;
 use Coderflex\LaravelTicket\Models\Ticket;
 use Coderflex\LaravelTicket\Models\Category;
 use Coderflex\LaravelTicket\Models\Label;
 use Coderflex\LaravelTicket\Models\Message;
-
+use Laravel\Reverb\Events\MessageSent as EventsMessageSent;
 
 class AgentMessagesController extends Controller
 {
@@ -42,6 +43,7 @@ class AgentMessagesController extends Controller
         $message->user_id = auth()->id();
         $message->message = $request->input('message');
         $message->save();
+        event(new MessageSent($message));
 
         return redirect()->back()->with('success', 'Message created successfully');
     }

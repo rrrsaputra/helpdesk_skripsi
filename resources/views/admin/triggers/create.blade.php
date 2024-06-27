@@ -51,9 +51,145 @@
                     <a href="{{ route('admin.triggers.index') }}" class="btn btn-secondary">Cancel</a>
                 </div>
             </div>
+            <input type="hidden" name="trigger_query" id="trigger_query">
         </form>
     </div>
     <script>
+        const subjectOptions = [{
+                text: 'Select a subject',
+                value: ''
+            },
+            {
+                text: 'User Name',
+                value: 'user.name'
+            },
+            {
+                text: 'User Email',
+                value: 'user.email'
+            },
+            {
+                text: 'Ticket Title',
+                value: 'ticket.title'
+            },
+            {
+                text: 'Ticket Message',
+                value: 'ticket.message'
+            },
+            {
+                text: 'Ticket Status',
+                value: 'ticket.status'
+            },
+            {
+                text: 'Ticket Category',
+                value: 'ticket.category'
+            },
+            {
+                text: 'Ticket Priority',
+                value: 'ticket.priority'
+            },
+            {
+                text: 'Ticket Latitude',
+                value: 'ticket.latitude'
+            },
+            {
+                text: 'Ticket Longitude',
+                value: 'ticket.longitude'
+            },
+            {
+                text: 'Ticket Is Resolved',
+                value: 'ticket.is_resolved'
+            },
+            {
+                text: 'Ticket Is Locked',
+                value: 'ticket.is_locked'
+            },
+            // Add more options as needed
+        ];
+
+        const conditionTypeOptionsMap = {
+            'user.email': [{
+                    text: 'is',
+                    value: '='
+                },
+                {
+                    text: 'contains',
+                    value: 'LIKE'
+                },
+                {
+                    text: 'not equals',
+                    value: '!= '
+                },
+                {
+                    text: 'not like',
+                    value: 'NOT LIKE'
+                },
+            ],
+            'user.name': [{
+                    text: 'is',
+                    value: '='
+                },
+                {
+                    text: 'contains',
+                    value: 'LIKE'
+                },
+                {
+                    text: 'not equals',
+                    value: '!='
+                },
+                {
+                    text: 'not like',
+                    value: 'NOT LIKE'
+                },
+            ],
+            'ticket.status': [{
+                    text: 'is',
+                    value: '='
+                },
+                {
+                    text: 'not equals',
+                    value: '!='
+                },
+            ],
+            'ticket.category': [{
+                    text: 'is',
+                    value: '='
+                },
+                {
+                    text: 'not equals',
+                    value: '!='
+                },
+            ],
+            'default': [{
+                    text: 'Select a condition type',
+                    value: ''
+                },
+                {
+                    text: 'is',
+                    value: '='
+                },
+                {
+                    text: 'contains',
+                    value: 'LIKE'
+                },
+                {
+                    text: 'equals',
+                    value: '='
+                },
+                {
+                    text: 'not equals',
+                    value: '!='
+                },
+                {
+                    text: 'like',
+                    value: 'LIKE'
+                },
+                {
+                    text: 'not like',
+                    value: 'NOT LIKE'
+                },
+            ]
+        };
+
         function addCondition(containerId) {
             const container = document.getElementById(containerId);
 
@@ -66,51 +202,6 @@
             const subjectSelect = document.createElement('select');
             subjectSelect.name = containerId + '[]';
             subjectSelect.className = 'form-control mt-2';
-            const subjectOptions = [{
-                    text: 'Select a subject',
-                    value: ''
-                },
-
-                {
-                    text: 'User Name',
-                    value: 'user.name'
-                },
-                {
-                    text: 'User Email',
-                    value: 'user.email'
-                },
-
-
-                {
-                    text: 'Ticket Subject',
-                    value: 'ticket.subject'
-                },
-                {
-                    text: 'Ticket Body',
-                    value: 'ticket.body'
-                },
-                {
-                    text: 'Ticket Status',
-                    value: 'ticket.status'
-                },
-                {
-                    text: 'Ticket Category',
-                    value: 'ticket.category'
-                },
-                {
-                    text: 'Ticket Number of Attachments',
-                    value: 'ticket.attachments'
-                },
-                {
-                    text: 'Ticket Assignee',
-                    value: 'ticket.assignee'
-                },
-                {
-                    text: 'Ticket Mailbox address',
-                    value: 'ticket.mailbox'
-                },
-                // Add more options as needed
-            ];
             subjectOptions.forEach(option => {
                 const optionElement = document.createElement('option');
                 optionElement.text = option.text;
@@ -131,95 +222,8 @@
                 conditionTypeSelect.disabled = false;
                 conditionTypeSelect.innerHTML = ''; // Clear previous options
 
-                let conditionTypeOptions = [];
-                if (subjectSelect.value === 'user.email') {
-                    conditionTypeOptions = [{
-                            text: 'is',
-                            value: '='
-                        },
-                        {
-                            text: 'contains',
-                            value: 'LIKE'
-                        },
-                        {
-                            text: 'not equals',
-                            value: '!='
-                        },
-                        {
-                            text: 'not like',
-                            value: 'NOT LIKE'
-                        },
-                    ];
-                } else if (subjectSelect.value === 'user.name') {
-                    conditionTypeOptions = [{
-                            text: 'is',
-                            value: '='
-                        },
-                        {
-                            text: 'contains',
-                            value: 'LIKE'
-                        },
-                        {
-                            text: 'not equals',
-                            value: '!='
-                        },
-                        {
-                            text: 'not like',
-                            value: 'NOT LIKE'
-                        },
-                    ];
-                } else if (subjectSelect.value === 'ticket.status') {
-                    conditionTypeOptions = [{
-                            text: 'is',
-                            value: '='
-                        },
-                        {
-                            text: 'not equals',
-                            value: '!='
-                        },
-                    ];
-                } else if (subjectSelect.value === 'ticket.category') {
-                    conditionTypeOptions = [{
-                            text: 'is',
-                            value: '='
-                        },
-                        {
-                            text: 'not equals',
-                            value: '!='
-                        },
-                    ];
-                } else {
-                    conditionTypeOptions = [{
-                            text: 'Select a condition type',
-                            value: ''
-                        },
-                        {
-                            text: 'is',
-                            value: '='
-                        },
-                        {
-                            text: 'contains',
-                            value: 'LIKE'
-                        },
-                        {
-                            text: 'equals',
-                            value: '='
-                        },
-                        {
-                            text: 'not equals',
-                            value: '!='
-                        },
-                        {
-                            text: 'like',
-                            value: 'LIKE'
-                        },
-                        {
-                            text: 'not like',
-                            value: 'NOT LIKE'
-                        },
-                    ];
-                }
-
+                const conditionTypeOptions = conditionTypeOptionsMap[subjectSelect.value] ||
+                    conditionTypeOptionsMap['default'];
                 conditionTypeOptions.forEach(option => {
                     const optionElement = document.createElement('option');
                     optionElement.text = option.text;
@@ -248,6 +252,21 @@
             container.appendChild(flexContainer);
         }
 
+        const actionOptions = [{
+                text: 'Select an action',
+                value: ''
+            },
+            {
+                text: 'Ticket: Assign to Agent',
+                value: 'SET NEW.assigned_to = '
+            },
+            {
+                text: 'Ticket: Change status',
+                value: 'UPDATE tickets SET status = '
+            },
+            // Add more options as needed
+        ];
+
         function addAction(containerId) {
             const container = document.getElementById(containerId);
 
@@ -260,20 +279,10 @@
             const actionSelect = document.createElement('select');
             actionSelect.name = containerId + '[]';
             actionSelect.className = 'form-control mt-2';
-            const actionOptions = [{
-                    text: 'Select an action',
-                    value: ''
-                },
-                {
-                    text: 'Ticket: Assign to Agent',
-                    value: 'UPDATE tickets SET agent_id = ?'
-                },
-                {
-                    text: 'Ticket: Change status',
-                    value: 'UPDATE tickets SET status = ?'
-                },
-        
-            ];
+            const valueInput = document.createElement('select'); // Move valueInput declaration here
+            valueInput.name = containerId + '[]';
+            valueInput.className = 'form-control mt-2';
+
             actionOptions.forEach(option => {
                 const optionElement = document.createElement('option');
                 optionElement.text = option.text;
@@ -283,38 +292,57 @@
             flexContainer.appendChild(actionSelect);
 
             // Second input: Value
-            const valueInput = document.createElement('select');
-            valueInput.name = containerId + '[]';
-            valueInput.className = 'form-control mt-2';
             flexContainer.appendChild(valueInput);
 
             actionSelect.addEventListener('change', function() {
                 valueInput.innerHTML = ''; // Clear previous options
-                if (actionSelect.value === 'UPDATE tickets SET status = ?') {
-                    const statusOptions = [
-                        { text: 'Open', value: 'open' },
-                        { text: 'Closed', value: 'closed' }
-                    ];
-                    statusOptions.forEach(option => {
-                        const optionElement = document.createElement('option');
-                        optionElement.text = option.text;
-                        optionElement.value = option.value;
-                        valueInput.appendChild(optionElement);
-                    });
-                } else if (actionSelect.value === 'UPDATE tickets SET agent_id = ?') {
-                    const agents = @json($agents); // Assuming $agents is passed from the backend
-                    agents.forEach(agent => {
-                        const optionElement = document.createElement('option');
-                        optionElement.text = agent.name;
-                        optionElement.value = agent.id;
-                        valueInput.appendChild(optionElement);
-                    });
-                } else {
-                    const defaultOption = document.createElement('option');
-                    defaultOption.text = 'Enter value';
-                    defaultOption.value = '';
-                    valueInput.appendChild(defaultOption);
-                }
+
+                const actionHandlers = {
+                    'UPDATE tickets SET status = ': () => {
+                        const statusOptions = [{
+                                text: 'Open',
+                                value: 'open'
+                            },
+                            {
+                                text: 'Closed',
+                                value: 'closed'
+                            }
+                        ];
+                        statusOptions.forEach(option => {
+                            const optionElement = document.createElement('option');
+                            optionElement.text = option.text;
+                            optionElement.value = option.value;
+                            valueInput.appendChild(optionElement);
+                        });
+                    },
+                    'SET NEW.assigned_to = ': () => {
+                        const agents =
+                        @json($agents); // Assuming $agents is passed from the backend
+                        if (agents.length === 0) {
+                            const optionElement = document.createElement('option');
+                            optionElement.text = 'No agents available';
+                            optionElement.value = '';
+                            valueInput.appendChild(optionElement);
+                        } else {
+                            agents.forEach(agent => {
+                                const optionElement = document.createElement('option');
+                                optionElement.text = agent.name;
+                                optionElement.value = agent.id; // Fix: Use agent.id directly
+                                valueInput.appendChild(optionElement);
+                            });
+                        }
+                    },
+                    'default': () => {
+                        const defaultOption = document.createElement('option');
+                        defaultOption.text = 'Enter value';
+                        defaultOption.value = '';
+                        valueInput.appendChild(defaultOption);
+                    }
+                };
+
+                const handler = Object.keys(actionHandlers).find(key => actionSelect.value.includes(key)) ||
+                    'default';
+                actionHandlers[handler]();
             });
 
             // Add delete button
@@ -334,25 +362,18 @@
             const anyConditions = document.getElementById('anyConditions').children;
             const actions = document.getElementById('actions').children;
 
-            let query = `CREATE TRIGGER ${document.getElementById('name').value} AFTER INSERT ON `;
-            if (allConditions.length > 0 || anyConditions.length > 0) {
-                const subjectSelect = allConditions.length > 0 ? allConditions[0].children[0] : anyConditions[0].children[0];
-                if (subjectSelect.value.startsWith('ticket.')) {
-                    query += 'tickets FOR EACH ROW BEGIN ';
-                } else if (subjectSelect.value.startsWith('user.')) {
-                    query += 'users FOR EACH ROW BEGIN ';
-                }
-            }
+            let query =
+                `CREATE TRIGGER ${document.getElementById('name').value} BEFORE INSERT ON tickets FOR EACH ROW BEGIN `;
 
             let conditionsQuery = [];
             for (let condition of allConditions) {
                 const subject = condition.children[0].value;
                 const operator = condition.children[1].value;
                 const value = condition.children[2].value;
-                conditionsQuery.push(`IF NEW.${subject.split('.')[1]} ${operator} '${value}' THEN`);
+                conditionsQuery.push(`IF NEW.${subject.split('.')[1]} ${operator} ${operator === 'LIKE' ? `'%${value}%'` : `'${value}'`}`);
             }
             if (conditionsQuery.length > 0) {
-                query += conditionsQuery.join(' ');
+                query += conditionsQuery.join(' AND ');
             }
 
             if (anyConditions.length > 0) {
@@ -364,22 +385,29 @@
                     const subject = condition.children[0].value;
                     const operator = condition.children[1].value;
                     const value = condition.children[2].value;
-                    anyConditionsQuery.push(`IF NEW.${subject.split('.')[1]} ${operator} '${value}' THEN`);
+                    anyConditionsQuery.push(`IF NEW.${subject.split('.')[1]} ${operator} '${value}'`);
                 }
                 query += anyConditionsQuery.join(' ELSE ');
             }
 
             if (actions.length > 0) {
-                query += ' ';
+                query += ' THEN ';
                 for (let action of actions) {
                     const actionValue = action.children[0].value;
-                    query += `${actionValue}; `;
+                    let actionQuery = actionValue;
+                    for (let i = 1; i < action.children.length; i++) {
+                        const paramValue = action.children[i].value;
+                        actionQuery += `${paramValue} `;
+                    }
+                    query += actionQuery;
                 }
             }
 
-            query += ' END IF; END;';
+            query += ';END IF; END';
             console.log(query);
-            // Perform actions based on the query result
+
+            // Set the hidden input value
+            document.getElementById('trigger_query').value = query;
         }
     </script>
 @endsection

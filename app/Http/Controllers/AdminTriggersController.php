@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Trigger;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AdminTriggersController extends Controller
 {
@@ -23,7 +24,7 @@ class AdminTriggersController extends Controller
     public function create()
     {
         $agents = User::role('agent')->get();
-
+        
         return view('admin.triggers.create', compact('agents'));
     }
 
@@ -32,7 +33,9 @@ class AdminTriggersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $query = $request->trigger_query;
+        DB::unprepared($query);
+        return view('welcome');
     }
 
     /**

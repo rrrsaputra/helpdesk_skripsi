@@ -36,7 +36,7 @@
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
-  <x-agent.navbar :notifications="$notifications"/>
+  {{-- <x-agent.navbar :notifications="$notifications"/> --}}
   <x-agent.sidebar/>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
