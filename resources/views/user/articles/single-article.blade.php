@@ -62,7 +62,7 @@
                                 <ul class="dx-widget-categories">
                                     @foreach ($articleCategories as $articleCategory)
                                         <li>
-                                            <a href="#">
+                                            <a href="{{ route('category.show', $articleCategory->slug) }}">
                                                 <span class="icon pe-7s-angle-right"></span>
                                                 <span
                                                     class="dx-widget-categories-category">{{ $articleCategory->name }}</span>

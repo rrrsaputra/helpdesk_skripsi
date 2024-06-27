@@ -9,8 +9,8 @@
                 <div class="col-xl-7">
                     <h1 class="h2 mb-30 text-white text-center">How can we help you?</h1>
                     <form action="{{ route('article.index') }}" class="dx-form dx-form-group-inputs">
-                        <input type="search" name="search" value="{{ request()->query('search') }}" class="form-control"
-                            placeholder="Keyword search...">
+                        <input type="search" name="search" value="{{ request()->query('search') }}"
+                            class="form-control" placeholder="Keyword search...">
                         <button class="dx-btn dx-btn-lg">Search</button>
                     </form>
                 </div>
@@ -27,16 +27,46 @@
                     <h1 class="h2 mb-30 text-white text-center">Scheduled Calls</h1>
                 </div>
             </div>
+        @elseif(Request::is('scheduled-calls/*'))
+            <div class="row justify-content-center">
+                <div class="col-xl-7">
+                    <h1 class="h2 mb-30 text-white text-center">Scheduled Call</h1>
+                </div>
+            </div>
+        @elseif(Request::is('scheduled-call-submit'))
+            <div class="row justify-content-center">
+                <div class="col-xl-7">
+                    <h1 class="h2 mb-30 text-white text-center">Book Scheduled Call</h1>
+                </div>
+            </div>
         @elseif(Request::is('article'))
             <div class="row justify-content-center">
                 <div class="col-xl-7">
                     <h1 class="h2 mb-30 text-white text-center">Articles</h1>
                 </div>
             </div>
-            @elseif(Request::is('feedback'))
+        @elseif(Request::is('feedback'))
             <div class="row justify-content-center">
                 <div class="col-xl-7">
                     <h1 class="h2 mb-30 text-white text-center">Feedbacks</h1>
+                </div>
+            </div>
+        @elseif(Request::is('article/*'))
+            <div class="row justify-content-center">
+                <div class="col-xl-7">
+                    <h1 class="h2 mb-30 text-white text-center">Article</h1>
+                </div>
+            </div>
+        @elseif(Request::is('article'))
+            <div class="row justify-content-center">
+                <div class="col-xl-7">
+                    <h1 class="h2 mb-30 text-white text-center">Articles</h1>
+                </div>
+            </div>
+        @elseif(Request::is('category/*'))
+            <div class="row justify-content-center">
+                <div class="col-xl-7">
+                    <h1 class="h2 mb-30 text-white text-center">Article Categories</h1>
                 </div>
             </div>
         @endif
