@@ -35,17 +35,32 @@ class AgentMessagesController extends Controller
     {
         $ticket = Ticket::find($id);
         if (!$ticket) {
-            return redirect()->back()->with('error', 'Ticket not found');
+            // Handle the case where the ticket is not found
+            return response()->json(['error' => 'Ticket not found'], 404);
+        }
+
+        $messageContent = $request->input('message');
+        if (!$messageContent) {
+            // Handle the case where the message content is not provided
+            return response()->json(['error' => 'Message content is required'], 400);
         }
 
         $message = new Message();
         $message->ticket_id = $ticket->id;
         $message->user_id = auth()->id();
-        $message->message = $request->input('message');
+        $message->message = $messageContent;
         $message->save();
-        event(new MessageSent($message));
+    
+        $user = $message->user;
+        if (!$user) {
+            // Handle the case where the user is not found
+            return response()->json(['error' => 'User not found'], 404);
+        }
 
-        return redirect()->back()->with('success', 'Message created successfully');
+        event(new MessageSent($message, $user));
+
+        // Return the current view
+        return response()->json(['success' => 'Message sent successfully', 'message' => $message]);
     }
     /**
      * Display the specified resource.

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MessageSent;
 use App\Events\TicketCreated;
 use App\Events\TicketSent;
 use App\Models\Article;
@@ -128,6 +129,9 @@ class UserTicketController extends Controller
         $messages = $ticket->messages;
         return view('user.tickets.show-ticket', compact('messages', 'ticket_id'));
     }
+
+
+ 
 
     /**
      * Show the form for editing the specified resource.

@@ -70,12 +70,16 @@
         .dx-navbar-expand || .dx-navbar-expand-lg || .dx-navbar-expand-xl
 -->
     <x-user.navbar />
-    <x-user.header />
+    
+    @if (Route::currentRouteName() !== 'user.ticket.show')
+        <x-user.header />
+    @endif
 
 
     @yield('content')
-
+    @if (Route::currentRouteName() !== 'user.ticket.show')
     <x-user.footer />
+    @endif
 
 
     <!-- START: Scripts -->

@@ -9,21 +9,31 @@
    use Illuminate\Foundation\Events\Dispatchable;
    use Illuminate\Queue\SerializesModels;
    use App\Models\Message;
+use App\Models\User;
 use Coderflex\LaravelTicket\Models\Message as ModelsMessage;
 
    class MessageSent implements ShouldBroadcast
    {
        use Dispatchable, InteractsWithSockets, SerializesModels;
 
-       public $message;
+       public $message,$user;
 
-       public function __construct(ModelsMessage $message)
-       {
+       public function __construct(ModelsMessage $message, User $user)
+       {    
            $this->message = $message;
+           $this->user = $user;
+      
        }
 
        public function broadcastOn()
        {
-           return new PrivateChannel('messages.' . $this->message->ticket_id);
+
+           // Ensure the ticket relationship is loaded and accessible
+        if ($this->message->ticket) {
+            return new PrivateChannel('messages.' . $this->message->ticket->id);
+        }
+
+        // Handle the case where the ticket relationship is not available
+        return new PrivateChannel('messages.unknown');
        }
    }
