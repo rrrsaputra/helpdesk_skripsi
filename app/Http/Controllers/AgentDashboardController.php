@@ -5,12 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Coderflex\LaravelTicket\Models\Ticket;
 
-class AdminDashboardController extends Controller
+class AgentDashboardController extends Controller
 {
     public function index(Request $request)
     {
+        $notifications = Auth::user()->notifications;
+
         $users = User::role('user')->get();
 
         // Ambil rentang tanggal dari request
@@ -59,6 +62,6 @@ class AdminDashboardController extends Controller
 
         // dd($ticketLabels, $ticketData);
 
-        return view('admin.dashboard.index', compact('users', 'ticketLabels', 'ticketData', 'tickets', 'ticketCategories',  'ticketDataCategories', 'ticketStatus', 'ticketDataStatus','agentPerformance', 'agents'));
+        return view('agent.dashboard.index', compact('users', 'ticketLabels', 'ticketData', 'tickets', 'ticketCategories',  'ticketDataCategories', 'ticketStatus', 'ticketDataStatus','agentPerformance', 'agents', 'notifications'));
     }
 }

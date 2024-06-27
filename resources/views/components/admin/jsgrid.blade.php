@@ -57,6 +57,7 @@
                   @endif
                 </tbody>
               </table>
+              {{ $articles->links() }}
             </div>
             <!-- /.card-body -->
           </div>

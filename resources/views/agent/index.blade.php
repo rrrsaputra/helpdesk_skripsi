@@ -1,6 +1,6 @@
 @extends('layouts.agent')
 @section('header')
-    <x-agent.header title="agent" />
+    <x-agent.header title="Tickets" />
 @endsection
 
 @section('content')
@@ -237,7 +237,7 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="9">No articles available</td>
+                                            <td colspan="9">No messages available</td>
                                             <!-- Updated colspan to 9 to include Actions column -->
                                         </tr>
                                     @endforelse

@@ -13,7 +13,8 @@ class AdminArticleCategoryController extends Controller
      */
     public function index()
     {
-        $articleCategories = ArticleCategory::all();
+        $paginationCount = 10;
+        $articleCategories = ArticleCategory::paginate($paginationCount);
 
         return view('admin.article_categories.index', compact('articleCategories'));
     }

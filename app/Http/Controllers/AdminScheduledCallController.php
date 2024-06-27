@@ -15,12 +15,11 @@ class AdminScheduledCallController extends Controller
      */
     public function index()
     {
-
-        
+        $paginationCount = 10;
         $businessHours = BusinessHour::where('day', '>=', now()->format('Y-m-d'))->select('day')->get();
         // $categories = Category::all();
         $agents = User::role('agent')->get();
-        $scheduledCalls = ScheduledCall::all();
+        $scheduledCalls = ScheduledCall::paginate($paginationCount);
 
         return view('admin.scheduled_calls.index', compact('scheduledCalls', 'agents', 'businessHours'));
     }

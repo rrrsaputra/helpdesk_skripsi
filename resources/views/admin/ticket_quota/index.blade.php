@@ -114,12 +114,13 @@
                                         </form>
                                     @empty
                                         <tr>
-                                            <td colspan="8">No articles available</td>
+                                            <td colspan="8">No users found.</td>
                                             <!-- Updated colspan to 8 to include Actions column -->
                                         </tr>
                                     @endforelse
                                 </tbody>
                             </table>
+                            {{ $users->links() }}
                         </div>
                     </div>
                 </div>

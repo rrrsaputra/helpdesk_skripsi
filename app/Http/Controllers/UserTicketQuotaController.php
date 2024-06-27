@@ -9,7 +9,8 @@ class UserTicketQuotaController extends Controller
 {
     public function index()
     {
-        $users = User::role('user')->get();
+        $paginationCount = 10;
+        $users = User::role('user')->paginate($paginationCount);
 
         return view('admin.ticket_quota.index', compact('users'));
     }

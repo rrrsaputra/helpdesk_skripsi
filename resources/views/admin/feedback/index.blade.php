@@ -90,6 +90,7 @@
                                     @endforelse
                                 </tbody>
                             </table>
+                            {{ $feedbacks->links() }}
                         </div>
                     </div>
                 </div>

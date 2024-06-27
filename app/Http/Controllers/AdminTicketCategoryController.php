@@ -13,7 +13,8 @@ class AdminTicketCategoryController extends Controller
      */
     public function index()
     {
-        $ticketCategories = Category::all();
+        $paginationCount = 10;
+        $ticketCategories = Category::paginate($paginationCount);
 
         return view('admin.ticket_category.index', compact('ticketCategories'));
     }
