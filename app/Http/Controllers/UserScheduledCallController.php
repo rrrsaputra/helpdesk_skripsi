@@ -12,11 +12,17 @@ class UserScheduledCallController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $search = $request->input('search');
         $user = Auth::user();
         $paginationCount = 5;
-        $scheduledCalls = ScheduledCall::where('user_id', $user->id)->orderBy('updated_at', 'desc')->paginate($paginationCount);
+        $scheduledCalls = ScheduledCall::where('user_id', $user->id)->orderBy('updated_at', 'desc')
+        ->when($search, function ($query) use ($search) {
+            $query->where('title', 'like', "%{$search}%")
+                ->orWhere('message', 'like', "%{$search}%");
+        })
+        ->paginate($paginationCount);
         // $scheduledCalls = ScheduledCall::where('user_id', $user->id)->orderBy('updated_at', 'desc')->get();
         $articles = Article::all();
 

@@ -17,32 +17,55 @@
                         <a href="{{ route('scheduled_call_submit') }}" class="dx-btn dx-btn-md">Book a Call</a>
                     </div>
                 </div>
-                @foreach ($scheduledCalls as $scheduledCall)
-                    <a href="{{ route('scheduled_call.show', $scheduledCall->id) }}" class="dx-ticket-item dx-ticket-new dx-ticket-open dx-block-decorated" style="transition: background-color 0.3s;" onmouseover="this.style.backgroundColor=''" onmouseout="this.style.backgroundColor=''">
 
-                        <span class="dx-ticket-cont">
-                            <span class="dx-ticket-name">{{ $scheduledCall->user->name }}</span>
-                            <span class="dx-ticket-title h5" style="color: black">{{ $scheduledCall->title }}</span>
-                            <p class="dx-ticket-paragraph mt-8" style="color: black">{{ Str::limit(strip_tags($scheduledCall->message), 150) }}</p>
-                            
-                            <ul class="dx-ticket-info">
-                                <li>Update: {{ $scheduledCall->updated_at->format('d M Y') }}</li>
-                                <li>Category: {{ $scheduledCall->category }}</li>
-                                <li>Link: {{ $scheduledCall->link }}</li>
-                                @if ($scheduledCall->is_new)
-                                    <li class="dx-ticket-new">New</li>
-                                @endif
-                            </ul>
-                        </span>
-                        <span class="dx-ticket-status"
-                    >{{ $scheduledCall->status }}</span>
-                    </a>
-                @endforeach
-                <div class="mt-20">
-                    {{ $scheduledCalls->links() }}
+                <div class="row vertical-gap md-gap">
+                    <div class="col-lg-8">
+                       
+                            @foreach ($scheduledCalls as $scheduledCall)
+                                <a href="{{ route('scheduled_call.show', $scheduledCall->id) }}"
+                                    class="dx-ticket-item dx-ticket-new dx-ticket-open dx-block-decorated"
+                                    style="transition: background-color 0.3s;" onmouseover="this.style.backgroundColor=''"
+                                    onmouseout="this.style.backgroundColor=''">
+
+                                    <span class="dx-ticket-cont">
+                                        <span class="dx-ticket-name">{{ $scheduledCall->user->name }}</span>
+                                        <span class="dx-ticket-title h5"
+                                            style="color: black">{{ $scheduledCall->title }}</span>
+                                        <p class="dx-ticket-paragraph mt-8" style="color: black">
+                                            {{ Str::limit(strip_tags($scheduledCall->message), 150) }}</p>
+
+                                        <ul class="dx-ticket-info">
+                                            <li>Update: {{ $scheduledCall->updated_at->format('d M Y') }}</li>
+                                            <li>Category: {{ $scheduledCall->category }}</li>
+                                            <li>Link: {{ $scheduledCall->link }}</li>
+                                            @if ($scheduledCall->is_new)
+                                                <li class="dx-ticket-new">New</li>
+                                            @endif
+                                        </ul>
+                                    </span>
+                                    <span class="dx-ticket-status">{{ $scheduledCall->status }}</span>
+                                </a>
+                            @endforeach
+                            <div class="mt-20">
+                                {{ $scheduledCalls->links() }}
+                            </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="dx-widget dx-box dx-box-decorated">
+                            <form action="{{ route('scheduled_call.index') }}" class="dx-form dx-form-group-inputs">
+                                <input type="search" name="search" value="{{ request()->query('search') }}"
+                                    class="form-control form-control-style-2" placeholder="Search...">
+                                <button class="dx-btn dx-btn-lg dx-btn-grey dx-btn-grey-style-2 dx-btn-icon"><span
+                                        class="icon fas fa-search"></span></button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
+
+
+
         </div>
         <div class="dx-separator"></div>
         <div class="dx-box-5 pb-100">
