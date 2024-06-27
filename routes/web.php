@@ -26,6 +26,7 @@ use App\Http\Controllers\AdminTriggersController;
 use App\Http\Controllers\AgentMessagesController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AgentDashboardController;
+use App\Http\Controllers\UserSuperSearchController;
 use App\Http\Controllers\UserTicketQuotaController;
 use App\Http\Controllers\AdminBusinessHourController;
 use App\Http\Controllers\UserScheduledCallController;
@@ -47,8 +48,6 @@ Route::get('/messages', [HomeController::class, 'messages'])
 
 Route::resource('/article', UserArticleController::class)->names('article');
 Route::get('/category/{slug}', [UserArticleCategoryController::class, 'show'])->name('category.show');
-
-
 // Route::get('/single-article', function () {
 //     return view('user.articles.single-article');
 // })->name('single-article');

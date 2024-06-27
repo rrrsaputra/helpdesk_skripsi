@@ -23,12 +23,19 @@ class UserTicketController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $search = $request->input('search');
         $paginationCount = 5;
         $user = Auth::user();
         $remainingTickets = $user;
-        $tickets = Ticket::where('user_id', $user->id)->orderBy('created_at', 'desc')->paginate($paginationCount);
+        $tickets = Ticket::where('user_id', $user->id)->orderBy('created_at', 'desc')
+        ->when($search, function ($query) use ($search) {
+            $query->where('title', 'like', "%{$search}%")
+                ->orWhere('message', 'like', "%{$search}%");
+        })
+        ->paginate($paginationCount);
+        
         $articles = Article::all();
         // $ticketCategory = Category::whereIn('id', $tickets->pluck('category_id'))->paginate($paginationCount);
 

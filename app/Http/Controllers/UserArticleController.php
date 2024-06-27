@@ -11,9 +11,16 @@ class UserArticleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $articles = Article::orderBy('created_at', 'desc')->get();
+        $search = $request->input('search');
+        $paginationCount = 10;
+        $articles = Article::orderBy('created_at', 'desc')
+            ->when($search, function ($query) use ($search) {
+                $query->where('title', 'like', "%{$search}%");
+            })
+            ->paginate($paginationCount);
+
         $articleCategories = ArticleCategory::all();
 
         return view('user.articles.article', compact('articles', 'articleCategories'));

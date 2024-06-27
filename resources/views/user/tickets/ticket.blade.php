@@ -2,10 +2,10 @@
 
 @section('content')
     <div class="dx-main">
-
         <div class="dx-separator"></div>
         <div class="dx-box-5 bg-grey-6">
             <div class="container">
+
                 <div class="row align-items-center justify-content-between vertical-gap mnt-30 sm-gap mb-50">
                     <div class="col-auto">
                         <h2 class="h4 mb-0 mt-0">Your Tickets</h2>
@@ -18,33 +18,46 @@
                     </div>
                 </div>
 
-                <div class="col-auto mb-10">
-                    <p class="mb-0">Remaining Tickets: {{ $remainingTickets->ticket_quota }}</p>
+                <div class="row vertical-gap md-gap">
+                    <div class="col-lg-8">
+                        <p class="mb-0">Remaining Tickets: {{ $remainingTickets->ticket_quota }}</p>
+                        @foreach ($tickets as $ticket)
+                            <a href=" {{ route('user.ticket.show', $ticket->id) }} "
+                                class="dx-ticket-item dx-ticket-new dx-ticket-open dx-block-decorated">
+                                <span class="dx-ticket-cont">
+                                    <span class="dx-ticket-name">{{ $ticket->user->name }}</span>
+                                    <span class="dx-ticket-title h5" style="color: black">{{ $ticket->title }}</span>
+                                    <p class="dx-ticket-paragraph mt-8" style="color: black">{{ strip_tags($ticket->message) }}
+                                    </p>
+                                    <ul class="dx-ticket-info">
+                                        <li>Created: {{ $ticket->updated_at->format('d M Y') }}</li>
+                                        <li>Category: {{ $ticket->category }}</li>
+                                        @if ($ticket->is_new)
+                                            <li class="dx-ticket-new">New</li>
+                                        @endif
+                                    </ul>
+                                </span>
+                                <span class="dx-ticket-status">{{ $ticket->status }}</span>
+                            </a>
+                        @endforeach
+                        <div class="mt-20">
+                            {{ $tickets->links() }}
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 mt-25">
+                        <div class="dx-widget dx-box dx-box-decorated">
+                            <form action="{{ route('user.ticket.index') }}" class="dx-form dx-form-group-inputs">
+                                <input type="search" name="search" value="{{ request()->query('search') }}"
+                                    class="form-control form-control-style-2" placeholder="Search...">
+                                <button class="dx-btn dx-btn-lg dx-btn-grey dx-btn-grey-style-2 dx-btn-icon"><span
+                                        class="icon fas fa-search"></span></button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
 
-                @foreach ($tickets as $ticket)
-                    <a href=" {{ route('user.ticket.show', $ticket->id) }} "
-                        class="dx-ticket-item dx-ticket-new dx-ticket-open dx-block-decorated">
 
-                        <span class="dx-ticket-cont">
-                            <span class="dx-ticket-name">{{ $ticket->user->name }}</span>
-                            <span class="dx-ticket-title h5" style="color: black">{{ $ticket->title }}</span>
-                            <p class="dx-ticket-paragraph mt-8" style="color: black">{{ strip_tags($ticket->message) }}</p>
-                            <ul class="dx-ticket-info">
-                                <li>Created: {{ $ticket->updated_at->format('d M Y') }}</li>
-                                <li>Category: {{ $ticket->category }}</li>
-                                @if ($ticket->is_new)
-                                    <li class="dx-ticket-new">New</li>
-                                @endif
-                            </ul>
-                        </span>
-                        <span class="dx-ticket-status">{{ $ticket->status }}</span>
-                    </a>
-                @endforeach
-                <div class="mt-20">
-                    {{ $tickets->links() }}
-                </div>
-                
             </div>
         </div>
         <div class="dx-separator"></div>

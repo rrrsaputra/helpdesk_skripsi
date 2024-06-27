@@ -2,8 +2,6 @@
 
 @section('content')
 <div class="dx-main">
-            
-    
     <div class="dx-separator"></div>
     <div class="dx-box-5 bg-grey-6">
         <div class="container">

@@ -34,15 +34,18 @@
                                             </div>
                                         </div>
                                     @endforeach
+                                    <div class="mt-20">
+                                        {{ $articles->links() }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4">
 
+                    <div class="col-lg-4">
                         <div class="dx-widget dx-box dx-box-decorated">
-                            <form action="#" class="dx-form dx-form-group-inputs">
-                                <input type="text" name="" value=""
+                            <form action="{{ route('article.index') }}" class="dx-form dx-form-group-inputs">
+                                <input type="search" name="search" value="{{ request()->query('search') }}"
                                     class="form-control form-control-style-2" placeholder="Search...">
                                 <button class="dx-btn dx-btn-lg dx-btn-grey dx-btn-grey-style-2 dx-btn-icon"><span
                                         class="icon fas fa-search"></span></button>
@@ -50,7 +53,7 @@
                         </div>
                         <div class="dx-widget dx-box dx-box-decorated">
                             <div class="dx-widget-title">Articles Categories</div>
-                                <ul class="dx-widget-categories">
+                            <ul class="dx-widget-categories">
                                 @foreach ($articleCategories as $articleCategory)
                                     <li>
                                         <a href="{{ route('category.show', $articleCategory->slug) }}">

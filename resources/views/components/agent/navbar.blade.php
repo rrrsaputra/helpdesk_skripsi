@@ -1,4 +1,4 @@
-@props(['notifications'])
+@props(['notifications'=>[]])
 
 <!-- Notification Component -->
 <div class="notification-component" style="display: none;">
