@@ -13,8 +13,9 @@
             'Duration',
             'Start Time',
             'Finish Time',
-            'Assigned To',
-            'Assigned From',
+            'Status',
+            // 'Assigned To',
+            // 'Assigned From',
             'Link',
         ];
         $data = $scheduledCalls
@@ -29,8 +30,9 @@
                         $scheduledCall->duration . ' minutes',
                         $scheduledCall->start_time,
                         $scheduledCall->finish_time,
-                        $scheduledCall->assigned_to,
-                        $scheduledCall->assigned_from,
+                        $scheduledCall->status,
+                        // $scheduledCall->assigned_to,
+                        // $scheduledCall->assigned_from,
                         $scheduledCall->link,
                     ],
                 ];
@@ -56,6 +58,15 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
+                        <div class="form-group">
+                            <form action="{{ route('agent.scheduled_call.index') }}" method="GET" class="form-inline">
+                                <div class="form-group">
+                                    <input type="search" class="form-control" id="search" name="search"
+                                        style="width: 500px;" placeholder="Search by title, message, and status">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Search</button>
+                            </form>
+                        </div>
                         <div class="table-responsive">
                             <table id="example2" class="table table-hover">
                                 <thead>
@@ -105,12 +116,14 @@
                                             action="{{ route('agent.scheduled_call.update', $row['id']) }}">
                                             @csrf
                                             @method('PATCH')
-                                            <div class="modal fade" id="assignToModal{{ $row['id'] }}" tabindex="-1" role="dialog"
-                                                aria-labelledby="assignToModalLabel{{ $row['id'] }}" aria-hidden="true">
+                                            <div class="modal fade" id="assignToModal{{ $row['id'] }}" tabindex="-1"
+                                                role="dialog" aria-labelledby="assignToModalLabel{{ $row['id'] }}"
+                                                aria-hidden="true">
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="assignToModalLabel{{ $row['id'] }}">Add Meet</h5>
+                                                            <h5 class="modal-title"
+                                                                id="assignToModalLabel{{ $row['id'] }}">Add Meet</h5>
                                                             <button type="button" class="close" data-dismiss="modal"
                                                                 aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
@@ -119,8 +132,9 @@
                                                         <div class="modal-body">
                                                             <div class="form-group">
                                                                 <label for="link">Link</label>
-                                                                <input type="text" class="form-control" id="link{{ $row['id'] }}"
-                                                                    name="link" placeholder="Enter link">
+                                                                <input type="text" class="form-control"
+                                                                    id="link{{ $row['id'] }}" name="link"
+                                                                    placeholder="Enter link">
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
@@ -133,7 +147,7 @@
                                                 </div>
                                             </div>
                                         </form>
-                                        @empty
+                                    @empty
                                         <tr>
                                             <td colspan="9">No scheduled calls available</td>
                                             <!-- Updated colspan to 9 to include Actions column -->

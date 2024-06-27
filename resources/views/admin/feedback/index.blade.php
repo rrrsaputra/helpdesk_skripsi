@@ -18,7 +18,7 @@
                         $feedback->message,
                         $feedback->created_at->format('d M Y'),
                     ],
-            ];
+                ];
             })
             ->toArray();
         $columnSizes = array_map(function ($column) {
@@ -40,8 +40,16 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
-
                     <div class="card-body">
+                        <div class="form-group">
+                            <form action="{{ route('admin.feedback.index') }}" method="GET" class="form-inline">
+                                <div class="form-group">
+                                    <input type="search" class="form-control" id="search" name="search"
+                                        style="width: 500px;" placeholder="Search by category, subject, and message">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Search</button>
+                            </form>
+                        </div>
                         <div class="table-responsive">
                             <table id="example2" class="table table-hover">
                                 <thead>
@@ -78,13 +86,13 @@
                                                     @endif
                                                 </td>
                                             @endforeach
-                                            
+
                                         </tr>
                                         <!-- Modal -->
 
                                     @empty
                                         <tr>
-                                            <td colspan="8">No articles available</td>
+                                            <td colspan="8">No feedbacks found</td>
                                             <!-- Updated colspan to 8 to include Actions column -->
                                         </tr>
                                     @endforelse

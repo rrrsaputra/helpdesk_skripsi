@@ -14,7 +14,7 @@
                     'values' => [
                         '',
                         $ticket->user->name,
-                        [$ticket->title, $ticket->message ?? ''],
+                        [$ticket->title, $ticket->category, $ticket->message ?? ''],
                         '',
                         $ticket->id,
                         $ticket->last_updated,
@@ -145,12 +145,20 @@
     <link rel="stylesheet" href="{{ asset('AdminLTE-3.2.0/dist/css/adminlte.min.css') }}">
 
     <div class="card">
-        
+
         <div class="row">
             <div class="col-12">
                 <div class="card">
-
                     <div class="card-body">
+                        <div class="form-group">
+                            <form action="{{ route('agent.index', ['inbox' => request()->input('inbox', 'unassigned')]) }}" method="GET" class="form-inline">
+                                <div class="form-group">
+                                    <input type="search" class="form-control" id="search" name="search"
+                                        style="width: 500px;" placeholder="Search by title, message, and category">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Search</button>
+                            </form>
+                        </div>
                         <div class="table-responsive">
                             <table id="example2" class="table table-hover">
                                 <thead>

@@ -11,10 +11,7 @@
                 return [
                     'id' => $user->id,
                     'url' => '/path/to/resource1',
-                    'values' => [
-                        $user->hasRole('user') ? $user->name : '',
-                        $user->ticket_quota
-                    ],
+                    'values' => [$user->hasRole('user') ? $user->name : '', $user->ticket_quota],
                     'ticket_quota' => $user->ticket_quota,
                 ];
             })
@@ -38,8 +35,16 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
-           
                     <div class="card-body">
+                        <div class="form-group">
+                            <form action="{{ route('admin.ticket_quota.index') }}" method="GET" class="form-inline">
+                                <div class="form-group">
+                                    <input type="search" class="form-control" id="search" name="search"
+                                        style="width: 500px;" placeholder="Search by customer name">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Search</button>
+                            </form>
+                        </div>
                         <div class="table-responsive">
                             <table id="example2" class="table table-hover">
                                 <thead>
@@ -84,8 +89,7 @@
                                             </td>
                                         </tr>
                                         <!-- Modal -->
-                                        <form method="POST"
-                                            action="{{ route('admin.ticket_quota.update', $row['id']) }}">
+                                        <form method="POST" action="{{ route('admin.ticket_quota.update', $row['id']) }}">
                                             @csrf
                                             @method('PATCH')
                                             <div class="modal fade" id="assignToModal" tabindex="-1" role="dialog"
@@ -93,7 +97,8 @@
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="assignToModalLabel">Update Ticket Quota</h5>
+                                                            <h5 class="modal-title" id="assignToModalLabel">Update Ticket
+                                                                Quota</h5>
                                                             <button type="button" class="close" data-dismiss="modal"
                                                                 aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
@@ -101,12 +106,15 @@
                                                         </div>
                                                         <div class="modal-body">
                                                             <label for="ticketQuota">Ticket Quota:</label>
-                                                            <input type="number" id="ticketQuota" name="ticket_quota" class="form-control" min="0" value="{{ $row['ticket_quota'] }}" required>
+                                                            <input type="number" id="ticketQuota" name="ticket_quota"
+                                                                class="form-control" min="0"
+                                                                value="{{ $row['ticket_quota'] }}" required>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary"
                                                                 data-dismiss="modal">Close</button>
-                                                            <button type="submit" class="btn btn-primary">Save changes</button>
+                                                            <button type="submit" class="btn btn-primary">Save
+                                                                changes</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -154,12 +162,13 @@
 
     <!-- Page specific script -->
     <script>
-        $(function () {
+        $(function() {
             $("#example2").DataTable({
-                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "responsive": true,
+                "lengthChange": false,
+                "autoWidth": false,
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#example2_wrapper .col-md-6:eq(0)');
         });
-
     </script>
 @endsection

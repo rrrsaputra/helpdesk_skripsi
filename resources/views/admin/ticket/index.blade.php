@@ -5,7 +5,16 @@
 
 @section('content')
     @php
-        $columns = ['Customer', 'Summary', '', 'Number', 'Last Updated', 'Assigned To', 'latitude', 'longitude'];
+        $columns = [
+            'Customer',
+            'Summary',
+            '',
+            'Number',
+            'Last Updated',
+            'Assigned To',
+            'latitude',
+            'longitude',
+        ];
         $data = $tickets
             ->map(function ($ticket) {
                 return [
@@ -13,7 +22,7 @@
                     'url' => '/path/to/resource1',
                     'values' => [
                         $ticket->user->name,
-                        [$ticket->title, $ticket->message ?? ''],
+                        [$ticket->title, $ticket->category, $ticket->message ?? ''],
                         '',
                         $ticket->id,
                         $ticket->last_updated,
@@ -21,12 +30,11 @@
                         $ticket->latitude,
                         $ticket->longitude,
                     ],
-                    
                 ];
             })
             ->toArray();
         $columnSizes = array_map(function ($column) {
-            return $column === 'Summary' ? '40%' : 'auto';
+            return $column === 'Summary' ? '35%' : 'auto';
         }, $columns);
     @endphp
 
@@ -149,8 +157,16 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
-
                     <div class="card-body">
+                        <div class="form-group">
+                            <form action="{{ route('admin.ticket.index') }}" method="GET" class="form-inline">
+                                <div class="form-group">
+                                    <input type="search" class="form-control" id="search" name="search"
+                                        style="width: 500px;" placeholder="Search by title, message, and category">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Search</button>
+                            </form>
+                        </div>
                         <div class="table-responsive">
                             <table id="example2" class="table table-hover">
                                 <thead>
@@ -197,7 +213,8 @@
                                                         method="POST">
                                                         @csrf
                                                         @method('PATCH')
-                                                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                                                        <button type="button" class="btn btn-primary btn-sm"
+                                                            data-toggle="modal"
                                                             data-target="#assignToModal-{{ $row['id'] }}">Assign</button>
                                                         <div class="modal fade" id="assignToModal-{{ $row['id'] }}"
                                                             tabindex="-1" role="dialog"

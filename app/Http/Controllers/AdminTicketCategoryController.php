@@ -11,10 +11,15 @@ class AdminTicketCategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $search = $request->input('search');
         $paginationCount = 10;
-        $ticketCategories = Category::paginate($paginationCount);
+        $ticketCategories = Category::orderBy('name', 'asc')
+            ->when($search, function ($query) use ($search) {
+                $query->where('name', 'like', "%{$search}%");
+            })
+            ->paginate($paginationCount);
 
         return view('admin.ticket_category.index', compact('ticketCategories'));
     }

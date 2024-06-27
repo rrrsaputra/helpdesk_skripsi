@@ -13,13 +13,19 @@ class AdminScheduledCallController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $search = $request->input('search');
         $paginationCount = 10;
         $businessHours = BusinessHour::where('day', '>=', now()->format('Y-m-d'))->select('day')->get();
-        // $categories = Category::all();
         $agents = User::role('agent')->get();
-        $scheduledCalls = ScheduledCall::paginate($paginationCount);
+        $scheduledCalls = ScheduledCall::orderBy('created_at', 'desc')
+            ->when($search, function ($query) use ($search) {
+                $query->where('title', 'like', "%{$search}%")
+                    ->orWhere('message', 'like', "%{$search}%")
+                    ->orWhere('status', 'like', "%{$search}%");
+            })
+            ->paginate($paginationCount);
 
         return view('admin.scheduled_calls.index', compact('scheduledCalls', 'agents', 'businessHours'));
     }
@@ -60,7 +66,7 @@ class AdminScheduledCallController extends Controller
                 $startTime = new \DateTime($businessHours->from);
                 $endTime = new \DateTime($businessHours->to);
                 $step = $businessHours->step ?? 30; // Default to 30 minutes if step is not set
-                
+
                 // Create a list of intervals within the business hours
                 $availableTimes = [];
                 while ($startTime < $endTime) {
@@ -71,7 +77,6 @@ class AdminScheduledCallController extends Controller
                 // Remove duplicate times and sort
                 $availableTimes = array_unique($availableTimes);
                 sort($availableTimes);
-                
             } else {
                 $availableTimes = [];
             }
@@ -90,10 +95,10 @@ class AdminScheduledCallController extends Controller
                 }
             }
             // Filter out available times that are in the blocked times
-            $availableTimes = array_filter($availableTimes, function($time) use ($blockedTimes) {
+            $availableTimes = array_filter($availableTimes, function ($time) use ($blockedTimes) {
                 return !in_array($time, $blockedTimes);
             });
-            
+
 
             $businessHours = BusinessHour::where('day', '>=', now()->format('Y-m-d'))->select('day')->get();
             return view('admin.scheduled_calls.show', compact('scheduledCall', 'agents', 'businessHours', 'availableTimes'));
@@ -101,9 +106,8 @@ class AdminScheduledCallController extends Controller
             $businessHours = BusinessHour::where('day', '>=', now()->format('Y-m-d'))->select('day')->get();
             return view('admin.scheduled_calls.show', compact('scheduledCall', 'agents', 'businessHours'));
         }
-
     }
-    
+
     public function reject(Request $request, string $id)
     {
         $scheduledCall = ScheduledCall::find($id);
@@ -130,18 +134,15 @@ class AdminScheduledCallController extends Controller
         $startTime = $scheduledCall->start_time;
         $duration = $scheduledCall->duration;
         return view('admin.scheduled_calls.edit', compact('scheduledCall', 'agents', 'startTime', 'duration'));
-
-
-
     }
-   
+
     public function get_time(Request $request)
     {
         dd($request);
-    }              
+    }
     public function update(Request $request, string $id)
-    {   
-       
+    {
+
         $scheduledCall = ScheduledCall::find($id);
         if ($scheduledCall) {
             $scheduledCall->assigned_to = $request->agent_id;

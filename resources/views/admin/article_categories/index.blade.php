@@ -55,8 +55,16 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
-
                     <div class="card-body">
+                        <div class="form-group">
+                            <form action="{{ route('admin.article_category.index') }}" method="GET" class="form-inline">
+                                <div class="form-group">
+                                    <input type="search" class="form-control" id="search" name="search"
+                                        style="width: 500px;" placeholder="Search by category name">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Search</button>
+                            </form>
+                        </div>
                         <div class="table-responsive">
                             <table id="example2" class="table table-hover">
                                 <thead>

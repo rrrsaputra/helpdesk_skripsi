@@ -11,10 +11,15 @@ class AdminArticleCategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $search = $request->input('search');
         $paginationCount = 10;
-        $articleCategories = ArticleCategory::paginate($paginationCount);
+        $articleCategories = ArticleCategory::orderBy('name', 'asc')
+        ->when($search, function ($query) use ($search) {
+            $query->where('name', 'like', "%{$search}%");
+        })
+        ->paginate($paginationCount);
 
         return view('admin.article_categories.index', compact('articleCategories'));
     }
