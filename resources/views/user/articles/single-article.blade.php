@@ -16,7 +16,6 @@
                                         <li>By: {{ $article->user->name }}</li>
                                         <li>Category: {{ $article->articleCategory->name }}</li>
                                         <li>Published {{ $article->created_at->format('d F Y') }}</li>
-                                        <li>Views</li>
                                     </ul>
                                     <ul class="dx-social-links dx-social-links-style-2 mt-20">
                                         <li><a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(Request::fullUrl()) }}"
