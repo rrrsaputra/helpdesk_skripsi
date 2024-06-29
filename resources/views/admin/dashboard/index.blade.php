@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <div class="container-fluid">
+    <div class="container-fluid" id="dashboard-content">
         <div class="card-body">
             <div class="row">
                 <div class="col-lg-12">
@@ -325,20 +325,23 @@
 
 @section('script')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>
         document.getElementById('save-pdf').addEventListener('click', function() {
-            const {
-                jsPDF
-            } = window.jspdf;
+            const startDate = document.getElementById('start_date').value;
+            const endDate = document.getElementById('end_date').value;
+            const fileName = `Dashboard ${startDate}_to_${endDate}.pdf`;
 
-            html2canvas(document.querySelector('.container-fluid')).then(canvas => {
+            const { jsPDF } = window.jspdf;
+
+            html2canvas(document.querySelector('#dashboard-content'), {
+                scale: 2 // Meningkatkan skala untuk mengurangi distorsi gambar
+            }).then(canvas => {
                 const imgData = canvas.toDataURL('image/png');
-                const pdf = new jsPDF('p', 'mm', 'a4');
-                const imgWidth = 210;
-                const pageHeight = 295;
+                const pdf = new jsPDF('l', 'mm', 'a4'); // Mengubah orientasi ke landscape
+                const imgWidth = 297; // Lebar untuk landscape A4
+                const pageHeight = 210; // Tinggi untuk landscape A4
                 const imgHeight = canvas.height * imgWidth / canvas.width;
                 let heightLeft = imgHeight;
                 let position = 0;
@@ -352,11 +355,13 @@
                     pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
                     heightLeft -= pageHeight;
                 }
-                pdf.save('dashboard.pdf');
+                pdf.save(fileName);
+
+            }).catch(function(error) {
+                console.error('Error generating PDF:', error);
             });
         });
     </script>
-
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
         $(function() {
