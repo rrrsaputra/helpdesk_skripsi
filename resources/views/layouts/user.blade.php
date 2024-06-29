@@ -18,7 +18,7 @@
     <meta name="description" content="Amdesk - Help Center HTML template for your digital products">
     <meta name="keywords" content="helpdesk, forum, template, HTML template, responsive, clean">
     <meta name="author" content="nK">
-    <link rel="icon" type="image/png" href="{{ asset('image/logoeq.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('image/earthqualizer_logo.png') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- START: Styles -->
     <!-- Google Fonts -->
