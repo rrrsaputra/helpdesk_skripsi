@@ -6,10 +6,6 @@
 
 @section('content')
     <div class="card card-primary">
-        <div class="card-header">
-            <h3 class="card-title">Create Article</h3>
-        </div>
-
         <form method="POST" action="{{ route('admin.article.update', $article->id) }}">
             @csrf
             @method('PUT')
@@ -28,8 +24,9 @@
                     </select>
                 </div>
                 <x-admin.summernote />
-                <div class="card-footer">
+                <div>
                     <button type="submit" class="btn btn-primary">Update</button>
+                    <a href="{{ route('admin.article.index') }}" class="btn btn-secondary">Cancel</a>
                 </div>
             </div>
         </form>

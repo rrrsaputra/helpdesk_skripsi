@@ -25,5 +25,15 @@ class ScheduledCall extends Model
         return $this->belongsTo(User::class);
     }
 
+    // public function assignedToUser()
+    // {
+    //     return $this->belongsTo(User::class, 'assigned_to');
+    // }
+
+    // public function assignedFromUser()
+    // {
+    //     return $this->belongsTo(User::class, 'assigned_from');
+    // }
+
 
 }

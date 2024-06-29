@@ -12,9 +12,16 @@ class AdminTriggersController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $triggers = Trigger::all();
+        $search = $request->input('search');
+        $paginationCount = 10;
+        $triggers = Trigger::orderBy('created_at', 'desc')
+            ->when($search, function ($query) use ($search) {
+                $query->where('name', 'like', "%{$search}%");
+            })
+            ->paginate($paginationCount);
+
         return view('admin.triggers.index', compact('triggers'));
     }
 
@@ -24,7 +31,7 @@ class AdminTriggersController extends Controller
     public function create()
     {
         $agents = User::role('agent')->get();
-        
+
         return view('admin.triggers.create', compact('agents'));
     }
 

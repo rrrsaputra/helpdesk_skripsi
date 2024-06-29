@@ -12,10 +12,15 @@ class ArticleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $search = $request->input('search');
         $paginationCount = 10;
-        $articles = Article::paginate($paginationCount);
+        $articles = Article::orderBy('created_at', 'desc')
+            ->when($search, function ($query) use ($search) {
+                $query->where('title', 'like', "%{$search}%");
+            })
+            ->paginate($paginationCount);
 
         return view('admin.article.index', compact('articles'));
     }
@@ -61,7 +66,7 @@ class ArticleController extends Controller
     public function show(string $id)
     {
         $articles = Article::all();
-        
+
         return view('admin.article.index', compact('articles'));
     }
 
@@ -72,7 +77,7 @@ class ArticleController extends Controller
     {
         $article = Article::find($id);
         $articleCategories = ArticleCategory::all();
-        
+
         return view('admin.article.edit', compact('article', 'articleCategories'));
     }
 

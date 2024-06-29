@@ -52,4 +52,10 @@ class User extends Authenticatable implements CanUseTickets
     {
         return $this->hasMany(BusinessHour::class);
     }
+
+    // public function scheduledCalls()
+    // {
+    //     return $this->hasMany(ScheduledCall::class);
+    // }
+
 }
