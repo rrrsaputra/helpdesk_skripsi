@@ -159,7 +159,16 @@
                     <a href="{{ route('admin.triggers.index') }}" class="nav-link {{ request()->routeIs('admin.triggers.index') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-bell"></i>
                         <p>
-                            Triggers
+                            TRIGGER
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item menu-close">
+                    <a href="{{ route('admin.data_repository.index') }}" class="nav-link {{ request()->routeIs('admin.data_repository.index') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-database"></i>
+                        <p>
+                            DATA REPOSITORY
                         </p>
                     </a>
                 </li>

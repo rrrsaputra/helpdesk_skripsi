@@ -32,6 +32,7 @@ use App\Http\Controllers\AdminBusinessHourController;
 use App\Http\Controllers\UserScheduledCallController;
 use App\Http\Controllers\AdminScheduledCallController;
 use App\Http\Controllers\AgentScheduledCallController;
+use App\Http\Controllers\AdminDataRepositoryController;
 use App\Http\Controllers\AdminTicketCategoryController;
 use App\Http\Controllers\UserArticleCategoryController;
 use App\Http\Controllers\AdminArticleCategoryController;
@@ -99,6 +100,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('/admin/triggers', AdminTriggersController::class)->names('admin.triggers');
     
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard.index');
+
+    Route::resource('/admin/data-repository', AdminDataRepositoryController::class)->names('admin.data_repository');
 });
 
 Route::middleware('auth','role:agent')->group(function () {
