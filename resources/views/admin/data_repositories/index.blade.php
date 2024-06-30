@@ -22,18 +22,22 @@
 
 @section('content')
     @php
-        $columns = ['Ticket ID', 'Path'];
+        $columns = ['Message ID', 'Ticket ID','User Name','Path'];
         $data = $dataRepositories
             ->map(function ($dataRepository) {
                 return [
                     'id' => $dataRepository->id,
                     'url' => '/path/to/resource1',
-                    'values' => [$dataRepository->ticket_id, $dataRepository->path],
+                    'values' => [
+                        $dataRepository->message_id, 
+                        $dataRepository->message->ticket_id,
+                        $dataRepository->message->user->name,
+                        $dataRepository->path],
                 ];
             })
             ->toArray();
         $columnSizes = array_map(function ($column) {
-            return $column === 'Category Name' ? '30%' : 'auto';
+            return $column === 'Path' ? '50%' : 'auto';
         }, $columns);
     @endphp
 
@@ -56,7 +60,7 @@
                             <form action="{{ route('admin.data_repository.index') }}" method="GET" class="form-inline">
                                 <div class="form-group">
                                     <input type="search" class="form-control" id="search" name="search"
-                                        style="width: 500px;" placeholder="Search by category name">
+                                        style="width: 500px;" placeholder="Search by user name">
                                 </div>
                                 <button type="submit" class="btn btn-primary">Search</button>
                             </form>
