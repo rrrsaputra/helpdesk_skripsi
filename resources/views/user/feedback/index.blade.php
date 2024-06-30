@@ -30,6 +30,12 @@
                                 <div class="dx-box dx-box-decorated">
                                     <div class="dx-box-content">
                                         <h2 class="h6 mb-6">Feedback</h2>
+                                        <nav aria-label="breadcrumb">
+                                            <uo class="breadcrumb">
+                                                <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
+                                                <li class="breadcrumb-item active" aria-current="page">Submit a Feedback</li>
+                                            </ol>
+                                        </nav>
 
                                     </div>
                                     <div class="dx-separator"></div>

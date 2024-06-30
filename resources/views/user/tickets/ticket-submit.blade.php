@@ -31,11 +31,13 @@
                                 <div class="dx-box-content">
                                     <h2 class="h6 mb-6">Submit a Ticket</h2>
                                     <!-- START: Breadcrumbs -->
-                                    <ul class="dx-breadcrumbs text-left dx-breadcrumbs-dark mnb-6 fs-14">
-                                        <li><a href="help-center.html">Support Home</a></li>
-                                        <li><a href="ticket.html">Ticket System</a></li>
-                                        <li>Submit Ticket</li>
-                                    </ul>
+                                    <nav aria-label="breadcrumb">
+                                        <uo class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
+                                            <li class="breadcrumb-item"><a href="{{ route('tickets.index') }}">Ticket System</a></li>
+                                            <li class="breadcrumb-item active" aria-current="page">Submit a Ticket</li>
+                                        </ol>
+                                    </nav>
                                     <!-- END: Breadcrumbs -->
                                 </div>
                                 <div class="dx-separator"></div>
