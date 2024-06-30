@@ -39,7 +39,10 @@
    ```sh
    php artisan storage:link
    ```
-
+8. NPM Install:
+    ```sh
+    npm install
+    ```
 ## Configuration
 
 Before running the application, you need to configure the `.env` file.
@@ -77,6 +80,14 @@ Run the npm:
 ```javascript
 npm run dev
 ```
+
+Run the reverb:
 ```javascript
-npm install
+php artisan reverb:start
 ```
+
+Run the queue:
+```javascript
+php artisan queue:listen
+```
+
