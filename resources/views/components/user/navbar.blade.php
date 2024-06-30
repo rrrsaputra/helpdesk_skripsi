@@ -28,8 +28,18 @@
             </ul>
             <ul class="dx-nav dx-nav-align-right">
                 @auth
+                    @if(Auth::check() && (Auth::user()->hasRole('admin') || Auth::user()->hasRole('agent')))
+                        <li class="dx-nav-item">
+                            <a href="{{ route('dashboard') }}" style="color: white; transition: color 0.3s;" onmouseover="this.style.color='grey'" onmouseout="this.style.color='white'">
+                                Dashboard
+                            </a>
+                        </li>
+                    @endif
+                @endauth
+                                
+                @auth
                     <li class="dx-nav-item">
-                        <a href="#" style="color: white; transition: color 0.3s;" onmouseover="this.style.color='grey'" onmouseout="this.style.color='white'">
+                        <a href="" style="color: white; transition: color 0.3s;" onmouseover="this.style.color='grey'" onmouseout="this.style.color='white'">
                             {{ Auth::user()->name }}
                         </a>
                     </li>
