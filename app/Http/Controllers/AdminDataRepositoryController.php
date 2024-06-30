@@ -16,9 +16,9 @@ class AdminDataRepositoryController extends Controller
         $paginationCount = 10;
         $dataRepositories = Attachment::orderBy('created_at', 'desc')
             ->when($search, function ($query) use ($search) {
-                $query->where('message.ticket_id', 'like', "%{$search}%")
-                    ->orWhereHas('message.user', function ($query) use ($search) {
-                        $query->where('name', 'like', "%{$search}%");
+                $query->whereHas('message.user', function ($query) use ($search) {
+                        $query->where('name', 'like', "%{$search}%")
+                            ->orWhere('ticket_id', 'like', "%{$search}%");
                     });
             })
             ->paginate($paginationCount);
