@@ -69,19 +69,19 @@
                                             placeholder="Enter Subject" name="title">
                                     </div>
                                     <div class="dx-form-group">
-                                        <label class="mnt-7">Description</label>
+                                        <label class="mnt-7">Attachments</label>
                                         <input type="file" class="filepond" name="filepond[]" multiple
                                             data-allow-reorder="true" data-max-file-size="3MB" data-max-files="3"
                                             accept="image/*">
-
 
                                         <script>
                                             import * as FilePond from 'filepond';
                                             import 'filepond/dist/filepond.min.css';
                                             import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
                                             import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
+                                            import FilePondPluginFileRemove from 'filepond-plugin-file-remove';
 
-                                            FilePond.registerPlugin(FilePondPluginImagePreview, FilePondPluginFileValidateType);
+                                            FilePond.registerPlugin(FilePondPluginImagePreview, FilePondPluginFileValidateType, FilePondPluginFileRemove);
                                             const inputElement = document.querySelector('input[type="file"].filepond');
 
                                             const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -89,19 +89,22 @@
                                             FilePond.create(inputElement).setOptions({
                                                 server: {
                                                     process: './uploads/process',
+                                                    revert: './uploads/revert',
                                                     headers: {
                                                         'X-CSRF-TOKEN': csrfToken,
                                                     }
                                                 },
                                                 acceptedFileTypes: ['image/*'],
                                                 allowImagePreview: true,
-                                                imagePreviewMaxHeight: 100
+                                                imagePreviewMaxHeight: 100,
+                                                allowRemove: true
                                             });
                                         </script>
                                         <input type="hidden" name="message" id="message">
                                         <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
                                         <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.js"></script>
                                         <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
+                                        <script src="https://unpkg.com/filepond-plugin-file-remove/dist/filepond-plugin-file-remove.min.js"></script>
                                     </div>
                                     <div class="dx-form-group">
                                         <label class="mnt-7">Message</label>
