@@ -133,17 +133,19 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/dashboard', function () {
-    if (Auth::user()->roles->pluck('name')[0] == 'admin') {
+    $role = Auth::user()->roles->pluck('name')->first();
+    
+    if ($role == 'admin') {
         return redirect()->route('admin.dashboard.index');
     } 
-    else if (Auth::user()->roles->pluck('name')[0] == 'agent') {
+    else if ($role == 'agent') {
         return redirect()->route('agent.dashboard.index');
     } 
-    else if (Auth::user()->roles->pluck('name')[0] == 'user') {
+    else if ($role == 'user') {
         return redirect()->route('home');
     } 
     else {
-        return redirect('home');
+        return redirect('/');
     }
     
 })->middleware(['auth', 'verified'])->name('dashboard');

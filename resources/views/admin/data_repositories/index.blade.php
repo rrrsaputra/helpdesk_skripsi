@@ -26,7 +26,7 @@
         $data = $dataRepositories
             ->map(function ($dataRepository) {
                 return [
-                    'id' => $articleCategory->id,
+                    'id' => $dataRepository->id,
                     'url' => '/path/to/resource1',
                     'values' => [$dataRepository->ticket_id, $dataRepository->path],
                 ];
