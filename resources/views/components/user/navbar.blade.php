@@ -27,7 +27,13 @@
 
             </ul>
             <ul class="dx-nav dx-nav-align-right">
-
+                @auth
+                    <li class="dx-nav-item">
+                        <a href="#" style="color: white; transition: color 0.3s;" onmouseover="this.style.color='grey'" onmouseout="this.style.color='white'">
+                            {{ Auth::user()->name }}
+                        </a>
+                    </li>
+                @endauth
                 <li class="dx-nav-item">
                     @if (Route::has('login'))
                         <nav class="-mx-3 flex flex-1 justify-end">

@@ -147,15 +147,6 @@
                 </li>
 
                 <li class="nav-item menu-close">
-                    <a href="{{ route('admin.business_hour.index') }}" class="nav-link {{ request()->routeIs('admin.business_hour.index') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-business-time"></i>
-                        <p>
-                            BUSINESS HOURS
-                        </p>
-                    </a>
-                </li>
-
-                <li class="nav-item menu-close">
                     <a href="{{ route('admin.triggers.index') }}" class="nav-link {{ request()->routeIs('admin.triggers.index') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-bell"></i>
                         <p>
@@ -169,6 +160,15 @@
                         <i class="nav-icon fas fa-database"></i>
                         <p>
                             DATA REPOSITORY
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item menu-close">
+                    <a href="{{ route('admin.business_hour.index') }}" class="nav-link {{ request()->routeIs('admin.business_hour.index') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-business-time"></i>
+                        <p>
+                            BUSINESS HOURS
                         </p>
                     </a>
                 </li>
