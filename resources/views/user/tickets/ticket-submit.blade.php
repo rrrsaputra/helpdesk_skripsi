@@ -25,7 +25,8 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-xl-7">
-                        <form action="{{ route('user.ticket.store') }}" method="POST" class="dx-form" enctype="multipart/form-data">
+                        <form action="{{ route('user.ticket.store') }}" method="POST" class="dx-form"
+                            enctype="multipart/form-data">
                             @csrf
                             <div class="dx-box dx-box-decorated">
                                 <div class="dx-box-content">
@@ -57,76 +58,55 @@
                                 <div class="dx-separator"></div>
 
                                 <div class="dx-box-content">
+                                    <link
+                                        href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css"
+                                        rel="stylesheet" />
+                                    <link href="https://unpkg.com/filepond/dist/filepond.min.css" rel="stylesheet" />
+
                                     <div class="dx-form-group">
                                         <label for="subject" class="mnt-7">Subject</label>
                                         <input type="text" class="form-control form-control-style-2" id="subject"
-                                            placeholder="Enter Subject" name='title'>
+                                            placeholder="Enter Subject" name="title">
                                     </div>
                                     <div class="dx-form-group">
                                         <label class="mnt-7">Description</label>
+                                        <input type="file" class="filepond" name="filepond[]" multiple
+                                            data-allow-reorder="true" data-max-file-size="3MB" data-max-files="3"
+                                            accept="image/*">
 
-                                        <div class="dx-box-content">
-                                            <div class="dx-form-group">
-                                                <label for="files" class="mnt-7">Attach Files</label>
-                                                <div class="dropzone" id="fileDropzone"></div>
-                                            </div>
-                                        </div>
-                                        
+
                                         <script>
-                                            document.addEventListener('DOMContentLoaded', function() {
-                                                Dropzone.autoDiscover = false;
-                                                var uploadedFiles = [];
-                                                var removedFiles = [];
-                                                var fileDropzone = new Dropzone("#fileDropzone", {
-                                                    url: '{{ route('dropzone.upload') }}',
-                                                    maxFiles: 5,
-                                                    maxFilesize: 5, // Ukuran maksimal file dalam MB
-                                                    acceptedFiles: null, // Mengizinkan semua jenis file
-                                                    addRemoveLinks: true,
-                                                    init: function() {
-                                                        this.on("success", function(file, response) {
-                                                            var fileLink = document.createElement('a');
-                                                            fileLink.href = response;
-                                                            fileLink.textContent = file.name;
-                                                            fileLink.target = '_blank';
-                                                            file.previewElement.appendChild(fileLink);
-                                                            uploadedFiles.push(response);
-                                                            console.log('File uploaded to: ' + response);
-                                                            console.log('Updated uploadedFiles: ', uploadedFiles);
-                                                        });
+                                            import * as FilePond from 'filepond';
+                                            import 'filepond/dist/filepond.min.css';
+                                            import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
+                                            import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 
-                                                        this.on("removedfile", function(file) {
-                                                            if (file.previewElement) {
-                                                                file.previewElement.remove();
-                                                            }
-                                                            var fileIndex = uploadedFiles.indexOf(file.upload.filename);
-                                                            if (fileIndex > -1) {
-                                                                removedFiles.push(uploadedFiles[fileIndex]);
-                                                                uploadedFiles.splice(fileIndex, 1);
-                                                            }
-                                                            console.log('File removed: ' + file.upload.filename);
-                                                            console.log('Updated removedFiles: ', removedFiles);
-                                                        });
-                                                    }
-                                                });
-                                        
-                                                fileDropzone.on("sending", function(file, xhr, formData) {
-                                                    var formElements = document.querySelector('form').elements;
-                                                    for (var i = 0; i < formElements.length; i++) {
-                                                        formData.append(formElements[i].name, formElements[i].value);
-                                                    }
-                                                });
+                                            FilePond.registerPlugin(FilePondPluginImagePreview, FilePondPluginFileValidateType);
+                                            const inputElement = document.querySelector('input[type="file"].filepond');
 
-                                                fileDropzone.on("complete", function(file) {
-                                                    console.log(file);
-                                                });
-                                                
+                                            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+                                            FilePond.create(inputElement).setOptions({
+                                                server: {
+                                                    process: './uploads/process',
+                                                    headers: {
+                                                        'X-CSRF-TOKEN': csrfToken,
+                                                    }
+                                                },
+                                                acceptedFileTypes: ['image/*'],
+                                                allowImagePreview: true,
+                                                imagePreviewMaxHeight: 100
                                             });
                                         </script>
-
+                                        <input type="hidden" name="message" id="message">
+                                        <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
+                                        <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.js"></script>
+                                        <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
+                                    </div>
+                                    <div class="dx-form-group">
+                                        <label class="mnt-7">Message</label>
                                         <div class="dx-editors" data-editor-height="150" data-editor-maxheight="250"
-                                            style="min-height: 150px; max-height: 250px;">
-                                        </div>
+                                            style="min-height: 150px; max-height: 250px;"></div>
                                         <script>
                                             document.addEventListener('DOMContentLoaded', function() {
                                                 var quill = new Quill('.dx-editors', {
@@ -139,7 +119,6 @@
                                                 });
                                             });
                                         </script>
-                                        <input type="hidden" name="message" id="message">
                                     </div>
                                 </div>
 
@@ -281,4 +260,6 @@
         </div>
 
     </div>
+
+    
 @endsection

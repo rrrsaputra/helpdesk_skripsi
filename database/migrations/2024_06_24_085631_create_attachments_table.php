@@ -12,7 +12,9 @@ class CreateAttachmentsTable extends Migration
     {
         Schema::create('attachments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('ticket_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('message_id');
+            $table->string('name');
+            $table->foreign('message_id')->references('id')->on('messages')->onDelete('cascade');
             $table->string('path');
             $table->timestamps();
         });
