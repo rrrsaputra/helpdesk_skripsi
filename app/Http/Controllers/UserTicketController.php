@@ -158,6 +158,15 @@ class UserTicketController extends Controller
             return redirect()->back()->with('error', 'Ticket not found');
         }
         $messages = $ticket->messages;
+        foreach ($messages as $message) {
+            $attachments = $message->attachments;
+            if ($attachments->isNotEmpty()) {
+                $message->has_attachments = true;
+                $message->attachments_list = $message->attachments_list();
+            } else {
+                $message->has_attachments = false;
+            }
+        }
         return view('user.tickets.show-ticket', compact('messages', 'ticket_id'));
     }
 

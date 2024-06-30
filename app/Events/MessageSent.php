@@ -22,7 +22,7 @@ use Coderflex\LaravelTicket\Models\Message as ModelsMessage;
        {    
            $this->message = $message;
            $this->user = $user;
-      
+
        }
 
        public function broadcastOn()
@@ -36,4 +36,17 @@ use Coderflex\LaravelTicket\Models\Message as ModelsMessage;
         // Handle the case where the ticket relationship is not available
         return new PrivateChannel('messages.unknown');
        }
+       public function broadcastWith()
+{
+    return [
+        'message' => $this->message,
+        'user' => $this->user,
+        'attachments' => $this->message->attachments->map(function ($attachment) {
+            return [
+                'path' => asset('storage/' . $attachment->path),
+                'name' => $attachment->name,
+            ];
+        }),
+    ];
+}
    }
