@@ -22,17 +22,18 @@
 
 @section('content')
     @php
-        $columns = ['Message ID', 'Ticket ID','User Name','Path'];
+        $columns = ['Message ID', 'Ticket ID', 'User Email', 'Path'];
         $data = $dataRepositories
             ->map(function ($dataRepository) {
                 return [
                     'id' => $dataRepository->id,
                     'url' => '/path/to/resource1',
                     'values' => [
-                        $dataRepository->message_id, 
+                        $dataRepository->message_id,
                         $dataRepository->message->ticket_id,
-                        $dataRepository->message->user->name,
-                        $dataRepository->path],
+                        $dataRepository->message->user->email,
+                        $dataRepository->path,
+                    ],
                 ];
             })
             ->toArray();
@@ -78,27 +79,31 @@
                                 <tbody>
                                     @forelse ($data as $row)
                                         <tr style="cursor: pointer" data-id="{{ $row['id'] }}">
-                                            @foreach ($row['values'] as $value)
+                                            @foreach ($row['values'] as $index => $value)
                                                 <td>
-                                                    @if (is_array($value))
-                                                        @foreach ($value as $index => $subValue)
-                                                            <div>
-                                                                @php
-                                                                    $charLimit =
-                                                                        isset($columnSizes[$index]) &&
-                                                                        is_numeric($columnSizes[$index])
-                                                                            ? intval($columnSizes[$index] * 0.5)
-                                                                            : 70;
-                                                                @endphp
-                                                                @if ($index === 0)
-                                                                    <strong>{!! strlen($subValue) > $charLimit ? substr($subValue, 0, $charLimit) . '...' : $subValue !!}</strong>
-                                                                @else
-                                                                    {!! strlen($subValue) > $charLimit ? substr($subValue, 0, $charLimit) . '...' : $subValue !!}
-                                                                @endif
-                                                            </div>
-                                                        @endforeach
+                                                    @if ($columns[$index] === 'Path')
+                                                        <a href="{{ asset('storage/' . $value) }}" target="_blank">{{ $value }}</a>
                                                     @else
-                                                        {{ $value }}
+                                                        @if (is_array($value))
+                                                            @foreach ($value as $subIndex => $subValue)
+                                                                <div>
+                                                                    @php
+                                                                        $charLimit =
+                                                                            isset($columnSizes[$subIndex]) &&
+                                                                            is_numeric($columnSizes[$subIndex])
+                                                                                ? intval($columnSizes[$subIndex] * 0.5)
+                                                                                : 70;
+                                                                    @endphp
+                                                                    @if ($subIndex === 0)
+                                                                        <strong>{!! strlen($subValue) > $charLimit ? substr($subValue, 0, $charLimit) . '...' : $subValue !!}</strong>
+                                                                    @else
+                                                                        {!! strlen($subValue) > $charLimit ? substr($subValue, 0, $charLimit) . '...' : $subValue !!}
+                                                                    @endif
+                                                                </div>
+                                                            @endforeach
+                                                        @else
+                                                            {{ $value }}
+                                                        @endif
                                                     @endif
                                                 </td>
                                             @endforeach
