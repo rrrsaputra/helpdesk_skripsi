@@ -49,16 +49,16 @@
     <!-- Custom Styles -->
     <link rel="stylesheet" href="{{ asset('amdesk/dist/assets/css/custom.css') }}">
     <!-- END: Styles -->
-    <!-- jQuery -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="{{ asset('amdesk/dist/assets/vendor/jquery/dist/jquery.min.js') }}"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    
+
 </head>
 
 
 <body>
-    
-    
+
+
     <!--
     START: Navbar
 
@@ -70,7 +70,7 @@
         .dx-navbar-expand || .dx-navbar-expand-lg || .dx-navbar-expand-xl
 -->
     <x-user.navbar />
-    
+
     @if (Route::currentRouteName() !== 'user.ticket.show')
         <x-user.header />
     @endif
@@ -78,7 +78,7 @@
 
     @yield('content')
     @if (Route::currentRouteName() !== 'user.ticket.show')
-    <x-user.footer />
+        <x-user.footer />
     @endif
 
 
@@ -131,9 +131,9 @@
             s0.parentNode.insertBefore(s1, s0);
         })();
     </script>
-   
 
-    
+
+
     <!--End of Tawk.to Script-->
     <!-- END: Scripts -->
 </body>

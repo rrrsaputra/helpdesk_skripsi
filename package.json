@@ -19,6 +19,7 @@
     },
     "dependencies": {
         "dropzone": "^6.0.0-beta.2",
+        "filepond": "^4.31.1",
         "leaflet": "^1.9.4"
     }
 }

@@ -10,7 +10,7 @@ class Attachment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['ticket_id', 'path'];
+    protected $fillable = ['name','message_id', 'path'];
 
     public function ticket()
     {

@@ -36,6 +36,7 @@ use App\Http\Controllers\AdminDataRepositoryController;
 use App\Http\Controllers\AdminTicketCategoryController;
 use App\Http\Controllers\UserArticleCategoryController;
 use App\Http\Controllers\AdminArticleCategoryController;
+use App\Http\Controllers\FileUploadController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 // Route::get('/category/{slug}', [HomeController::class, 'show'])->name('category.show');
@@ -155,6 +156,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::post('uploads/process', [FileUploadController::class, 'process'])->name('uploads.process');
 });
 
 
