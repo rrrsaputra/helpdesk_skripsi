@@ -78,7 +78,7 @@ class AgentMessagesController extends Controller
         event(new MessageSent($message, $user));
 
         // Return the current view
-        return response()->json(['success' => 'Message sent successfully', 'message' => $message]);
+        return redirect()->back();
     }
     /**
      * Display the specified resource.

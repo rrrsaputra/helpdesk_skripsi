@@ -76,13 +76,12 @@
     </form>
 
     <script>
-        document.getElementById('msg').addEventListener('keypress', function(event) {
-            if (event.key === 'Enter' && !event.shiftKey) {
-                event.preventDefault();
+        document.getElementById('msg').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
                 document.getElementById('btn').click();
             }
         });
-
 
         document.addEventListener('DOMContentLoaded', function() {
             var messagesContainer = document.getElementById('messages-container');
@@ -114,15 +113,26 @@
                     messageText.style.margin = '0';
                     messageText.innerHTML = e.message.message;
 
+                    var messageTime = document.createElement('p');
+                    messageTime.style.cssText = 'margin: 0; font-size: 0.8em; color: #888;';
+                    messageTime.innerHTML = '<small>' + new Date(e.message.created_at).toLocaleString() +
+                        '</small>';
+
                     messageContent.appendChild(messageUser);
                     messageContent.appendChild(messageText);
 
-                    if (e.attachments.length > 0) {
-                        var attachmentsLink = document.createElement('p');
-                        attachmentsLink.style.margin = '0';
-                        attachmentsLink.innerHTML = '<a href="#" onclick="toggleAttachments(' + e.message.id +
-                            ')"><i class="fas fa-paperclip"></i> View Attachments</a>';
-                        messageContent.appendChild(attachmentsLink);
+
+                    if (e.message.attachments.length > 0) {
+                        var attachmentLink = document.createElement('p');
+                        attachmentLink.style.margin = '0';
+                        var attachmentAnchor = document.createElement('a');
+                        attachmentAnchor.href = '#';
+                        attachmentAnchor.onclick = function() {
+                            toggleAttachments(e.message.id);
+                        };
+                        attachmentAnchor.innerHTML = '<i class="fas fa-paperclip"></i> View Attachments';
+                        attachmentLink.appendChild(attachmentAnchor);
+                        messageContent.appendChild(attachmentLink);
 
                         var attachmentsContainer = document.createElement('div');
                         attachmentsContainer.id = 'attachments-' + e.message.id;
@@ -130,11 +140,11 @@
                         attachmentsContainer.style.cssText =
                             'display: none; max-height: 400px; overflow-y: auto;';
 
-                        e.attachments.forEach(function(attachment) {
+                        e.message.attachments.forEach(function(attachment) {
                             var attachmentItem = document.createElement('div');
                             attachmentItem.classList.add('attachment-item');
                             var attachmentImg = document.createElement('img');
-                            attachmentImg.src = '{{ asset('storage/' . "' + attachment.path + '") }}';
+                            attachmentImg.src = '{{ asset('storage/') }}/' + attachment.path;
                             attachmentImg.alt = attachment.name;
                             attachmentImg.style.cssText = 'max-width: 100%; height: auto;';
                             attachmentItem.appendChild(attachmentImg);
@@ -143,12 +153,6 @@
 
                         messageContent.appendChild(attachmentsContainer);
                     }
-
-                    var messageTime = document.createElement('p');
-                    messageTime.style.cssText = 'margin: 0; font-size: 0.8em; color: #888;';
-                    messageTime.innerHTML = '<small>' + new Date(e.message.created_at).toLocaleString() +
-                        '</small>';
-
                     messageContent.appendChild(messageTime);
                     newMessage.appendChild(profilePic);
                     newMessage.appendChild(messageContent);
@@ -158,99 +162,115 @@
                 });
 
             // Handle form submission without refreshing
-            document.getElementById('message-form').addEventListener('submit', async function(e) {
+            document.getElementById('message-form').addEventListener('submit', function(e) {
                 e.preventDefault();
                 var form = this;
                 var formData = new FormData(form);
 
-                try {
-                    const response = await fetch(form.action, {
+                // Add this on top of the message
+                var loadingIndicator = document.createElement('div');
+                loadingIndicator.classList.add('loading-indicator');
+                loadingIndicator.innerHTML = 'Sending...';
+                form.insertBefore(loadingIndicator, form.firstChild);
+
+                fetch(form.action, {
                         method: form.method,
                         body: formData,
                         headers: {
                             'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
                         }
-                    });
-                    const data = await response.json();
-                    if (data.success) {
-                        form.reset();
-                        // Append the new message to the messages container
-                        var newMessage = document.createElement('div');
-                        newMessage.classList.add('message-item');
-                        newMessage.style.cssText =
-                            'display: flex; align-items: flex-start; margin-bottom: 10px;' +
-                            (data.message.user_id == {{ Auth::id() }} ?
-                                'flex-direction: row-reverse;' : '');
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Remove loading indicator
+                        form.removeChild(loadingIndicator);
 
-                        var profilePic = document.createElement('img');
-                        profilePic.src = data.user.profile_pic || '{{ asset('default-avatar.jpg') }}';
-                        profilePic.alt = 'Profile Picture';
-                        profilePic.style.cssText =
-                            'width: 40px; height: 40px; border-radius: 50%; margin-' +
-                            (data.message.user_id == {{ Auth::id() }} ? 'left' : 'right') +
-                            ': 10px;';
+                        if (data.success) {
+                            form.reset();
+                            // Append the new message to the messages container
+                            var newMessage = document.createElement('div');
+                            newMessage.classList.add('message-item');
+                            newMessage.style.cssText =
+                                'display: flex; align-items: flex-start; margin-bottom: 10px;' +
+                                (data.message.user_id == {{ Auth::id() }} ?
+                                    'flex-direction: row-reverse;' : '');
 
-                        var messageContent = document.createElement('div');
-                        messageContent.style.cssText =
-                            'background-color: #dfdfdf; border-radius: 15px; padding: 10px; max-width: 70%;';
+                            var profilePic = document.createElement('img');
+                            profilePic.src = data.user.profile_pic ||
+                                '{{ asset('default-avatar.jpg') }}';
+                            profilePic.alt = 'Profile Picture';
+                            profilePic.style.cssText =
+                                'width: 40px; height: 40px; border-radius: 50%; margin-' +
+                                (data.message.user_id == {{ Auth::id() }} ? 'left' : 'right') +
+                                ': 10px;';
 
-                        var messageUser = document.createElement('p');
-                        messageUser.style.margin = '0';
-                        messageUser.innerHTML = '<strong>' + data.user.name + ':</strong>';
+                            var messageContent = document.createElement('div');
+                            messageContent.style.cssText =
+                                'background-color: #dfdfdf; border-radius: 15px; padding: 10px; max-width: 70%;';
 
-                        var messageText = document.createElement('p');
-                        messageText.style.margin = '0';
-                        messageText.innerHTML = data.message.message;
+                            var messageUser = document.createElement('p');
+                            messageUser.style.margin = '0';
+                            messageUser.innerHTML = '<strong>' + data.user.name + ':</strong>';
 
-                        messageContent.appendChild(messageUser);
-                        messageContent.appendChild(messageText);
+                            var messageText = document.createElement('p');
+                            messageText.style.margin = '0';
+                            messageText.innerHTML = data.message.message;
 
-                        if (data.attachments && data.attachments.length > 0) {
-                            var attachmentsLink = document.createElement('p');
-                            attachmentsLink.style.margin = '0';
-                            attachmentsLink.innerHTML = '<a href="#" onclick="toggleAttachments(' + data
-                                .message.id +
-                                ')"><i class="fas fa-paperclip"></i> View Attachments</a>';
-                            messageContent.appendChild(attachmentsLink);
+                            var messageTime = document.createElement('p');
+                            messageTime.style.cssText = 'margin: 0; font-size: 0.8em; color: #888;';
+                            messageTime.innerHTML = '<small>' + new Date(data.message.created_at)
+                                .toLocaleString() + '</small>';
 
-                            var attachmentsContainer = document.createElement('div');
-                            attachmentsContainer.id = 'attachments-' + data.message.id;
-                            attachmentsContainer.classList.add('attachments-container');
-                            attachmentsContainer.style.cssText =
-                                'display: none; max-height: 400px; overflow-y: auto;';
+                            messageContent.appendChild(messageUser);
+                            messageContent.appendChild(messageText);
 
-                            data.attachments.forEach(function(attachment) {
-                                var attachmentItem = document.createElement('div');
-                                attachmentItem.classList.add('attachment-item');
-                                var attachmentImg = document.createElement('img');
-                                attachmentImg.src =
-                                    '{{ asset('storage/' . "' + attachment.path + '") }}';
-                                attachmentImg.alt = attachment.name;
-                                attachmentImg.style.cssText = 'max-width: 100%; height: auto;';
-                                attachmentItem.appendChild(attachmentImg);
-                                attachmentsContainer.appendChild(attachmentItem);
-                            });
 
-                            messageContent.appendChild(attachmentsContainer);
+                            if (data.message.attachments && data.message.attachments.length > 0) {
+                                var attachmentsLink = document.createElement('p');
+                                attachmentsLink.style.margin = '0';
+                                attachmentsLink.innerHTML = '<a href="#" onclick="toggleAttachments(' +
+                                    data.message.id +
+                                    ')"><i class="fas fa-paperclip"></i> View Attachments</a>';
+
+                                var attachmentsContainer = document.createElement('div');
+                                attachmentsContainer.id = 'attachments-' + data.message.id;
+                                attachmentsContainer.classList.add('attachments-container');
+                                attachmentsContainer.style.cssText =
+                                    'display: none; max-height: 400px; overflow-y: auto;';
+
+                                data.message.attachments.forEach(function(attachment) {
+                                    var attachmentItem = document.createElement('div');
+                                    attachmentItem.classList.add('attachment-item');
+
+                                    var attachmentImg = document.createElement('img');
+                                    attachmentImg.src = '{{ asset('storage/') }}/' + attachment
+                                        .path;
+                                    attachmentImg.alt = attachment.name;
+                                    attachmentImg.style.cssText =
+                                        'max-width: 100%; height: auto;';
+
+                                    attachmentItem.appendChild(attachmentImg);
+                                    attachmentsContainer.appendChild(attachmentItem);
+                                });
+
+                                messageContent.appendChild(attachmentsLink);
+                                messageContent.appendChild(attachmentsContainer);
+                            }
+                            messageContent.appendChild(messageTime);
+                            newMessage.appendChild(profilePic);
+                            newMessage.appendChild(messageContent);
+
+                            messagesContainer.appendChild(newMessage);
+                            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                        } else {
+                            alert('Error sending message');
                         }
-
-                        var messageTime = document.createElement('p');
-                        messageTime.style.cssText = 'margin: 0; font-size: 0.8em; color: #888;';
-                        messageTime.innerHTML = '<small>' + new Date(data.message.created_at)
-                            .toLocaleString() + '</small>';
-
-                        messageContent.appendChild(messageTime);
-                        newMessage.appendChild(profilePic);
-                        newMessage.appendChild(messageContent);
-
-                        messagesContainer.appendChild(newMessage);
-                        messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                    } else {
-                        alert('Error sending message');
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
-                }
+                    })
+                    .catch(error => {
+                        // Remove loading indicator in case of error
+                        form.removeChild(loadingIndicator);
+                        console.error('Error:', error);
+                    });
             });
         });
     </script>

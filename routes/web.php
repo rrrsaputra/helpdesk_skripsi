@@ -41,7 +41,7 @@ use App\Http\Controllers\FileUploadController;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 // Route::get('/category/{slug}', [HomeController::class, 'show'])->name('category.show');
 
-Route::get('/trigger', [TriggerController::class, 'index'])->name('trigger');
+// Route::get('/trigger', [TriggerController::class, 'index'])->name('trigger');
 
 Route::get('/messages', [HomeController::class, 'messages'])
     ->name('messages');
