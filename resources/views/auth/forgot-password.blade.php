@@ -1,5 +1,7 @@
 @extends('layouts.login')
 
+<title>Earthqualizer Forgot Password</title>
+
 @section('content')
     <div class="login-box">
         <div class="card">

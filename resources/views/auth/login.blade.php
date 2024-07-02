@@ -1,5 +1,7 @@
 @extends('layouts.login')
 
+<title>Earthqualizer Login</title>
+
 @section('content')
 
 <div class="login-box">
