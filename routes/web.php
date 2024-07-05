@@ -38,7 +38,7 @@ use App\Http\Controllers\UserArticleCategoryController;
 use App\Http\Controllers\AdminArticleCategoryController;
 use App\Http\Controllers\FileUploadController;
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+
 // Route::get('/category/{slug}', [HomeController::class, 'show'])->name('category.show');
 
 // Route::get('/trigger', [TriggerController::class, 'index'])->name('trigger');
@@ -57,6 +57,7 @@ Route::get('/category/{slug}', [UserArticleCategoryController::class, 'show'])->
 
 
 Route::middleware(['auth', 'role:user'])->group(function () {
+    Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::resource('/feedback', FeedbackController::class)->names('user.feedback');
     Route::resource('/tickets', UserTicketController::class)->names('tickets');
     Route::resource('/scheduled-calls', UserScheduledCallController::class)->names('scheduled_call');
