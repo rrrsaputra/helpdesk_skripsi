@@ -34,7 +34,7 @@ class AgentMessagesController extends Controller
      */
     public function store(Request $request, string $id)
     {
-
+        
 
         $ticket = Ticket::find($id);
         if (!$ticket) {

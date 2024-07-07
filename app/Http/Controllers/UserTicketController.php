@@ -26,6 +26,7 @@ class UserTicketController extends Controller
      */
     public function index(Request $request)
     {
+        
         $search = $request->input('search');
         $paginationCount = 5;
         $user = Auth::user();
@@ -57,8 +58,7 @@ class UserTicketController extends Controller
      */
     public function store(Request $request)
     {
-        
-        
+
         $user = Auth::user();
         
       
@@ -91,20 +91,36 @@ class UserTicketController extends Controller
             'message' => 'required|string',
             'filepond.*' => 'nullable|file|mimes:jpg,jpeg,png|max:3072', // 3MB max per file
         ]);
-        if ($request->hasFile('filepond')) {
-            foreach ($request->file('filepond') as $file) {
-                $path = $file->store('uploads', 'public');
-                if ($path) {
-                    Attachment::create([
-                        'name' => $file->getClientOriginalName(),
-                        'path' => $path,
-                        'message_id'=> $message->id
-                    ]);
-                } else {
-                    return redirect()->back()->with('error', 'Failed to upload file. Please try again.');
-                }
+        
+        $filepondData = json_decode($request->input('filepond'), true);
+        
+        if ($filepondData) {
+            foreach ($filepondData as $fileData) {
+                $serverId = json_decode($fileData['serverId'], true);
+                $path = $serverId['path'];
+                $name = $fileData['name'];
+                
+                Attachment::create([
+                    'name' => $name,
+                    'path' => $path,
+                    'message_id' => $message->id
+                ]);
             }
         }
+        // if ($request->hasFile('filepond')) {
+        //     foreach ($request->file('filepond') as $file) {
+        //         $path = $file->store('uploads', 'public');
+        //         if ($path) {
+        //             Attachment::create([
+        //                 'name' => $file->getClientOriginalName(),
+        //                 'path' => $path,
+        //                 'message_id'=> $message->id
+        //             ]);
+        //         } else {
+        //             return redirect()->back()->with('error', 'Failed to upload file. Please try again.');
+        //         }
+        //     }
+        // }
 
         $agents = User::whereHas('roles', function($query) {
             $query->where('name', 'agent');

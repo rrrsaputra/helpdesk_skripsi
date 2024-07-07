@@ -52,7 +52,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="{{ asset('amdesk/dist/assets/vendor/jquery/dist/jquery.min.js') }}"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
+    @yield('css')
 </head>
 
 
@@ -131,7 +131,7 @@
             s0.parentNode.insertBefore(s1, s0);
         })();
     </script>
-
+    @stack('js')
 
 
     <!--End of Tawk.to Script-->

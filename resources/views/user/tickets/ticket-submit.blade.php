@@ -1,5 +1,12 @@
 @extends('layouts.user')
 
+@section('css')
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.js"></script>
+    <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
+@endsection
+
 @section('content')
     <div class="dx-main">
         @if (session('error'))
@@ -26,7 +33,7 @@
                 <div class="row justify-content-center">
                     <div class="col-xl-7">
                         <form action="{{ route('user.ticket.store') }}" method="POST" class="dx-form"
-                            enctype="multipart/form-data">
+                            enctype="multipart/form-data" onkeydown="return event.key != 'Enter';">
                             @csrf
                             <div class="dx-box dx-box-decorated">
                                 <div class="dx-box-content">
@@ -71,60 +78,33 @@
                                     </div>
                                     <div class="dx-form-group">
                                         <label class="mnt-7">Attachments</label>
-                                        <input type="file" class="filepond" name="filepond[]" multiple
-                                            data-allow-reorder="true" data-max-file-size="3MB" data-max-files="3">
-
-                                        <script>
-                                            import * as FilePond from 'filepond';
-                                            import 'filepond/dist/filepond.min.css';
-                                            import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
-                                            import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
-                                            import FilePondPluginFileRemove from 'filepond-plugin-file-remove';
-
-                                            FilePond.registerPlugin(FilePondPluginImagePreview, FilePondPluginFileValidateType, FilePondPluginFileRemove);
-                                            const inputElement = document.querySelector('input[type="file"].filepond');
-
-                                            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-                                            FilePond.create(inputElement).setOptions({
-                                                server: {
-                                                    process: './uploads/process',
-                                                    revert: './uploads/revert',
-                                                    headers: {
-                                                        'X-CSRF-TOKEN': csrfToken,
-                                                    }
-                                                },
-                                                allowImagePreview: true,
-                                                imagePreviewMaxHeight: 100,
-                                                allowRemove: true
-                                            });
-                                        </script>
-                                        <input type="hidden" name="message" id="message">
-                                        <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
-                                        <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.js"></script>
-                                        <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
-                                        <script src="https://unpkg.com/filepond-plugin-file-remove/dist/filepond-plugin-file-remove.min.js"></script>
+                                        <input type="file" class="filepond" id="fileInput" multiple>
+                                        <input type="hidden" name="filepond" id="hidden_filePaths">
+                                       
+                                    {{-- <button type="button" class="btn btn-secondary mt-2" id="check_attachment_path">Check Attachment Path</button>
+                                    <script>
+                                        document.getElementById('check_attachment_path').addEventListener('click', function() {
+                                            const addedFiles = pond.getFiles();
+                                            if (addedFiles.length > 0) {
+                                                const filePaths = addedFiles.map(file => file.serverId);
+                                                console.log('File paths:', filePaths);
+                                            } else {
+                                                console.log('No files added.');
+                                            }
+                                        });
+                                    </script> --}}
                                     </div>
                                     <div class="dx-form-group">
                                         <label class="mnt-7">Message</label>
-                                        <div class="dx-editors" data-editor-height="150" data-editor-maxheight="250"
-                                            style="min-height: 150px; max-height: 250px;"></div>
-                                        <script>
-                                            document.addEventListener('DOMContentLoaded', function() {
-                                                var quill = new Quill('.dx-editors', {
-                                                    theme: 'snow'
-                                                });
-
-                                                quill.on('text-change', function() {
-                                                    var message = document.querySelector('input[name=message]');
-                                                    message.value = quill.root.innerHTML;
-                                                });
-                                            });
-                                        </script>
+                                        <div id="editor">
+                                        </div>
+                                        <input type="hidden" name="message" id="hidden_message">
                                     </div>
                                 </div>
 
                                 <div class="dx-separator"></div>
+
+
 
                                 <div class="dx-box-content">
                                     <div class="dx-form-group">
@@ -146,7 +126,8 @@
                                                     id="check_location">Check Location</button>
                                             </div>
                                             <div class="col-12 col-md-6 mb-20">
-                                                <button type="button" class="btn btn-primary w-100" id="get_location">Get
+                                                <button type="button" class="btn btn-primary w-100"
+                                                    id="get_location">Get
                                                     Current Location</button>
                                             </div>
                                         </div>
@@ -159,143 +140,37 @@
 
                                 {{-- GET LOCATION --}}
                                 <div class="dx-box-content">
-                                    <link href="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.css" rel="stylesheet">
-<script src="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.js"></script>
-                                    <div id='search-box-container'></div>
+
+                                    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+                                    <link rel="stylesheet"
+                                        href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
+                                        type="text/css">
+
                                     <div id="map" style="height: 400px;"></div>
-                                    <script>
-                                        const script = document.getElementById('search-js');
-                                        // wait for the Mapbox Search JS script to load before using it
-                                        script.onload = function () {
-                                          const mapboxAccessToken = 'YOUR_MAPBOX_ACCESS_TOKEN';
-                                      
-                                          // instantiate a map
-                                          const map = new mapboxgl.Map({
-                                              accessToken: mapboxAccessToken,
-                                              container: 'map',
-                                              center: [-74.5, 40],
-                                              zoom: 9
-                                          });
-                                      
-                                          // instantiate a search box instance
-                                          const searchBox = new mapboxsearch.MapboxSearchBox()
-                                      
-                                          // set the mapbox access token, search box API options
-                                          searchBox.accessToken = mapboxAccessToken
-                                          searchBox.options = {
-                                            language: 'es'
-                                          }
-                                      
-                                          // set the mapboxgl library to use for markers and enable the marker functionality
-                                          searchBox.mapboxgl = mapboxgl
-                                          searchBox.marker = true
-                                      
-                                          // bind the search box instance to the map instance
-                                          searchBox.bindMap(map)
-                                      
-                                          // add the search box instance to the DOM
-                                          document.getElementById('search-box-container').appendChild(searchBox)
-                                        }
-                                      </script>
+
+
                                     <input type="hidden" name="latitude" id="hidden_latitude">
                                     <input type="hidden" name="longitude" id="hidden_longitude">
-                                </div>
-                               
-
-                                <link href='https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css' rel='stylesheet' />
-                                <script id="search-js" defer src="https://api.mapbox.com/search-js/v1.0.0-beta.21/web.js"></script>
-
-                                <script src='https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js'></script>
-                                <script>
-                                    document.addEventListener('DOMContentLoaded', function() {
-                                        mapboxgl.accessToken =
-                                            "pk.eyJ1IjoiYmFtYmFuZzI4MDIiLCJhIjoiY2x4a2ViM3R0MDB0bDJqcXU0OWxwN3I3biJ9.Ihq2fCxZXYpw-sveeATkvw";
-                                        var map = new mapboxgl.Map({
-                                            container: 'map',
-                                            style: 'mapbox://styles/mapbox/streets-v11',
-                                            center: [0, 0],
-                                            zoom: 2
-                                        });
-
-                                        var marker;
-
-                                        document.getElementById('get_location').addEventListener('click', function() {
-                                            if (navigator.geolocation) {
-                                                navigator.geolocation.getCurrentPosition(function(position) {
-                                                    var lat = position.coords.latitude;
-                                                    var lng = position.coords.longitude;
-                                                    var coordinates = [lng, lat];
-
-                                                    if (!marker) {
-                                                        marker = new mapboxgl.Marker()
-                                                            .setLngLat(coordinates)
-                                                            .addTo(map);
-                                                    } else {
-                                                        marker.setLngLat(coordinates);
-                                                    }
-
-                                                    map.setCenter(coordinates);
-                                                    map.setZoom(13);
-
-                                                    // Set the latitude and longitude values in the hidden inputs
-                                                    document.getElementById('latitude').value = lat;
-                                                    document.getElementById('longitude').value = lng;
-                                                    document.getElementById('hidden_latitude').value = lat;
-                                                    document.getElementById('hidden_longitude').value = lng;
-                                                }, function(error) {
-                                                    alert("Error getting location: " + error.message);
-                                                }, {
-                                                    enableHighAccuracy: true,
-                                                    timeout: 5000,
-                                                    maximumAge: 0
-                                                });
-                                            } else {
-                                                alert("Geolocation is not supported by this browser.");
-                                            }
-                                        });
-
-                                        document.getElementById('check_location').addEventListener('click', function() {
-                                            var lat = document.getElementById('latitude').value;
-                                            var lng = document.getElementById('longitude').value;
-                                            var coordinates = [lng, lat];
-
-                                            if (!marker) {
-                                                marker = new mapboxgl.Marker()
-                                                    .setLngLat(coordinates)
-                                                    .addTo(map);
-                                            } else {
-                                                marker.setLngLat(coordinates);
-                                            }
-
-                                            map.setCenter(coordinates);
-                                            map.setZoom(13);
-
-                                            // Set the latitude and longitude values in the hidden inputs
-                                            document.getElementById('hidden_latitude').value = lat;
-                                            document.getElementById('hidden_longitude').value = lng;
-                                        });
-                                    });
-                                </script>
-                            </div>
-
-                            <div class="pt-0">
-
-
-                                <div class="dz-message">
 
                                 </div>
 
-                                <div class="row justify-content-between vertical-gap dx-dropzone-attachment">
-                                    <div class="col-auto dx-dropzone-attachment-add">
-
-                                    </div>
-                                    <div class="col-auto dx-dropzone-attachment-btn ">
-                                        <button class="dx-btn dx-btn-lg" type="submit" name="submit">Submit</button>
+                                <div class="dx-separator"></div>
+                                <div class="dx-box-content">
+                                    <div class="row justify-content-end mt-3">
+                                        <div class="col-auto mb-20">
+                                            <button type="submit" class="btn btn-primary" id="send_ticket">Send Ticket</button>
+                                            
+                                        </div>
                                     </div>
                                 </div>
-                                <!-- END: Dropzone -->
+
+
+
+
 
                             </div>
+
+
                         </form>
                     </div>
                 </div>
@@ -304,3 +179,179 @@
 
     </div>
 @endsection
+@push('js')
+<script>
+    document.getElementById('send_ticket').addEventListener('click', function(event) {
+        event.preventDefault(); // Mencegah form dikirim langsung
+        const addedFiles = pond.getFiles();
+        if (addedFiles.length > 0) {
+            const filePaths = addedFiles.map(file => ({
+                serverId: file.serverId,
+                name: file.file.name
+            }));
+            console.log('File paths:', filePaths);
+            // Append filePaths to a hidden input field
+            const filePathsInput = document.createElement('input');
+            filePathsInput.type = 'hidden';
+            filePathsInput.name = 'filepond';
+            filePathsInput.value = JSON.stringify(filePaths);
+            event.target.closest('form').appendChild(filePathsInput);
+        } else {
+            console.log('No files added.');
+        }
+        // Kirim form setelah mengambil file
+        event.target.closest('form').submit();
+    });
+</script>
+    <script id="search-js" defer src="https://api.mapbox.com/search-js/v1.0.0-beta.21/web.js"></script>
+
+    <script>
+        ACCESS_TOKEN = "pk.eyJ1IjoiYmFtYmFuZzI4MDIiLCJhIjoiY2x4a2ViM3R0MDB0bDJqcXU0OWxwN3I3biJ9.Ihq2fCxZXYpw-sveeATkvw";
+        mapboxgl.accessToken = ACCESS_TOKEN;
+        const map = new mapboxgl.Map({
+            container: 'map',
+            // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+            style: 'mapbox://styles/mapbox/streets-v12',
+            center: [106.8456, -6.2088],
+            zoom: 8
+        });
+
+        // Add the control to the map.
+        const geocoder = new MapboxGeocoder({
+            accessToken: mapboxgl.accessToken,
+            mapboxgl: mapboxgl,
+        });
+
+        map.addControl(geocoder);
+
+
+        geocoder.on('result', function(e) {
+
+            if (marker) {
+                marker.remove();
+            }
+            const coords = e.result.geometry.coordinates;
+            document.getElementById('latitude').value = coords[1];
+            document.getElementById('longitude').value = coords[0];
+            document.getElementById('hidden_latitude').value = coords[1];
+            document.getElementById('hidden_longitude').value = coords[0];
+        });
+
+        var marker;
+
+        document.getElementById('get_location').addEventListener('click', function() {
+            const clearButton = document.querySelector('.mapboxgl-ctrl-geocoder--button[aria-label="Clear"]');
+            if (clearButton) {
+                clearButton.click();
+            }
+
+
+            if (navigator.geolocation) {
+
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+                    document.getElementById('latitude').value = latitude;
+                    document.getElementById('longitude').value = longitude;
+                    document.getElementById('hidden_latitude').value = latitude;
+                    document.getElementById('hidden_longitude').value = longitude;
+                    map.flyTo({
+                        center: [longitude, latitude],
+                        zoom: 14,
+                        essential: true // this animation is considered essential with respect to prefers-reduced-motion
+                    });
+
+                    // Add a marker to the map at the user's current location, but remove any existing marker first
+                    if (marker) {
+                        marker.remove();
+                    }
+                    marker = new mapboxgl.Marker()
+                        .setLngLat([longitude, latitude])
+                        .addTo(map);
+
+
+                }, function(error) {
+                    console.error('Error occurred while fetching location: ', error);
+                });
+            } else {
+                console.error('Geolocation is not supported by this browser.');
+            }
+        });
+
+        document.getElementById('check_location').addEventListener('click', function() {
+            const latitude = parseFloat(document.getElementById('latitude').value);
+            const longitude = parseFloat(document.getElementById('longitude').value);
+
+            if (!isNaN(latitude) && !isNaN(longitude)) {
+                document.getElementById('hidden_latitude').value = latitude;
+                document.getElementById('hidden_longitude').value = longitude;
+                map.flyTo({
+                    center: [longitude, latitude],
+                    zoom: 14,
+                    essential: true // this animation is considered essential with respect to prefers-reduced-motion
+                });
+
+                // Add a marker to the map at the specified location, but remove any existing marker first
+                if (marker) {
+                    marker.remove();
+                }
+                marker = new mapboxgl.Marker()
+                    .setLngLat([longitude, latitude])
+                    .addTo(map);
+            } else {
+                console.error('Invalid latitude or longitude values.');
+            }
+        });
+    </script>
+
+
+    <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
+    <script>
+        // Get a reference to the file input element
+        const inputElement = document.getElementById('fileInput');
+        const pond = FilePond.create(inputElement);
+        // Add file button click event
+        // Ensure FilePond is properly initialized and configured
+        pond.setOptions({
+            server: {
+                process: {
+                    url: "{{ route('uploads.process') }}",
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+                },
+                
+                
+            }
+        });
+        pond.on('addfile', function(file) {
+            // Upload the file to your server
+            const addedFiles = pond.getFiles();
+            addedFiles.forEach(file => {
+                console.log('File path: ', file.serverId);
+            });
+            
+        });
+       
+
+
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+    <script>
+        const quill = new Quill('#editor', {
+            theme: 'snow',
+            modules: {
+                toolbar: true
+            },
+            placeholder: 'Write a message...',
+            bounds: '#editor',
+            scrollingContainer: '#editor',
+
+        });
+        document.getElementById('editor').addEventListener('keyup', function() {
+            document.getElementById('hidden_message').value = quill.root.innerHTML;
+        });
+    </script>
+@endpush

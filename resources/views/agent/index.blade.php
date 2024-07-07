@@ -67,6 +67,7 @@
                             'coordinates' => [$ticket->longitude, $ticket->latitude],
                             'title' => $ticket->title,
                             'description' => $ticket->message ?? 'No description available.',
+                            'status' => $ticket->status,
                         ];
                     })->toArray(),
             ) !!};
@@ -76,8 +77,7 @@
             points.forEach(function(point) {
                 var el = document.createElement('div');
                 el.className = 'marker';
-                el.style.backgroundImage =
-                    'url(https://upload.wikimedia.org/wikipedia/commons/0/0e/Basic_red_dot.png)';
+                el.style.backgroundImage = point.status === 'open' ? 'url({{ asset('image/dot/orange.png') }})' : 'url({{ asset('image/dot/green.png') }})';
                 el.style.width = '8px';
                 el.style.height = '8px';
                 el.style.backgroundSize = '100%';
@@ -106,8 +106,6 @@
 
                 markers[point.id] = marker;
             });
-
-
 
             window.map = map;
             window.markers = markers;
@@ -222,8 +220,7 @@
 
                                                         <button type="submit" class="btn btn-success btn-sm">Close</button>
                                                     </form>
-                                                    <button class="btn btn-info btn-sm"
-                                                        onclick="event.stopPropagation();">Assign to</button>
+                                                    
                                                     <form action="{{ route('agent.ticket.unassign', $row['id']) }}"
                                                         method="POST" style="display:inline;"
                                                         onclick="event.stopPropagation();">
