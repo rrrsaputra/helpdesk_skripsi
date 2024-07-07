@@ -70,7 +70,7 @@
         <div class="form-group">
             <label for="attachments">Attachments</label>
             <input type="file" id="attachments" name="filepond[]" class="filepond" multiple data-allow-reorder="true"
-                data-max-file-size="3MB" data-max-files="3" accept="image/*">
+                data-max-file-size="3MB" data-max-files="3" >
         </div>
         <button id="btn" type="submit" class="btn btn-primary">Send</button>
     </form>

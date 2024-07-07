@@ -35,9 +35,10 @@
                                     <nav aria-label="breadcrumb">
                                         <uo class="breadcrumb">
                                             <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-                                            <li class="breadcrumb-item"><a href="{{ route('tickets.index') }}">Ticket System</a></li>
+                                            <li class="breadcrumb-item"><a href="{{ route('tickets.index') }}">Ticket
+                                                    System</a></li>
                                             <li class="breadcrumb-item active" aria-current="page">Submit a Ticket</li>
-                                        </ol>
+                                            </ol>
                                     </nav>
                                     <!-- END: Breadcrumbs -->
                                 </div>
@@ -71,8 +72,7 @@
                                     <div class="dx-form-group">
                                         <label class="mnt-7">Attachments</label>
                                         <input type="file" class="filepond" name="filepond[]" multiple
-                                            data-allow-reorder="true" data-max-file-size="3MB" data-max-files="3"
-                                            accept="image/*">
+                                            data-allow-reorder="true" data-max-file-size="3MB" data-max-files="3">
 
                                         <script>
                                             import * as FilePond from 'filepond';
@@ -94,7 +94,6 @@
                                                         'X-CSRF-TOKEN': csrfToken,
                                                     }
                                                 },
-                                                acceptedFileTypes: ['image/*'],
                                                 allowImagePreview: true,
                                                 imagePreviewMaxHeight: 100,
                                                 allowRemove: true
@@ -160,11 +159,52 @@
 
                                 {{-- GET LOCATION --}}
                                 <div class="dx-box-content">
+                                    <link href="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.js"></script>
+                                    <div id='search-box-container'></div>
                                     <div id="map" style="height: 400px;"></div>
+                                    <script>
+                                        const script = document.getElementById('search-js');
+                                        // wait for the Mapbox Search JS script to load before using it
+                                        script.onload = function () {
+                                          const mapboxAccessToken = 'YOUR_MAPBOX_ACCESS_TOKEN';
+                                      
+                                          // instantiate a map
+                                          const map = new mapboxgl.Map({
+                                              accessToken: mapboxAccessToken,
+                                              container: 'map',
+                                              center: [-74.5, 40],
+                                              zoom: 9
+                                          });
+                                      
+                                          // instantiate a search box instance
+                                          const searchBox = new mapboxsearch.MapboxSearchBox()
+                                      
+                                          // set the mapbox access token, search box API options
+                                          searchBox.accessToken = mapboxAccessToken
+                                          searchBox.options = {
+                                            language: 'es'
+                                          }
+                                      
+                                          // set the mapboxgl library to use for markers and enable the marker functionality
+                                          searchBox.mapboxgl = mapboxgl
+                                          searchBox.marker = true
+                                      
+                                          // bind the search box instance to the map instance
+                                          searchBox.bindMap(map)
+                                      
+                                          // add the search box instance to the DOM
+                                          document.getElementById('search-box-container').appendChild(searchBox)
+                                        }
+                                      </script>
                                     <input type="hidden" name="latitude" id="hidden_latitude">
                                     <input type="hidden" name="longitude" id="hidden_longitude">
                                 </div>
+                               
+
                                 <link href='https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css' rel='stylesheet' />
+                                <script id="search-js" defer src="https://api.mapbox.com/search-js/v1.0.0-beta.21/web.js"></script>
+
                                 <script src='https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js'></script>
                                 <script>
                                     document.addEventListener('DOMContentLoaded', function() {
@@ -263,6 +303,4 @@
         </div>
 
     </div>
-
-    
 @endsection

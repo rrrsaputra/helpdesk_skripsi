@@ -38,18 +38,30 @@ use App\Http\Controllers\UserArticleCategoryController;
 use App\Http\Controllers\AdminArticleCategoryController;
 use App\Http\Controllers\FileUploadController;
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
-// Route::get('/category/{slug}', [HomeController::class, 'show'])->name('category.show');
 
-// Route::get('/trigger', [TriggerController::class, 'index'])->name('trigger');
+Route::middleware('auth')->group(function () {
+    Route::get('/', [HomeController::class, 'index'])->name('home');
+    // Route::get('/category/{slug}', [HomeController::class, 'show'])->name('category.show');
 
-Route::get('/messages', [HomeController::class, 'messages'])
-    ->name('messages');
+    // Route::get('/trigger', [TriggerController::class, 'index'])->name('trigger');
+
+    Route::get('/messages', [HomeController::class, 'messages'])
+        ->name('messages');
 
 
 
-Route::resource('/article', UserArticleController::class)->names('article');
-Route::get('/category/{slug}', [UserArticleCategoryController::class, 'show'])->name('category.show');
+    Route::resource('/article', UserArticleController::class)->names('article');
+    Route::get('/category/{slug}', [UserArticleCategoryController::class, 'show'])->name('category.show');
+    Route::post('/dropzone/upload', [DropzoneController::class, 'upload'])->name('dropzone.upload');
+    Route::post('/dropzone/remove', [DropzoneController::class, 'remove'])->name('dropzone.remove');
+
+
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::post('uploads/process', [FileUploadController::class, 'process'])->name('uploads.process');
+});
+
 // Route::get('/single-article', function () {
 //     return view('user.articles.single-article');
 // })->name('single-article');
@@ -62,7 +74,7 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::resource('/scheduled-calls', UserScheduledCallController::class)->names('scheduled_call');
 
     // Route::get('/user/scheduled_calls/{id}', [UserScheduledCallController::class, 'show'])->name('user.scheduled_calls.single-scheduled-call');
-    
+
     // Route::get('/ticket-submit', function () {
     //     return view('user.tickets.ticket-submit');
     // })->name('ticket-submit');
@@ -74,17 +86,15 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/scheduled-call-submit', function () {
         return view('user.scheduled_calls.scheduled_call_submit');
     })->name('scheduled_call_submit');
-
-    
 });
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('/admin/articles', ArticleController::class)->names('admin.article');
-    
+
     Route::resource('/admin/scheduled-call', AdminScheduledCallController::class)->names('admin.scheduled_call');
     Route::patch('/admin/scheduled-call/reject/{id}', [AdminScheduledCallController::class, 'reject'])->name('admin.scheduled_call.reject');
-    Route::get('/admin/scheduled-call/get_time/{id}', [AdminScheduledCallController::class,'get_time'])->name('admin.scheduled_call.get_time');
-    
+    Route::get('/admin/scheduled-call/get_time/{id}', [AdminScheduledCallController::class, 'get_time'])->name('admin.scheduled_call.get_time');
+
     Route::resource('/admin/business-hour', AdminBusinessHourController::class)->names('admin.business_hour');
     Route::resource('/admin/ticket_quota', UserTicketQuotaController::class)->names('admin.ticket_quota');
 
@@ -99,20 +109,19 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('/admin/ticket', AdminTicketController::class)->names('admin.ticket');
 
     Route::resource('/admin/triggers', AdminTriggersController::class)->names('admin.triggers');
-    
+
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard.index');
 
     Route::resource('/admin/data-repository', AdminDataRepositoryController::class)->names('admin.data_repository');
 });
 
-Route::middleware('auth','role:agent')->group(function () {
+Route::middleware('auth', 'role:agent')->group(function () {
     Route::get('/agent', [AgentController::class, 'index'])->name('agent.index');
     Route::get('/notifications/read/{id}', [AgentController::class, 'markAsRead'])->name('notifications.read');
 
     Route::resource('/agent/schedule-call', AgentScheduledCallController::class)->names('agent.scheduled_call');
 
     Route::get('/agent/dashboard', [AgentDashboardController::class, 'index'])->name('agent.dashboard.index');
-
 });
 
 Route::middleware('auth')->group(function () {
@@ -129,37 +138,23 @@ Route::middleware('auth')->group(function () {
     Route::patch('/admin/ticket/unassign/{ticket}', [AdminTicketController::class, 'unassign'])->name('admin.ticket.unassign');
     Route::patch('/admin/ticket/close/{ticket}', [AdminTicketController::class, 'close'])->name('admin.ticket.close');
     Route::patch('/admin/ticket/reopen/{ticket}', [AdminTicketController::class, 'reopen_ticket'])->name('admin.ticket.reopen_ticket');
-
 });
 
 Route::get('/dashboard', function () {
     $role = Auth::user()->roles->pluck('name')->first();
-    
+
     if ($role == 'admin') {
         return redirect()->route('admin.dashboard.index');
-    } 
-    else if ($role == 'agent') {
+    } else if ($role == 'agent') {
         return redirect()->route('agent.dashboard.index');
-    } 
-    else if ($role == 'user') {
+    } else if ($role == 'user') {
         return redirect()->route('home');
-    } 
-    else {
-        return redirect('/');
+    } else {    
+        return redirect()->route('home');
     }
-    
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
-    Route::post('/dropzone/upload', [DropzoneController::class, 'upload'])->name('dropzone.upload');
-    Route::post('/dropzone/remove', [DropzoneController::class, 'remove'])->name('dropzone.remove');
 
-
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::post('uploads/process', [FileUploadController::class, 'process'])->name('uploads.process');
-});
 
 
 
