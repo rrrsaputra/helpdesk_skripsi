@@ -69,6 +69,7 @@ Route::middleware('auth')->group(function () {
 
 
 Route::middleware(['auth', 'role:user'])->group(function () {
+    Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::resource('/feedback', FeedbackController::class)->names('user.feedback');
     Route::resource('/tickets', UserTicketController::class)->names('tickets');
     Route::resource('/scheduled-calls', UserScheduledCallController::class)->names('scheduled_call');

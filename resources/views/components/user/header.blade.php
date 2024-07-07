@@ -7,7 +7,7 @@
         @if (Request::is('/'))
             <div class="row justify-content-center">
                 <div class="col-xl-7">
-                    <h1 class="h2 mb-30 text-white text-center">How can we help you?</h1>
+                    <h1 class="h2 mb-30 text-white text-center">Hi, {{ Auth::user()->name }}!<br>How can we help you?</h1>
                     <form action="{{ route('article.index') }}" class="dx-form dx-form-group-inputs">
                         <input type="search" name="search" value="{{ request()->query('search') }}"
                             class="form-control" placeholder="Keyword search...">

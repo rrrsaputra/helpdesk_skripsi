@@ -39,7 +39,7 @@
                                 
                 @auth
                     <li class="dx-nav-item">
-                        <a href="" style="color: white; transition: color 0.3s;" onmouseover="this.style.color='grey'" onmouseout="this.style.color='white'">
+                        <a href="{{ route('profile.edit') }}" style="color: white; transition: color 0.3s;" onmouseover="this.style.color='grey'" onmouseout="this.style.color='white'">
                             {{ Auth::user()->name }}
                         </a>
                     </li>
