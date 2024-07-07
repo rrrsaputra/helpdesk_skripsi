@@ -107,6 +107,8 @@
                                             <td> <!-- Added Actions buttons -->
                                                 <button class="btn btn-primary btn-sm" data-toggle="modal"
                                                     data-target="#assignToModal{{ $row['id'] }}">Add Meet</button>
+                                                <button class="btn btn-warning btn-sm" data-toggle="modal"
+                                                    data-target="#rescheduleModal{{ $row['id'] }}">Reschedule</button>
                                                 <button class="btn btn-danger btn-sm">Delete</button>
                                                 <button class="btn btn-info btn-sm">View</button>
                                             </td>
@@ -135,6 +137,75 @@
                                                                 <input type="text" class="form-control"
                                                                     id="link{{ $row['id'] }}" name="link"
                                                                     placeholder="Enter link">
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-primary">Save
+                                                                changes</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                        <!-- Modal for Reschedule -->
+                                        <form method="POST"
+                                            action="{{ route('agent.scheduled_call.update', $row['id']) }}">
+                                            @csrf
+                                            @method('PATCH')
+                                            <div class="modal fade" id="rescheduleModal{{ $row['id'] }}" tabindex="-1"
+                                                role="dialog" aria-labelledby="rescheduleModalLabel{{ $row['id'] }}"
+                                                aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title"
+                                                                id="rescheduleModalLabel{{ $row['id'] }}">Reschedule
+                                                            </h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="form-group">
+                                                                <label for="date">Date</label>
+                                                                <input type="date" class="form-control"
+                                                                    id="date{{ $row['id'] }}" name="date" required>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="duration">Choose Duration</label>
+                                                                <select class="form-control"
+                                                                    id="duration{{ $row['id'] }}" name="duration">
+                                                                    <option value="30">30 minutes</option>
+                                                                    <option value="45">45 minutes</option>
+                                                                    <option value="60">60 minutes</option>
+                                                                    <option value="90">90 minutes</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="time">Choose Time</label>
+                                                                <select class="form-control" id="time{{ $row['id'] }}"
+                                                                    name="time" required>
+                                                                    <option value="09:00">09:00 AM</option>
+                                                                    <option value="09:30">09:30 AM</option>
+                                                                    <option value="10:00">10:00 AM</option>
+                                                                    <option value="10:30">10:30 AM</option>
+                                                                    <option value="11:00">11:00 AM</option>
+                                                                    <option value="11:30">11:30 AM</option>
+                                                                    <option value="12:00">12:00 PM</option>
+                                                                    <option value="12:30">12:30 PM</option>
+                                                                    <option value="13:00">01:00 PM</option>
+                                                                    <option value="13:30">01:30 PM</option>
+                                                                    <option value="14:00">02:00 PM</option>
+                                                                    <option value="14:30">02:30 PM</option>
+                                                                    <option value="15:00">03:00 PM</option>
+                                                                    <option value="15:30">03:30 PM</option>
+                                                                    <option value="16:00">04:00 PM</option>
+                                                                    <option value="16:30">04:30 PM</option>
+                                                                </select>
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">

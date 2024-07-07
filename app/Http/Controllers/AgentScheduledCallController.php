@@ -66,16 +66,21 @@ class AgentScheduledCallController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $startTime = date('Y-m-d H:i:s', strtotime($request->date . ' ' . $request->time));
+        $request->merge(['start_time' => $startTime]);
         $scheduledCall = ScheduledCall::find($id);
         if ($scheduledCall) {
             $scheduledCall->link = $request->link;
+            $scheduledCall->start_time = $request->start_time;
+            $scheduledCall->duration = $request->duration;
+            $scheduledCall->finish_time = date('Y-m-d H:i:s', strtotime($request->start_time) + ($request->duration * 60));
             $scheduledCall->status = 'Scheduled';
             $scheduledCall->save();
         } else {
             return redirect()->route('agent.scheduled_call.index')->with('error', 'Scheduled call not found.');
         }
 
-        return redirect()->route('agent.scheduled_call.index')->with('success', 'Scheduled call created successfully.');
+        return redirect()->route('agent.scheduled_call.index')->with('success', 'Scheduled call updated successfully.');
     }
 
     /**
