@@ -16,9 +16,10 @@
                                     <nav aria-label="breadcrumb">
                                         <uo class="breadcrumb">
                                             <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-                                            <li class="breadcrumb-item"><a href="{{ route('scheduled_call.index') }}">Scheduled Calls</a></li>
+                                            <li class="breadcrumb-item"><a
+                                                    href="{{ route('scheduled_call.index') }}">Scheduled Calls</a></li>
                                             <li class="breadcrumb-item active" aria-current="page">Book Scheduled Call</li>
-                                        </ol>
+                                            </ol>
                                     </nav>
                                     <!-- END: Breadcrumbs -->
                                 </div>
@@ -28,7 +29,8 @@
                                 <div class="dx-box-content">
                                     <div class="dx-form-group">
                                         <label for="date" class="mnt-7">Choose Date</label>
-                                        <input type="date" class="form-control form-control-style-2" id="date" name="date" min="{{ date('Y-m-d') }}">
+                                        <input type="date" class="form-control form-control-style-2" id="date"
+                                            name="date" min="{{ date('Y-m-d') }}">
                                     </div>
                                 </div>
                                 <div class="dx-box-content">
@@ -86,16 +88,19 @@
                                         <div class="dx-editors" data-editor-height="150" data-editor-maxheight="250"
                                             style="min-height: 150px; max-height: 250px;">
                                         </div>
+                                        <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
                                         <script>
-                                            document.addEventListener('DOMContentLoaded', function() {
-                                                var quill = new Quill('.dx-editors', {
-                                                    theme: 'snow'
-                                                });
-
-                                                quill.on('text-change', function() {
-                                                    var message = document.querySelector('input[name=message]');
-                                                    message.value = quill.root.innerHTML;
-                                                });
+                                            const quill = new Quill('.dx-editors', {
+                                                theme: 'snow',
+                                                modules: {
+                                                    toolbar: true
+                                                },
+                                                placeholder: 'Write a message...',
+                                                bounds: '.dx-editors',
+                                                scrollingContainer: '.dx-editors',
+                                            });
+                                            document.querySelector('.dx-editors').addEventListener('keyup', function() {
+                                                document.getElementById('message').value = quill.root.innerHTML;
                                             });
                                         </script>
                                         <input type="hidden" name="message" id="message">

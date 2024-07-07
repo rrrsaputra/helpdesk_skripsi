@@ -64,9 +64,26 @@
         style="width: 100%; background: white; padding: 10px; box-shadow: 0 -2px 5px rgba(0,0,0,0.1); margin-bottom: 0;">
         @csrf
         <div class="form-group">
-            <textarea id="msg" name="message" class="form-control" rows="3" placeholder="Type your message here..."
-                required></textarea>
+            <div id="editor" style="height: 150px;"></div>
+            <input type="hidden" name="message" id="hidden_message">
         </div>
+        <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+        <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+        <script>
+            var quill = new Quill('#editor', {
+                theme: 'snow',
+                modules: {
+                    toolbar: true
+                },
+                placeholder: 'Type your message here...'
+            });
+
+            document.getElementById('message-form').addEventListener('submit', function() {
+                var editor = document.querySelector('#editor .ql-editor');
+                document.getElementById('hidden_message').value = editor.innerHTML;
+            });
+        </script>
+        
         <div class="form-group">
             <label for="attachments">Attachments</label>
             <input type="file" id="attachments" name="filepond[]" class="filepond" multiple data-allow-reorder="true"
@@ -76,12 +93,12 @@
     </form>
 
     <script>
-        document.getElementById('msg').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                document.getElementById('btn').click();
-            }
-        });
+        // document.getElementById('msg').addEventListener('keypress', function(e) {
+        //     if (e.key === 'Enter' && !e.shiftKey) {
+        //         e.preventDefault();
+        //         document.getElementById('btn').click();
+        //     }
+        // });
 
         document.addEventListener('DOMContentLoaded', function() {
             var messagesContainer = document.getElementById('messages-container');
@@ -120,7 +137,6 @@
 
                     messageContent.appendChild(messageUser);
                     messageContent.appendChild(messageText);
-
 
                     if (e.message.attachments.length > 0) {
                         var attachmentLink = document.createElement('p');
@@ -223,7 +239,6 @@
 
                             messageContent.appendChild(messageUser);
                             messageContent.appendChild(messageText);
-
 
                             if (data.message.attachments && data.message.attachments.length > 0) {
                                 var attachmentsLink = document.createElement('p');

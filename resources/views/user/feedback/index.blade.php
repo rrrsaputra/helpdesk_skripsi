@@ -58,8 +58,25 @@
                                         </div>
                                         <div class="dx-form-group">
                                             <label class="mnt-7">Message</label>
-                                            <textarea class="form-control form-control-style-2" id="message" name="message" rows="5"
-                                                placeholder="Enter your message"></textarea>
+                                            <div class="dx-editors" data-editor-height="150" data-editor-maxheight="250"
+                                                style="min-height: 150px; max-height: 250px;">
+                                            </div>
+                                            <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+                                            <script>
+                                                const quill = new Quill('.dx-editors', {
+                                                    theme: 'snow',
+                                                    modules: {
+                                                        toolbar: true
+                                                    },
+                                                    placeholder: 'Write a message...',
+                                                    bounds: '.dx-editors',
+                                                    scrollingContainer: '.dx-editors',
+                                                });
+                                                document.querySelector('.dx-editors').addEventListener('keyup', function() {
+                                                    document.getElementById('message').value = quill.root.innerHTML;
+                                                });
+                                            </script>
+                                            <input type="hidden" name="message" id="message">
                                         </div>
 
                                     </div>
