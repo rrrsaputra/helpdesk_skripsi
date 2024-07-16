@@ -51,7 +51,13 @@
                                         <a href="{{ route('category.show', $articleCategory->slug) }}">
                                             <span class="icon pe-7s-angle-right"></span>
                                             <span class="dx-widget-categories-category">{{ $articleCategory->name }}</span>
-                                            <span class="dx-widget-categories-badge">{{ $articleCategory->articles->count() }}</span>
+                                            <span class="dx-widget-categories-badge">
+                                                @if(auth()->user()->type == 'Standard')
+                                                    {{ $articleCategory->articles->where('for_user', 'Standard')->count() }}
+                                                @elseif(auth()->user()->type == 'Premium')
+                                                    {{ $articleCategory->articles->whereIn('for_user', ['Standard', 'Premium'])->count() }}
+                                                @endif
+                                            </span>
                                         </a>
                                     </li>
                                 @endforeach

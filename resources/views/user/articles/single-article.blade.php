@@ -48,8 +48,10 @@
                                     <h3 class="h5 mnt-6 mnb-6">Was this helpful to you?</h3>
                                 </div>
                                 <div class="col-auto d-flex">
-                                    <a href="{{ route('user.feedback.index') }}" class="dx-btn dx-btn-md dx-btn-main-1">Yes</a>
-                                    <a href="{{ route('user.feedback.index') }}" class="dx-btn dx-btn-md dx-btn-grey-2 ml-20">No</a>
+                                    <a href="{{ route('user.feedback.index') }}"
+                                        class="dx-btn dx-btn-md dx-btn-main-1">Yes</a>
+                                    <a href="{{ route('user.feedback.index') }}"
+                                        class="dx-btn dx-btn-md dx-btn-grey-2 ml-20">No</a>
                                 </div>
                             </div>
                         </div>
@@ -65,8 +67,13 @@
                                                 <span class="icon pe-7s-angle-right"></span>
                                                 <span
                                                     class="dx-widget-categories-category">{{ $articleCategory->name }}</span>
-                                                <span
-                                                    class="dx-widget-categories-badge">{{ $articleCategory->articles->count() }}</span>
+                                                <span class="dx-widget-categories-badge">
+                                                    @if (auth()->user()->type == 'Standard')
+                                                        {{ $articleCategory->articles->where('for_user', 'Standard')->count() }}
+                                                    @elseif(auth()->user()->type == 'Premium')
+                                                        {{ $articleCategory->articles->whereIn('for_user', ['Standard', 'Premium'])->count() }}
+                                                    @endif
+                                                </span>
                                             </a>
                                         </li>
                                     @endforeach
@@ -75,11 +82,19 @@
                             <div class="dx-widget dx-box dx-box-decorated">
                                 <div class="dx-widget-title"> Latest Articles </div>
                                 @foreach ($articles as $article)
-                                    <a href="{{ route('article.show', $article->id) }}" class="dx-widget-link">
-                                        <span class="dx-widget-link-text">{{ $article->title }}</span>
-                                        <span
-                                            class="dx-widget-link-date">{{ $article->created_at->format('d F Y') }}</span>
-                                    </a>
+                                    @if (auth()->user()->type == 'Standard' && $article->for_user == 'Standard')
+                                        <a href="{{ route('article.show', $article->id) }}" class="dx-widget-link">
+                                            <span class="dx-widget-link-text">{{ $article->title }}</span>
+                                            <span
+                                                class="dx-widget-link-date">{{ $article->created_at->format('d F Y') }}</span>
+                                        </a>
+                                    @elseif (auth()->user()->type == 'Premium' && in_array($article->for_user, ['Standard', 'Premium']))
+                                        <a href="{{ route('article.show', $article->id) }}" class="dx-widget-link">
+                                            <span class="dx-widget-link-text">{{ $article->title }}</span>
+                                            <span
+                                                class="dx-widget-link-date">{{ $article->created_at->format('d F Y') }}</span>
+                                        </a>
+                                    @endif
                                 @endforeach
                             </div>
                         </div>

@@ -15,11 +15,28 @@ class UserArticleController extends Controller
     {
         $search = $request->input('search');
         $paginationCount = 10;
-        $articles = Article::orderBy('created_at', 'desc')
-            ->when($search, function ($query) use ($search) {
-                $query->where('title', 'like', "%{$search}%");
-            })
-            ->paginate($paginationCount);
+        $userType = auth()->user()->type; // Asumsikan tipe pengguna disimpan di kolom 'type' pada tabel users
+
+        if ($userType == 'Standard') {
+            $articles = Article::orderBy('created_at', 'desc')
+                ->where('for_user', 'Standard')
+                ->when($search, function ($query) use ($search) {
+                    $query->where('title', 'like', "%{$search}%");
+                })
+                ->paginate($paginationCount);
+        } else if ($userType == 'Premium') {
+            $articles = Article::orderBy('created_at', 'desc')
+                ->whereIn('for_user', ['Standard', 'Premium'])
+                ->when($search, function ($query) use ($search) {
+                    $query->where('title', 'like', "%{$search}%");
+                })
+                ->paginate($paginationCount);
+        }
+        // $articles = Article::orderBy('created_at', 'desc')
+        //     ->when($search, function ($query) use ($search) {
+        //         $query->where('title', 'like', "%{$search}%");
+        //     })
+        //     ->paginate($paginationCount);
 
         $articleCategories = ArticleCategory::all();
 
