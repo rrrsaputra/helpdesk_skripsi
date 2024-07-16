@@ -197,6 +197,7 @@
                                                 </td>
                                             @endforeach
                                             <td> <!-- Added Actions buttons -->
+                                                
                                                 <form action="{{ route('agent.messages.show', $row['id']) }}"
                                                     method="GET" style="display:inline;"
                                                     onclick="event.stopPropagation();">
@@ -211,6 +212,8 @@
                                                         @method('PATCH')
                                                         <button type="submit" class="btn btn-success btn-sm">Get</button>
                                                     </form>
+                                                    <button class="btn btn-warning btn-sm" data-toggle="modal"
+                                                    data-target="#editModal{{ $row['id'] }}">Edit</button>
                                                 @elseif(request()->input('inbox') == 'mine')
                                                     <form action="{{ route('agent.ticket.close', $row['id']) }}"
                                                         method="POST" style="display:inline;"
@@ -240,6 +243,37 @@
                                                 @endif
                                             </td>
                                         </tr>
+                                    <!-- Modal for updating latitude and longitude -->
+                                    <div class="modal fade" id="editModal{{ $row['id'] }}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel{{ $row['id'] }}" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="editModalLabel{{ $row['id'] }}">Update Latitude and Longitude</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <form action="{{ route('agent.ticket.update', $row['id']) }}" method="POST">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <div class="modal-body">
+                                                        <div class="form-group">
+                                                            <label for="latitude">Latitude</label>
+                                                            <input type="text" class="form-control" id="latitude" name="latitude" value="{{ $row['values'][6] }}">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="longitude">Longitude</label>
+                                                            <input type="text" class="form-control" id="longitude" name="longitude" value="{{ $row['values'][7] }}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
                                     @empty
                                         <tr>
                                             <td colspan="9">No messages available</td>

@@ -69,6 +69,12 @@
                     <h1 class="h2 mb-30 text-white text-center">Article Categories</h1>
                 </div>
             </div>
+        @elseif(Request::is('profile'))
+            <div class="row justify-content-center">
+                <div class="col-xl-7">
+                    <h1 class="h2 mb-30 text-white text-center">Profile</h1>
+                </div>
+            </div>
         @endif
     </div>
 </header>

@@ -5,16 +5,7 @@
 
 @section('content')
     @php
-        $columns = [
-            'Customer',
-            'Summary',
-            '',
-            'Number',
-            'Last Updated',
-            'Assigned To',
-            'latitude',
-            'longitude',
-        ];
+        $columns = ['Customer', 'Summary', '', 'Number', 'Last Updated', 'Assigned To', 'latitude', 'longitude'];
         $data = $tickets
             ->map(function ($ticket) {
                 return [
@@ -254,8 +245,51 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-
                                                         </div>
+
+                                                        <button class="btn btn-warning btn-sm" data-toggle="modal"
+                                                            data-target="#editModal{{ $row['id'] }}">Edit</button>
+                                                        <div class="modal fade" id="editModal{{ $row['id'] }}"
+                                                            tabindex="-1" role="dialog"
+                                                            aria-labelledby="editModalLabel{{ $row['id'] }}"
+                                                            aria-hidden="true">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title"
+                                                                            id="editModalLabel{{ $row['id'] }}">Update
+                                                                            Latitude and Longitude</h5>
+                                                                        <button type="button" class="close"
+                                                                            data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <div class="form-group">
+                                                                            <label for="latitude">Latitude</label>
+                                                                            <input type="text" class="form-control"
+                                                                                id="latitude" name="latitude"
+                                                                                value="{{ $row['values'][6] }}">
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label for="longitude">Longitude</label>
+                                                                            <input type="text" class="form-control"
+                                                                                id="longitude" name="longitude"
+                                                                                value="{{ $row['values'][7] }}">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button"
+                                                                            class="btn btn-secondary"
+                                                                            data-dismiss="modal">Close</button>
+                                                                        <button type="button"
+                                                                            class="btn btn-primary">Save
+                                                                            changes</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
 
                                                     </form>
                                                 @elseif(request()->input('inbox') == 'assigned')
@@ -265,7 +299,8 @@
                                                         @csrf
                                                         @method('PATCH')
 
-                                                        <button type="submit" class="btn btn-success btn-sm">Close</button>
+                                                        <button type="submit"
+                                                            class="btn btn-success btn-sm">Close</button>
                                                     </form>
                                                     <form action="{{ route('admin.ticket.unassign', $row['id']) }}"
                                                         method="POST" style="display:inline;"
@@ -286,6 +321,13 @@
                                                 @endif
                                             </td>
                                         </tr>
+
+
+                                        <!-- Modal for updating latitude and longitude -->
+
+
+
+
                                     @empty
                                         <tr>
                                             <td colspan="9">No articles available</td>

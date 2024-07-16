@@ -100,12 +100,14 @@ class AdminTicketController extends Controller
         $ticket = Ticket::find($id);
         if ($ticket) {
             $ticket->assigned_to = $request->agent_id;
+            $ticket->latitude = $request->latitude;
+            $ticket->longitude = $request->longitude;
             $ticket->save();
         } else {
-            return redirect()->route('admin.ticket.index');
+            return redirect()->route('admin.ticket.index', ['inbox' => 'unassigned']);
         }
 
-        return redirect()->route('admin.ticket.index');
+        return redirect()->route('admin.ticket.index',  ['inbox' => 'unassigned']);
     }
 
     /**
@@ -145,4 +147,6 @@ class AdminTicketController extends Controller
 
         return redirect(route('admin.ticket.index', ['inbox' => 'closed']));
     }
+
+    
 }
