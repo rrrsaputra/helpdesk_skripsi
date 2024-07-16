@@ -163,7 +163,15 @@
                         </p>
                     </a>
                 </li>
-
+                
+                <li class="nav-item menu-close">
+                    <a href="{{ route('admin.user_management.index') }}" class="nav-link {{ request()->routeIs('admin.user_management.index') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-user"></i>
+                        <p>
+                            USER MANAGEMENT
+                        </p>
+                    </a>
+                </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

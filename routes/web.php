@@ -16,6 +16,7 @@ use App\Http\Controllers\DropzoneController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\UserHomeController;
 use Coderflex\LaravelTicket\Models\Category;
+use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\UserTicketController;
 use App\Http\Controllers\AdminTicketController;
 use App\Http\Controllers\AgentTicketController;
@@ -34,9 +35,9 @@ use App\Http\Controllers\AdminScheduledCallController;
 use App\Http\Controllers\AgentScheduledCallController;
 use App\Http\Controllers\AdminDataRepositoryController;
 use App\Http\Controllers\AdminTicketCategoryController;
+use App\Http\Controllers\AdminUserManagementController;
 use App\Http\Controllers\UserArticleCategoryController;
 use App\Http\Controllers\AdminArticleCategoryController;
-use App\Http\Controllers\FileUploadController;
 
 
 Route::middleware('auth')->group(function () {
@@ -127,6 +128,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::patch('/admin/ticket/unassign/{ticket}', [AdminTicketController::class, 'unassign'])->name('admin.ticket.unassign');
         Route::patch('/admin/ticket/close/{ticket}', [AdminTicketController::class, 'close'])->name('admin.ticket.close');
         Route::patch('/admin/ticket/reopen/{ticket}', [AdminTicketController::class, 'reopen_ticket'])->name('admin.ticket.reopen_ticket');
+
+        Route::resource('/admin/user-management', AdminUserManagementController::class)->names('admin.user_management');
 
 });
 
