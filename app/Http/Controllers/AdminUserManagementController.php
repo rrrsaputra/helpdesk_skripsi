@@ -10,10 +10,14 @@ class AdminUserManagementController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $search = $request->input('search');
         $paginationCount = 50;
-        $users = User::paginate($paginationCount);
+        $users = User::when($search, function ($query) use ($search) {
+            $query->where('name', 'like', "%{$search}%");
+        })
+            ->paginate($paginationCount);
 
         return view('admin.user_management.index', compact('users'));
     }

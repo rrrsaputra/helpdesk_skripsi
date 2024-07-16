@@ -14,6 +14,7 @@ class Article extends Model
         'content',
         'user_id',
         'article_category_id',
+        'for_user',
         // 'tags_id'
     ];
 

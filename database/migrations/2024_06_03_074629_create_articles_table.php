@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('content');
+            $table->enum('for_user', ['Standard', 'Premium']);
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('article_category_id')->constrained('article_categories')->onDelete('cascade');
             $table->timestamps();

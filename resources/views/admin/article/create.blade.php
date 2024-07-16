@@ -13,6 +13,7 @@
                     <label for="title">Title</label>
                     <input type="text" name="title" class="form-control" id="title" placeholder="Enter title">
                 </div>
+
                 <div class="form-group">
                     <label for="category">Category</label>
                     <select class="form-control" id="category" name="category">
@@ -21,7 +22,19 @@
                         @endforeach
                     </select>
                 </div>
-                <x-admin.summernote />
+
+                <div class="form-group">
+                    <label for="for_user">For User</label>
+                    <select class="form-control" name="for_user" id="for_user">
+                        <option value="Standard">Standard</option>
+                        <option value="Premium">Premium</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="content">Content</label>
+                    <x-admin.summernote />
+                </div>
                 <div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                     <a href="{{ route('admin.article.index') }}" class="btn btn-secondary">Cancel</a>

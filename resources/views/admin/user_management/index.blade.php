@@ -37,7 +37,7 @@
             <div class="col-12">
                 <div class="card-body">
                     <div class="form-group">
-                        <form action="{{ route('admin.ticket_quota.index') }}" method="GET" class="form-inline">
+                        <form action="{{ route('admin.user_management.index') }}" method="GET" class="form-inline">
                             <div class="form-group">
                                 <input type="search" class="form-control" id="search" name="search"
                                     style="width: 500px;" placeholder="Search by customer name">
