@@ -72,7 +72,17 @@
                                                     bounds: '.dx-editors',
                                                     scrollingContainer: '.dx-editors',
                                                 });
-                                                document.querySelector('.dx-editors').addEventListener('keyup', function() {
+                                                quill.on('text-change', function() {
+                                                    const editorHeight = quill.root.scrollHeight;
+                                                    const maxHeight = 250;
+                                                    const minHeight = 150;
+                                                    if (editorHeight > maxHeight) {
+                                                        quill.root.style.height = `${maxHeight}px`;
+                                                    } else if (editorHeight < minHeight) {
+                                                        quill.root.style.height = `${minHeight}px`;
+                                                    } else {
+                                                        quill.root.style.height = `${editorHeight}px`;
+                                                    }
                                                     document.getElementById('message').value = quill.root.innerHTML;
                                                 });
                                             </script>

@@ -36,7 +36,7 @@
                                 <div class="dx-separator"></div>
 
                                 <div class="dx-blog-post-box">
-                                    <p>{{ strip_tags($article->content) }}</p>
+                                    <p>{!! $article->content !!}</p>
                                 </div>
                                 <div class="dx-separator"></div>
 

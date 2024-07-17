@@ -96,7 +96,8 @@
                                     </div>
                                     <div class="dx-form-group">
                                         <label class="mnt-7">Message</label>
-                                        <div id="editor">
+                                        <div id="editor" data-editor-height="150" data-editor-maxheight="250"
+                                        style="min-height: 150px; max-height: 250px;">
                                         </div>
                                         <input type="hidden" name="message" id="hidden_message">
                                     </div>
@@ -348,10 +349,19 @@
             placeholder: 'Write a message...',
             bounds: '#editor',
             scrollingContainer: '#editor',
-
         });
-        document.getElementById('editor').addEventListener('keyup', function() {
-            document.getElementById('hidden_message').value = quill.root.innerHTML;
+        quill.on('text-change', function() {
+            const editorHeight = quill.root.scrollHeight;
+            const maxHeight = 250;
+            const minHeight = 150;
+            if (editorHeight > maxHeight) {
+                quill.root.style.height = `${maxHeight}px`;
+            } else if (editorHeight < minHeight) {
+                quill.root.style.height = `${minHeight}px`;
+            } else {
+                quill.root.style.height = `${editorHeight}px`;
+            }
+            document.getElementById('message').value = quill.root.innerHTML;
         });
     </script>
 @endpush
