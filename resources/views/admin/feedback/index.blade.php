@@ -15,7 +15,7 @@
                         $feedback->category,
                         $feedback->user->name,
                         $feedback->subject,
-                        $feedback->message,
+                        strip_tags($feedback->message),
                         $feedback->created_at->format('d M Y'),
                     ],
                 ];

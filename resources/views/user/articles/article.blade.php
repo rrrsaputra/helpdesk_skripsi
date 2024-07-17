@@ -23,12 +23,12 @@
                                             <div class="col-md-12">
                                                 <div class="card shadow-sm border-0">
                                                     <div class="card-body">
-                                                        <h5 class="card-title ">{{ $article->title }}</h5>
-                                                        <div class="card-text text-muted">
+                                                        <h5 class="card-title" style="font-weight: bold; color:#333; font-size: 20px">{{ $article->title }}</h5>
+                                                        <div class="card-text text-muted" style="font-size: 16px">
                                                             {{ Str::limit(strip_tags($article->content), 150) }}
                                                         </div>
                                                         <a href="{{ route('article.show', $article->id) }}"
-                                                            class="btn btn-outline-primary mt-10">Read More</a>
+                                                            class="btn btn-outline-primary mt-10" style="border-radius: 20px">Read More</a>
                                                     </div>
                                                 </div>
                                             </div>
