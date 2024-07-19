@@ -122,6 +122,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::resource('/admin/triggers', AdminTriggersController::class)->names('admin.triggers');
 
         Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard.index');
+        Route::get('admin/dashboard/user/{id}', [AdminDashboardController::class, 'getUserData']);
 
         Route::resource('/admin/data-repository', AdminDataRepositoryController::class)->names('admin.data_repository');
 
