@@ -71,85 +71,84 @@ Route::middleware('auth')->group(function () {
 
 
 Route::middleware(['auth', 'role:user'])->group(function () {
-    
-        Route::get('/', [HomeController::class, 'index'])->name('home');
-        Route::resource('/feedback', FeedbackController::class)->names('user.feedback');
-        Route::resource('/tickets', UserTicketController::class)->names('tickets');
-        Route::resource('/scheduled-calls', UserScheduledCallController::class)->names('scheduled_call');
-        Route::resource('/article', UserArticleController::class)->names('article');
-        Route::get('/category/{slug}', [UserArticleCategoryController::class, 'show'])->name('category.show');
-        Route::resource('/user/ticket', UserTicketController::class)->names('user.ticket');
-        Route::resource('/user/scheduled-ticket', UserScheduledCallController::class)->names('user.scheduled-ticket');
-        
-    
-        // Route::get('/user/scheduled_calls/{id}', [UserScheduledCallController::class, 'show'])->name('user.scheduled_calls.single-scheduled-call');
 
-        // Route::get('/ticket-submit', function () {
-        //     return view('user.tickets.ticket-submit');
-        // })->name('ticket-submit');
+    Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::resource('/feedback', FeedbackController::class)->names('user.feedback');
+    Route::resource('/tickets', UserTicketController::class)->names('tickets');
+    Route::resource('/scheduled-calls', UserScheduledCallController::class)->names('scheduled_call');
+    Route::resource('/article', UserArticleController::class)->names('article');
+    Route::get('/category/{slug}', [UserArticleCategoryController::class, 'show'])->name('category.show');
+    Route::resource('/user/ticket', UserTicketController::class)->names('user.ticket');
+    Route::resource('/user/scheduled-ticket', UserScheduledCallController::class)->names('user.scheduled-ticket');
 
-        // Route::get('/scheduled-call', function () {
-        //     return view('user.scheduled_calls.scheduled_call');
-        // })->name('scheduled_call');
 
-        Route::get('/scheduled-call-submit', function () {
-            return view('user.scheduled_calls.scheduled_call_submit');
-        })->name('scheduled_call_submit');
-    
+    // Route::get('/user/scheduled_calls/{id}', [UserScheduledCallController::class, 'show'])->name('user.scheduled_calls.single-scheduled-call');
+
+    // Route::get('/ticket-submit', function () {
+    //     return view('user.tickets.ticket-submit');
+    // })->name('ticket-submit');
+
+    // Route::get('/scheduled-call', function () {
+    //     return view('user.scheduled_calls.scheduled_call');
+    // })->name('scheduled_call');
+
+    Route::get('/scheduled-call-submit', function () {
+        return view('user.scheduled_calls.scheduled_call_submit');
+    })->name('scheduled_call_submit');
 });
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
-    
-        Route::resource('/admin/articles', ArticleController::class)->names('admin.article');
 
-        Route::resource('/admin/scheduled-call', AdminScheduledCallController::class)->names('admin.scheduled_call');
-        Route::patch('/admin/scheduled-call/reject/{id}', [AdminScheduledCallController::class, 'reject'])->name('admin.scheduled_call.reject');
-        Route::get('/admin/scheduled-call/get_time/{id}', [AdminScheduledCallController::class, 'get_time'])->name('admin.scheduled_call.get_time');
+    Route::resource('/admin/articles', ArticleController::class)->names('admin.article');
 
-        Route::resource('/admin/business-hour', AdminBusinessHourController::class)->names('admin.business_hour');
-        Route::resource('/admin/ticket_quota', UserTicketQuotaController::class)->names('admin.ticket_quota');
+    Route::resource('/admin/scheduled-call', AdminScheduledCallController::class)->names('admin.scheduled_call');
+    Route::patch('/admin/scheduled-call/reject/{id}', [AdminScheduledCallController::class, 'reject'])->name('admin.scheduled_call.reject');
+    Route::get('/admin/scheduled-call/get_time/{id}', [AdminScheduledCallController::class, 'get_time'])->name('admin.scheduled_call.get_time');
 
-        Route::resource('/admin/article-category', AdminArticleCategoryController::class)->names('admin.article_category');
+    Route::resource('/admin/business-hour', AdminBusinessHourController::class)->names('admin.business_hour');
+    Route::resource('/admin/ticket_quota', UserTicketQuotaController::class)->names('admin.ticket_quota');
 
-        Route::resource('/admin/feedback', AdminFeedbackController::class)->names('admin.feedback');
+    Route::resource('/admin/article-category', AdminArticleCategoryController::class)->names('admin.article_category');
 
-        Route::resource('/admin/ticket-category', AdminTicketCategoryController::class)->names('admin.ticket_category');
-        Route::get('admin/ticket_category/{id}/show_visible', [AdminTicketCategoryController::class, 'show_visible'])->name('admin.ticket_category.show_visible');
-        Route::get('admin/ticket_category/{id}/hide_visible', [AdminTicketCategoryController::class, 'hide_visible'])->name('admin.ticket_category.hide_visible');
+    Route::resource('/admin/feedback', AdminFeedbackController::class)->names('admin.feedback');
 
-        Route::resource('/admin/ticket', AdminTicketController::class)->names('admin.ticket');
+    Route::resource('/admin/ticket-category', AdminTicketCategoryController::class)->names('admin.ticket_category');
+    Route::get('admin/ticket_category/{id}/show_visible', [AdminTicketCategoryController::class, 'show_visible'])->name('admin.ticket_category.show_visible');
+    Route::get('admin/ticket_category/{id}/hide_visible', [AdminTicketCategoryController::class, 'hide_visible'])->name('admin.ticket_category.hide_visible');
 
-        Route::resource('/admin/triggers', AdminTriggersController::class)->names('admin.triggers');
+    Route::resource('/admin/ticket', AdminTicketController::class)->names('admin.ticket');
 
-        Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard.index');
-        Route::get('admin/dashboard/user/{id}', [AdminDashboardController::class, 'getUserData']);
+    Route::resource('/admin/triggers', AdminTriggersController::class)->names('admin.triggers');
 
-        Route::resource('/admin/data-repository', AdminDataRepositoryController::class)->names('admin.data_repository');
+    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard.index');
+    Route::get('admin/dashboard/user/{id}', [AdminDashboardController::class, 'getUserData']);
 
-        Route::patch('/admin/ticket/unassign/{ticket}', [AdminTicketController::class, 'unassign'])->name('admin.ticket.unassign');
-        Route::patch('/admin/ticket/close/{ticket}', [AdminTicketController::class, 'close'])->name('admin.ticket.close');
-        Route::patch('/admin/ticket/reopen/{ticket}', [AdminTicketController::class, 'reopen_ticket'])->name('admin.ticket.reopen_ticket');
+    Route::resource('/admin/data-repository', AdminDataRepositoryController::class)->names('admin.data_repository');
 
-        Route::resource('/admin/user-management', AdminUserManagementController::class)->names('admin.user_management');
+    Route::patch('/admin/ticket/unassign/{ticket}', [AdminTicketController::class, 'unassign'])->name('admin.ticket.unassign');
+    Route::patch('/admin/ticket/close/{ticket}', [AdminTicketController::class, 'close'])->name('admin.ticket.close');
+    Route::patch('/admin/ticket/reopen/{ticket}', [AdminTicketController::class, 'reopen_ticket'])->name('admin.ticket.reopen_ticket');
 
+    Route::resource('/admin/user-management', AdminUserManagementController::class)->names('admin.user_management');
 });
 
 Route::middleware('auth', 'role:agent')->group(function () {
 
-        Route::resource('/messages', AgentMessagesController::class)->only(['index', 'create', 'show', 'edit', 'update', 'destroy'])->names('agent.messages');
-        Route::post('/messages/{id}', [AgentMessagesController::class, 'store'])->name('agent.messages.store');
-        Route::get('/agent', [AgentController::class, 'index'])->name('agent.index');
-        Route::get('/notifications/read/{id}', [AgentController::class, 'markAsRead'])->name('notifications.read');
+    Route::resource('/messages', AgentMessagesController::class)->only(['index', 'create', 'show', 'edit', 'update', 'destroy'])->names('agent.messages');
+    Route::post('/messages/{id}', [AgentMessagesController::class, 'store'])->name('agent.messages.store');
+    Route::get('/agent', [AgentController::class, 'index'])->name('agent.index');
+    Route::get('/notifications/read/{id}', [AgentController::class, 'markAsRead'])->name('notifications.read');
 
-        Route::resource('/agent/schedule-call', AgentScheduledCallController::class)->names('agent.scheduled_call');
+    Route::resource('/agent/schedule-call', AgentScheduledCallController::class)->names('agent.scheduled_call');
 
-        Route::get('/agent/dashboard', [AgentDashboardController::class, 'index'])->name('agent.dashboard.index');
-        Route::resource('/agent/ticket', AgentTicketController::class)->names('agent.ticket');
+    Route::get('/agent/dashboard', [AgentDashboardController::class, 'index'])->name('agent.dashboard.index');
+    Route::get('agent/dashboard/user/{id}', [AgentDashboardController::class, 'getUserData']);
+
+    Route::resource('/agent/ticket', AgentTicketController::class)->names('agent.ticket');
     Route::patch('/agent/ticket/get/{ticket}', [AgentTicketController::class, 'get'])->name('agent.ticket.get');
     Route::patch('/agent/ticket/unassign/{ticket}', [AgentTicketController::class, 'unassign'])->name('agent.ticket.unassign');
     Route::patch('/agent/ticket/close/{ticket}', [AgentTicketController::class, 'close'])->name('agent.ticket.close');
     Route::patch('/agent/ticket/reopen/{ticket}', [AgentTicketController::class, 'reopen_ticket'])->name('agent.ticket.reopen_ticket');
-
 });
 
 

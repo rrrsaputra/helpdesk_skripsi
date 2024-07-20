@@ -510,7 +510,6 @@
             </div>
         </div>
     </div>
-    </div>
     <!-- End Generation Here -->
 @endsection
 
