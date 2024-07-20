@@ -89,30 +89,30 @@
                                             style="min-height: 150px; max-height: 250px;">
                                         </div>
                                         <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
-                                            <script>
-                                                const quill = new Quill('.dx-editors', {
-                                                    theme: 'snow',
-                                                    modules: {
-                                                        toolbar: true
-                                                    },
-                                                    placeholder: 'Write a message...',
-                                                    bounds: '.dx-editors',
-                                                    scrollingContainer: '.dx-editors',
-                                                });
-                                                quill.on('text-change', function() {
-                                                    const editorHeight = quill.root.scrollHeight;
-                                                    const maxHeight = 250;
-                                                    const minHeight = 150;
-                                                    if (editorHeight > maxHeight) {
-                                                        quill.root.style.height = `${maxHeight}px`;
-                                                    } else if (editorHeight < minHeight) {
-                                                        quill.root.style.height = `${minHeight}px`;
-                                                    } else {
-                                                        quill.root.style.height = `${editorHeight}px`;
-                                                    }
-                                                    document.getElementById('message').value = quill.root.innerHTML;
-                                                });
-                                            </script>
+                                        <script>
+                                            const quill = new Quill('.dx-editors', {
+                                                theme: 'snow',
+                                                modules: {
+                                                    toolbar: true
+                                                },
+                                                placeholder: 'Write a message...',
+                                                bounds: '.dx-editors',
+                                                scrollingContainer: '.dx-editors',
+                                            });
+                                            quill.on('text-change', function() {
+                                                const editorHeight = quill.root.scrollHeight;
+                                                const maxHeight = 250;
+                                                const minHeight = 150;
+                                                if (editorHeight > maxHeight) {
+                                                    quill.root.style.height = `${maxHeight}px`;
+                                                } else if (editorHeight < minHeight) {
+                                                    quill.root.style.height = `${minHeight}px`;
+                                                } else {
+                                                    quill.root.style.height = `${editorHeight}px`;
+                                                }
+                                                document.getElementById('message').value = quill.root.innerHTML;
+                                            });
+                                        </script>
                                         <input type="hidden" name="message" id="message">
                                     </div>
                                 </div>
