@@ -99,9 +99,14 @@ class AgentTicketController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $ticket = Ticket::findOrFail($id);
-        $ticket->latitude = $request->latitude;
-        $ticket->longitude = $request->longitude;
+        $ticket = Ticket::find($id);
+
+        // Check if latitude and longitude are provided in the request
+        if ($request->has('latitude') && $request->has('longitude')) {
+            $ticket->latitude = $request->latitude;
+            $ticket->longitude = $request->longitude;
+        }
+
         $ticket->save();
         return redirect(route('agent.index', ['inbox' => 'unassigned']));
     }
