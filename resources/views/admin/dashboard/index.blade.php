@@ -239,6 +239,7 @@
                         </div>
                     </section>
                 </div>
+
                 <div class="row">
                     <section class="col-lg-6 connectedSortable">
                         <div class="card">
@@ -291,6 +292,69 @@
                     </section>
 
                     <section class="col-lg-6 connectedSortable">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="fas fa-clock mr-1"></i>
+                                    Hours Until First Agent Reply
+                                </h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart">
+                                    <canvas id="hours-until-reply-chart" height="300" style="height: 300px;"></canvas>
+                                </div>
+                            </div>
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    var ctx = document.getElementById('hours-until-reply-chart').getContext('2d');
+                                    var hoursUntilReplyChart = new Chart(ctx, {
+                                        type: 'bar',
+                                        data: {
+                                            labels: ['0-1 hours', '1-8 hours', '8-24 hours', '>24 hours'],
+                                            datasets: [{
+                                                label: 'Number of Tickets',
+                                                data: @json(array_values($timeCategories)),
+                                                backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                                                borderColor: 'rgba(255, 159, 64, 1)',
+                                                borderWidth: 1
+                                            }]
+                                        },
+                                        options: {
+                                            responsive: true,
+                                            maintainAspectRatio: false,
+                                            scales: {
+                                                x: {
+                                                    display: true,
+                                                    title: {
+                                                        display: true,
+                                                        text: 'Time Categories'
+                                                    }
+                                                },
+                                                y: {
+                                                    display: true,
+                                                    title: {
+                                                        display: true,
+                                                        text: 'Number of Tickets'
+                                                    }
+                                                }
+                                            },
+                                            plugins: {
+                                                legend: {
+                                                    display: true,
+                                                    position: 'top'
+                                                }
+                                            }
+                                        }
+                                    });
+                                });
+                            </script>
+                        </div>
+                    </section>
+                    
+                </div>
+
+                <div class="row">
+                    <section class="col-lg-12 connectedSortable">
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">

@@ -58,9 +58,31 @@ class AdminDashboardController extends Controller
             ];
         })->sortByDesc('total');
 
+        $hoursUntilFirstReply = Ticket::selectRaw('TIMESTAMPDIFF(HOUR, created_at, updated_at) as hours_until_reply')
+            ->get()
+            ->pluck('hours_until_reply');
+
+        $timeCategories = [
+            '0-1' => 0,
+            '1-8' => 0,
+            '8-24' => 0,
+            '>24' => 0,
+        ];
+
+        foreach ($hoursUntilFirstReply as $hours) {
+            if ($hours <= 1) {
+                $timeCategories['0-1']++;
+            } elseif ($hours <= 8) {
+                $timeCategories['1-8']++;
+            } elseif ($hours <= 24) {
+                $timeCategories['8-24']++;
+            } else {
+                $timeCategories['>24']++;
+            }
+        }
         // dd($ticketLabels, $ticketData);
 
-        return view('admin.dashboard.index', compact('users', 'ticketLabels', 'ticketData', 'tickets', 'ticketCategories',  'ticketDataCategories', 'ticketStatus', 'ticketDataStatus', 'agentPerformance', 'agents'));
+        return view('admin.dashboard.index', compact('users', 'ticketLabels', 'ticketData', 'tickets', 'ticketCategories',  'ticketDataCategories', 'ticketStatus', 'ticketDataStatus', 'agentPerformance', 'agents', 'hoursUntilFirstReply', 'timeCategories'));
     }
 
     public function getUserData($id)
