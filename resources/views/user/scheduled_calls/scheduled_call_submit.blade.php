@@ -116,20 +116,16 @@
                                         <input type="hidden" name="message" id="message">
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="pt-0">
+                                <div class="dx-separator"></div>
 
-
-                                <div class="row justify-content-between vertical-gap dx-dropzone-attachment">
-                                    <div class="col-auto dx-dropzone-attachment-add">
-
-                                    </div>
-                                    <div class="col-auto dx-dropzone-attachment-btn ">
-                                        <button class="dx-btn dx-btn-lg" type="submit" name="submit">Submit</button>
+                                <div class="dx-box-content">
+                                    <div class="row justify-content-end mt-3">
+                                        <div class="col-auto mb-20">
+                                            <button type="submit" class="btn btn-primary" name="submit"">Book Call</button>
+                                        </div>
                                     </div>
                                 </div>
-                                <!-- END: Dropzone -->
 
                             </div>
                         </form>
