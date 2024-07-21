@@ -1,133 +1,155 @@
 @extends('layouts.user')
 
 @section('content')
-    <div class="dx-main">
-        <div class=" ">
-            <div class="container" style="padding-bottom: 60px;">
-                <a href="{{ route('user.ticket.index') }}" class="btn btn-secondary mb-3">Back</a>
-                @if (isset($messages) && $messages->count() > 0)
-                    <div class="messages-list" style="height: calc(95vh - 360px); overflow-y: auto; max-width: 100%; box-sizing: border-box;">
-                        <div id="messages-container">
-                            @foreach ($messages as $message)
-                                <div class="message-item"
-                                    style="display: flex; align-items: flex-start; margin-bottom: 10px; {{ $message->user->id == Auth::id() ? 'flex-direction: row-reverse;' : '' }}">
-                                    <img src="{{ $message->user->profile_pic ?? asset('default-avatar.jpg') }}"
-                                        alt="Profile Picture"
-                                        style="width: 40px; height: 40px; border-radius: 50%; margin-{{ $message->user->id == Auth::id() ? 'left' : 'right' }}: 10px;">
-                                    <div
-                                        style="background-color: #dfdfdf; border-radius: 15px; padding: 10px; max-width: 70%;">
-                                        <p style="margin: 0;"><strong>{{ $message->user->name }}:</strong></p>
-                                        <p style="margin: 0;">{!! $message->message !!}</p>
+    @if (isset($messages) && $messages->count() > 0)
+        <div class="messages-list" style="height: 100%;">
+            <div id="messages-container" style="max-height: 61.5vh; overflow-y: auto;">
+                @foreach ($messages as $message)
+                    <div class="message-item"
+                        style="display: flex; align-items: flex-start; margin-bottom: 10px; {{ $message->user->id == Auth::id() ? 'flex-direction: row-reverse;' : '' }}">
+                        <img src="{{ $message->user->profile_pic ?? asset('default-avatar.jpg') }}" alt="Profile Picture"
+                            style="width: 40px; height: 40px; border-radius: 50%; margin-{{ $message->user->id == Auth::id() ? 'left' : 'right' }}: 10px;">
+                        <div style="background-color: #dfdfdf; border-radius: 15px; padding: 10px; max-width: 70%;">
+                            <p style="margin: 0;"><strong>{{ $message->user->name }}:</strong></p>
+                            <p style="margin: 0;">{!! $message->message !!}</p>
 
-                                        @if ($message->attachments->isNotEmpty())
-                                            <p style="margin: 0;">
-                                                <a href="#" onclick="toggleAttachments({{ $message->id }})">
-                                                    <i class="fas fa-paperclip"></i> View Attachments
-                                                </a>
-                                            </p>
-                                            <div id="attachments-{{ $message->id }}" class="attachments-container"
-                                                style="display: none; max-height: 400px; overflow-y: auto;">
-                                                @foreach ($message->attachments as $attachment)
-                                                <div class="attachment-item">
-                                                    @if (strpos($attachment->path, '.jpg') !== false || strpos($attachment->path, '.jpeg') !== false || strpos($attachment->path, '.png') !== false || strpos($attachment->path, '.gif') !== false)
-                                                        <img src="{{ asset('storage/' . $attachment->path) }}"
-                                                            alt="{{ $attachment->name }}" style="max-width: 100%; height: auto;">
-                                                    @else
-                                                        <a href="{{ asset('storage/' . $attachment->path) }}" target="_blank">{{ $attachment->name }}</a>
-                                                    @endif
-                                                </div>
-                                                @endforeach
-                                            </div>
-                                        @endif
-                                        <p style="margin: 0; font-size: 0.8em; color: #888;">
-                                            <small>{{ $message->created_at->format('d M Y, h:i A') }}</small>
-                                        </p>
-                                    </div>
+                            @if ($message->attachments->isNotEmpty())
+                                <p style="margin: 0;">
+                                    <a href="#" onclick="toggleAttachments({{ $message->id }})">
+                                        <i class="fas fa-paperclip"></i> View Attachments
+                                    </a>
+                                </p>
+                                <div id="attachments-{{ $message->id }}" class="attachments-container"
+                                    style="display: none; max-height: 400px; overflow-y: auto;">
+                                    @foreach ($message->attachments as $attachment)
+                                        <div class="attachment-item">
+                                            <img src="{{ asset('storage/' . $attachment->path) }}"
+                                                alt="{{ $attachment->name }}" style="max-width: 100%; height: auto;">
+                                        </div>
+                                    @endforeach
                                 </div>
-                            @endforeach
-                            <script>
-                                function toggleAttachments(messageId) {
-                                    var container = document.getElementById('attachments-' + messageId);
-                                    if (container.style.display === 'none') {
-                                        container.style.display = 'block';
-                                    } else {
-                                        container.style.display = 'none';
-                                    }
-                                }
+                            @endif
 
-                                document.addEventListener('DOMContentLoaded', function() {
-                                    var messagesContainer = document.getElementById('messages-container');
-                                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                                });
-                            </script>
+                            <p style="margin: 0; font-size: 0.8em; color: #888;">
+                                <small>{{ $message->created_at->format('d M Y, h:i A') }}</small>
+                            </p>
                         </div>
                     </div>
-                @else
-                    <p>No messages found.</p>
-                @endif
+                @endforeach
+                <script>
+                    function toggleAttachments(messageId) {
+                        var container = document.getElementById('attachments-' + messageId);
+                        if (container.style.display === 'none') {
+                            container.style.display = 'block';
+                        } else {
+                            container.style.display = 'none';
+                        }
+                    }
+
+                    document.addEventListener('DOMContentLoaded', function() {
+                        var messagesContainer = document.getElementById('messages-container');
+                        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                    });
+                </script>
             </div>
-            <form id="message-form" action="{{ route('agent.messages.store', ['id' => $ticket_id]) }}" method="POST"
-                style="width: 100%; background: white; padding: 10px; box-shadow: 0 -2px 5px rgba(0,0,0,0.1); position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000;">
-                @csrf
-                <div class="dx-form-group">
-                    <label class="mnt-7">Attachments</label>
-                    <input type="file" class="filepond" name="filepond[]" multiple data-allow-reorder="true"
-                        data-max-file-size="3MB" data-max-files="3" accept="image/*">
+        </div>
+    @else
+        <p>No messages found.</p>
+    @endif
 
-                    <script>
-                        import * as FilePond from 'filepond';
-                        import 'filepond/dist/filepond.min.css';
-                        import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
-                        import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
-                        import FilePondPluginFileRemove from 'filepond-plugin-file-remove';
+    <form id="message-form" action="{{ route('agent.messages.store', ['id' => $ticket_id]) }}" method="POST"
+        style="width: 100%; background: white; padding: 10px; box-shadow: 0 -2px 5px rgba(0,0,0,0.1); margin-bottom: 0;">
+        @csrf
 
-                        FilePond.registerPlugin(FilePondPluginImagePreview, FilePondPluginFileValidateType, FilePondPluginFileRemove);
-                        const inputElement = document.querySelector('input[type="file"].filepond');
+        <link href="https://unpkg.com/filepond/dist/filepond.min.css" rel="stylesheet" />
+        <button type="button" onclick="toggleAttachmentInput()" class="dx-btn dx-btn-md" style="background-color: #007bff; color: white; border: none; border-radius: 5px; padding: 10px 15px; cursor: pointer; transition: background-color 0.3s; margin: 10px 0;">
+            Add Attachment
+        </button>
+        <div class="dx-form-group" id="attachment-group" style="display: none;">
 
-                        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-                        FilePond.create(inputElement).setOptions({
-                            server: {
-                                process: './uploads/process',
-                                revert: './uploads/revert',
-                                headers: {
-                                    'X-CSRF-TOKEN': csrfToken,
-                                }
-                            },
-                            acceptedFileTypes: ['image/*'],
-                            allowImagePreview: true,
-                            imagePreviewMaxHeight: 100,
-                            allowRemove: true
-                        });
-                    </script>
-                    <input type="hidden" name="message" id="message">
-                    <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
-                    <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.js"></script>
-                    <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
-                    <script src="https://unpkg.com/filepond-plugin-file-remove/dist/filepond-plugin-file-remove.min.js"></script>
-                </div>
-                <div class="form-group">
-                    <textarea id="msg" name="message" class="form-control" rows="3" placeholder="Type your message here..."
-                        required></textarea>
-                </div>
-                <button id='btn' type="submit" class="btn btn-primary">Send</button>
-            </form>
+            <input type="file" class="filepond" id="fileInput" multiple>
 
         </div>
-    </div>
+        <input type="hidden" name="filepond" id="hidden_filePaths">
+        <script>
+            function toggleAttachmentInput() {
+                var attachmentGroup = document.getElementById('attachment-group');
+                attachmentGroup.style.display = attachmentGroup.style.display === 'none' ? 'block' : 'none';
+            }
+        </script>
+        <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
+        <script>
+            // Get a reference to the file input element
+            const inputElement = document.getElementById('fileInput');
+            const pond = FilePond.create(inputElement);
+            // Add file button click event
+            // Ensure FilePond is properly initialized and configured
+            pond.setOptions({
+                server: {
+                    process: {
+                        url: "{{ route('uploads.process') }}",
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    },
 
 
+
+
+                }
+            });
+            pond.on('addfile', function(file) {
+                // Upload the file to your server
+                const addedFiles = pond.getFiles();
+                addedFiles.forEach(file => {
+                    console.log('File path: ', file.serverId);
+                });
+
+
+            });
+        </script>
+        <div class="form-group">
+            <div id="editor" style="height: 100px;"></div>
+            <input type="hidden" name="message" id="hidden_message">
+        </div>
+        <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+        <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+        <script>
+            var quill = new Quill('#editor', {
+                theme: 'snow',
+                modules: {
+                    toolbar: true
+                },
+                placeholder: 'Type your message here...'
+            });
+
+            document.getElementById('message-form').addEventListener('submit', function() {
+                var editor = document.querySelector('#editor .ql-editor');
+
+                const editorContent = editor.innerHTML.trim(); // Get the trimmed content
+                
+                if (editorContent === '<br>' || editorContent === '') {
+                    document.getElementById('hidden_message').value = ''; // Set to empty if only <br> or empty
+                } else {
+                    document.getElementById('hidden_message').value = editorContent.replace(/<br\s*\/?>/g,
+                    ''); // Remove <br> tags
+                }
+                editor.innerHTML = ""; // Clear the editor
+            });
+        </script>
+        <button id="btn" type="submit" class="btn btn-primary">Send</button>
+    </form>
 
     <script>
-        document.getElementById('msg').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                document.getElementById('btn').click();
-                document.getElementById('msg').value = '';
+        document.getElementById('editor').addEventListener('keydown', function(event) {
+            if (event.key === 'Enter' && !event.shiftKey) { // Check if Enter is pressed without Shift
+                event.preventDefault(); // Prevent default behavior (new line)
+                
+                document.getElementById('btn').click(); // Trigger the button click
 
             }
         });
-
         document.addEventListener('DOMContentLoaded', function() {
             var messagesContainer = document.getElementById('messages-container');
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
@@ -165,7 +187,6 @@
 
                     messageContent.appendChild(messageUser);
                     messageContent.appendChild(messageText);
-
 
                     if (e.message.attachments.length > 0) {
                         var attachmentLink = document.createElement('p');
@@ -208,12 +229,31 @@
 
             // Handle form submission without refreshing
             document.getElementById('message-form').addEventListener('submit', function(e) {
-                e.preventDefault(); // Mencegah pengiriman form default
+                e.preventDefault();
+                const addedFiles = pond.getFiles();
+                if (addedFiles.length > 0) {
+                    const filePaths = addedFiles.map(file => ({
+                        serverId: file.serverId,
+                        name: file.file.name
+                    }));
+                    console.log('File paths:', filePaths);
+                    // Append filePaths to a hidden input field
+                    const filePathsInput = document.createElement('input');
+                    filePathsInput.type = 'hidden';
+                    filePathsInput.name = 'filepond';
+                    filePathsInput.value = JSON.stringify(filePaths);
+                    event.target.closest('form').appendChild(filePathsInput);
+                } else {
+                    console.log('No files added.');
+                }
 
                 var form = this;
                 var formData = new FormData(form);
 
-                // Tambahkan indikator loading
+                pond.removeFiles(); // This will erase all files inside the filepond
+
+
+                // Add this on top of the message
                 var loadingIndicator = document.createElement('div');
                 loadingIndicator.classList.add('loading-indicator');
                 loadingIndicator.innerHTML = 'Sending...';
@@ -228,12 +268,12 @@
                     })
                     .then(response => response.json())
                     .then(data => {
-                        // Hapus indikator loading
+                        // Remove loading indicator
                         form.removeChild(loadingIndicator);
 
                         if (data.success) {
                             form.reset();
-                            // Tambahkan pesan baru ke container pesan
+                            // Append the new message to the messages container
                             var newMessage = document.createElement('div');
                             newMessage.classList.add('message-item');
                             newMessage.style.cssText =
@@ -305,7 +345,6 @@
                             newMessage.appendChild(profilePic);
                             newMessage.appendChild(messageContent);
 
-                            var messagesContainer = document.getElementById('messages-container');
                             messagesContainer.appendChild(newMessage);
                             messagesContainer.scrollTop = messagesContainer.scrollHeight;
                         } else {
@@ -313,12 +352,13 @@
                         }
                     })
                     .catch(error => {
-                        // Hapus indikator loading jika terjadi error
+                        // Remove loading indicator in case of error
                         form.removeChild(loadingIndicator);
                         console.error('Error:', error);
                     });
             });
         });
     </script>
+
 
 @endsection

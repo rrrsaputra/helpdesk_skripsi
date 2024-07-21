@@ -63,8 +63,58 @@
     <form id="message-form" action="{{ route('agent.messages.store', ['id' => $ticket_id]) }}" method="POST"
         style="width: 100%; background: white; padding: 10px; box-shadow: 0 -2px 5px rgba(0,0,0,0.1); margin-bottom: 0;">
         @csrf
+
+        <link href="https://unpkg.com/filepond/dist/filepond.min.css" rel="stylesheet" />
+        <button type="button" onclick="toggleAttachmentInput()" class="dx-btn dx-btn-md"
+            style="background-color: #007bff; color: white; border: none; border-radius: 5px; padding: 10px 15px; cursor: pointer; transition: background-color 0.3s; margin: 10px 0;">
+            Add Attachment
+        </button>
+        <div class="dx-form-group" id="attachment-group" style="display: none;">
+
+            <input type="file" class="filepond" id="fileInput" multiple>
+
+        </div>
+        <input type="hidden" name="filepond" id="hidden_filePaths">
+        <script>
+            function toggleAttachmentInput() {
+                var attachmentGroup = document.getElementById('attachment-group');
+                attachmentGroup.style.display = attachmentGroup.style.display === 'none' ? 'block' : 'none';
+            }
+        </script>
+        <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
+        <script>
+            // Get a reference to the file input element
+            const inputElement = document.getElementById('fileInput');
+            const pond = FilePond.create(inputElement);
+            // Add file button click event
+            // Ensure FilePond is properly initialized and configured
+            pond.setOptions({
+                server: {
+                    process: {
+                        url: "{{ route('uploads.process') }}",
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    },
+
+
+
+
+                }
+            });
+            pond.on('addfile', function(file) {
+                // Upload the file to your server
+                const addedFiles = pond.getFiles();
+                addedFiles.forEach(file => {
+                    console.log('File path: ', file.serverId);
+                });
+
+
+            });
+        </script>
         <div class="form-group">
-            <div id="editor" style="height: 150px;"></div>
+            <div id="editor" style="height: 100px;"></div>
             <input type="hidden" name="message" id="hidden_message">
         </div>
         <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
@@ -80,26 +130,30 @@
 
             document.getElementById('message-form').addEventListener('submit', function() {
                 var editor = document.querySelector('#editor .ql-editor');
-                document.getElementById('hidden_message').value = editor.innerHTML;
+
+                const editorContent = editor.innerHTML.trim(); // Get the trimmed content
+
+                if (editorContent === '<br>' || editorContent === '') {
+                    document.getElementById('hidden_message').value = ''; // Set to empty if only <br> or empty
+                } else {
+                    document.getElementById('hidden_message').value = editorContent.replace(/<br\s*\/?>/g,
+                        ''); // Remove <br> tags
+                }
+                editor.innerHTML = ""; // Clear the editor
             });
         </script>
-        
-        <div class="form-group">
-            <label for="attachments">Attachments</label>
-            <input type="file" id="attachments" name="filepond[]" class="filepond" multiple data-allow-reorder="true"
-                data-max-file-size="3MB" data-max-files="3" >
-        </div>
         <button id="btn" type="submit" class="btn btn-primary">Send</button>
     </form>
 
     <script>
-        // document.getElementById('msg').addEventListener('keypress', function(e) {
-        //     if (e.key === 'Enter' && !e.shiftKey) {
-        //         e.preventDefault();
-        //         document.getElementById('btn').click();
-        //     }
-        // });
+        document.getElementById('editor').addEventListener('keydown', function(event) {
+            if (event.key === 'Enter' && !event.shiftKey) { // Check if Enter is pressed without Shift
+                event.preventDefault(); // Prevent default behavior (new line)
 
+                document.getElementById('btn').click(); // Trigger the button click
+
+            }
+        });
         document.addEventListener('DOMContentLoaded', function() {
             var messagesContainer = document.getElementById('messages-container');
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
@@ -180,9 +234,31 @@
             // Handle form submission without refreshing
             document.getElementById('message-form').addEventListener('submit', function(e) {
                 e.preventDefault();
+                const addedFiles = pond.getFiles();
+                if (addedFiles.length > 0) {
+                    const filePaths = addedFiles.map(file => ({
+                        serverId: file.serverId,
+                        name: file.file.name
+                    }));
+                    console.log('File paths:', filePaths);
+                    // Append filePaths to a hidden input field
+                    const filePathsInput = document.createElement('input');
+                    filePathsInput.type = 'hidden';
+                    filePathsInput.name = 'filepond';
+                    filePathsInput.value = JSON.stringify(filePaths);
+                    event.target.closest('form').appendChild(filePathsInput);
+                } else {
+                    console.log('No files added.');
+                }
+
                 var form = this;
                 var formData = new FormData(form);
 
+                pond.removeFiles(); // This will erase all files inside the filepond
+                var attachmentGroup = document.getElementById('attachment-group');
+                if (attachmentGroup.style.display === 'block') {
+                    attachmentGroup.style.display = 'none';
+                }
                 // Add this on top of the message
                 var loadingIndicator = document.createElement('div');
                 loadingIndicator.classList.add('loading-indicator');
@@ -289,6 +365,4 @@
             });
         });
     </script>
-
-
 @endsection

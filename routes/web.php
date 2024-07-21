@@ -38,9 +38,9 @@ use App\Http\Controllers\AdminTicketCategoryController;
 use App\Http\Controllers\AdminUserManagementController;
 use App\Http\Controllers\UserArticleCategoryController;
 use App\Http\Controllers\AdminArticleCategoryController;
+use App\Http\Controllers\MailController;
 
-
-
+Route::get('send-email',[MailController::class, 'sendEmail']);
 
 Route::middleware('auth')->group(function () {
 
@@ -48,7 +48,7 @@ Route::middleware('auth')->group(function () {
     // Route::get('/category/{slug}', [HomeController::class, 'show'])->name('category.show');
 
     // Route::get('/trigger', [TriggerController::class, 'index'])->name('trigger');
-
+    Route::post('/messages/{id}', [AgentMessagesController::class, 'store'])->name('agent.messages.store');
     Route::get('/messages', [HomeController::class, 'messages'])
         ->name('messages');
 
@@ -137,7 +137,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 Route::middleware('auth', 'role:agent')->group(function () {
 
     Route::resource('/messages', AgentMessagesController::class)->only(['index', 'create', 'show', 'edit', 'update', 'destroy'])->names('agent.messages');
-    Route::post('/messages/{id}', [AgentMessagesController::class, 'store'])->name('agent.messages.store');
+    
     Route::get('/agent', [AgentController::class, 'index'])->name('agent.index');
     Route::get('/notifications/read/{id}', [AgentController::class, 'markAsRead'])->name('notifications.read');
 

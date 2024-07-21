@@ -35,7 +35,6 @@ class AgentMessagesController extends Controller
     public function store(Request $request, string $id)
     {
         
-
         $ticket = Ticket::find($id);
         if (!$ticket) {
             // Handle the case where the ticket is not found
@@ -59,19 +58,19 @@ class AgentMessagesController extends Controller
             // Handle the case where the user is not found
             return response()->json(['error' => 'User not found'], 404);
         }
+        $filepondData = json_decode($request->input('filepond'), true);
         
-        if ($request->hasFile('filepond')) {
-            foreach ($request->file('filepond') as $file) {
-                $path = $file->store('uploads', 'public');
-                if ($path) {
-                    Attachment::create([
-                        'name' => $file->getClientOriginalName(),
-                        'path' => $path,
-                        'message_id' => $message->id
-                    ]);
-                } else {
-                    return response()->json(['error' => 'Failed to upload file. Please try again.'], 500);
-                }
+        if ($filepondData) {
+            foreach ($filepondData as $fileData) {
+                $serverId = json_decode($fileData['serverId'], true);
+                $path = $serverId['path'];
+                $name = $fileData['name'];
+                
+                Attachment::create([
+                    'name' => $name,
+                    'path' => $path,
+                    'message_id' => $message->id
+                ]);
             }
         }
 

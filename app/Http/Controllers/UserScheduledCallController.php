@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ProcessScheduledCall;
+use App\Mail\SendMail;
 use App\Models\Article;
 use App\Models\Attachment_Call;
 use Illuminate\Http\Request;
 use App\Models\ScheduledCall;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class UserScheduledCallController extends Controller
 {
@@ -71,6 +74,8 @@ class UserScheduledCallController extends Controller
                 ]);
             }
         }
+        $toEmailAddress = Auth::user()->email;
+        ProcessScheduledCall::dispatch($scheduledCall, $filepondData, $toEmailAddress);
 
         return redirect(route('scheduled_call.index'));
     }

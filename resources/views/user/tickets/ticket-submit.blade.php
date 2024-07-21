@@ -149,7 +149,7 @@
                                             <button type="submit" class="btn btn-primary" id="send_ticket">Send
                                                 Ticket</button>
 
-                                    
+
                                         </div>
                                     </div>
                                 </div>
@@ -193,31 +193,68 @@
             event.target.closest('form').submit();
         });
     </script>
+
+    <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
     <script>
-        document.getElementById('send_ticket').addEventListener('click', function(event) {
-            event.preventDefault(); // Mencegah form dikirim langsung
-            const addedFiles = pond.getFiles();
-            if (addedFiles.length > 0) {
-                const filePaths = addedFiles.map(file => ({
-                    serverId: file.serverId,
-                    name: file.file.name
-                }));
-                console.log('File paths:', filePaths);
-                // Append filePaths to a hidden input field
-                const filePathsInput = document.createElement('input');
-                filePathsInput.type = 'hidden';
-                filePathsInput.name = 'filepond';
-                filePathsInput.value = JSON.stringify(filePaths);
-                event.target.closest('form').appendChild(filePathsInput);
-            } else {
-                console.log('No files added.');
+        // Get a reference to the file input element
+        const inputElement = document.getElementById('fileInput');
+        const pond = FilePond.create(inputElement);
+        // Add file button click event
+        // Ensure FilePond is properly initialized and configured
+        pond.setOptions({
+            server: {
+                process: {
+                    url: "{{ route('uploads.process') }}",
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+                },
+
+
+
+
             }
-            // Kirim form setelah mengambil file
-            event.target.closest('form').submit();
+        });
+        pond.on('addfile', function(file) {
+            // Upload the file to your server
+            const addedFiles = pond.getFiles();
+            addedFiles.forEach(file => {
+                console.log('File path: ', file.serverId);
+            });
+
+
         });
     </script>
-    <script id="search-js" defer src="https://api.mapbox.com/search-js/v1.0.0-beta.21/web.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+    <script>
+        const quill = new Quill('.dx-editors', {
+            theme: 'snow',
+            modules: {
+                toolbar: true
+            },
+            placeholder: 'Write a message...',
+            bounds: '.dx-editors',
+            scrollingContainer: '.dx-editors',
+        });
+        quill.on('text-change', function() {
+            const editorHeight = quill.root.scrollHeight;
+            const maxHeight = 250;
+            const minHeight = 150;
+            if (editorHeight > maxHeight) {
+                quill.root.style.height = `${maxHeight}px`;
+            } else if (editorHeight < minHeight) {
+                quill.root.style.height = `${minHeight}px`;
+            } else {
+                quill.root.style.height = `${editorHeight}px`;
+            }
+            document.getElementById('message').value = quill.root.innerHTML;
+        });
+    </script>
+
+
+    <script id="search-js" defer src="https://api.mapbox.com/search-js/v1.0.0-beta.21/web.js"></script>
     <script>
         ACCESS_TOKEN = "pk.eyJ1IjoiYmFtYmFuZzI4MDIiLCJhIjoiY2x4a2ViM3R0MDB0bDJqcXU0OWxwN3I3biJ9.Ihq2fCxZXYpw-sveeATkvw";
         mapboxgl.accessToken = ACCESS_TOKEN;
@@ -314,66 +351,6 @@
             } else {
                 console.error('Invalid latitude or longitude values.');
             }
-        });
-    </script>
-
-
-    <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
-    <script>
-        // Get a reference to the file input element
-        const inputElement = document.getElementById('fileInput');
-        const pond = FilePond.create(inputElement);
-        // Add file button click event
-        // Ensure FilePond is properly initialized and configured
-        pond.setOptions({
-            server: {
-                process: {
-                    url: "{{ route('uploads.process') }}",
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    }
-                },
-
-
-
-
-            }
-        });
-        pond.on('addfile', function(file) {
-            // Upload the file to your server
-            const addedFiles = pond.getFiles();
-            addedFiles.forEach(file => {
-                console.log('File path: ', file.serverId);
-            });
-
-
-        });
-    </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
-    <script>
-        const quill = new Quill('.dx-editors', {
-            theme: 'snow',
-            modules: {
-                toolbar: true
-            },
-            placeholder: 'Write a message...',
-            bounds: '.dx-editors',
-            scrollingContainer: '.dx-editors',
-        });
-        quill.on('text-change', function() {
-            const editorHeight = quill.root.scrollHeight;
-            const maxHeight = 250;
-            const minHeight = 150;
-            if (editorHeight > maxHeight) {
-                quill.root.style.height = `${maxHeight}px`;
-            } else if (editorHeight < minHeight) {
-                quill.root.style.height = `${minHeight}px`;
-            } else {
-                quill.root.style.height = `${editorHeight}px`;
-            }
-            document.getElementById('message').value = quill.root.innerHTML;
         });
     </script>
 @endpush
