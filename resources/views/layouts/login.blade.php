@@ -21,8 +21,7 @@
 
 </head>
 
-<body class="hold-transition login-page font-sans text-gray-900 antialiased" style="background-image: url({{ asset('image/background.jpg') }}); background-size: cover; background-color: rgba(27, 27, 27, .8);">
-    
+<body class="hold-transition login-page text-gray-900 antialiased" style="background-image: url({{ asset('image/background.jpg') }}); background-size: cover; background-color: rgba(27, 27, 27, .8); font-family: 'Nunito Sans', sans-serif;">    
     <div class="login-logo">
         <a href="{{ route('home') }}">
             <img src="{{ asset('image/logoeq.png')}}" alt="EQ Logo" width="300px" class="mt-3 mx-auto d-block mb-4">
