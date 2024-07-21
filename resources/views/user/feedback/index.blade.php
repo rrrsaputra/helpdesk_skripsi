@@ -113,13 +113,10 @@
                                     <div class="dx-box-content">
                                         <div class="row justify-content-end mt-3">
                                             <div class="col-auto mb-20">
-                                                <button type="submit" class="btn btn-primary" name="submit"">Send Feedback</button>
+                                                <button class="dx-btn dx-btn-lg mx-4 float-right my-3" type="submit" name="submit" id="send_feedback">Send Feedback</button>
                                             </div>
                                         </div>
                                     </div>
-                                    <button class="dx-btn dx-btn-lg mx-4 float-right my-3" type="submit" name="submit"
-                                        id="send_feedback">Submit</button>
-
                                 </div>
                             </form>
                         </div>

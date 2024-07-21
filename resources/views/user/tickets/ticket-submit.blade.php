@@ -83,7 +83,7 @@
                                     </div>
                                     <div class="dx-form-group">
                                         <label class="mnt-7">Message</label>
-                                        <div id="editor" data-editor-height="150" data-editor-maxheight="250"
+                                        <div class="dx-editors" data-editor-height="150" data-editor-maxheight="250"
                                             style="min-height: 150px; max-height: 250px;">
                                         </div>
                                         <input type="hidden" name="message" id="message">
@@ -149,9 +149,7 @@
                                             <button type="submit" class="btn btn-primary" id="send_ticket">Send
                                                 Ticket</button>
 
-                                            <button type="submit" class="btn btn-primary" id="send_ticket">Send
-                                                Ticket</button>
-
+                                    
                                         </div>
                                     </div>
                                 </div>
