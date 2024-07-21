@@ -86,7 +86,7 @@
                                         <div id="editor" data-editor-height="150" data-editor-maxheight="250"
                                             style="min-height: 150px; max-height: 250px;">
                                         </div>
-                                        <input type="hidden" name="message" id="hidden_message">
+                                        <input type="hidden" name="message" id="message">
                                     </div>
                                 </div>
 
@@ -149,6 +149,9 @@
                                             <button type="submit" class="btn btn-primary" id="send_ticket">Send
                                                 Ticket</button>
 
+                                            <button type="submit" class="btn btn-primary" id="send_ticket">Send
+                                                Ticket</button>
+
                                         </div>
                                     </div>
                                 </div>
@@ -169,6 +172,29 @@
     </div>
 @endsection
 @push('js')
+    <script>
+        document.getElementById('send_ticket').addEventListener('click', function(event) {
+            event.preventDefault(); // Mencegah form dikirim langsung
+            const addedFiles = pond.getFiles();
+            if (addedFiles.length > 0) {
+                const filePaths = addedFiles.map(file => ({
+                    serverId: file.serverId,
+                    name: file.file.name
+                }));
+                console.log('File paths:', filePaths);
+                // Append filePaths to a hidden input field
+                const filePathsInput = document.createElement('input');
+                filePathsInput.type = 'hidden';
+                filePathsInput.name = 'filepond';
+                filePathsInput.value = JSON.stringify(filePaths);
+                event.target.closest('form').appendChild(filePathsInput);
+            } else {
+                console.log('No files added.');
+            }
+            // Kirim form setelah mengambil file
+            event.target.closest('form').submit();
+        });
+    </script>
     <script>
         document.getElementById('send_ticket').addEventListener('click', function(event) {
             event.preventDefault(); // Mencegah form dikirim langsung
@@ -312,6 +338,8 @@
                 },
 
 
+
+
             }
         });
         pond.on('addfile', function(file) {
@@ -321,19 +349,20 @@
                 console.log('File path: ', file.serverId);
             });
 
+
         });
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
     <script>
-        const quill = new Quill('#editor', {
+        const quill = new Quill('.dx-editors', {
             theme: 'snow',
             modules: {
                 toolbar: true
             },
             placeholder: 'Write a message...',
-            bounds: '#editor',
-            scrollingContainer: '#editor',
+            bounds: '.dx-editors',
+            scrollingContainer: '.dx-editors',
         });
         quill.on('text-change', function() {
             const editorHeight = quill.root.scrollHeight;

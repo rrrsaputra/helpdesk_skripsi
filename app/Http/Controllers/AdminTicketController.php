@@ -35,27 +35,27 @@ class AdminTicketController extends Controller
             return view('admin.ticket.index', compact('tickets', 'inbox', 'agents'));
         } else if ($inbox == 'mine') {
             $tickets = Ticket::opened()->where('assigned_to', Auth::id())->orderBy('created_at', 'desc')
-            ->when($search, function ($query) use ($search) {
-                $query->where('title', 'like', "%{$search}%")
-                    ->orWhere('category', 'like', "%{$search}%")
-                    ->orWhere('message', 'like', "%{$search}%");
-            })->paginate($paginationCount); // Fixed pagination
+                ->when($search, function ($query) use ($search) {
+                    $query->where('title', 'like', "%{$search}%")
+                        ->orWhere('category', 'like', "%{$search}%")
+                        ->orWhere('message', 'like', "%{$search}%");
+                })->paginate($paginationCount); // Fixed pagination
             return view('agent.index', compact('tickets', 'inbox'));
         } else if ($inbox == 'assigned') {
             $tickets = Ticket::opened()->whereNotNull('assigned_to')->orderBy('created_at', 'desc')
-            ->when($search, function ($query) use ($search) {
-                $query->where('title', 'like', "%{$search}%")
-                    ->orWhere('category', 'like', "%{$search}%")
-                    ->orWhere('message', 'like', "%{$search}%");
-            })->paginate($paginationCount); // Fixed pagination
+                ->when($search, function ($query) use ($search) {
+                    $query->where('title', 'like', "%{$search}%")
+                        ->orWhere('category', 'like', "%{$search}%")
+                        ->orWhere('message', 'like', "%{$search}%");
+                })->paginate($paginationCount); // Fixed pagination
             return view('admin.ticket.index', compact('tickets', 'inbox', 'agents'));
         } else if ($inbox == 'closed') {
             $tickets = Ticket::closed()->orderBy('created_at', 'desc')
-            ->when($search, function ($query) use ($search) {
-                $query->where('title', 'like', "%{$search}%")
-                    ->orWhere('category', 'like', "%{$search}%")
-                    ->orWhere('message', 'like', "%{$search}%");
-            })->paginate($paginationCount); // Fixed pagination
+                ->when($search, function ($query) use ($search) {
+                    $query->where('title', 'like', "%{$search}%")
+                        ->orWhere('category', 'like', "%{$search}%")
+                        ->orWhere('message', 'like', "%{$search}%");
+                })->paginate($paginationCount); // Fixed pagination
             return view('admin.ticket.index', compact('tickets', 'inbox', 'agents'));
         }
     }
@@ -98,16 +98,16 @@ class AdminTicketController extends Controller
     public function update(Request $request, string $id)
     {
         $ticket = Ticket::find($id);
-        if ($ticket) {
-            $ticket->assigned_to = $request->agent_id;
+        $ticket->assigned_to = $request->agent_id;
+        
+        // Check if latitude and longitude are provided in the request
+        if ($request->has('latitude') && $request->has('longitude')) {
             $ticket->latitude = $request->latitude;
             $ticket->longitude = $request->longitude;
-            $ticket->save();
-        } else {
-            return redirect()->route('admin.ticket.index', ['inbox' => 'unassigned']);
         }
-
-        return redirect()->route('admin.ticket.index',  ['inbox' => 'unassigned']);
+        
+        $ticket->save();
+        return redirect()->route('admin.ticket.index', ['inbox' => 'unassigned']);
     }
 
     /**
@@ -147,6 +147,4 @@ class AdminTicketController extends Controller
 
         return redirect(route('admin.ticket.index', ['inbox' => 'closed']));
     }
-
-    
 }

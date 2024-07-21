@@ -130,10 +130,35 @@
                                                 document.getElementById('message').value = quill.root.innerHTML;
                                             });
                                         </script>
+                                        <script>
+                                            const quill = new Quill('.dx-editors', {
+                                                theme: 'snow',
+                                                modules: {
+                                                    toolbar: true
+                                                },
+                                                placeholder: 'Write a message...',
+                                                bounds: '.dx-editors',
+                                                scrollingContainer: '.dx-editors',
+                                            });
+                                            quill.on('text-change', function() {
+                                                const editorHeight = quill.root.scrollHeight;
+                                                const maxHeight = 250;
+                                                const minHeight = 150;
+                                                if (editorHeight > maxHeight) {
+                                                    quill.root.style.height = `${maxHeight}px`;
+                                                } else if (editorHeight < minHeight) {
+                                                    quill.root.style.height = `${minHeight}px`;
+                                                } else {
+                                                    quill.root.style.height = `${editorHeight}px`;
+                                                }
+                                                document.getElementById('message').value = quill.root.innerHTML;
+                                            });
+                                        </script>
                                         <input type="hidden" name="message" id="message">
                                     </div>
                                 </div>
-                            </div>
+
+                                <div class="dx-separator"></div>
 
                             <div class="pt-0">
 
@@ -144,10 +169,9 @@
                                     </div>
                                     <div class="col-auto dx-dropzone-attachment-btn ">
                                         <button class="dx-btn dx-btn-lg" type="submit" name="submit"
-                                            id="send_call">Submit</button>
+                                            id="send_call">Book Call</button>
                                     </div>
                                 </div>
-                                <!-- END: Dropzone -->
 
                             </div>
                         </form>

@@ -7,26 +7,26 @@
 
 @section('content')
     <div class="dx-main">
-        @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert"
-                style="opacity: 1; transition: opacity 0.5s;">
-                {{ session('success') }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <script>
-                setTimeout(function() {
-                    document.getElementById('success-alert').style.opacity = '0';
-                }, 4500); // Mengurangi 500ms untuk transisi lebih halus
-                setTimeout(function() {
-                    document.getElementById('success-alert').style.display = 'none';
-                }, 5000);
-            </script>
-        @endif
-
+        
         <div class="dx-main">
             <div class="dx-separator"></div>
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert"
+                    style="opacity: 1; transition: opacity 0.5s;">
+                    {{ session('success') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <script>
+                    setTimeout(function() {
+                        document.getElementById('success-alert').style.opacity = '0';
+                    }, 4500); // Mengurangi 500ms untuk transisi lebih halus
+                    setTimeout(function() {
+                        document.getElementById('success-alert').style.display = 'none';
+                    }, 5000);
+                </script>
+            @endif
             <div class="dx-box-5 pb-100 bg-grey-6">
                 <div class="container">
                     <div class="row justify-content-center">
@@ -106,14 +106,21 @@
                                             </script>
                                             <input type="hidden" name="message" id="message">
                                         </div>
+                                    </div>
 
+                                    <div class="dx-separator"></div>
+
+                                    <div class="dx-box-content">
+                                        <div class="row justify-content-end mt-3">
+                                            <div class="col-auto mb-20">
+                                                <button type="submit" class="btn btn-primary" name="submit"">Send Feedback</button>
+                                            </div>
+                                        </div>
                                     </div>
                                     <button class="dx-btn dx-btn-lg mx-4 float-right my-3" type="submit" name="submit"
                                         id="send_feedback">Submit</button>
 
                                 </div>
-
-
                             </form>
                         </div>
                     </div>

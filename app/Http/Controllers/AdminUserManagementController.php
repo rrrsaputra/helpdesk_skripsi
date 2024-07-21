@@ -19,7 +19,18 @@ class AdminUserManagementController extends Controller
         })
             ->paginate($paginationCount);
 
-        return view('admin.user_management.index', compact('users'));
+            $data = $users->map(function ($user) {
+                return [
+                    'id' => $user->id,
+                    'url' => '/path/to/resource1',
+                    'values' => [$user->name, $user->type],
+                    'ticket_quota' => $user->ticket_quota,
+                    'type' => $user->type,
+                    'role' => $user->roles->pluck('name')->first(), // Assuming a user has one role
+                ];
+            })->toArray();
+
+        return view('admin.user_management.index', compact('users', 'data'));
     }
 
     /**
@@ -63,6 +74,12 @@ class AdminUserManagementController extends Controller
         if ($user) {
             $user->type = $request->input('type');
             $user->save();
+
+            $role = $request->input('role');
+            if ($role) {
+                $user->syncRoles([$role]);
+            }
+
             return redirect()->route('admin.user_management.index')->with('success', 'User type updated successfully.');
         } else {
             return redirect()->route('admin.user_management.index')->with('error', 'User not found.');

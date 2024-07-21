@@ -6,13 +6,13 @@
 
 @section('content')
     @php
-        $columns = ['Customer', 'Type'];
+        $columns = ['Customer', 'Type', 'Role'];
         $data = $users
             ->map(function ($user) {
                 return [
                     'id' => $user->id,
                     'url' => '/path/to/resource1',
-                    'values' => [$user->name, $user->type],
+                    'values' => [$user->name, $user->type, $user->roles->pluck('name')->first()],
                     'ticket_quota' => $user->ticket_quota,
                 ];
             })
@@ -83,8 +83,8 @@
                                             </td>
                                         @endforeach
                                         <td> <!-- Added Actions buttons -->
-                                            <button class="btn btn-primary btn-sm" data-toggle="modal"
-                                                data-target="#typeModal">Change Type</button>
+                                            <button class="btn btn-warning btn-sm" data-toggle="modal"
+                                                data-target="#typeModal-{{ $row['id'] }}">Edit</button>
                                             <form action="{{ route('admin.user_management.destroy', $row['id']) }}"
                                                 method="POST" style="display:inline;">
                                                 @csrf
@@ -98,13 +98,13 @@
                                     <form method="POST" action="{{ route('admin.user_management.update', $row['id']) }}">
                                         @csrf
                                         @method('PATCH')
-                                        <div class="modal fade" id="typeModal" tabindex="-1" role="dialog"
-                                            aria-labelledby="typeModalLabel" aria-hidden="true">
+                                        <div class="modal fade" id="typeModal-{{ $row['id'] }}" tabindex="-1"
+                                            role="dialog" aria-labelledby="typeModalLabel" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="typeModalLabel">Update User Type
-                                                        </h5>
+                                                        <h5 class="modal-title" id="typeModalLabel">Update User Type and
+                                                            Role</h5>
                                                         <button type="button" class="close" data-dismiss="modal"
                                                             aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
@@ -119,6 +119,21 @@
                                                             <option value="Premium"
                                                                 {{ isset($row['type']) && $row['type'] == 'Premium' ? 'selected' : '' }}>
                                                                 Premium</option>
+                                                        </select>
+                                                        <label for="userRole" class="mt-3">User Role:</label>
+                                                        <select id="userRole" name="role" class="form-control" required>
+                                                            <option value="user"
+                                                                {{ isset($row['role']) && $row['role'] == 'user' ? 'selected' : '' }}>
+                                                                User
+                                                            </option>
+                                                            <option value="agent"
+                                                                {{ isset($row['role']) && $row['role'] == 'agent' ? 'selected' : '' }}>
+                                                                Agent
+                                                            </option>
+                                                            <option value="admin"
+                                                                {{ isset($row['role']) && $row['role'] == 'admin' ? 'selected' : '' }}>
+                                                                Admin
+                                                            </option>
                                                         </select>
                                                     </div>
                                                     <div class="modal-footer">
