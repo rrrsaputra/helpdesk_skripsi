@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\Attachment_Call;
 use Illuminate\Http\Request;
 use App\Models\ScheduledCall;
 use Illuminate\Support\Facades\Auth;
@@ -53,6 +54,24 @@ class UserScheduledCallController extends Controller
             'start_time' => $request->start_time,
             'finish_time' => date('Y-m-d H:i:s', strtotime($request->start_time) + ($request->duration * 60)),
         ]);
+
+        
+        $filepondData = json_decode($request->input('filepond'), true);
+        
+        if ($filepondData) {
+            foreach ($filepondData as $fileData) {
+                $serverId = json_decode($fileData['serverId'], true);
+                $path = $serverId['path'];
+                $name = $fileData['name'];
+                
+                Attachment_Call::create([
+                    'name' => $name,
+                    'path' => $path,
+                    'scheduled_call_id' => $scheduledCall->id
+                ]);
+            }
+        }
+
         return redirect(route('scheduled_call.index'));
     }
 

@@ -18,4 +18,18 @@ class Feedback extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function attachments()
+    {
+        return $this->hasMany(Attachment_Feedback::class);
+    }
+
+    public function attachments_list()
+    {
+        return $this->attachments->map(function ($attachment) {
+            return [
+                'name' => $attachment->name,
+                'path' => $attachment->path,
+            ];
+        });
+    }
 }

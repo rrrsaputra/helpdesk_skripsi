@@ -28,11 +28,14 @@
                                             <div id="attachments-{{ $message->id }}" class="attachments-container"
                                                 style="display: none; max-height: 400px; overflow-y: auto;">
                                                 @foreach ($message->attachments as $attachment)
-                                                    <div class="attachment-item">
+                                                <div class="attachment-item">
+                                                    @if (strpos($attachment->path, '.jpg') !== false || strpos($attachment->path, '.jpeg') !== false || strpos($attachment->path, '.png') !== false || strpos($attachment->path, '.gif') !== false)
                                                         <img src="{{ asset('storage/' . $attachment->path) }}"
-                                                            alt="{{ $attachment->name }}"
-                                                            style="max-width: 100%; height: auto;">
-                                                    </div>
+                                                            alt="{{ $attachment->name }}" style="max-width: 100%; height: auto;">
+                                                    @else
+                                                        <a href="{{ asset('storage/' . $attachment->path) }}" target="_blank">{{ $attachment->name }}</a>
+                                                    @endif
+                                                </div>
                                                 @endforeach
                                             </div>
                                         @endif

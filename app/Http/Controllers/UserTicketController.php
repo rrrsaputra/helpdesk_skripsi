@@ -89,7 +89,6 @@ class UserTicketController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'message' => 'required|string',
-            'filepond.*' => 'nullable|file|mimes:jpg,jpeg,png|max:3072', // 3MB max per file
         ]);
         
         $filepondData = json_decode($request->input('filepond'), true);

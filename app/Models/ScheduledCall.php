@@ -35,5 +35,19 @@ class ScheduledCall extends Model
     //     return $this->belongsTo(User::class, 'assigned_from');
     // }
 
+    public function attachments()
+    {
+        return $this->hasMany(Attachment_Call::class);
+    }
+
+    public function attachments_list()
+    {
+        return $this->attachments->map(function ($attachment) {
+            return [
+                'name' => $attachment->name,
+                'path' => $attachment->path,
+            ];
+        });
+    }
 
 }

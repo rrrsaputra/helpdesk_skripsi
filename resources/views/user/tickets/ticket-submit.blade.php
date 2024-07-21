@@ -80,24 +80,11 @@
                                         <label class="mnt-7">Attachments</label>
                                         <input type="file" class="filepond" id="fileInput" multiple>
                                         <input type="hidden" name="filepond" id="hidden_filePaths">
-                                       
-                                    {{-- <button type="button" class="btn btn-secondary mt-2" id="check_attachment_path">Check Attachment Path</button>
-                                    <script>
-                                        document.getElementById('check_attachment_path').addEventListener('click', function() {
-                                            const addedFiles = pond.getFiles();
-                                            if (addedFiles.length > 0) {
-                                                const filePaths = addedFiles.map(file => file.serverId);
-                                                console.log('File paths:', filePaths);
-                                            } else {
-                                                console.log('No files added.');
-                                            }
-                                        });
-                                    </script> --}}
                                     </div>
                                     <div class="dx-form-group">
                                         <label class="mnt-7">Message</label>
                                         <div id="editor" data-editor-height="150" data-editor-maxheight="250"
-                                        style="min-height: 150px; max-height: 250px;">
+                                            style="min-height: 150px; max-height: 250px;">
                                         </div>
                                         <input type="hidden" name="message" id="hidden_message">
                                     </div>
@@ -159,8 +146,9 @@
                                 <div class="dx-box-content">
                                     <div class="row justify-content-end mt-3">
                                         <div class="col-auto mb-20">
-                                            <button type="submit" class="btn btn-primary" id="send_ticket">Send Ticket</button>
-                                            
+                                            <button type="submit" class="btn btn-primary" id="send_ticket">Send
+                                                Ticket</button>
+
                                         </div>
                                     </div>
                                 </div>
@@ -181,29 +169,29 @@
     </div>
 @endsection
 @push('js')
-<script>
-    document.getElementById('send_ticket').addEventListener('click', function(event) {
-        event.preventDefault(); // Mencegah form dikirim langsung
-        const addedFiles = pond.getFiles();
-        if (addedFiles.length > 0) {
-            const filePaths = addedFiles.map(file => ({
-                serverId: file.serverId,
-                name: file.file.name
-            }));
-            console.log('File paths:', filePaths);
-            // Append filePaths to a hidden input field
-            const filePathsInput = document.createElement('input');
-            filePathsInput.type = 'hidden';
-            filePathsInput.name = 'filepond';
-            filePathsInput.value = JSON.stringify(filePaths);
-            event.target.closest('form').appendChild(filePathsInput);
-        } else {
-            console.log('No files added.');
-        }
-        // Kirim form setelah mengambil file
-        event.target.closest('form').submit();
-    });
-</script>
+    <script>
+        document.getElementById('send_ticket').addEventListener('click', function(event) {
+            event.preventDefault(); // Mencegah form dikirim langsung
+            const addedFiles = pond.getFiles();
+            if (addedFiles.length > 0) {
+                const filePaths = addedFiles.map(file => ({
+                    serverId: file.serverId,
+                    name: file.file.name
+                }));
+                console.log('File paths:', filePaths);
+                // Append filePaths to a hidden input field
+                const filePathsInput = document.createElement('input');
+                filePathsInput.type = 'hidden';
+                filePathsInput.name = 'filepond';
+                filePathsInput.value = JSON.stringify(filePaths);
+                event.target.closest('form').appendChild(filePathsInput);
+            } else {
+                console.log('No files added.');
+            }
+            // Kirim form setelah mengambil file
+            event.target.closest('form').submit();
+        });
+    </script>
     <script id="search-js" defer src="https://api.mapbox.com/search-js/v1.0.0-beta.21/web.js"></script>
 
     <script>
@@ -322,8 +310,8 @@
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     }
                 },
-                
-                
+
+
             }
         });
         pond.on('addfile', function(file) {
@@ -332,11 +320,8 @@
             addedFiles.forEach(file => {
                 console.log('File path: ', file.serverId);
             });
-            
+
         });
-       
-
-
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
