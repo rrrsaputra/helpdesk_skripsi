@@ -75,7 +75,7 @@ class UserScheduledCallController extends Controller
             }
         }
         $toEmailAddress = Auth::user()->email;
-        ProcessScheduledCall::dispatch($scheduledCall, $filepondData, $toEmailAddress);
+        ProcessScheduledCall::dispatch($scheduledCall, $toEmailAddress);
 
         return redirect(route('scheduled_call.index'));
     }
