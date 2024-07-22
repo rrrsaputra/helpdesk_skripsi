@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('message');
             $table->string('link')->nullable();
-            $table->integer('duration');
+            $table->integer('duration')->nullable();
             $table->datetime('start_time')->nullable();
             $table->datetime('finish_time')->nullable();
             $table->foreignId('assigned_to')->nullable();
