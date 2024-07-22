@@ -23,7 +23,7 @@
 @section('content')
     <a href="{{ route('admin.triggers.create') }}" class="btn btn-primary mb-10">Add Trigger</a>
     @php
-        $columns = ['Name', 'Query'];
+        $columns = ['Name', 'Query', 'Description']; // Added Description column
         $data = $triggers
             ->map(function ($trigger) {
                 return [
@@ -32,12 +32,13 @@
                     'values' => [
                         $trigger->name, 
                         $trigger->query,
+                        $trigger->description, // Added description value
                     ],
                 ];
             })
             ->toArray();
         $columnSizes = array_map(function ($column) {
-            return $column === 'Name' ? '30%' : 'auto';
+            return $column === 'Name' ? '30%' : ($column === 'Description' ? '30%' : 'auto'); // Set size for Description
         }, $columns);
     @endphp
 

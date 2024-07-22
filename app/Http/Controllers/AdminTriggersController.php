@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Trigger;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -41,8 +42,27 @@ class AdminTriggersController extends Controller
     public function store(Request $request)
     {
         $query = $request->trigger_query;
-        DB::unprepared($query);
-        return view('welcome');
+
+        // Validate the request
+        $request->validate([
+            'name' => 'required|string|max:255|unique:triggers,name',
+            'description' => 'nullable|string|max:255',
+            'trigger_query' => 'required|string',
+        ]);
+
+        try {
+            DB::unprepared($query);
+
+            $trigger = new Trigger();
+            $trigger->name = $request->name;
+            $trigger->query = $query;
+            $trigger->description = $request->description;
+            $trigger->save();
+
+            return redirect()->route('admin.triggers.index')->with('success', 'Trigger created successfully');
+        } catch (Exception $e) {
+            return redirect()->route('admin.triggers.create')->with('error', 'Failed to create trigger: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -58,7 +78,10 @@ class AdminTriggersController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $trigger = Trigger::findOrFail($id);
+        $agents = User::role('agent')->get();
+
+        return view('admin.triggers.edit', compact('trigger', 'agents'));
     }
 
     /**
@@ -66,7 +89,32 @@ class AdminTriggersController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $trigger = Trigger::findOrFail($id);
+
+        // Validate the request
+        $request->validate([
+            'name' => 'required|string|max:255|unique:triggers,name,' . $id,
+            'description' => 'nullable|string|max:255',
+            'trigger_query' => 'required|string',
+        ]);
+
+        try {
+            // Drop the existing trigger
+            DB::unprepared('DROP TRIGGER IF EXISTS ' . $trigger->name);
+
+            // Create the new trigger
+            DB::unprepared($request->trigger_query);
+
+            // Update the trigger details
+            $trigger->name = $request->name;
+            $trigger->query = $request->trigger_query;
+            $trigger->description = $request->description;
+            $trigger->save();
+
+            return redirect()->route('admin.triggers.index')->with('success', 'Trigger updated successfully');
+        } catch (Exception $e) {
+            return redirect()->route('admin.triggers.edit', $id)->with('error', 'Failed to update trigger: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -74,6 +122,16 @@ class AdminTriggersController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        
+        
+        $trigger = Trigger::find($id);
+        if ($trigger) {
+            DB::unprepared('DROP TRIGGER IF EXISTS ' . $trigger->name);
+            $trigger->delete();
+        }
+        Trigger::destroy($id);
+
+        return redirect()->route('admin.triggers.index')->with('success', 'Trigger deleted successfully');
+        
     }
 }

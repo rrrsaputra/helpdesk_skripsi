@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('header')
-    <x-admin.header title="Create Trigger" />
+    <x-admin.header title="Edit Trigger" />
 @endsection
 
 @section('content')
@@ -11,19 +11,20 @@
         </div>
     @endif
     <div class="card card-primary">
-        <form method="POST" action="{{ route('admin.triggers.store') }}">
+        <form method="POST" action="{{ route('admin.triggers.update', $trigger->id) }}">
             @csrf
+            @method('PUT')
             <div class="card-body">
                 <div class="form-group">
                     <label for="name">Name</label>
-                    <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" id="name" placeholder="Enter trigger name" value="{{ old('name') }}">
+                    <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" id="name" placeholder="Enter trigger name" value="{{ old('name', $trigger->name) }}">
                     @error('name')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="form-group">
                     <label for="description">Description</label>
-                    <input type="text" name="description" class="form-control @error('description') is-invalid @enderror" id="description" placeholder="Enter description" value="{{ old('description') }}">
+                    <input type="text" name="description" class="form-control @error('description') is-invalid @enderror" id="description" placeholder="Enter description" value="{{ old('description', $trigger->description) }}">
                     @error('description')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -31,23 +32,21 @@
                 <div class="form-group">
                     <label>Meet all the following conditions</label>
                     <div id="allConditions">
-                        <!-- Conditions will be added here -->
+                        <!-- Conditions will be added here dynamically based on existing trigger -->
                     </div>
-                    <button type="button" class="btn btn-secondary mt-2" onclick="addCondition('allConditions')">Add
-                        Condition</button>
+                    <button type="button" class="btn btn-secondary mt-2" onclick="addCondition('allConditions')">Add Condition</button>
                 </div>
                 <div class="form-group">
                     <label>Meet any of the following conditions</label>
                     <div id="anyConditions">
-                        <!-- Conditions will be added here -->
+                        <!-- Conditions will be added here dynamically based on existing trigger -->
                     </div>
-                    <button type="button" class="btn btn-secondary mt-2" onclick="addCondition('anyConditions')">Add
-                        Condition</button>
+                    <button type="button" class="btn btn-secondary mt-2" onclick="addCondition('anyConditions')">Add Condition</button>
                 </div>
                 <div class="form-group">
                     <label>Perform these actions</label>
                     <div id="actions">
-                        <!-- Actions will be added here -->
+                        <!-- Actions will be added here dynamically based on existing trigger -->
                     </div>
                     <button type="button" class="btn btn-secondary mt-2" onclick="addAction('actions')">Add Action</button>
                 </div>
@@ -58,7 +57,7 @@
                     <a href="{{ route('admin.triggers.index') }}" class="btn btn-secondary">Cancel</a>
                 </div>
             </div>
-            <input type="hidden" name="trigger_query" id="trigger_query">
+            <input type="hidden" name="trigger_query" id="trigger_query" value="{{ $trigger->query }}">
         </form>
     </div>
     <script>
@@ -137,8 +136,8 @@
                 },
             ]
         };
-    
-        function addCondition(containerId) {
+
+        function addCondition(containerId, subject = '', operator = '', value = '') {
             const container = document.getElementById(containerId);
             const flexContainer = document.createElement('div');
             flexContainer.style.display = 'flex';
@@ -152,6 +151,9 @@
                 const optionElement = document.createElement('option');
                 optionElement.text = option.text;
                 optionElement.value = option.value;
+                if (option.value === subject) {
+                    optionElement.selected = true;
+                }
                 subjectSelect.appendChild(optionElement);
             });
             flexContainer.appendChild(subjectSelect);
@@ -173,6 +175,9 @@
                     const optionElement = document.createElement('option');
                     optionElement.text = option.text;
                     optionElement.value = option.value;
+                    if (option.value === operator) {
+                        optionElement.selected = true;
+                    }
                     conditionTypeSelect.appendChild(optionElement);
                 });
             });
@@ -183,6 +188,7 @@
             valueInput.name = containerId + '[]';
             valueInput.className = 'form-control mt-2';
             valueInput.placeholder = 'Enter value';
+            valueInput.value = value;
             flexContainer.appendChild(valueInput);
     
             // Delete button
@@ -212,7 +218,7 @@
             },
         ];
     
-        function addAction(containerId) {
+        function addAction(containerId, action = '', value = '') {
             const container = document.getElementById(containerId);
             const flexContainer = document.createElement('div');
             flexContainer.style.display = 'flex';
@@ -230,6 +236,9 @@
                 const optionElement = document.createElement('option');
                 optionElement.text = option.text;
                 optionElement.value = option.value;
+                if (option.value === action) {
+                    optionElement.selected = true;
+                }
                 actionSelect.appendChild(optionElement);
             });
             flexContainer.appendChild(actionSelect);
@@ -254,6 +263,9 @@
                             const optionElement = document.createElement('option');
                             optionElement.text = option.text;
                             optionElement.value = option.value;
+                            if (option.value === value) {
+                                optionElement.selected = true;
+                            }
                             valueInput.appendChild(optionElement);
                         });
                     },
@@ -269,6 +281,9 @@
                                 const optionElement = document.createElement('option');
                                 optionElement.text = agent.name;
                                 optionElement.value = agent.id;
+                                if (agent.id == value) {
+                                    optionElement.selected = true;
+                                }
                                 valueInput.appendChild(optionElement);
                             });
                         }
@@ -350,6 +365,27 @@
             // Set the hidden input value
             document.getElementById('trigger_query').value = query;
         }
+
+        // Populate the existing conditions and actions on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const existingConditions = @json($trigger->conditions);
+            const existingActions = @json($trigger->actions);
+    
+            // Populate allConditions
+            existingConditions.all.forEach(condition => {
+                addCondition('allConditions', condition.subject, condition.operator, condition.value);
+            });
+    
+            // Populate anyConditions
+            existingConditions.any.forEach(condition => {
+                addCondition('anyConditions', condition.subject, condition.operator, condition.value);
+            });
+    
+            // Populate actions
+            existingActions.forEach(action => {
+                addAction('actions', action.action, action.value);
+            });
+        });
     </script>
     
 @endsection
