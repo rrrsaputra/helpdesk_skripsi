@@ -23,10 +23,9 @@ class ProcessScheduledCall implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct($scheduledCall, $filepondData, $userEmail)
+    public function __construct($scheduledCall, $userEmail)
     {
         $this->scheduledCall = $scheduledCall;
-        $this->filepondData = $filepondData;
         $this->userEmail = $userEmail;
     }
 
@@ -35,19 +34,6 @@ class ProcessScheduledCall implements ShouldQueue
      */
     public function handle()
     {
-        if ($this->filepondData) {
-            foreach ($this->filepondData as $fileData) {
-                $serverId = json_decode($fileData['serverId'], true);
-                $path = $serverId['path'];
-                $name = $fileData['name'];
-
-                Attachment_Call::create([
-                    'name' => $name,
-                    'path' => $path,
-                    'scheduled_call_id' => $this->scheduledCall->id
-                ]);
-            }
-        }
 
         $title = "You have made a scheduled call";
         $message = "Your scheduled call titled '{$this->scheduledCall->title}' has been successfully created for " . date('Y-m-d H:i:s', strtotime($this->scheduledCall->start_time)) . ".";

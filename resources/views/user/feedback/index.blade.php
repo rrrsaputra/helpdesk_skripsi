@@ -33,6 +33,7 @@
                         <div class="col-xl-7">
                             <form action="{{ route('user.feedback.store') }}" method="POST" class="dx-form"
                                 enctype="multipart/form-data" onkeydown="return event.key != 'Enter';">
+                                @csrf
                                 <div class="dx-box dx-box-decorated">
                                     <div class="dx-box-content">
                                         <h2 class="h6 mb-6">Feedback</h2>
@@ -47,7 +48,7 @@
                                     </div>
                                     <div class="dx-separator"></div>
 
-                                    @csrf
+                                   
                                     <div class="dx-box-content">
                                         <link
                                             href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css"
@@ -113,7 +114,9 @@
                                     <div class="dx-box-content">
                                         <div class="row justify-content-end mt-3">
                                             <div class="col-auto mb-20">
-                                                <button class="dx-btn dx-btn-lg mx-4 float-right my-3" type="submit" name="submit" id="send_feedback">Send Feedback</button>
+                                                <button type="submit" class="btn btn-primary" id="send_feedback">Send
+                                                    Feedback</button>
+    
                                             </div>
                                         </div>
                                     </div>
@@ -130,7 +133,7 @@
 @push('js')
     <script>
         document.getElementById('send_feedback').addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent the form from submitting immediately
+            event.preventDefault(); // Mencegah form dikirim langsung
             const addedFiles = pond.getFiles();
             if (addedFiles.length > 0) {
                 const filePaths = addedFiles.map(file => ({
@@ -147,18 +150,17 @@
             } else {
                 console.log('No files added.');
             }
-            // Submit the form after processing the files
-            event.target.closest('form').dispatchEvent(new Event('submit', {
-                cancelable: true,
-                bubbles: true
-            }));
+            // Kirim form setelah mengambil file
+            event.target.closest('form').submit();
         });
     </script>
+
     <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
     <script>
         // Get a reference to the file input element
         const inputElement = document.getElementById('fileInput');
         const pond = FilePond.create(inputElement);
+        // Add file button click event
         // Ensure FilePond is properly initialized and configured
         pond.setOptions({
             server: {
@@ -168,7 +170,11 @@
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     }
-                }
+                },
+
+
+
+
             }
         });
         pond.on('addfile', function(file) {
@@ -177,6 +183,39 @@
             addedFiles.forEach(file => {
                 console.log('File path: ', file.serverId);
             });
+
+
         });
     </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+    <script>
+        const quill = new Quill('.dx-editors', {
+            theme: 'snow',
+            modules: {
+                toolbar: true
+            },
+            placeholder: 'Write a message...',
+            bounds: '.dx-editors',
+            scrollingContainer: '.dx-editors',
+        });
+        quill.on('text-change', function() {
+            const editorHeight = quill.root.scrollHeight;
+            const maxHeight = 250;
+            const minHeight = 150;
+            if (editorHeight > maxHeight) {
+                quill.root.style.height = `${maxHeight}px`;
+            } else if (editorHeight < minHeight) {
+                quill.root.style.height = `${minHeight}px`;
+            } else {
+                quill.root.style.height = `${editorHeight}px`;
+            }
+            document.getElementById('message').value = quill.root.innerHTML;
+        });
+    </script>
+
+
+
+
+
 @endpush
