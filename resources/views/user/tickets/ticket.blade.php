@@ -26,7 +26,7 @@
                                 class="dx-ticket-item dx-ticket-new dx-ticket-open dx-block-decorated">
                                 <span class="dx-ticket-cont">
                                     <span class="dx-ticket-name">{{ $ticket->user->name }}</span>
-                                    <span class="dx-ticket-title h5" style="color: black">{{ $ticket->title }}</span>
+                                    <span class="dx-ticket-title h5" style="color: black">{{ $ticket->references." - ".$ticket->title }}</span>
                                     <p class="dx-ticket-paragraph mt-8" style="color: black">{{ strip_tags($ticket->message) }}
                                     </p>
                                     <ul class="dx-ticket-info">

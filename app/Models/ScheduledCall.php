@@ -18,7 +18,8 @@ class ScheduledCall extends Model
         'link',
         'duration',
         'start_time',
-        'finish_time'
+        'finish_time',
+        'references'
     ];
 
     public function user(){

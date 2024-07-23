@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\MessageSent;
 use App\Events\TicketCreated;
 use App\Events\TicketSent;
+use App\Jobs\ProcessTicket;
 use App\Models\Article;
 use App\Models\Attachment;
 use App\Models\User;
@@ -26,18 +27,18 @@ class UserTicketController extends Controller
      */
     public function index(Request $request)
     {
-        
+
         $search = $request->input('search');
         $paginationCount = 5;
         $user = Auth::user();
         $remainingTickets = $user;
         $tickets = Ticket::where('user_id', $user->id)->orderBy('created_at', 'desc')
-        ->when($search, function ($query) use ($search) {
-            $query->where('title', 'like', "%{$search}%")
-                ->orWhere('message', 'like', "%{$search}%");
-        })
-        ->paginate($paginationCount);
-        
+            ->when($search, function ($query) use ($search) {
+                $query->where('title', 'like', "%{$search}%")
+                    ->orWhere('message', 'like', "%{$search}%");
+            })
+            ->paginate($paginationCount);
+
         $articles = Article::all();
         // $ticketCategory = Category::whereIn('id', $tickets->pluck('category_id'))->paginate($paginationCount);
 
@@ -49,7 +50,7 @@ class UserTicketController extends Controller
     public function create()
     {
         $ticketCategories = Category::where('is_visible', true)->get();
-        
+
         return view('user.tickets.ticket-submit', compact('ticketCategories'));
     }
 
@@ -60,13 +61,13 @@ class UserTicketController extends Controller
     {
 
         $user = Auth::user();
-        
-      
+
+
         // Cek apakah user memiliki ticket quota yang cukup
         if ($user->ticket_quota <= 0) {
             return redirect()->back()->with('error', 'You do not have enough ticket quota to create a new ticket. Please contact admin.');
         }
-
+        
         $ticket = Ticket::create([
             'user_id' => $user->id,
             'category' => $request->category,
@@ -74,12 +75,15 @@ class UserTicketController extends Controller
             'message' => $request->message,
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
+            'references' => $this->generateTicketReference()
         ]);
         // $ticket->categories()->create(
         //     [
         //         'name' => $request->category,
         //         'slug' => \Illuminate\Support\Str::slug($request->category)
         //     ]);
+
+
         $message = Message::create([
             'user_id' =>  $user->id,
             'ticket_id' => $ticket->id,
@@ -90,15 +94,15 @@ class UserTicketController extends Controller
             'title' => 'required|string|max:255',
             'message' => 'required|string',
         ]);
-        
+
         $filepondData = json_decode($request->input('filepond'), true);
-        
+
         if ($filepondData) {
             foreach ($filepondData as $fileData) {
                 $serverId = json_decode($fileData['serverId'], true);
                 $path = $serverId['path'];
                 $name = $fileData['name'];
-                
+
                 Attachment::create([
                     'name' => $name,
                     'path' => $path,
@@ -121,11 +125,11 @@ class UserTicketController extends Controller
         //     }
         // }
 
-        $agents = User::whereHas('roles', function($query) {
+        $agents = User::whereHas('roles', function ($query) {
             $query->where('name', 'agent');
         })->get();
-  
-        
+
+
         foreach ($agents as $agent) {
             $notification = [
                 'id' => (string) \Illuminate\Support\Str::uuid(),
@@ -139,6 +143,8 @@ class UserTicketController extends Controller
             DB::table('notifications')->insert($notification);
         }
         event(new TicketSent($ticket));
+        $toEmailAddress = Auth::user()->email;
+        ProcessTicket::dispatch($ticket, $toEmailAddress);
         // Kurangi ticket quota user
         if (!$this->decrementTicketQuota($user)) {
             return redirect()->back()->with('error', 'You do not have enough ticket quota to create a new ticket. Please contact admin.');
@@ -182,11 +188,11 @@ class UserTicketController extends Controller
                 $message->has_attachments = false;
             }
         }
-        return view('user.tickets.show-ticket', compact('messages', 'ticket_id'));
+        return view('user.tickets.show-ticket', compact('ticket','messages', 'ticket_id'));
     }
 
 
- 
+
 
     /**
      * Show the form for editing the specified resource.
@@ -210,5 +216,25 @@ class UserTicketController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+    private function generateTicketReference()
+    {
+        // Get the last ticket reference
+        $lastTicket = Ticket::orderBy('created_at', 'desc')->first();
+        
+        // If no tickets exist, return the default reference
+        if (!$lastTicket) {
+            return "T-0001";
+        }
+
+        $formerReference = $lastTicket->reference;
+        $parts = explode("-", $formerReference);
+        $numbers = (int)$parts[1];
+
+        // Increment the number
+        $nextNumbers = $numbers + 1;
+
+        // Format the new reference
+        return "T-" . str_pad($nextNumbers, 4, '0', STR_PAD_LEFT); // Ensure the number is zero-padded to 4 digits
     }
 }

@@ -56,6 +56,7 @@ class UserScheduledCallController extends Controller
             'message' => $request->message,
             'start_time' => $request->start_time,
             'finish_time' => date('Y-m-d H:i:s', strtotime($request->start_time) + ($request->duration * 60)),
+            'references' => $this->generateScheduledCallReference()
         ]);
 
         
@@ -113,5 +114,26 @@ class UserScheduledCallController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    private function generateScheduledCallReference()
+    {
+        // Get the last scheduled call reference
+        $lastScheduledCall = ScheduledCall::orderBy('created_at', 'desc')->first();
+        
+        // If no scheduled calls exist, return the default reference
+        if (!$lastScheduledCall) {
+            return "S-0001";
+        }
+
+        $formerReference = $lastScheduledCall->reference;
+        $parts = explode("-", $formerReference);
+        $numbers = (int)$parts[1];
+
+        // Increment the number
+        $nextNumbers = $numbers + 1;
+
+        // Format the new reference
+        return "S-" . str_pad($nextNumbers, 4, '0', STR_PAD_LEFT); // Ensure the number is zero-padded to 4 digits
     }
 }

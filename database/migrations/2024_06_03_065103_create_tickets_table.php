@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('status')->default('open');
             $table->boolean('is_resolved')->default(false);
             $table->boolean('is_locked')->default(false);
+            $table->string('references')->unique();
             $table->timestamps();
         });
     }

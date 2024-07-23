@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('status')->default('pending'); 
             $table->foreignId('rejected_by')->nullable();
             $table->text('rejected_reason')->nullable();
+            $table->string('references')->unique();
             $table->timestamps();
         });
     }

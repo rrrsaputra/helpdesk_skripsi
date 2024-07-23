@@ -2,8 +2,17 @@
 
 @section('content')
     @if (isset($messages) && $messages->count() > 0)
-        <div class="messages-list" style="height: 100%;">
-            <div id="messages-container" style="max-height: 61.5vh; overflow-y: auto;">
+        <div class="navbar" id="nv" style="background-color: #ffffff; padding: 15px; border-bottom: 2px solid #495057; color: #ffffff;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <button onclick="window.history.back()" class="btn btn-secondary" style="margin-right: 10px;">Back</button>
+                <h4 style="margin: 0; font-weight: bold;">Ticket: {{ $ticket->references }} - {{ $ticket->title }}</h4>
+            </div>
+        </div>
+        <div class="messages-list" id='msglst' style="height: 54vh; margin-right: 10px;margin-left: 10px;">
+            <div id="messages-container" style="height: 100%; overflow-y: auto;">
+                <div style="margin-top: 10px;">  
+
+                </div>
                 @foreach ($messages as $message)
                     <div class="message-item"
                         style="display: flex; align-items: flex-start; margin-bottom: 10px; {{ $message->user->id == Auth::id() ? 'flex-direction: row-reverse;' : '' }}">
@@ -23,8 +32,12 @@
                                     style="display: none; max-height: 400px; overflow-y: auto;">
                                     @foreach ($message->attachments as $attachment)
                                         <div class="attachment-item">
-                                            <img src="{{ asset('storage/' . $attachment->path) }}"
-                                                alt="{{ $attachment->name }}" style="max-width: 100%; height: auto;">
+                                            @if (in_array(pathinfo($attachment->path, PATHINFO_EXTENSION), ['jpg', 'jpeg', 'png', 'gif']))
+                                                <img src="{{ asset('storage/' . $attachment->path) }}"
+                                                    alt="{{ $attachment->name }}" style="max-width: 100%; height: auto;">
+                                            @else
+                                                <a href="{{ asset('storage/' . $attachment->path) }}" target="_blank">{{ $attachment->name }}</a>
+                                            @endif
                                         </div>
                                     @endforeach
                                 </div>
@@ -58,12 +71,14 @@
     @endif
 
     <form id="message-form" action="{{ route('agent.messages.store', ['id' => $ticket_id]) }}" method="POST"
-        style="width: 100%; background: white; padding: 10px; box-shadow: 0 -2px 5px rgba(0,0,0,0.1); margin-bottom: 0;">
+        style="width: 100%; background: white; padding: 10px; box-shadow: 0 -2px 5px rgba(0,0,0,0.1); position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000;">
         @csrf
 
         <link href="https://unpkg.com/filepond/dist/filepond.min.css" rel="stylesheet" />
-        <button type="button" onclick="toggleAttachmentInput()" class="dx-btn dx-btn-md" style="background-color: #007bff; color: white; border: none; border-radius: 5px; padding: 10px 15px; cursor: pointer; transition: background-color 0.3s; margin: 10px 0;">
-            Add Attachment
+        
+        
+        <button id="btn" type="button" onclick="toggleAttachmentInput()" class="dx-btn dx-btn-md" style="background-color: #007bff; color: white; border: none; border-radius: 5px; padding: 10px 15px; cursor: pointer; transition: background-color 0.3s; margin: 10px 0;">
+            Show Attachment
         </button>
         <div class="dx-form-group" id="attachment-group" style="display: none;">
 
@@ -74,7 +89,23 @@
         <script>
             function toggleAttachmentInput() {
                 var attachmentGroup = document.getElementById('attachment-group');
-                attachmentGroup.style.display = attachmentGroup.style.display === 'none' ? 'block' : 'none';
+                var toggleButton= document.getElementById('btn');
+                var container= document.getElementById('messages-container');
+                var chat = document.getElementById('msglst');
+
+                if (attachmentGroup.style.display === 'none' || attachmentGroup.style.display === '') {
+                    chat.style.height = "44vh"; // Set chat height for attachment visibility
+                    container.scrollTop = container.scrollHeight;
+                    attachmentGroup.style.display = 'block';
+                    toggleButton.textContent = 'Hide Attachment';
+                    
+                } else {
+                    chat.style.height = '55vh'; // Adjusted height to ensure it works
+                    container.scrollTop = container.scrollHeight;
+                    attachmentGroup.style.display = 'none';
+                    toggleButton.textContent = 'Show Attachment';
+                    
+                }
             }
         </script>
         <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
@@ -93,10 +124,6 @@
                             'X-CSRF-TOKEN': '{{ csrf_token() }}'
                         }
                     },
-
-
-
-
                 }
             });
             pond.on('addfile', function(file) {
@@ -105,8 +132,6 @@
                 addedFiles.forEach(file => {
                     console.log('File path: ', file.serverId);
                 });
-
-
             });
         </script>
         <div class="form-group">

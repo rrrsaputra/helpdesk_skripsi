@@ -17,7 +17,7 @@
                             <div style="background-color: #fafafa;">
                                 <ul class="dx-blog-post-info dx-blog-post-info-style-2 mb-0 mt-0">
                                     <li><span><span class="dx-blog-post-info-title">Call
-                                                ID</span>{{ $scheduledCall->id }}</span></li>
+                                                ID</span>{{ $scheduledCall->references }}</span></li>
                                     <li><span><span
                                                 class="dx-blog-post-info-title">Status</span>{{ $scheduledCall->status }}</span>
                                     </li>

@@ -30,7 +30,7 @@
                                     <span class="dx-ticket-cont">
                                         <span class="dx-ticket-name">{{ $scheduledCall->user->name }}</span>
                                         <span class="dx-ticket-title h5"
-                                            style="color: black">{{ $scheduledCall->title }}</span>
+                                            style="color: black">{{ $scheduledCall->references." - ".$scheduledCall->title }}</span>
                                         <p class="dx-ticket-paragraph mt-8" style="color: black">
                                             {{ Str::limit(strip_tags($scheduledCall->message), 150) }}</p>
 
