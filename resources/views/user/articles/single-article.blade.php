@@ -36,7 +36,41 @@
                                 <div class="dx-separator"></div>
 
                                 <div class="dx-blog-post-box">
-                                    <p>{!! $article->content !!}</p>
+                                    <div class="dx-article-content">
+                                        {!! $article->content !!}
+                                    </div>
+                                    <style>
+                                        .dx-article-content ol {
+                                            list-style-type: decimal;
+                                            padding-left: 40px;
+                                        }
+
+                                        .dx-article-content ul {
+                                            list-style-type: disc;
+                                            padding-left: 40px;
+                                        }
+
+                                        .dx-article-content h1 {
+                                            font-weight: bold;
+                                            font-size: 34px;
+                                            margin-top: 20px;
+                                            margin-bottom: 10px;
+                                        }
+
+                                        .dx-article-content h2 {
+                                            font-weight: bold;
+                                            font-size: 30px;
+                                            margin-top: 20px;
+                                            margin-bottom: 10px;
+                                        }
+
+                                        .dx-article-content blockquote {
+                                            margin-left: 20px;
+                                            font-style: italic;
+                                            border-left: 5px solid #ccc;
+                                            padding-left: 10px;
+                                        }
+                                    </style>
                                 </div>
                                 <div class="dx-separator"></div>
 
