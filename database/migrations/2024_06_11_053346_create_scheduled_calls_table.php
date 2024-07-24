@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->onDelete('cascade');
             $table->string('title');
+            $table->string('category');
             $table->text('message');
             $table->string('link')->nullable();
             $table->integer('duration')->nullable();

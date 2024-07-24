@@ -14,7 +14,7 @@
                         <div class="dx-separator ml-10 mr-10"></div>
                     </div>
                     <div class="col-auto">
-                        <a href="{{ route('scheduled_call_submit') }}" class="dx-btn dx-btn-md">Book a Call</a>
+                        <a href="{{ route('user.scheduled-ticket.create') }}" class="dx-btn dx-btn-md">Book a Call</a>
                     </div>
                 </div>
 

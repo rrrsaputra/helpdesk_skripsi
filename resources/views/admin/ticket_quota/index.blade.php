@@ -5,13 +5,17 @@
 
 @section('content')
     @php
-        $columns = ['Customer', 'Ticket'];
+        $columns = ['Email', 'Customer', 'Ticket'];
         $data = $users
             ->map(function ($user) {
                 return [
                     'id' => $user->id,
                     'url' => '/path/to/resource1',
-                    'values' => [$user->hasRole('user') ? $user->name : '', $user->ticket_quota],
+                    'values' => [
+                        $user->hasRole('user') ? $user->email : '',
+                        $user->hasRole('user') ? $user->name : '',
+                        $user->ticket_quota,
+                    ],
                     'ticket_quota' => $user->ticket_quota,
                 ];
             })
@@ -34,102 +38,100 @@
     <div class="card">
         <div class="row">
             <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="form-group">
-                            <form action="{{ route('admin.ticket_quota.index') }}" method="GET" class="form-inline">
-                                <div class="form-group">
-                                    <input type="search" class="form-control" id="search" name="search"
-                                        style="width: 500px;" placeholder="Search by customer name">
-                                </div>
-                                <button type="submit" class="btn btn-primary">Search</button>
-                            </form>
-                        </div>
-                        <div class="table-responsive">
-                            <table id="example2" class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        @foreach ($columns as $index => $column)
-                                            <th style="width: {{ $columnSizes[$index] ?? 'auto' }}">{{ $column }}</th>
-                                        @endforeach
-                                        <th>Actions</th> <!-- Added Actions column -->
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse ($data as $row)
-                                        <tr style="cursor: pointer" data-id="{{ $row['id'] }}">
-                                            @foreach ($row['values'] as $value)
-                                                <td>
-                                                    @if (is_array($value))
-                                                        @foreach ($value as $index => $subValue)
-                                                            <div>
-                                                                @php
-                                                                    $charLimit =
-                                                                        isset($columnSizes[$index]) &&
-                                                                        is_numeric($columnSizes[$index])
-                                                                            ? intval($columnSizes[$index] * 0.5)
-                                                                            : 70;
-                                                                @endphp
-                                                                @if ($index === 0)
-                                                                    <strong>{!! strlen($subValue) > $charLimit ? substr($subValue, 0, $charLimit) . '...' : $subValue !!}</strong>
-                                                                @else
-                                                                    {!! strlen($subValue) > $charLimit ? substr($subValue, 0, $charLimit) . '...' : $subValue !!}
-                                                                @endif
-                                                            </div>
-                                                        @endforeach
-                                                    @else
-                                                        {{ $value }}
-                                                    @endif
-                                                </td>
-                                            @endforeach
-                                            <td> <!-- Added Actions buttons -->
-                                                <button class="btn btn-primary btn-sm" data-toggle="modal"
-                                                    data-target="#assignToModal">Edit</button>
-                                                <button class="btn btn-danger btn-sm">Delete</button>
+                <div class="card-body">
+                    <div class="form-group">
+                        <form action="{{ route('admin.ticket_quota.index') }}" method="GET" class="form-inline">
+                            <div class="form-group">
+                                <input type="search" class="form-control" id="search" name="search"
+                                    style="width: 500px;" placeholder="Search by customer name">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </form>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="example2" class="table table-hover">
+                            <thead>
+                                <tr>
+                                    @foreach ($columns as $index => $column)
+                                        <th style="width: {{ $columnSizes[$index] ?? 'auto' }}">{{ $column }}</th>
+                                    @endforeach
+                                    <th>Actions</th> <!-- Added Actions column -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($data as $row)
+                                    <tr style="cursor: pointer" data-id="{{ $row['id'] }}">
+                                        @foreach ($row['values'] as $value)
+                                            <td>
+                                                @if (is_array($value))
+                                                    @foreach ($value as $index => $subValue)
+                                                        <div>
+                                                            @php
+                                                                $charLimit =
+                                                                    isset($columnSizes[$index]) &&
+                                                                    is_numeric($columnSizes[$index])
+                                                                        ? intval($columnSizes[$index] * 0.5)
+                                                                        : 70;
+                                                            @endphp
+                                                            @if ($index === 0)
+                                                                <strong>{!! strlen($subValue) > $charLimit ? substr($subValue, 0, $charLimit) . '...' : $subValue !!}</strong>
+                                                            @else
+                                                                {!! strlen($subValue) > $charLimit ? substr($subValue, 0, $charLimit) . '...' : $subValue !!}
+                                                            @endif
+                                                        </div>
+                                                    @endforeach
+                                                @else
+                                                    {{ $value }}
+                                                @endif
                                             </td>
-                                        </tr>
-                                        <!-- Modal -->
-                                        <form method="POST" action="{{ route('admin.ticket_quota.update', $row['id']) }}">
-                                            @csrf
-                                            @method('PATCH')
-                                            <div class="modal fade" id="assignToModal" tabindex="-1" role="dialog"
-                                                aria-labelledby="assignToModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="assignToModalLabel">Update Ticket
-                                                                Quota</h5>
-                                                            <button type="button" class="close" data-dismiss="modal"
-                                                                aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <label for="ticketQuota">Ticket Quota:</label>
-                                                            <input type="number" id="ticketQuota" name="ticket_quota"
-                                                                class="form-control" min="0"
-                                                                value="{{ $row['ticket_quota'] }}" required>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary"
-                                                                data-dismiss="modal">Close</button>
-                                                            <button type="submit" class="btn btn-primary">Save
-                                                                changes</button>
-                                                        </div>
+                                        @endforeach
+                                        <td> <!-- Added Actions buttons -->
+                                            <button class="btn btn-primary btn-sm" data-toggle="modal"
+                                                data-target="#assignToModal">Edit</button>
+                                            <button class="btn btn-danger btn-sm">Delete</button>
+                                        </td>
+                                    </tr>
+                                    <!-- Modal -->
+                                    <form method="POST" action="{{ route('admin.ticket_quota.update', $row['id']) }}">
+                                        @csrf
+                                        @method('PATCH')
+                                        <div class="modal fade" id="assignToModal" tabindex="-1" role="dialog"
+                                            aria-labelledby="assignToModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="assignToModalLabel">Update Ticket
+                                                            Quota</h5>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <label for="ticketQuota">Ticket Quota:</label>
+                                                        <input type="number" id="ticketQuota" name="ticket_quota"
+                                                            class="form-control" min="0"
+                                                            value="{{ $row['ticket_quota'] }}" required>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-primary">Save
+                                                            changes</button>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </form>
-                                    @empty
-                                        <tr>
-                                            <td colspan="8">No users found.</td>
-                                            <!-- Updated colspan to 8 to include Actions column -->
-                                        </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                            {{ $users->links() }}
-                        </div>
+                                        </div>
+                                    </form>
+                                @empty
+                                    <tr>
+                                        <td colspan="8">No users found.</td>
+                                        <!-- Updated colspan to 8 to include Actions column -->
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                        {{ $users->links() }}
                     </div>
                 </div>
             </div>

@@ -4,7 +4,6 @@
 @endsection
 
 @section('content')
-    <a href="{{ route('admin.article.create') }}" class="btn btn-primary mb-10">Create Article</a>
     @php
         $columns = ['Title', 'Content', 'Category', 'Created By', 'For User'];
         $data = $articles
@@ -50,6 +49,9 @@
                             <button type="submit" class="btn btn-primary">Search</button>
                         </form>
                     </div>
+
+                    <a href="{{ route('admin.article.create') }}" class="btn btn-primary mb-3">Create Article</a>
+                    
                     <div class="table-responsive">
                         <table id="example2" class="table table-hover">
                             <thead>

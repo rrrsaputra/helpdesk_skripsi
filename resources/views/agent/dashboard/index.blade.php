@@ -30,7 +30,7 @@
                                                 <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
                                             </div>
                                             <input type="date" id="start_date" name="start_date" class="form-control"
-                                                value="{{ request('start_date') ?? now()->subWeek()->startOfDay()->format('Y-m-d') }}"
+                                                value="{{ request('start_date') ?? now()->addDay()->subWeek()->startOfDay()->format('Y-m-d') }}"
                                                 required>
                                         </div>
                                     </div>
@@ -41,7 +41,7 @@
                                                 <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
                                             </div>
                                             <input type="date" id="end_date" name="end_date" class="form-control"
-                                                value="{{ request('end_date') ?? now()->endOfDay()->format('Y-m-d') }}"
+                                                value="{{ request('end_date') ?? now()->addDay()->endOfDay()->format('Y-m-d') }}"
                                                 required>
                                         </div>
                                     </div>
@@ -578,7 +578,10 @@
 
         document.getElementById('user-select').addEventListener('change', function() {
             var userId = this.value;
-            fetch(`/agent/dashboard/user/${userId}`)
+            var startDate = document.getElementById('start_date').value;
+            var endDate = document.getElementById('end_date').value;
+
+            fetch(`/agent/dashboard/user/${userId}?start_date=${startDate}&end_date=${endDate}`)
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('selected-user-name').innerText = data.name;
@@ -648,7 +651,7 @@
                     if (window.userTicketsPerCategoryChart) {
                         window.userTicketsPerCategoryChart.data.labels = data.userTicketCategories;
                         window.userTicketsPerCategoryChart.data.datasets[0].data = data
-                            .userTicketDataCategories;
+                        .userTicketDataCategories;
                         window.userTicketsPerCategoryChart.update();
                     } else {
                         window.userTicketsPerCategoryChart = new Chart(ctxBar, {

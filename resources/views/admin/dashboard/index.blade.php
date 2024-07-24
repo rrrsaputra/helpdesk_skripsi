@@ -30,7 +30,7 @@
                                                 <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
                                             </div>
                                             <input type="date" id="start_date" name="start_date" class="form-control"
-                                                value="{{ request('start_date') ?? now()->subWeek()->startOfDay()->format('Y-m-d') }}"
+                                                value="{{ request('start_date') ?? now()->addDay()->subWeek()->startOfDay()->format('Y-m-d') }}"
                                                 required>
                                         </div>
                                     </div>
@@ -41,7 +41,7 @@
                                                 <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
                                             </div>
                                             <input type="date" id="end_date" name="end_date" class="form-control"
-                                                value="{{ request('end_date') ?? now()->endOfDay()->format('Y-m-d') }}"
+                                                value="{{ request('end_date') ?? now()->addDay()->endOfDay()->format('Y-m-d') }}"
                                                 required>
                                         </div>
                                     </div>
@@ -577,120 +577,123 @@
         });
 
         document.getElementById('user-select').addEventListener('change', function() {
-            var userId = this.value;
-            fetch(`/admin/dashboard/user/${userId}`)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('selected-user-name').innerText = data.name;
-                    document.getElementById('selected-user-tickets').innerText = data.tickets_count;
-                    document.getElementById('selected-user-calls').innerText = data.calls_count;
+        var userId = this.value;
+        var startDate = document.getElementById('start_date').value;
+        var endDate = document.getElementById('end_date').value;
 
-                    // Render charts
-                    document.getElementById('user-charts').style.display = 'flex';
+        fetch(`/admin/dashboard/user/${userId}?start_date=${startDate}&end_date=${endDate}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('selected-user-name').innerText = data.name;
+                document.getElementById('selected-user-tickets').innerText = data.tickets_count;
+                document.getElementById('selected-user-calls').innerText = data.calls_count;
 
-                    // Update or create the line chart
-                    var ctxLine = document.getElementById('user-total-tickets-chart').getContext('2d');
-                    if (window.userTotalTicketsChart) {
-                        window.userTotalTicketsChart.data.labels = data.userTicketLabels;
-                        window.userTotalTicketsChart.data.datasets[0].data = data.userTicketData;
-                        window.userTotalTicketsChart.data.datasets[1].data = data.userCallData;
-                        window.userTotalTicketsChart.update();
-                    } else {
-                        window.userTotalTicketsChart = new Chart(ctxLine, {
-                            type: 'line',
-                            data: {
-                                labels: data.userTicketLabels,
-                                datasets: [{
-                                    label: 'Total Tickets',
-                                    data: data.userTicketData,
-                                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                                    borderColor: 'rgba(54, 162, 235, 1)',
-                                    borderWidth: 1
-                                }, {
-                                    label: 'Total Calls',
-                                    data: data.userCallData,
-                                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                                    borderColor: 'rgba(255, 99, 132, 1)',
-                                    borderWidth: 1
-                                }]
-                            },
-                            options: {
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                scales: {
-                                    x: {
+                // Render charts
+                document.getElementById('user-charts').style.display = 'flex';
+
+                // Update or create the line chart
+                var ctxLine = document.getElementById('user-total-tickets-chart').getContext('2d');
+                if (window.userTotalTicketsChart) {
+                    window.userTotalTicketsChart.data.labels = data.userTicketLabels;
+                    window.userTotalTicketsChart.data.datasets[0].data = data.userTicketData;
+                    window.userTotalTicketsChart.data.datasets[1].data = data.userCallData;
+                    window.userTotalTicketsChart.update();
+                } else {
+                    window.userTotalTicketsChart = new Chart(ctxLine, {
+                        type: 'line',
+                        data: {
+                            labels: data.userTicketLabels,
+                            datasets: [{
+                                label: 'Total Tickets',
+                                data: data.userTicketData,
+                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1
+                            }, {
+                                label: 'Total Calls',
+                                data: data.userCallData,
+                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                x: {
+                                    display: true,
+                                    title: {
                                         display: true,
-                                        title: {
-                                            display: true,
-                                            text: 'Days of the Week'
-                                        }
-                                    },
-                                    y: {
-                                        display: true,
-                                        title: {
-                                            display: true,
-                                            text: 'Total Tickets and Calls'
-                                        }
+                                        text: 'Days of the Week'
                                     }
                                 },
-                                plugins: {
-                                    legend: {
+                                y: {
+                                    display: true,
+                                    title: {
                                         display: true,
-                                        position: 'top'
+                                        text: 'Total Tickets and Calls'
                                     }
                                 }
-                            }
-                        });
-                    }
-
-                    // Update or create the bar chart
-                    var ctxBar = document.getElementById('user-tickets-per-category-chart').getContext('2d');
-                    if (window.userTicketsPerCategoryChart) {
-                        window.userTicketsPerCategoryChart.data.labels = data.userTicketCategories;
-                        window.userTicketsPerCategoryChart.data.datasets[0].data = data.userTicketDataCategories;
-                        window.userTicketsPerCategoryChart.update();
-                    } else {
-                        window.userTicketsPerCategoryChart = new Chart(ctxBar, {
-                            type: 'bar',
-                            data: {
-                                labels: data.userTicketCategories,
-                                datasets: [{
-                                    label: 'Total Tickets',
-                                    data: data.userTicketDataCategories,
-                                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                                    borderColor: 'rgba(75, 192, 192, 1)',
-                                    borderWidth: 1
-                                }]
                             },
-                            options: {
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                scales: {
-                                    x: {
+                            plugins: {
+                                legend: {
+                                    display: true,
+                                    position: 'top'
+                                }
+                            }
+                        }
+                    });
+                }
+
+                // Update or create the bar chart
+                var ctxBar = document.getElementById('user-tickets-per-category-chart').getContext('2d');
+                if (window.userTicketsPerCategoryChart) {
+                    window.userTicketsPerCategoryChart.data.labels = data.userTicketCategories;
+                    window.userTicketsPerCategoryChart.data.datasets[0].data = data.userTicketDataCategories;
+                    window.userTicketsPerCategoryChart.update();
+                } else {
+                    window.userTicketsPerCategoryChart = new Chart(ctxBar, {
+                        type: 'bar',
+                        data: {
+                            labels: data.userTicketCategories,
+                            datasets: [{
+                                label: 'Total Tickets',
+                                data: data.userTicketDataCategories,
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                x: {
+                                    display: true,
+                                    title: {
                                         display: true,
-                                        title: {
-                                            display: true,
-                                            text: 'Category'
-                                        },
-                                        ticks: {
-                                            autoSkip: false,
-                                            maxRotation: 90,
-                                            minRotation: 45
-                                        }
+                                        text: 'Category'
                                     },
-                                    y: {
+                                    ticks: {
+                                        autoSkip: false,
+                                        maxRotation: 90,
+                                        minRotation: 45
+                                    }
+                                },
+                                y: {
+                                    display: true,
+                                    title: {
                                         display: true,
-                                        title: {
-                                            display: true,
-                                            text: 'Total Tickets'
-                                        }
+                                        text: 'Total Tickets'
                                     }
                                 }
                             }
-                        });
-                    }
-                });
-        });
+                        }
+                    });
+                }
+            });
+    });
     </script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>

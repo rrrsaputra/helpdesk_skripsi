@@ -15,8 +15,8 @@ class AdminDashboardController extends Controller
         $users = User::role('user')->get();
 
         // Ambil rentang tanggal dari request
-        $startDate = $request->input('start_date', now()->subWeek()->startOfDay());
-        $endDate = $request->input('end_date', now()->endOfDay());
+        $startDate = $request->input('start_date', now()->addDay()->subWeek()->startOfDay());
+        $endDate = $request->input('end_date', now()->addDay()->endOfDay());
         $tickets = Ticket::whereBetween('created_at', [$startDate, $endDate])->get();
 
         // Ticket per Day
@@ -85,12 +85,19 @@ class AdminDashboardController extends Controller
         return view('admin.dashboard.index', compact('users', 'ticketLabels', 'ticketData', 'tickets', 'ticketCategories',  'ticketDataCategories', 'ticketStatus', 'ticketDataStatus', 'agentPerformance', 'agents', 'hoursUntilFirstReply', 'timeCategories'));
     }
 
-    public function getUserData($id)
+    public function getUserData($id, Request $request)
     {
+        $startDate = $request->input('start_date', now()->addDay()->subWeek()->startOfDay());
+        $endDate = $request->input('end_date', now()->addDay()->endOfDay());
+    
         $user = User::findOrFail($id);
-        $tickets = Ticket::where('user_id', $id)->get();
-        $calls = ScheduledCall::where('user_id', $id)->get();
-
+        $tickets = Ticket::where('user_id', $id)
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->get();
+        $calls = ScheduledCall::where('user_id', $id)
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->get();
+    
         // Data untuk grafik per user
         $userTicketLabels = $tickets->groupBy(function ($date) {
             return Carbon::parse($date->created_at)->format('l'); // Group by day of the week
@@ -98,7 +105,7 @@ class AdminDashboardController extends Controller
         $userCallLabels = $calls->groupBy(function ($date) {
             return Carbon::parse($date->created_at)->format('l'); // Group by day of the week
         })->keys();
-
+    
         $userTicketData = $tickets->groupBy(function ($date) {
             return Carbon::parse($date->created_at)->format('l'); // Group by day of the week
         })->map(function ($day) {
@@ -109,13 +116,13 @@ class AdminDashboardController extends Controller
         })->map(function ($day) {
             return $day->count();
         });
-
+    
         $userTicketCategories = $tickets->groupBy('category')->keys();
-
+    
         $userTicketDataCategories = $tickets->groupBy('category')->map(function ($category) {
             return $category->count();
         })->values();
-
+    
         return response()->json([
             'name' => $user->name,
             'tickets_count' => $tickets->count(),

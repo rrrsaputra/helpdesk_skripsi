@@ -42,7 +42,12 @@
                     var quill = new Quill('#editor', {
                         theme: 'snow',
                         modules: {
-                            toolbar: true
+                            toolbar: [
+                                [{ 'header': [1, 2, false] }],
+                                ['bold', 'italic', 'underline'],
+                                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                                ['image', 'code-block', 'video'],
+                            ]
                         }
                     });
                     quill.on('text-change', function() {

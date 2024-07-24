@@ -102,6 +102,15 @@
                 </li>
 
                 <li class="nav-item menu-close">
+                    <a href="{{ route('admin.scheduled_call_category.index') }}" class="nav-link {{ request()->routeIs('admin.scheduled_call_category.index') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-list"></i>
+                        <p>
+                            CALL CATEGORY
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item menu-close">
                     <a href="{{ route('admin.ticket_quota.index') }}" class="nav-link {{ request()->routeIs('admin.ticket_quota.index') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-ticket-alt"></i>
                         <p>
