@@ -77,9 +77,12 @@
                                 @csrf
                                 <div class="dx-box-content">
                                     <div class="dx-form-group">
-                                        <label for="category" class="mnt-7">Category</label>
-                                        <input type="text" class="form-control form-control-style-2" id="category"
-                                            placeholder="Enter Category" name='category'>
+                                        <label for="category" class="mnt-7">Call Category</label>
+                                        <select class="form-control form-control-style-2" name="category" id="category">
+                                            @foreach ($callCategories as $callCategory)
+                                                <option value="{{ $callCategory->name }}">{{ $callCategory->name }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
 
@@ -158,7 +161,7 @@
                                     </div>
                                 </div>
 
-                                
+
                                 <div class="dx-separator"></div>
                                 <div class="dx-box-content">
                                     <div class="row justify-content-end mt-3">
@@ -261,9 +264,4 @@
             document.getElementById('message').value = quill.root.innerHTML;
         });
     </script>
-
-
-
-
-
 @endpush

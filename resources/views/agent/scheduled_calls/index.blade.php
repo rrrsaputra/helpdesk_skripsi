@@ -25,7 +25,7 @@
                     'url' => '/path/to/resource1',
                     'values' => [
                         $scheduledCall->user->name,
-                        [$scheduledCall->title, $scheduledCall->message ?? ''],
+                        [$scheduledCall->title, $scheduledCall->category, $scheduledCall->message ?? ''],
                         $scheduledCall->id,
                         $scheduledCall->duration . ' minutes',
                         $scheduledCall->start_time,

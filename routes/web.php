@@ -38,6 +38,7 @@ use App\Http\Controllers\AdminTicketCategoryController;
 use App\Http\Controllers\AdminUserManagementController;
 use App\Http\Controllers\UserArticleCategoryController;
 use App\Http\Controllers\AdminArticleCategoryController;
+use App\Http\Controllers\AdminScheduledCallCategoryController;
 use App\Http\Controllers\MailController;
 
 Route::get('send-email',[MailController::class, 'sendEmail']);
@@ -105,6 +106,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('/admin/articles', ArticleController::class)->names('admin.article');
 
     Route::resource('/admin/scheduled-call', AdminScheduledCallController::class)->names('admin.scheduled_call');
+    Route::resource('admin/scheduled-call-category', AdminScheduledCallCategoryController::class)->names('admin.scheduled_call_category');
+    Route::get('admin/scheduled-call-category/{id}/show_visible', [AdminScheduledCallCategoryController::class, 'show_visible'])->name('admin.scheduled_call_category.show_visible');
+    Route::get('admin/scheduled-call-category/{id}/hide_visible', [AdminScheduledCallCategoryController::class, 'hide_visible'])->name('admin.scheduled_call_category.hide_visible');
     Route::patch('/admin/scheduled-call/reject/{id}', [AdminScheduledCallController::class, 'reject'])->name('admin.scheduled_call.reject');
     Route::get('/admin/scheduled-call/get_time/{id}', [AdminScheduledCallController::class, 'get_time'])->name('admin.scheduled_call.get_time');
 

@@ -30,7 +30,7 @@
                                                 class="dx-blog-post-info-title">Date</span>{{ $scheduledCall->created_at->format('d F Y') }}</span>
                                     </li>
                                     <li><span><span
-                                                class="dx-blog-post-info-title">Category</span>{{ $scheduledCall->categoty }}</span>
+                                                class="dx-blog-post-info-title">Category</span>{{ $scheduledCall->category }}</span>
                                     </li>
                                     <li><span><span class="dx-blog-post-info-title">Link</span> <a
                                                 href="{{ strpos($scheduledCall->link, 'http') === 0 ? $scheduledCall->link : 'http://' . $scheduledCall->link }}"

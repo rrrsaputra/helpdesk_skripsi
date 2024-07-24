@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\ProcessScheduledCall;
 use App\Mail\SendMail;
 use App\Models\Article;
-use App\Models\Attachment_Call;
+use App\Models\CallCategory;
 use Illuminate\Http\Request;
 use App\Models\ScheduledCall;
+use App\Models\Attachment_Call;
+use App\Jobs\ProcessScheduledCall;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
@@ -38,7 +39,9 @@ class UserScheduledCallController extends Controller
      */
     public function create()
     {
-        //
+        $callCategories = CallCategory::where('is_visible', true)->get();
+
+        return view('user.scheduled_calls.scheduled_call_submit', compact('callCategories'));
     }
 
     /**
@@ -54,6 +57,7 @@ class UserScheduledCallController extends Controller
             'duration' => $request->duration,
             'title' => $request->title,
             'message' => $request->message,
+            'category' => $request->category,
             'start_time' => $request->start_time,
             'finish_time' => date('Y-m-d H:i:s', strtotime($request->start_time) + ($request->duration * 60)),
             'references' => $this->generateScheduledCallReference()

@@ -15,6 +15,7 @@ class ScheduledCall extends Model
         'assigned_to',
         'title',
         'message',
+        'category',
         'link',
         'duration',
         'start_time',
@@ -49,6 +50,11 @@ class ScheduledCall extends Model
                 'path' => $attachment->path,
             ];
         });
+    }
+
+    public function callCategory()
+    {
+        return $this->belongsTo(CallCategory::class);
     }
 
 }
