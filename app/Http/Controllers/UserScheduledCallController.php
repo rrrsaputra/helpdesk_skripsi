@@ -126,7 +126,7 @@ class UserScheduledCallController extends Controller
             return "S-0001";
         }
 
-        $formerReference = $lastScheduledCall->reference;
+        $formerReference = $lastScheduledCall->references;
         $parts = explode("-", $formerReference);
         $numbers = isset($parts[1]) && is_numeric($parts[1]) ? (int)$parts[1] : 0; 
 
