@@ -169,18 +169,17 @@
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
             window.Echo.join(`messages.{{ $ticket_id }}`)
             .here((users) => {
-                
                 document.getElementById('hidden_is_online').value = users.some(user => user.id === {{ $ticket->user_id }});
             })
             .joining((user) => {
                 if (user.id === {{ $ticket->user_id }}) {
                     document.getElementById('hidden_is_online').value = true;
-                } 
+                }
             })
             .leaving((user) => {
                 if (user.id === {{ $ticket->user_id }}) {
                     document.getElementById('hidden_is_online').value = false;
-                } 
+                }
             });
 
             // Listen for new messages
