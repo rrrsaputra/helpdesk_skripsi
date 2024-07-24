@@ -45,7 +45,7 @@ class FeedbackController extends Controller
         }
 
         $filepondData = json_decode($request->input('filepond'), true);
-        
+
         if ($filepondData) {
             foreach ($filepondData as $fileData) {
                 $serverId = json_decode($fileData['serverId'], true);

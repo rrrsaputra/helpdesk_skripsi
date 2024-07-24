@@ -43,7 +43,7 @@ class AgentMessagesController extends Controller
         }
 
         $messageContent = $request->input('message');
-        $isOnline = $request->input('is_online');
+        
         if (!$messageContent) {
             // Handle the case where the message content is not provided
             return response()->json(['error' => 'Message content is required'], 400);
@@ -53,7 +53,9 @@ class AgentMessagesController extends Controller
         $message->ticket_id = $ticket->id;
         $message->user_id = auth()->id();
         $message->message = $messageContent;
-        $message->is_read = $isOnline ? null : now();
+        $isOnline = $request->is_online;
+       
+        $message->is_read = $isOnline == 1 ? now() : null;
         $message->save();
         
         $user = $message->user;

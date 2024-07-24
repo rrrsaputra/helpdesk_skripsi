@@ -41,7 +41,9 @@
 
     <div id="map"></div>
     <button id="resetMapButton" class="btn btn-primary my-3 mx-1">Reset Map Position</button>
-
+    <form action="{{ route('getemail') }}" method="GET" style="display: inline;">
+        <button type="submit" class="btn btn-dark text-white my-3 mx-1 float-left">Fetch Emails</button>
+    </form>
     <script>
         document.getElementById('resetMapButton').addEventListener('click', function() {
             map.flyTo({
@@ -92,7 +94,7 @@
                     .setText(point.title + ': ' + point.description);
 
                 marker.getElement().addEventListener('click', function() {
-                    console.log('Marker clicked:', point);
+                   
                     popup.addTo(map);
                     map.flyTo({
                         center: point.coordinates,
@@ -436,7 +438,7 @@
 
             $('#example2').on('click', 'tr', function() {
                 var coordinates = $(this).data('coordinates');
-                console.log('Row clicked with coordinates:', coordinates);
+                
                 if (coordinates) {
                     var [lng, lat] = coordinates.split(',').map(parseFloat);
                     if (!isNaN(lat) && !isNaN(lng)) {

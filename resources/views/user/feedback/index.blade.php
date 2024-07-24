@@ -114,7 +114,7 @@
                                     <div class="dx-box-content">
                                         <div class="row justify-content-end mt-3">
                                             <div class="col-auto mb-20">
-                                                <button class="dx-btn dx-btn-lg mx-4 float-right my-3" type="submit" name="submit" id="submit">Send Feedback</button>
+                                                <button type="submit"  class="dx-btn dx-btn-lg mx-4 float-right my-3" id="send_feedback">Send Feedback</button>
                                             </div>
                                         </div>
                                     </div>
@@ -138,7 +138,7 @@
                     serverId: file.serverId,
                     name: file.file.name
                 }));
-                console.log('File paths:', filePaths);
+                
                 // Append filePaths to a hidden input field
                 const filePathsInput = document.createElement('input');
                 filePathsInput.type = 'hidden';
@@ -146,7 +146,7 @@
                 filePathsInput.value = JSON.stringify(filePaths);
                 event.target.closest('form').appendChild(filePathsInput);
             } else {
-                console.log('No files added.');
+               
             }
             // Kirim form setelah mengambil file
             event.target.closest('form').submit();
@@ -179,7 +179,7 @@
             // Upload the file to your server
             const addedFiles = pond.getFiles();
             addedFiles.forEach(file => {
-                console.log('File path: ', file.serverId);
+                
             });
 
 

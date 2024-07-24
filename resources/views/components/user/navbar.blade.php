@@ -2,7 +2,7 @@
     class="dx-navbar dx-navbar-top dx-navbar-collapse dx-navbar-sticky dx-navbar-expand-lg dx-navbar-dropdown-triangle dx-navbar-autohide">
     <div class="container">
         <a href="index.html" class="dx-nav-logo">
-            <img src="assets/images/logo.svg" alt="" width="88px">
+            <img src="{{asset('image/logoeq.png')}}" alt="" width="140px">
         </a>
         <button class="dx-navbar-burger">
             <span></span><span></span><span></span>

@@ -345,7 +345,7 @@
             }
     
             query += '; END IF; END;'; // Ensure proper ending of the trigger statement
-            console.log(query);
+           
     
             // Set the hidden input value
             document.getElementById('trigger_query').value = query;

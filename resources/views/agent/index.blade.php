@@ -15,7 +15,7 @@
                         '',
                         $ticket->user->name,
                         [$ticket->title, $ticket->category, $ticket->message ?? ''],
-                        $ticket->messages->where('user_id', '!=', Auth::id())->where('is_read', '')->count(),
+                        $ticket->messages->where('user_id', '!=', Auth::id())->where('is_read', "")->count(),
                         '',
                         $ticket->references,
                         $ticket->last_updated,
@@ -94,7 +94,7 @@
                     .setText(point.title + ': ' + point.description);
 
                 marker.getElement().addEventListener('click', function() {
-                    console.log('Marker clicked:', point);
+           
                     popup.addTo(map);
                     map.flyTo({
                         center: point.coordinates,
@@ -389,7 +389,7 @@
 
             $('#example2').on('click', 'tr', function() {
                 var coordinates = $(this).data('coordinates');
-                console.log('Row clicked with coordinates:', coordinates);
+                
                 if (coordinates) {
                     var [lng, lat] = coordinates.split(',').map(parseFloat);
                     if (!isNaN(lat) && !isNaN(lng)) {

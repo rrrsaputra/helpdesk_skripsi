@@ -133,7 +133,7 @@
                 // Upload the file to your server
                 const addedFiles = pond.getFiles();
                 addedFiles.forEach(file => {
-                    console.log('File path: ', file.serverId);
+                    
                 });
             });
         </script>
@@ -195,24 +195,21 @@
             window.Echo.join(`messages.{{ $ticket_id }}`)
             .here((users) => {
                 // Set online status based on whether the assigned user is present
-                document.getElementById('hidden_is_online').value = users.some(user => user.id === {{ $ticket->assigned_to }});
-                console.log('Current online status:', document.getElementById('hidden_is_online').value);
-                console.log('Current users in the channel:', users);
+                document.getElementById('hidden_is_online').value = users.some(user => user.id === {{ $ticket->assigned_to }}) ? 1 : 0;
+                
             })
             .joining((user) => {
-                // Set online status to true if the assigned user joins
+                // Set online status to 1 if the assigned user joins
                 if (user.id === {{ $ticket->assigned_to }}) {
-                    document.getElementById('hidden_is_online').value = true;
-                    console.log('User joined:', user);
-                    console.log('Current online status:', document.getElementById('hidden_is_online').value);
+                    document.getElementById('hidden_is_online').value = 1;
+                    
                 } 
             })
             .leaving((user) => {
-                // Set online status to false if the assigned user leaves
+                // Set online status to 0 if the assigned user leaves
                 if (user.id === {{ $ticket->assigned_to }}) {
-                    document.getElementById('hidden_is_online').value = false;
-                    console.log('User left:', user);
-                    console.log('Current online status:', document.getElementById('hidden_is_online').value);
+                    document.getElementById('hidden_is_online').value = 0;
+                    
                 } 
             });
             
@@ -307,15 +304,13 @@
             document.getElementById('message-form').addEventListener('submit', function(e) {
                 e.preventDefault();
                
-                console.log('is_online:', document.getElementById('hidden_is_online').value);
-
                 const addedFiles = pond.getFiles();
                 if (addedFiles.length > 0) {
                     const filePaths = addedFiles.map(file => ({
                         serverId: file.serverId,
                         name: file.file.name
                     }));
-                    console.log('File paths:', filePaths);
+                    
                     // Append filePaths to a hidden input field
                     const filePathsInput = document.createElement('input');
                     filePathsInput.type = 'hidden';
@@ -323,7 +318,7 @@
                     filePathsInput.value = JSON.stringify(filePaths);
                     event.target.closest('form').appendChild(filePathsInput);
                 } else {
-                    console.log('No files added.');
+                   
                 }
 
                 var form = this;

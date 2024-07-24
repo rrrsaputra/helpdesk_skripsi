@@ -63,7 +63,7 @@
                                     <i class="far fa-circle nav-icon"></i>
                                 @endif
                                 <p>Unassigned</p>
-                                <span class="badge badge-info right">3</span>
+                                
                             </a>
                         </li>
                         <li class="nav-item">
@@ -74,7 +74,7 @@
                                     <i class="far fa-circle nav-icon"></i>
                                 @endif
                                 <p>Assigned To</p>
-                                <span class="badge badge-info right">3</span>
+                                
                             </a>
                         </li>
                         
@@ -86,7 +86,7 @@
                                     <i class="far fa-circle nav-icon"></i>
                                 @endif
                                 <p>Closed</p>
-                                <span class="badge badge-info right">3</span>
+                               
                             </a>
                         </li>
                     </ul>

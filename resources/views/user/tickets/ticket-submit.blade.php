@@ -179,7 +179,7 @@
                     serverId: file.serverId,
                     name: file.file.name
                 }));
-                console.log('File paths:', filePaths);
+                
                 // Append filePaths to a hidden input field
                 const filePathsInput = document.createElement('input');
                 filePathsInput.type = 'hidden';
@@ -187,7 +187,7 @@
                 filePathsInput.value = JSON.stringify(filePaths);
                 event.target.closest('form').appendChild(filePathsInput);
             } else {
-                console.log('No files added.');
+            
             }
             // Kirim form setelah mengambil file
             event.target.closest('form').submit();
@@ -220,7 +220,7 @@
             // Upload the file to your server
             const addedFiles = pond.getFiles();
             addedFiles.forEach(file => {
-                console.log('File path: ', file.serverId);
+                
             });
 
 

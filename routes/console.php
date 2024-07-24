@@ -1,5 +1,6 @@
 <?php
 
+use App\Jobs\FetchEmailJob;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;

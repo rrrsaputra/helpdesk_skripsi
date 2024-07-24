@@ -113,7 +113,7 @@
                 // Upload the file to your server
                 const addedFiles = pond.getFiles();
                 addedFiles.forEach(file => {
-                    console.log('File path: ', file.serverId);
+                   
                 });
 
 
@@ -169,16 +169,16 @@
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
             window.Echo.join(`messages.{{ $ticket_id }}`)
             .here((users) => {
-                document.getElementById('hidden_is_online').value = users.some(user => user.id === {{ $ticket->user_id }});
+                document.getElementById('hidden_is_online').value = users.some(user => user.id === {{ $ticket->user_id }}) ? 1 : 0;
             })
             .joining((user) => {
                 if (user.id === {{ $ticket->user_id }}) {
-                    document.getElementById('hidden_is_online').value = true;
+                    document.getElementById('hidden_is_online').value = 1;
                 }
             })
             .leaving((user) => {
                 if (user.id === {{ $ticket->user_id }}) {
-                    document.getElementById('hidden_is_online').value = false;
+                    document.getElementById('hidden_is_online').value = 0;
                 }
             });
 
@@ -273,7 +273,7 @@
                         serverId: file.serverId,
                         name: file.file.name
                     }));
-                    console.log('File paths:', filePaths);
+            
                     // Append filePaths to a hidden input field
                     const filePathsInput = document.createElement('input');
                     filePathsInput.type = 'hidden';
@@ -281,7 +281,7 @@
                     filePathsInput.value = JSON.stringify(filePaths);
                     event.target.closest('form').appendChild(filePathsInput);
                 } else {
-                    console.log('No files added.');
+                   
                 }
 
                 var form = this;

@@ -11,10 +11,9 @@
                 <strong>Priority:</strong> {{ $notification->priority }}<br>
                 <strong>Status:</strong> {{ $notification->status }}<br>
                 <strong>Created At:</strong> {{ $notification->created_at }}<br>
-                <a href="{{ route('notifications.read', $notification->id) }}">Mark as read</a>
             </li>
         @empty
-            <li id="no-notifications" class="dropdown-item">No notifications available.</li>
+            
         @endforelse
     </ul>
 </div>
@@ -30,10 +29,7 @@
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
         <li class="nav-item dropdown">
-            <a class="nav-link" data-toggle="dropdown" href="#" id="notification-icon">
-                <i class="far fa-bell"></i>
-                <span class="badge badge-warning navbar-badge">{{ count($notifications) }}</span>
-            </a>
+            
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                 <span class="dropdown-item dropdown-header">{{ count($notifications) }} Notifications</span>
                 <div class="dropdown-divider"></div>
@@ -46,51 +42,16 @@
                             <strong>Priority:</strong> {{ $notification->priority }}<br>
                             <strong>Status:</strong> {{ $notification->status }}<br>
                             <strong>Created At:</strong> {{ $notification->created_at }}<br>
-                            <a href="{{ route('notifications.read', $notification->id) }}">Mark as read</a>
+                            
                         </li>
                     @empty
-                        <li id="no-notifications" class="dropdown-item">No notifications available.</li>
+                       
                     @endforelse
                 </ul>
             </div>
         </li>
         <script src="{{ mix('js/app.js') }}"></script>
-        <script>
-            window.Echo.channel("tickets")
-                .listen("TicketSent", (event) => {
-                    console.log("Event received:", event);
-                    const notificationList = document.getElementById('notification-list');
-                    const noNotifications = document.getElementById('no-notifications');
-                    
-                    if (noNotifications) {
-                        noNotifications.remove();
-                    }
-
-                    const newNotification = document.createElement('li');
-                    newNotification.id = `notification-${event.notification.id}`;
-                    newNotification.innerHTML = `
-                        ${event.notification.data.message}
-                        <a href="/notifications/read/${event.notification.id}">Mark as read</a>
-                    `;
-                    notificationList.prepend(newNotification);
-
-                    // Show the notification component
-                    const notificationComponent = document.querySelector('.notification-component');
-                    notificationComponent.style.display = 'block';
-                })
-                .error((error) => {
-                    console.error("Error:", error);
-                });
-
-            document.getElementById('notification-icon').addEventListener('click', function() {
-                const notificationComponent = document.querySelector('.notification-component');
-                if (notificationComponent.style.display === 'none' || notificationComponent.style.display === '') {
-                    notificationComponent.style.display = 'block';
-                } else {
-                    notificationComponent.style.display = 'none';
-                }
-            });
-        </script>
+     
 
         <form method="POST" action="{{ route('logout') }}">
             @csrf

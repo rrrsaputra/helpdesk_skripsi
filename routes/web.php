@@ -42,7 +42,7 @@ use App\Http\Controllers\AdminScheduledCallCategoryController;
 use App\Http\Controllers\MailController;
 
 Route::get('send-email',[MailController::class, 'sendEmail']);
-Route::get('get-email',[MailController::class, 'getMail']);
+
 
 Route::middleware('auth')->group(function () {
 
@@ -102,7 +102,7 @@ Route::middleware(['auth', 'role:user'])->group(function () {
 });
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
-
+    Route::get('/get-email',[MailController::class, 'getMail'])->name('getemail');
     Route::resource('/admin/articles', ArticleController::class)->names('admin.article');
 
     Route::resource('/admin/scheduled-call', AdminScheduledCallController::class)->names('admin.scheduled_call');

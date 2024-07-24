@@ -212,6 +212,11 @@ class UserTicketController extends Controller
             'references' => $this->generateTicketReference(),
             'category' => "email"
         ]);
+        $message = Message::create([
+            'user_id' =>  $user->id,
+            'ticket_id' => $ticket->id,
+            'message' => $message,
+        ]);
 
         // event(new TicketCreated($ticket));
         event(new TicketSent($ticket));
