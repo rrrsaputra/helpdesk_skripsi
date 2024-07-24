@@ -6,13 +6,17 @@
 
 @section('content')
     @php
-        $columns = ['Customer', 'Type', 'Role'];
+        $columns = ['Email', 'Customer', 'Type', 'Role'];
         $data = $users
             ->map(function ($user) {
                 return [
                     'id' => $user->id,
                     'url' => '/path/to/resource1',
-                    'values' => [$user->name, $user->type, $user->roles->pluck('name')->first()],
+                    'values' => [
+                        $user->email, 
+                        $user->name, 
+                        $user->type, 
+                        $user->roles->pluck('name')->first()],
                     'ticket_quota' => $user->ticket_quota,
                 ];
             })

@@ -5,13 +5,16 @@
 
 @section('content')
     @php
-        $columns = ['Customer', 'Ticket'];
+        $columns = ['Email','Customer', 'Ticket'];
         $data = $users
             ->map(function ($user) {
                 return [
                     'id' => $user->id,
                     'url' => '/path/to/resource1',
-                    'values' => [$user->hasRole('user') ? $user->name : '', $user->ticket_quota],
+                    'values' => [
+                        $user->hasRole('user') ? $user->email : '',
+                        $user->hasRole('user') ? $user->name : '',
+                        $user->ticket_quota],
                     'ticket_quota' => $user->ticket_quota,
                 ];
             })

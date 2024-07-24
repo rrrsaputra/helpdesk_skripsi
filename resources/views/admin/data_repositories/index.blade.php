@@ -22,16 +22,21 @@
 
 @section('content')
     @php
-        $columns = ['Message ID', 'Ticket ID', 'User Email', 'Path'];
+        $columns = ['Message ID', 'Ticket ID', 'From', 'To', 'Path'];
         $data = $dataRepositories
             ->map(function ($dataRepository) {
+                $fromUser = $dataRepository->message->user;
+                $ticket = $dataRepository->message->ticket;
+                $toUser = $fromUser->id === $ticket->assigned_to ? $ticket->user : $ticket->assignedToUser; // Menentukan penerima berdasarkan pengirim
+
                 return [
                     'id' => $dataRepository->id,
                     'url' => '/path/to/resource1',
                     'values' => [
                         $dataRepository->message_id,
                         $dataRepository->message->ticket_id,
-                        $dataRepository->message->user->email,
+                        $fromUser->email ?? null,
+                        $toUser->email ?? null,
                         $dataRepository->path,
                     ],
                 ];
@@ -82,7 +87,8 @@
                                             @foreach ($row['values'] as $index => $value)
                                                 <td>
                                                     @if ($columns[$index] === 'Path')
-                                                        <a href="{{ asset('storage/' . $value) }}" target="_blank">{{ $value }}</a>
+                                                        <a href="{{ asset('storage/' . $value) }}"
+                                                            target="_blank">{{ $value }}</a>
                                                     @else
                                                         @if (is_array($value))
                                                             @foreach ($value as $subIndex => $subValue)
