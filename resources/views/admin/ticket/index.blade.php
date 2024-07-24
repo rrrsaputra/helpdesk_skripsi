@@ -147,172 +147,199 @@
     <div class="card">
         <div class="row">
             <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="form-group">
-                            <form action="{{ route('admin.ticket.index') }}" method="GET" class="form-inline">
-                                <div class="form-group">
-                                    <input type="search" class="form-control" id="search" name="search"
-                                        style="width: 500px;" placeholder="Search by title, message, and category">
-                                </div>
-                                <button type="submit" class="btn btn-primary">Search</button>
-                            </form>
-                        </div>
-                        <div class="table-responsive">
-                            <table id="example2" class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        @foreach ($columns as $index => $column)
-                                            <th style="width: {{ $columnSizes[$index] ?? 'auto' }}">{{ $column }}</th>
-                                        @endforeach
-                                        <th>Actions</th> <!-- Added Actions column -->
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse ($data as $row)
-                                        <tr style="cursor: pointer" data-id="{{ $row['id'] }}"
-                                            data-coordinates="{{ $row['values'][6] }},{{ $row['values'][7] }}"
-                                            onclick="handleRowClick(event)">
-                                            @foreach ($row['values'] as $value)
-                                                <td>
-                                                    @if (is_array($value))
-                                                        @foreach ($value as $index => $subValue)
-                                                            <div>
-                                                                @php
-                                                                    $charLimit =
-                                                                        isset($columnSizes[$index]) &&
-                                                                        is_numeric($columnSizes[$index])
-                                                                            ? intval($columnSizes[$index] * 0.5)
-                                                                            : 70;
-                                                                @endphp
-                                                                @if ($index === 0)
-                                                                    <strong>{!! strlen($subValue) > $charLimit ? substr($subValue, 0, $charLimit) . '...' : $subValue !!}</strong>
-                                                                @else
-                                                                    {!! strlen($subValue) > $charLimit ? substr($subValue, 0, $charLimit) . '...' : $subValue !!}
-                                                                @endif
-                                                            </div>
-                                                        @endforeach
-                                                    @else
-                                                        {{ $value }}
-                                                    @endif
-                                                </td>
-                                            @endforeach
-                                            <td> <!-- Added Actions buttons -->
-
-                                                @if (request()->input('inbox') == 'unassigned' || request()->input('inbox') == '')
-                                                    <form action="{{ route('admin.ticket.update', $row['id']) }}" method="POST" style="display:inline;">
-                                                        @csrf
-                                                        @method('PATCH')
-                                                        
-                                                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#assignToModal-{{ $row['id'] }}">Assign</button>
-                                                        <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal{{ $row['id'] }}">Edit</button>
-                                                        <div class="modal fade" id="assignToModal-{{ $row['id'] }}" tabindex="-1" role="dialog" aria-labelledby="assignToModalLabel-{{ $row['id'] }}" aria-hidden="true">
-                                                            <div class="modal-dialog" role="document">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title" id="assignToModalLabel-{{ $row['id'] }}">Assign To</h5>
-                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                            <span aria-hidden="true">&times;</span>
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <label for="agentSelect-{{ $row['id'] }}">Choose Agent:</label>
-                                                                        <select id="agentSelect-{{ $row['id'] }}" name="agent_id" class="form-control">
-                                                                            <option value="" selected disabled>Pick Agent</option>
-                                                                            @foreach ($agents as $agent)
-                                                                                <option value="{{ $agent->id }}">{{ $agent->name }} ({{ $agent->email }})</option>
-                                                                            @endforeach
-                                                                        </select>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                        <button type="submit" class="btn btn-primary">Save changes</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <form action="{{ route('admin.ticket.index') }}" method="GET" class="form-inline">
+                            <div class="form-group">
+                                <input type="search" class="form-control" id="search" name="search"
+                                    style="width: 500px;" placeholder="Search by title, message, and category">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </form>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="example2" class="table table-hover">
+                            <thead>
+                                <tr>
+                                    @foreach ($columns as $index => $column)
+                                        <th style="width: {{ $columnSizes[$index] ?? 'auto' }}">{{ $column }}</th>
+                                    @endforeach
+                                    <th>Actions</th> <!-- Added Actions column -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($data as $row)
+                                    <tr style="cursor: pointer" data-id="{{ $row['id'] }}"
+                                        data-coordinates="{{ $row['values'][6] }},{{ $row['values'][7] }}"
+                                        onclick="handleRowClick(event)">
+                                        @foreach ($row['values'] as $value)
+                                            <td>
+                                                @if (is_array($value))
+                                                    @foreach ($value as $index => $subValue)
+                                                        <div>
+                                                            @php
+                                                                $charLimit =
+                                                                    isset($columnSizes[$index]) &&
+                                                                    is_numeric($columnSizes[$index])
+                                                                        ? intval($columnSizes[$index] * 0.5)
+                                                                        : 70;
+                                                            @endphp
+                                                            @if ($index === 0)
+                                                                <strong>{!! strlen($subValue) > $charLimit ? substr($subValue, 0, $charLimit) . '...' : $subValue !!}</strong>
+                                                            @else
+                                                                {!! strlen($subValue) > $charLimit ? substr($subValue, 0, $charLimit) . '...' : $subValue !!}
+                                                            @endif
                                                         </div>
-                                                    </form>
-
-                                                    <form action="{{ route('admin.ticket.update', $row['id']) }}" method="POST" style="display:inline;">
-                                                        @csrf
-                                                        @method('PATCH')
-                                                        <div class="modal fade" id="editModal{{ $row['id'] }}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel{{ $row['id'] }}" aria-hidden="true">
-                                                            <div class="modal-dialog" role="document">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title" id="editModalLabel{{ $row['id'] }}">Update Latitude and Longitude</h5>
-                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                            <span aria-hidden="true">&times;</span>
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <div class="form-group">
-                                                                            <label for="latitude">Latitude</label>
-                                                                            <input type="text" class="form-control" id="latitude" name="latitude" value="{{ $row['values'][6] }}">
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                            <label for="longitude">Longitude</label>
-                                                                            <input type="text" class="form-control" id="longitude" name="longitude" value="{{ $row['values'][7] }}">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                        <button type="submit" class="btn btn-primary">Save changes</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                @elseif(request()->input('inbox') == 'assigned')
-                                                    <form action="{{ route('admin.ticket.close', $row['id']) }}"
-                                                        method="POST" style="display:inline;"
-                                                        onclick="event.stopPropagation();">
-                                                        @csrf
-                                                        @method('PATCH')
-
-                                                        <button type="submit"
-                                                            class="btn btn-success btn-sm">Close</button>
-                                                    </form>
-                                                    <form action="{{ route('admin.ticket.unassign', $row['id']) }}"
-                                                        method="POST" style="display:inline;"
-                                                        onclick="event.stopPropagation();">
-                                                        @csrf
-                                                        @method('PATCH')
-                                                        <button type="submit"
-                                                            class="btn btn-danger btn-sm">Unassign</button>
-                                                    </form>
-                                                @elseif(request()->input('inbox') == 'closed')
-                                                    <form action="{{ route('admin.ticket.reopen_ticket', $row['id']) }}"
-                                                        method="POST" style="display:inline;"
-                                                        onclick="event.stopPropagation();">
-                                                        @csrf
-                                                        @method('PATCH')
-                                                        <button type="submit" class="btn btn-info btn-sm">Reopen</button>
-                                                    </form>
+                                                    @endforeach
+                                                @else
+                                                    {{ $value }}
                                                 @endif
                                             </td>
-                                        </tr>
+                                        @endforeach
+                                        <td> <!-- Added Actions buttons -->
+
+                                            @if (request()->input('inbox') == 'unassigned' || request()->input('inbox') == '')
+                                                <form action="{{ route('admin.ticket.update', $row['id']) }}"
+                                                    method="POST" style="display:inline;">
+                                                    @csrf
+                                                    @method('PATCH')
+
+                                                    <button type="button" class="btn btn-primary btn-sm"
+                                                        data-toggle="modal"
+                                                        data-target="#assignToModal-{{ $row['id'] }}">Assign</button>
+                                                    <button type="button" class="btn btn-warning btn-sm"
+                                                        data-toggle="modal"
+                                                        data-target="#editModal{{ $row['id'] }}">Edit</button>
+                                                    <div class="modal fade" id="assignToModal-{{ $row['id'] }}"
+                                                        tabindex="-1" role="dialog"
+                                                        aria-labelledby="assignToModalLabel-{{ $row['id'] }}"
+                                                        aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title"
+                                                                        id="assignToModalLabel-{{ $row['id'] }}">Assign
+                                                                        To</h5>
+                                                                    <button type="button" class="close"
+                                                                        data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <label for="agentSelect-{{ $row['id'] }}">Choose
+                                                                        Agent:</label>
+                                                                    <select id="agentSelect-{{ $row['id'] }}"
+                                                                        name="agent_id" class="form-control">
+                                                                        <option value="" selected disabled>Pick Agent
+                                                                        </option>
+                                                                        @foreach ($agents as $agent)
+                                                                            <option value="{{ $agent->id }}">
+                                                                                {{ $agent->name }} ({{ $agent->email }})
+                                                                            </option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                        data-dismiss="modal">Close</button>
+                                                                    <button type="submit" class="btn btn-primary">Save
+                                                                        changes</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+
+                                                <form action="{{ route('admin.ticket.update', $row['id']) }}"
+                                                    method="POST" style="display:inline;">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <div class="modal fade" id="editModal{{ $row['id'] }}"
+                                                        tabindex="-1" role="dialog"
+                                                        aria-labelledby="editModalLabel{{ $row['id'] }}"
+                                                        aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title"
+                                                                        id="editModalLabel{{ $row['id'] }}">Update
+                                                                        Latitude and Longitude</h5>
+                                                                    <button type="button" class="close"
+                                                                        data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <div class="form-group">
+                                                                        <label for="latitude">Latitude</label>
+                                                                        <input type="text" class="form-control"
+                                                                            id="latitude" name="latitude"
+                                                                            value="{{ $row['values'][6] }}">
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="longitude">Longitude</label>
+                                                                        <input type="text" class="form-control"
+                                                                            id="longitude" name="longitude"
+                                                                            value="{{ $row['values'][7] }}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                        data-dismiss="modal">Close</button>
+                                                                    <button type="submit" class="btn btn-primary">Save
+                                                                        changes</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            @elseif(request()->input('inbox') == 'assigned')
+                                                <form action="{{ route('admin.ticket.close', $row['id']) }}"
+                                                    method="POST" style="display:inline;"
+                                                    onclick="event.stopPropagation();">
+                                                    @csrf
+                                                    @method('PATCH')
+
+                                                    <button type="submit" class="btn btn-success btn-sm">Close</button>
+                                                </form>
+                                                <form action="{{ route('admin.ticket.unassign', $row['id']) }}"
+                                                    method="POST" style="display:inline;"
+                                                    onclick="event.stopPropagation();">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <button type="submit" class="btn btn-danger btn-sm">Unassign</button>
+                                                </form>
+                                            @elseif(request()->input('inbox') == 'closed')
+                                                <form action="{{ route('admin.ticket.reopen_ticket', $row['id']) }}"
+                                                    method="POST" style="display:inline;"
+                                                    onclick="event.stopPropagation();">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <button type="submit" class="btn btn-info btn-sm">Reopen</button>
+                                                </form>
+                                            @endif
+                                        </td>
+                                    </tr>
 
 
-                                        <!-- Modal for updating latitude and longitude -->
+                                    <!-- Modal for updating latitude and longitude -->
 
 
 
 
-                                    @empty
-                                        <tr>
-                                            <td colspan="9">No articles available</td>
-                                            <!-- Updated colspan to 9 to include Actions column -->
-                                        </tr>
-                                    @endforelse
-                                </tbody>
+                                @empty
+                                    <tr>
+                                        <td colspan="9">No articles available</td>
+                                        <!-- Updated colspan to 9 to include Actions column -->
+                                    </tr>
+                                @endforelse
+                            </tbody>
 
-                            </table>
+                        </table>
 
-                            {{ $tickets->links() }}
+                        {{ $tickets->links() }}
 
 
-                        </div>
                     </div>
                 </div>
             </div>

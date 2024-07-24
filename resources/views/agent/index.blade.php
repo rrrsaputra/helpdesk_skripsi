@@ -77,7 +77,8 @@
             points.forEach(function(point) {
                 var el = document.createElement('div');
                 el.className = 'marker';
-                el.style.backgroundImage = point.status === 'open' ? 'url({{ asset('image/dot/orange.png') }})' : 'url({{ asset('image/dot/green.png') }})';
+                el.style.backgroundImage = point.status === 'open' ?
+                    'url({{ asset('image/dot/orange.png') }})' : 'url({{ asset('image/dot/green.png') }})';
                 el.style.width = '8px';
                 el.style.height = '8px';
                 el.style.backgroundSize = '100%';
@@ -146,148 +147,151 @@
 
         <div class="row">
             <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="form-group">
-                            <form action="{{ route('agent.index', ['inbox' => request()->input('inbox', 'unassigned')]) }}" method="GET" class="form-inline">
-                                <div class="form-group">
-                                    <input type="search" class="form-control" id="search" name="search"
-                                        style="width: 500px;" placeholder="Search by title, message, and category">
-                                </div>
-                                <button type="submit" class="btn btn-primary">Search</button>
-                            </form>
-                        </div>
-                        <div class="table-responsive">
-                            <table id="example2" class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        @foreach ($columns as $index => $column)
-                                            <th style="width: {{ $columnSizes[$index] ?? 'auto' }}">{{ $column }}</th>
-                                        @endforeach
-                                        <th>Actions</th> <!-- Added Actions column -->
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse ($data as $row)
-                                        <tr style="cursor: pointer" data-id="{{ $row['id'] }}"
-                                            data-coordinates="{{ $row['values'][6] }},{{ $row['values'][7] }}"
-                                            onclick="handleRowClick(event)">
-                                            @foreach ($row['values'] as $value)
-                                                <td>
-                                                    @if (is_array($value))
-                                                        @foreach ($value as $index => $subValue)
-                                                            <div>
-                                                                @php
-                                                                    $charLimit =
-                                                                        isset($columnSizes[$index]) &&
-                                                                        is_numeric($columnSizes[$index])
-                                                                            ? intval($columnSizes[$index] * 0.5)
-                                                                            : 70;
-                                                                @endphp
-                                                                @if ($index === 0)
-                                                                    <strong>{!! strlen($subValue) > $charLimit ? substr($subValue, 0, $charLimit) . '...' : $subValue !!}</strong>
-                                                                @else
-                                                                    {!! strlen($subValue) > $charLimit ? substr($subValue, 0, $charLimit) . '...' : $subValue !!}
-                                                                @endif
-                                                            </div>
-                                                        @endforeach
-                                                    @else
-                                                        {{ $value }}
-                                                    @endif
-                                                </td>
-                                            @endforeach
-                                            <td> <!-- Added Actions buttons -->
-                                                
-                                                <form action="{{ route('agent.messages.show', $row['id']) }}"
-                                                    method="GET" style="display:inline;"
-                                                    onclick="event.stopPropagation();">
-                                                    <button type="submit" class="btn btn-primary btn-sm">View</button>
-                                                </form>
-                                                </form>
-                                                @if (request()->input('inbox') == 'unassigned' || request()->input('inbox') == '')
-                                                    <form action="{{ route('agent.ticket.get', $row['id']) }}"
-                                                        method="POST" style="display:inline;"
-                                                        onclick="event.stopPropagation();">
-                                                        @csrf
-                                                        @method('PATCH')
-                                                        <button type="submit" class="btn btn-success btn-sm">Get</button>
-                                                    </form>
-                                                    <button class="btn btn-warning btn-sm" data-toggle="modal"
-                                                    data-target="#editModal{{ $row['id'] }}">Edit</button>
-                                                @elseif(request()->input('inbox') == 'mine')
-                                                    <form action="{{ route('agent.ticket.close', $row['id']) }}"
-                                                        method="POST" style="display:inline;"
-                                                        onclick="event.stopPropagation();">
-                                                        @csrf
-                                                        @method('PATCH')
-
-                                                        <button type="submit" class="btn btn-success btn-sm">Close</button>
-                                                    </form>
-                                                    
-                                                    <form action="{{ route('agent.ticket.unassign', $row['id']) }}"
-                                                        method="POST" style="display:inline;"
-                                                        onclick="event.stopPropagation();">
-                                                        @csrf
-                                                        @method('PATCH')
-                                                        <button type="submit"
-                                                            class="btn btn-danger btn-sm">Unassign</button>
-                                                    </form>
-                                                @elseif(request()->input('inbox') == 'closed')
-                                                    <form action="{{ route('agent.ticket.reopen_ticket', $row['id']) }}"
-                                                        method="POST" style="display:inline;"
-                                                        onclick="event.stopPropagation();">
-                                                        @csrf
-                                                        @method('PATCH')
-                                                        <button type="submit" class="btn btn-info btn-sm">Reopen</button>
-                                                    </form>
+                <div class="card-body">
+                    <div class="form-group">
+                        <form action="{{ route('agent.index', ['inbox' => request()->input('inbox', 'unassigned')]) }}"
+                            method="GET" class="form-inline">
+                            <div class="form-group">
+                                <input type="search" class="form-control" id="search" name="search"
+                                    style="width: 500px;" placeholder="Search by title, message, and category">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </form>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="example2" class="table table-hover">
+                            <thead>
+                                <tr>
+                                    @foreach ($columns as $index => $column)
+                                        <th style="width: {{ $columnSizes[$index] ?? 'auto' }}">{{ $column }}</th>
+                                    @endforeach
+                                    <th>Actions</th> <!-- Added Actions column -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($data as $row)
+                                    <tr style="cursor: pointer" data-id="{{ $row['id'] }}"
+                                        data-coordinates="{{ $row['values'][6] }},{{ $row['values'][7] }}"
+                                        onclick="handleRowClick(event)">
+                                        @foreach ($row['values'] as $value)
+                                            <td>
+                                                @if (is_array($value))
+                                                    @foreach ($value as $index => $subValue)
+                                                        <div>
+                                                            @php
+                                                                $charLimit =
+                                                                    isset($columnSizes[$index]) &&
+                                                                    is_numeric($columnSizes[$index])
+                                                                        ? intval($columnSizes[$index] * 0.5)
+                                                                        : 70;
+                                                            @endphp
+                                                            @if ($index === 0)
+                                                                <strong>{!! strlen($subValue) > $charLimit ? substr($subValue, 0, $charLimit) . '...' : $subValue !!}</strong>
+                                                            @else
+                                                                {!! strlen($subValue) > $charLimit ? substr($subValue, 0, $charLimit) . '...' : $subValue !!}
+                                                            @endif
+                                                        </div>
+                                                    @endforeach
+                                                @else
+                                                    {{ $value }}
                                                 @endif
                                             </td>
-                                        </tr>
+                                        @endforeach
+                                        <td> <!-- Added Actions buttons -->
+
+                                            <form action="{{ route('agent.messages.show', $row['id']) }}" method="GET"
+                                                style="display:inline;" onclick="event.stopPropagation();">
+                                                <button type="submit" class="btn btn-primary btn-sm">View</button>
+                                            </form>
+                                            </form>
+                                            @if (request()->input('inbox') == 'unassigned' || request()->input('inbox') == '')
+                                                <form action="{{ route('agent.ticket.get', $row['id']) }}" method="POST"
+                                                    style="display:inline;" onclick="event.stopPropagation();">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <button type="submit" class="btn btn-success btn-sm">Get</button>
+                                                </form>
+                                                <button class="btn btn-warning btn-sm" data-toggle="modal"
+                                                    data-target="#editModal{{ $row['id'] }}">Edit</button>
+                                            @elseif(request()->input('inbox') == 'mine')
+                                                <form action="{{ route('agent.ticket.close', $row['id']) }}" method="POST"
+                                                    style="display:inline;" onclick="event.stopPropagation();">
+                                                    @csrf
+                                                    @method('PATCH')
+
+                                                    <button type="submit" class="btn btn-success btn-sm">Close</button>
+                                                </form>
+
+                                                <form action="{{ route('agent.ticket.unassign', $row['id']) }}"
+                                                    method="POST" style="display:inline;"
+                                                    onclick="event.stopPropagation();">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <button type="submit" class="btn btn-danger btn-sm">Unassign</button>
+                                                </form>
+                                            @elseif(request()->input('inbox') == 'closed')
+                                                <form action="{{ route('agent.ticket.reopen_ticket', $row['id']) }}"
+                                                    method="POST" style="display:inline;"
+                                                    onclick="event.stopPropagation();">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <button type="submit" class="btn btn-info btn-sm">Reopen</button>
+                                                </form>
+                                            @endif
+                                        </td>
+                                    </tr>
                                     <!-- Modal for updating latitude and longitude -->
-                                    <div class="modal fade" id="editModal{{ $row['id'] }}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel{{ $row['id'] }}" aria-hidden="true">
+                                    <div class="modal fade" id="editModal{{ $row['id'] }}" tabindex="-1" role="dialog"
+                                        aria-labelledby="editModalLabel{{ $row['id'] }}" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="editModalLabel{{ $row['id'] }}">Update Latitude and Longitude</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <h5 class="modal-title" id="editModalLabel{{ $row['id'] }}">Update
+                                                        Latitude and Longitude</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
-                                                <form action="{{ route('agent.ticket.update', $row['id']) }}" method="POST">
+                                                <form action="{{ route('agent.ticket.update', $row['id']) }}"
+                                                    method="POST">
                                                     @csrf
                                                     @method('PATCH')
                                                     <div class="modal-body">
                                                         <div class="form-group">
                                                             <label for="latitude">Latitude</label>
-                                                            <input type="text" class="form-control" id="latitude" name="latitude" value="{{ $row['values'][6] }}">
+                                                            <input type="text" class="form-control" id="latitude"
+                                                                name="latitude" value="{{ $row['values'][6] }}">
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="longitude">Longitude</label>
-                                                            <input type="text" class="form-control" id="longitude" name="longitude" value="{{ $row['values'][7] }}">
+                                                            <input type="text" class="form-control" id="longitude"
+                                                                name="longitude" value="{{ $row['values'][7] }}">
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-primary">Save
+                                                            changes</button>
                                                     </div>
                                                 </form>
                                             </div>
                                         </div>
                                     </div>
-                                    @empty
-                                        <tr>
-                                            <td colspan="9">No messages available</td>
-                                            <!-- Updated colspan to 9 to include Actions column -->
-                                        </tr>
-                                    @endforelse
-                                </tbody>
+                                @empty
+                                    <tr>
+                                        <td colspan="9">No messages available</td>
+                                        <!-- Updated colspan to 9 to include Actions column -->
+                                    </tr>
+                                @endforelse
+                            </tbody>
 
-                            </table>
+                        </table>
 
-                            {{ $tickets->links() }}
+                        {{ $tickets->links() }}
 
 
-                        </div>
                     </div>
                 </div>
             </div>

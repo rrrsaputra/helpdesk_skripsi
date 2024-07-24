@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('header')
-    <x-admin.header title="Create Article" />
+    <x-admin.header title="Edit Article" />
 @endsection
 
 @section('content')
@@ -35,8 +35,40 @@
 
                 <div class="form-group">
                     <label for="content">Content</label>
-                    <x-admin.summernote />
+                    <div id="editor" style="height: 300px; min-height: 300px;"></div>
+                    <input type="hidden" name="content" id="content" value="{{ $article->content }}">
                 </div>
+                <script src="//cdn.quilljs.com/1.3.6/quill.min.js"></script>
+                <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+                <script>
+                    var quill = new Quill('#editor', {
+                        theme: 'snow',
+                        modules: {
+                            toolbar: [
+                                [{ 'header': [1, 2, false] }],
+                                ['bold', 'italic', 'underline'],
+                                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                                ['image', 'code-block', 'video'],
+                            ]
+                        }
+                    });
+                    // Set initial content
+                    quill.root.innerHTML = {!! json_encode($article->content) !!};
+                    quill.on('text-change', function() {
+                        document.getElementById('content').value = quill.root.innerHTML;
+                    });
+                    var editor = document.getElementById('editor');
+                    var editorHeight = 300;
+                    var maxHeight = 500;
+                    quill.on('text-change', function() {
+                        var currentHeight = quill.root.scrollHeight;
+                        if (currentHeight > editorHeight && currentHeight < maxHeight) {
+                            editor.style.height = currentHeight + 'px';
+                        } else if (currentHeight >= maxHeight) {
+                            editor.style.height = maxHeight + 'px';
+                        }
+                    });
+                </script>
                 <div>
                     <button type="submit" class="btn btn-primary">Update</button>
                     <a href="{{ route('admin.article.index') }}" class="btn btn-secondary">Cancel</a>

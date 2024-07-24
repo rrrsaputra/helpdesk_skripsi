@@ -60,80 +60,78 @@
     <div class="card">
         <div class="row">
             <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="form-group">
-                            <form action="{{ route('admin.data_repository.index') }}" method="GET" class="form-inline">
-                                <div class="form-group">
-                                    <input type="search" class="form-control" id="search" name="search"
-                                        style="width: 500px;" placeholder="Search by user name">
-                                </div>
-                                <button type="submit" class="btn btn-primary">Search</button>
-                            </form>
-                        </div>
-                        <div class="table-responsive">
-                            <table id="example2" class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        @foreach ($columns as $index => $column)
-                                            <th style="width: {{ $columnSizes[$index] ?? 'auto' }}">{{ $column }}</th>
-                                        @endforeach
-                                        <th>Actions</th> <!-- Added Actions column -->
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse ($data as $row)
-                                        <tr style="cursor: pointer" data-id="{{ $row['id'] }}">
-                                            @foreach ($row['values'] as $index => $value)
-                                                <td>
-                                                    @if ($columns[$index] === 'Path')
-                                                        <a href="{{ asset('storage/' . $value) }}"
-                                                            target="_blank">{{ $value }}</a>
+                <div class="card-body">
+                    <div class="form-group">
+                        <form action="{{ route('admin.data_repository.index') }}" method="GET" class="form-inline">
+                            <div class="form-group">
+                                <input type="search" class="form-control" id="search" name="search"
+                                    style="width: 500px;" placeholder="Search by user name">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </form>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="example2" class="table table-hover">
+                            <thead>
+                                <tr>
+                                    @foreach ($columns as $index => $column)
+                                        <th style="width: {{ $columnSizes[$index] ?? 'auto' }}">{{ $column }}</th>
+                                    @endforeach
+                                    <th>Actions</th> <!-- Added Actions column -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($data as $row)
+                                    <tr style="cursor: pointer" data-id="{{ $row['id'] }}">
+                                        @foreach ($row['values'] as $index => $value)
+                                            <td>
+                                                @if ($columns[$index] === 'Path')
+                                                    <a href="{{ asset('storage/' . $value) }}"
+                                                        target="_blank">{{ $value }}</a>
+                                                @else
+                                                    @if (is_array($value))
+                                                        @foreach ($value as $subIndex => $subValue)
+                                                            <div>
+                                                                @php
+                                                                    $charLimit =
+                                                                        isset($columnSizes[$subIndex]) &&
+                                                                        is_numeric($columnSizes[$subIndex])
+                                                                            ? intval($columnSizes[$subIndex] * 0.5)
+                                                                            : 70;
+                                                                @endphp
+                                                                @if ($subIndex === 0)
+                                                                    <strong>{!! strlen($subValue) > $charLimit ? substr($subValue, 0, $charLimit) . '...' : $subValue !!}</strong>
+                                                                @else
+                                                                    {!! strlen($subValue) > $charLimit ? substr($subValue, 0, $charLimit) . '...' : $subValue !!}
+                                                                @endif
+                                                            </div>
+                                                        @endforeach
                                                     @else
-                                                        @if (is_array($value))
-                                                            @foreach ($value as $subIndex => $subValue)
-                                                                <div>
-                                                                    @php
-                                                                        $charLimit =
-                                                                            isset($columnSizes[$subIndex]) &&
-                                                                            is_numeric($columnSizes[$subIndex])
-                                                                                ? intval($columnSizes[$subIndex] * 0.5)
-                                                                                : 70;
-                                                                    @endphp
-                                                                    @if ($subIndex === 0)
-                                                                        <strong>{!! strlen($subValue) > $charLimit ? substr($subValue, 0, $charLimit) . '...' : $subValue !!}</strong>
-                                                                    @else
-                                                                        {!! strlen($subValue) > $charLimit ? substr($subValue, 0, $charLimit) . '...' : $subValue !!}
-                                                                    @endif
-                                                                </div>
-                                                            @endforeach
-                                                        @else
-                                                            {{ $value }}
-                                                        @endif
+                                                        {{ $value }}
                                                     @endif
-                                                </td>
-                                            @endforeach
-                                            <td> <!-- Added Actions buttons -->
-                                                <form action="{{ route('admin.data_repository.destroy', $row['id']) }}"
-                                                    method="POST" style="display:inline;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                                </form>
+                                                @endif
                                             </td>
-                                        </tr>
-                                        <!-- Modal -->
+                                        @endforeach
+                                        <td> <!-- Added Actions buttons -->
+                                            <form action="{{ route('admin.data_repository.destroy', $row['id']) }}"
+                                                method="POST" style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    <!-- Modal -->
 
-                                    @empty
-                                        <tr>
-                                            <td colspan="8">No data found</td>
-                                            <!-- Updated colspan to 8 to include Actions column -->
-                                        </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                            {{-- {{ $dataRepositories->links() }} --}}
-                        </div>
+                                @empty
+                                    <tr>
+                                        <td colspan="8">No data found</td>
+                                        <!-- Updated colspan to 8 to include Actions column -->
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                        {{-- {{ $dataRepositories->links() }} --}}
                     </div>
                 </div>
             </div>
