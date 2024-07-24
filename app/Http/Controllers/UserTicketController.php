@@ -17,6 +17,7 @@ use Coderflex\LaravelTicket\Models\Ticket;
 use Coderflex\LaravelTicket\Models\Message;
 use Coderflex\LaravelTicket\Models\Category;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 
 
@@ -191,6 +192,34 @@ class UserTicketController extends Controller
         return view('user.tickets.show-ticket', compact('ticket','messages', 'ticket_id'));
     }
 
+    public function storeFromEmail($userId, $title, $message)
+    {
+        $user = User::find($userId);
+
+        if (!$user) {
+            Log::error('User not found for ID: ' . $userId);
+            return;
+        }
+
+        // Create a new ticket
+        $ticket = Ticket::create([
+            'user_id' => $user->id,
+            'title' => $title,
+            'message' => $message,
+            'references' => $this->generateTicketReference(),
+            'category'=> "email"
+        ]);
+
+        // event(new TicketCreated($ticket));
+        event(new TicketSent($ticket));
+        $toEmailAddress = $user->email;
+        ProcessTicket::dispatch($ticket, $toEmailAddress);
+
+        // Decrement ticket quota
+        if (!$this->decrementTicketQuota($user)) {
+            Log::error('Not enough ticket quota for user ID: ' . $userId);
+        }
+    }
 
 
 
@@ -227,9 +256,9 @@ class UserTicketController extends Controller
             return "T-0001";
         }
 
-        $formerReference = $lastTicket->reference;
+        $formerReference = $lastTicket->references;
         $parts = explode("-", $formerReference);
-        $numbers = (int)$parts[1];
+        $numbers = isset($parts[1]) && is_numeric($parts[1]) ? (int)$parts[1] : 0; // Ensure the part is numeric
 
         // Increment the number
         $nextNumbers = $numbers + 1;

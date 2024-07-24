@@ -128,7 +128,7 @@ class UserScheduledCallController extends Controller
 
         $formerReference = $lastScheduledCall->reference;
         $parts = explode("-", $formerReference);
-        $numbers = (int)$parts[1];
+        $numbers = isset($parts[1]) && is_numeric($parts[1]) ? (int)$parts[1] : 0; 
 
         // Increment the number
         $nextNumbers = $numbers + 1;

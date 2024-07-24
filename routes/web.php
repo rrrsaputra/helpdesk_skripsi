@@ -41,6 +41,7 @@ use App\Http\Controllers\AdminArticleCategoryController;
 use App\Http\Controllers\MailController;
 
 Route::get('send-email',[MailController::class, 'sendEmail']);
+Route::get('get-email',[MailController::class, 'getMail']);
 
 Route::middleware('auth')->group(function () {
 
