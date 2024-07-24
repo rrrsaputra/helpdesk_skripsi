@@ -9,6 +9,7 @@ use Coderflex\LaravelTicket\Models\Ticket;
 use Coderflex\LaravelTicket\Models\Category;
 use Coderflex\LaravelTicket\Models\Label;
 use Coderflex\LaravelTicket\Models\Message;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Reverb\Events\MessageSent as EventsMessageSent;
 
 class AgentMessagesController extends Controller
@@ -42,6 +43,7 @@ class AgentMessagesController extends Controller
         }
 
         $messageContent = $request->input('message');
+        $isOnline = $request->input('is_online');
         if (!$messageContent) {
             // Handle the case where the message content is not provided
             return response()->json(['error' => 'Message content is required'], 400);
@@ -51,6 +53,7 @@ class AgentMessagesController extends Controller
         $message->ticket_id = $ticket->id;
         $message->user_id = auth()->id();
         $message->message = $messageContent;
+        $message->is_read = $isOnline ? null : now();
         $message->save();
         
         $user = $message->user;
@@ -74,6 +77,7 @@ class AgentMessagesController extends Controller
             }
         }
 
+        
         event(new MessageSent($message, $user));
 
         // Return the current view
@@ -86,11 +90,19 @@ class AgentMessagesController extends Controller
     {
         $ticket = Ticket::find($id);
         $ticket_id = $ticket->id;
+
+        if ($ticket->assigned_to == Auth::id()) {
+            $ticket->messages->where('user_id', '!=', Auth::id())->where('is_read', '')->each(function ($message) {
+                $message->is_read = now();
+                $message->save();
+            });
+        }
+
         if (!$ticket) {
             return redirect()->back()->with('error', 'Ticket not found');
         }
         $messages = $ticket->messages;
-        return view('agent.messages.index',compact('messages','ticket_id'));
+        return view('agent.messages.index',compact('messages','ticket_id','ticket'));
     }
 
     /**

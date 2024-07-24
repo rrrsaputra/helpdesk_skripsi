@@ -10,5 +10,5 @@ Broadcast::channel('channel_for_everyone', function ($user) {
     return true;
 });
 Broadcast::channel('messages.{ticketId}', function ($user, $ticketId) {
-    return true; // Implement your authorization logic here
+    return ['id' => $user->id, 'name' => $user->name]; // Return user info
 });

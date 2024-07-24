@@ -1,6 +1,6 @@
 @extends('layouts.agent')
 @section('header')
-    <x-agent.header title="agent" />
+    <x-agent.header title="Ticket: {{ $ticket->references }} - {{ $ticket->title }}" />
 @endsection
 
 @section('content')
@@ -17,20 +17,26 @@
                             <p style="margin: 0;">{!! $message->message !!}</p>
 
                             @if ($message->attachments->isNotEmpty())
-                                <p style="margin: 0;">
-                                    <a href="#" onclick="toggleAttachments({{ $message->id }})">
-                                        <i class="fas fa-paperclip"></i> View Attachments
-                                    </a>
-                                </p>
-                                <div id="attachments-{{ $message->id }}" class="attachments-container"
-                                    style="display: none; max-height: 400px; overflow-y: auto;">
-                                    @foreach ($message->attachments as $attachment)
-                                        <div class="attachment-item">
+                            <p style="margin: 0;">
+                                <a href="#" onclick="toggleAttachments({{ $message->id }})">
+                                    <i class="fas fa-paperclip"></i> View Attachments
+                                </a>
+                            </p>
+                            <div id="attachments-{{ $message->id }}" class="attachments-container"
+                                style="display: none; max-height: 400px; overflow-y: auto;">
+                                @foreach ($message->attachments as $attachment)
+                                    <div class="attachment-item">
+                                        @if (in_array(pathinfo($attachment->path, PATHINFO_EXTENSION), ['jpg', 'jpeg', 'png', 'gif']))
                                             <img src="{{ asset('storage/' . $attachment->path) }}"
                                                 alt="{{ $attachment->name }}" style="max-width: 100%; height: auto;">
-                                        </div>
-                                    @endforeach
-                                </div>
+                                        @else
+                                            <a href="{{ asset('storage/' . $attachment->path) }}"
+                                                target="_blank">{{ $attachment->name }}</a>
+                                        @endif
+                                    </div>
+                                @endforeach
+                            </div>
+                        
                             @endif
 
                             <p style="margin: 0; font-size: 0.8em; color: #888;">
@@ -116,6 +122,7 @@
         <div class="form-group">
             <div id="editor" style="height: 100px;"></div>
             <input type="hidden" name="message" id="hidden_message">
+            <input type="hidden" name="is_online" id="hidden_is_online">
         </div>
         <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
         <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
@@ -154,9 +161,27 @@
 
             }
         });
+
+        
+
         document.addEventListener('DOMContentLoaded', function() {
             var messagesContainer = document.getElementById('messages-container');
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            window.Echo.join(`messages.{{ $ticket_id }}`)
+            .here((users) => {
+                
+                document.getElementById('hidden_is_online').value = users.some(user => user.id === {{ $ticket->user_id }});
+            })
+            .joining((user) => {
+                if (user.id === {{ $ticket->user_id }}) {
+                    document.getElementById('hidden_is_online').value = true;
+                } 
+            })
+            .leaving((user) => {
+                if (user.id === {{ $ticket->user_id }}) {
+                    document.getElementById('hidden_is_online').value = false;
+                } 
+            });
 
             // Listen for new messages
             window.Echo.private('messages.{{ $ticket_id }}')
@@ -213,11 +238,20 @@
                         e.message.attachments.forEach(function(attachment) {
                             var attachmentItem = document.createElement('div');
                             attachmentItem.classList.add('attachment-item');
-                            var attachmentImg = document.createElement('img');
-                            attachmentImg.src = '{{ asset('storage/') }}/' + attachment.path;
-                            attachmentImg.alt = attachment.name;
-                            attachmentImg.style.cssText = 'max-width: 100%; height: auto;';
-                            attachmentItem.appendChild(attachmentImg);
+                            var fileExtension = attachment.path.split('.').pop().toLowerCase();
+                            if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
+                                var attachmentImg = document.createElement('img');
+                                attachmentImg.src = '{{ asset('storage/') }}/' + attachment.path;
+                                attachmentImg.alt = attachment.name;
+                                attachmentImg.style.cssText = 'max-width: 100%; height: auto;';
+                                attachmentItem.appendChild(attachmentImg);
+                            } else {
+                                var attachmentLink = document.createElement('a');
+                                attachmentLink.href = '{{ asset('storage/') }}/' + attachment.path;
+                                attachmentLink.target = '_blank';
+                                attachmentLink.innerText = attachment.name;
+                                attachmentItem.appendChild(attachmentLink);
+                            }
                             attachmentsContainer.appendChild(attachmentItem);
                         });
 
@@ -315,38 +349,49 @@
 
                             messageContent.appendChild(messageUser);
                             messageContent.appendChild(messageText);
+                            
+                            if (e.message.attachments.length > 0) {
+                        var attachmentLink = document.createElement('p');
+                        attachmentLink.style.margin = '0';
+                        var attachmentAnchor = document.createElement('a');
+                        attachmentAnchor.href = '#';
+                        attachmentAnchor.onclick = function() {
+                            toggleAttachments(e.message.id);
+                        };
+                        attachmentAnchor.innerHTML = '<i class="fas fa-paperclip"></i> View Attachments';
+                        attachmentLink.appendChild(attachmentAnchor);
+                        messageContent.appendChild(attachmentLink);
 
-                            if (data.message.attachments && data.message.attachments.length > 0) {
-                                var attachmentsLink = document.createElement('p');
-                                attachmentsLink.style.margin = '0';
-                                attachmentsLink.innerHTML = '<a href="#" onclick="toggleAttachments(' +
-                                    data.message.id +
-                                    ')"><i class="fas fa-paperclip"></i> View Attachments</a>';
+                        var attachmentsContainer = document.createElement('div');
+                        attachmentsContainer.id = 'attachments-' + e.message.id;
+                        attachmentsContainer.classList.add('attachments-container');
+                        attachmentsContainer.style.cssText =
+                            'display: none; max-height: 400px; overflow-y: auto;';
 
-                                var attachmentsContainer = document.createElement('div');
-                                attachmentsContainer.id = 'attachments-' + data.message.id;
-                                attachmentsContainer.classList.add('attachments-container');
-                                attachmentsContainer.style.cssText =
-                                    'display: none; max-height: 400px; overflow-y: auto;';
+                        e.message.attachments.forEach(function(attachment) {
+                            var attachmentItem = document.createElement('div');
+                            attachmentItem.classList.add('attachment-item');
 
-                                data.message.attachments.forEach(function(attachment) {
-                                    var attachmentItem = document.createElement('div');
-                                    attachmentItem.classList.add('attachment-item');
-
-                                    var attachmentImg = document.createElement('img');
-                                    attachmentImg.src = '{{ asset('storage/') }}/' + attachment
-                                        .path;
-                                    attachmentImg.alt = attachment.name;
-                                    attachmentImg.style.cssText =
-                                        'max-width: 100%; height: auto;';
-
-                                    attachmentItem.appendChild(attachmentImg);
-                                    attachmentsContainer.appendChild(attachmentItem);
-                                });
-
-                                messageContent.appendChild(attachmentsLink);
-                                messageContent.appendChild(attachmentsContainer);
+                            var fileExtension = attachment.path.split('.').pop().toLowerCase();
+                            if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
+                                var attachmentImg = document.createElement('img');
+                                attachmentImg.src = '{{ asset('storage/') }}/' + attachment.path;
+                                attachmentImg.alt = attachment.name;
+                                attachmentImg.style.cssText = 'max-width: 100%; height: auto;';
+                                attachmentItem.appendChild(attachmentImg);
+                            } else {
+                                var attachmentLink = document.createElement('a');
+                                attachmentLink.href = '{{ asset('storage/') }}/' + attachment.path;
+                                attachmentLink.target = '_blank';
+                                attachmentLink.innerText = attachment.name;
+                                attachmentItem.appendChild(attachmentLink);
                             }
+
+                            attachmentsContainer.appendChild(attachmentItem);
+                        });
+
+                        messageContent.appendChild(attachmentsContainer);
+                    }
                             messageContent.appendChild(messageTime);
                             newMessage.appendChild(profilePic);
                             newMessage.appendChild(messageContent);

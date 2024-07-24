@@ -68,7 +68,7 @@ class UserTicketController extends Controller
         if ($user->ticket_quota <= 0) {
             return redirect()->back()->with('error', 'You do not have enough ticket quota to create a new ticket. Please contact admin.');
         }
-        
+
         $ticket = Ticket::create([
             'user_id' => $user->id,
             'category' => $request->category,
@@ -175,21 +175,24 @@ class UserTicketController extends Controller
     public function show(string $id)
     {
         $ticket = Ticket::find($id);
-        $ticket_id = $ticket->id;
         if (!$ticket) {
             return redirect()->back()->with('error', 'Ticket not found');
         }
+
+        $ticket_id = $ticket->id;
         $messages = $ticket->messages;
+
         foreach ($messages as $message) {
             $attachments = $message->attachments;
-            if ($attachments->isNotEmpty()) {
-                $message->has_attachments = true;
-                $message->attachments_list = $message->attachments_list();
-            } else {
-                $message->has_attachments = false;
-            }
+            $message->has_attachments = $attachments->isNotEmpty();
+            $message->attachments_list = $message->has_attachments ? $message->attachments_list() : null;
         }
-        return view('user.tickets.show-ticket', compact('ticket','messages', 'ticket_id'));
+
+        if ($ticket->user_id == Auth::id()) {
+            $ticket->messages()->where('user_id', '!=', Auth::id())->where('is_read', null)->update(['is_read' => now()]);
+        }
+
+        return view('user.tickets.show-ticket', compact('ticket', 'messages', 'ticket_id'));
     }
 
     public function storeFromEmail($userId, $title, $message)
@@ -207,7 +210,7 @@ class UserTicketController extends Controller
             'title' => $title,
             'message' => $message,
             'references' => $this->generateTicketReference(),
-            'category'=> "email"
+            'category' => "email"
         ]);
 
         // event(new TicketCreated($ticket));
@@ -221,7 +224,24 @@ class UserTicketController extends Controller
         }
     }
 
+    public function markMessagesAsRead(Request $request, string $ticketId)
+    {
+        $ticket = Ticket::find($ticketId);
+        if (!$ticket) {
+            return response()->json(['error' => 'Ticket not found'], 404);
+        }
 
+        $unreadMessages = $ticket->messages()->where('user_id', '!=', Auth::id())->where('is_read', null)->get();
+
+
+        $unreadMessages->each(function ($message) {
+            $message->is_read = now();
+            $message->save();
+        });
+
+
+        return response()->json(['success' => true, 'message' => 'Messages marked as read']);
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -250,7 +270,7 @@ class UserTicketController extends Controller
     {
         // Get the last ticket reference
         $lastTicket = Ticket::orderBy('created_at', 'desc')->first();
-        
+
         // If no tickets exist, return the default reference
         if (!$lastTicket) {
             return "T-0001";

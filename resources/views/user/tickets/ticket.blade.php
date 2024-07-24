@@ -32,12 +32,18 @@
                                     <ul class="dx-ticket-info">
                                         <li>Created: {{ $ticket->updated_at->format('d M Y') }}</li>
                                         <li>Category: {{ $ticket->category }}</li>
+                                        @php $newMessagesCount = $ticket->messages->where('user_id', '!=', Auth::id())->where('is_read', '')->count(); @endphp
+                                        @if ($newMessagesCount > 0)
+                                            <li style="color: blue; font-weight: bold;">New Messages: {{ $newMessagesCount }}</li>
+                                        @endif
                                         @if ($ticket->is_new)
                                             <li class="dx-ticket-new">New</li>
                                         @endif
                                     </ul>
                                 </span>
                                 <span class="dx-ticket-status">{{ $ticket->status }}</span>
+                               
+                                
                             </a>
                         @endforeach
                         <div class="mt-20">

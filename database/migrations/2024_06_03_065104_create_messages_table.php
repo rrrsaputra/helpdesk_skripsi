@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId($tableName['columns']['user_foreign_id']);
             $table->foreignId($tableName['columns']['ticket_foreign_id']);
             $table->text('message');
+            $table->dateTime('is_read')->default(null)->nullable();
             $table->timestamps();
         });
     }

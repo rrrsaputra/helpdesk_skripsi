@@ -51,7 +51,7 @@
                         <p>
                             INBOX
                             <i class="fas fa-angle-left right"></i>
-                            <span class="badge badge-warning right">6</span>
+                          
                         </p>
                     </a>
                     <ul class="nav nav-treeview" style="display: block;">
@@ -64,7 +64,7 @@
                                     <i class="far fa-circle nav-icon"></i>
                                 @endif
                                 <p>Unassigned</p>
-                                <span class="badge badge-info right">3</span>
+                                
                             </a>
                         </li>
                         <li class="nav-item">
@@ -76,7 +76,7 @@
                                     <i class="far fa-circle nav-icon"></i>
                                 @endif
                                 <p>Mine</p>
-                                <span class="badge badge-info right">3</span>
+                                
                             </a>
                         </li>
 
@@ -89,7 +89,7 @@
                                     <i class="far fa-circle nav-icon"></i>
                                 @endif
                                 <p>Closed</p>
-                                <span class="badge badge-info right">3</span>
+                                
                             </a>
                         </li>
                     </ul>

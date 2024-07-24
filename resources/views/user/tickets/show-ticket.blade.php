@@ -2,7 +2,8 @@
 
 @section('content')
     @if (isset($messages) && $messages->count() > 0)
-        <div class="navbar" id="nv" style="background-color: #ffffff; padding: 15px; border-bottom: 2px solid #495057; color: #ffffff;">
+        <div class="navbar" id="nv"
+            style="background-color: #ffffff; padding: 15px; border-bottom: 2px solid #495057; color: #ffffff;">
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <button onclick="window.history.back()" class="btn btn-secondary" style="margin-right: 10px;">Back</button>
                 <h4 style="margin: 0; font-weight: bold;">Ticket: {{ $ticket->references }} - {{ $ticket->title }}</h4>
@@ -10,7 +11,7 @@
         </div>
         <div class="messages-list" id='msglst' style="height: 54vh; margin-right: 10px;margin-left: 10px;">
             <div id="messages-container" style="height: 100%; overflow-y: auto;">
-                <div style="margin-top: 10px;">  
+                <div style="margin-top: 10px;">
 
                 </div>
                 @foreach ($messages as $message)
@@ -36,7 +37,8 @@
                                                 <img src="{{ asset('storage/' . $attachment->path) }}"
                                                     alt="{{ $attachment->name }}" style="max-width: 100%; height: auto;">
                                             @else
-                                                <a href="{{ asset('storage/' . $attachment->path) }}" target="_blank">{{ $attachment->name }}</a>
+                                                <a href="{{ asset('storage/' . $attachment->path) }}"
+                                                    target="_blank">{{ $attachment->name }}</a>
                                             @endif
                                         </div>
                                     @endforeach
@@ -75,9 +77,10 @@
         @csrf
 
         <link href="https://unpkg.com/filepond/dist/filepond.min.css" rel="stylesheet" />
-        
-        
-        <button id="btn" type="button" onclick="toggleAttachmentInput()" class="dx-btn dx-btn-md" style="background-color: #007bff; color: white; border: none; border-radius: 5px; padding: 10px 15px; cursor: pointer; transition: background-color 0.3s; margin: 10px 0;">
+
+
+        <button id="btn" type="button" onclick="toggleAttachmentInput()" class="dx-btn dx-btn-md"
+            style="background-color: #007bff; color: white; border: none; border-radius: 5px; padding: 10px 15px; cursor: pointer; transition: background-color 0.3s; margin: 10px 0;">
             Show Attachment
         </button>
         <div class="dx-form-group" id="attachment-group" style="display: none;">
@@ -89,8 +92,8 @@
         <script>
             function toggleAttachmentInput() {
                 var attachmentGroup = document.getElementById('attachment-group');
-                var toggleButton= document.getElementById('btn');
-                var container= document.getElementById('messages-container');
+                var toggleButton = document.getElementById('btn');
+                var container = document.getElementById('messages-container');
                 var chat = document.getElementById('msglst');
 
                 if (attachmentGroup.style.display === 'none' || attachmentGroup.style.display === '') {
@@ -98,13 +101,13 @@
                     container.scrollTop = container.scrollHeight;
                     attachmentGroup.style.display = 'block';
                     toggleButton.textContent = 'Hide Attachment';
-                    
+
                 } else {
                     chat.style.height = '55vh'; // Adjusted height to ensure it works
                     container.scrollTop = container.scrollHeight;
                     attachmentGroup.style.display = 'none';
                     toggleButton.textContent = 'Show Attachment';
-                    
+
                 }
             }
         </script>
@@ -137,6 +140,7 @@
         <div class="form-group">
             <div id="editor" style="height: 100px;"></div>
             <input type="hidden" name="message" id="hidden_message">
+            <input type="hidden" name="is_online" id="hidden_is_online">
         </div>
         <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
         <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
@@ -153,32 +157,65 @@
                 var editor = document.querySelector('#editor .ql-editor');
 
                 const editorContent = editor.innerHTML.trim(); // Get the trimmed content
-                
+
                 if (editorContent === '<br>' || editorContent === '') {
                     document.getElementById('hidden_message').value = ''; // Set to empty if only <br> or empty
                 } else {
                     document.getElementById('hidden_message').value = editorContent.replace(/<br\s*\/?>/g,
-                    ''); // Remove <br> tags
+                        ''); // Remove <br> tags
                 }
                 editor.innerHTML = ""; // Clear the editor
             });
         </script>
-        <button id="btn" type="submit" class="btn btn-primary">Send</button>
+    
+
+    
+
+        <button id="btn-send" type="submit" class="btn btn-primary">Send</button>
     </form>
 
     <script>
         document.getElementById('editor').addEventListener('keydown', function(event) {
             if (event.key === 'Enter' && !event.shiftKey) { // Check if Enter is pressed without Shift
                 event.preventDefault(); // Prevent default behavior (new line)
-                
-                document.getElementById('btn').click(); // Trigger the button click
+
+                document.getElementById('btn-send').click(); // Trigger the button click
 
             }
         });
+
+        // In your JavaScript file
+
+
+
         document.addEventListener('DOMContentLoaded', function() {
             var messagesContainer = document.getElementById('messages-container');
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
-
+            
+            window.Echo.join(`messages.{{ $ticket_id }}`)
+            .here((users) => {
+                // Set online status based on whether the assigned user is present
+                document.getElementById('hidden_is_online').value = users.some(user => user.id === {{ $ticket->assigned_to }});
+                console.log('Current online status:', document.getElementById('hidden_is_online').value);
+                console.log('Current users in the channel:', users);
+            })
+            .joining((user) => {
+                // Set online status to true if the assigned user joins
+                if (user.id === {{ $ticket->assigned_to }}) {
+                    document.getElementById('hidden_is_online').value = true;
+                    console.log('User joined:', user);
+                    console.log('Current online status:', document.getElementById('hidden_is_online').value);
+                } 
+            })
+            .leaving((user) => {
+                // Set online status to false if the assigned user leaves
+                if (user.id === {{ $ticket->assigned_to }}) {
+                    document.getElementById('hidden_is_online').value = false;
+                    console.log('User left:', user);
+                    console.log('Current online status:', document.getElementById('hidden_is_online').value);
+                } 
+            });
+            
             // Listen for new messages
             window.Echo.private('messages.{{ $ticket_id }}')
                 .listen('MessageSent', (e) => {
@@ -234,11 +271,22 @@
                         e.message.attachments.forEach(function(attachment) {
                             var attachmentItem = document.createElement('div');
                             attachmentItem.classList.add('attachment-item');
-                            var attachmentImg = document.createElement('img');
-                            attachmentImg.src = '{{ asset('storage/') }}/' + attachment.path;
-                            attachmentImg.alt = attachment.name;
-                            attachmentImg.style.cssText = 'max-width: 100%; height: auto;';
-                            attachmentItem.appendChild(attachmentImg);
+
+                            var fileExtension = attachment.path.split('.').pop().toLowerCase();
+                            if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
+                                var attachmentImg = document.createElement('img');
+                                attachmentImg.src = '{{ asset('storage/') }}/' + attachment.path;
+                                attachmentImg.alt = attachment.name;
+                                attachmentImg.style.cssText = 'max-width: 100%; height: auto;';
+                                attachmentItem.appendChild(attachmentImg);
+                            } else {
+                                var attachmentLink = document.createElement('a');
+                                attachmentLink.href = '{{ asset('storage/') }}/' + attachment.path;
+                                attachmentLink.target = '_blank';
+                                attachmentLink.innerText = attachment.name;
+                                attachmentItem.appendChild(attachmentLink);
+                            }
+
                             attachmentsContainer.appendChild(attachmentItem);
                         });
 
@@ -250,11 +298,17 @@
 
                     messagesContainer.appendChild(newMessage);
                     messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+
                 });
+
 
             // Handle form submission without refreshing
             document.getElementById('message-form').addEventListener('submit', function(e) {
                 e.preventDefault();
+               
+                console.log('is_online:', document.getElementById('hidden_is_online').value);
+
                 const addedFiles = pond.getFiles();
                 if (addedFiles.length > 0) {
                     const filePaths = addedFiles.map(file => ({

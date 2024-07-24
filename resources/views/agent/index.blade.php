@@ -5,7 +5,7 @@
 
 @section('content')
     @php
-        $columns = ['', 'Customer', 'Summary', '', 'Number', 'Last Updated', 'latitude', 'longitude'];
+        $columns = ['', 'Customer', 'Summary', 'New Messages', '', 'Number', 'Last Updated', 'latitude', 'longitude'];
         $data = $tickets
             ->map(function ($ticket) {
                 return [
@@ -15,8 +15,9 @@
                         '',
                         $ticket->user->name,
                         [$ticket->title, $ticket->category, $ticket->message ?? ''],
+                        $ticket->messages->where('user_id', '!=', Auth::id())->where('is_read', '')->count(),
                         '',
-                        $ticket->id,
+                        $ticket->references,
                         $ticket->last_updated,
                         $ticket->latitude,
                         $ticket->longitude,
@@ -172,10 +173,10 @@
                                         <tr style="cursor: pointer" data-id="{{ $row['id'] }}"
                                             data-coordinates="{{ $row['values'][6] }},{{ $row['values'][7] }}"
                                             onclick="handleRowClick(event)">
-                                            @foreach ($row['values'] as $value)
+                                            @foreach ($row['values'] as $index => $value)
                                                 <td>
                                                     @if (is_array($value))
-                                                        @foreach ($value as $index => $subValue)
+                                                        @foreach ($value as $subIndex => $subValue)
                                                             <div>
                                                                 @php
                                                                     $charLimit =
@@ -184,7 +185,7 @@
                                                                             ? intval($columnSizes[$index] * 0.5)
                                                                             : 70;
                                                                 @endphp
-                                                                @if ($index === 0)
+                                                                @if ($subIndex === 0)
                                                                     <strong>{!! strlen($subValue) > $charLimit ? substr($subValue, 0, $charLimit) . '...' : $subValue !!}</strong>
                                                                 @else
                                                                     {!! strlen($subValue) > $charLimit ? substr($subValue, 0, $charLimit) . '...' : $subValue !!}
@@ -192,7 +193,11 @@
                                                             </div>
                                                         @endforeach
                                                     @else
-                                                        {{ $value }}
+                                                        @if ($index === 3 && $value > 0)
+                                                            <span class="badge badge-info right">{{ $value }}</span>
+                                                        @else
+                                                            {{ $value }}
+                                                        @endif
                                                     @endif
                                                 </td>
                                             @endforeach
