@@ -578,7 +578,10 @@
 
         document.getElementById('user-select').addEventListener('change', function() {
             var userId = this.value;
-            fetch(`/agent/dashboard/user/${userId}`)
+            var startDate = document.getElementById('start_date').value;
+            var endDate = document.getElementById('end_date').value;
+
+            fetch(`/agent/dashboard/user/${userId}?start_date=${startDate}&end_date=${endDate}`)
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('selected-user-name').innerText = data.name;
@@ -648,7 +651,7 @@
                     if (window.userTicketsPerCategoryChart) {
                         window.userTicketsPerCategoryChart.data.labels = data.userTicketCategories;
                         window.userTicketsPerCategoryChart.data.datasets[0].data = data
-                            .userTicketDataCategories;
+                        .userTicketDataCategories;
                         window.userTicketsPerCategoryChart.update();
                     } else {
                         window.userTicketsPerCategoryChart = new Chart(ctxBar, {

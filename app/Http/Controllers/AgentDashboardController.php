@@ -89,12 +89,19 @@ class AgentDashboardController extends Controller
         return view('agent.dashboard.index', compact('users', 'ticketLabels', 'ticketData', 'tickets', 'ticketCategories',  'ticketDataCategories', 'ticketStatus', 'ticketDataStatus','agentPerformance', 'agents', 'notifications', 'hoursUntilFirstReply', 'timeCategories'));
     }
 
-    public function getUserData($id)
+    public function getUserData($id, Request $request)
     {
+        $startDate = $request->input('start_date', now()->subWeek()->startOfDay());
+        $endDate = $request->input('end_date', now()->endOfDay());
+    
         $user = User::findOrFail($id);
-        $tickets = Ticket::where('user_id', $id)->get();
-        $calls = ScheduledCall::where('user_id', $id)->get();
-
+        $tickets = Ticket::where('user_id', $id)
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->get();
+        $calls = ScheduledCall::where('user_id', $id)
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->get();
+    
         // Data untuk grafik per user
         $userTicketLabels = $tickets->groupBy(function ($date) {
             return Carbon::parse($date->created_at)->format('l'); // Group by day of the week
@@ -102,7 +109,7 @@ class AgentDashboardController extends Controller
         $userCallLabels = $calls->groupBy(function ($date) {
             return Carbon::parse($date->created_at)->format('l'); // Group by day of the week
         })->keys();
-
+    
         $userTicketData = $tickets->groupBy(function ($date) {
             return Carbon::parse($date->created_at)->format('l'); // Group by day of the week
         })->map(function ($day) {
@@ -113,13 +120,13 @@ class AgentDashboardController extends Controller
         })->map(function ($day) {
             return $day->count();
         });
-
+    
         $userTicketCategories = $tickets->groupBy('category')->keys();
-
+    
         $userTicketDataCategories = $tickets->groupBy('category')->map(function ($category) {
             return $category->count();
         })->values();
-
+    
         return response()->json([
             'name' => $user->name,
             'tickets_count' => $tickets->count(),
