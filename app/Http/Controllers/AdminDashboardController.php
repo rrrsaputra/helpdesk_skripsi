@@ -15,8 +15,8 @@ class AdminDashboardController extends Controller
         $users = User::role('user')->get();
 
         // Ambil rentang tanggal dari request
-        $startDate = $request->input('start_date', now()->subWeek()->startOfDay());
-        $endDate = $request->input('end_date', now()->endOfDay());
+        $startDate = $request->input('start_date', now()->addDay()->subWeek()->startOfDay());
+        $endDate = $request->input('end_date', now()->addDay()->endOfDay());
         $tickets = Ticket::whereBetween('created_at', [$startDate, $endDate])->get();
 
         // Ticket per Day
@@ -87,8 +87,8 @@ class AdminDashboardController extends Controller
 
     public function getUserData($id, Request $request)
     {
-        $startDate = $request->input('start_date', now()->subWeek()->startOfDay());
-        $endDate = $request->input('end_date', now()->endOfDay());
+        $startDate = $request->input('start_date', now()->addDay()->subWeek()->startOfDay());
+        $endDate = $request->input('end_date', now()->addDay()->endOfDay());
     
         $user = User::findOrFail($id);
         $tickets = Ticket::where('user_id', $id)

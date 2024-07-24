@@ -30,7 +30,7 @@
                                                 <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
                                             </div>
                                             <input type="date" id="start_date" name="start_date" class="form-control"
-                                                value="{{ request('start_date') ?? now()->subWeek()->startOfDay()->format('Y-m-d') }}"
+                                                value="{{ request('start_date') ?? now()->addDay()->subWeek()->startOfDay()->format('Y-m-d') }}"
                                                 required>
                                         </div>
                                     </div>
@@ -41,7 +41,7 @@
                                                 <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
                                             </div>
                                             <input type="date" id="end_date" name="end_date" class="form-control"
-                                                value="{{ request('end_date') ?? now()->endOfDay()->format('Y-m-d') }}"
+                                                value="{{ request('end_date') ?? now()->addDay()->endOfDay()->format('Y-m-d') }}"
                                                 required>
                                         </div>
                                     </div>
