@@ -107,8 +107,7 @@
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="typeModalLabel">Update User Type and
-                                                            Role</h5>
+                                                        <h5 class="modal-title" id="typeModalLabel">Update User Type and Role</h5>
                                                         <button type="button" class="close" data-dismiss="modal"
                                                             aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
@@ -118,24 +117,24 @@
                                                         <label for="userType">User Type:</label>
                                                         <select id="userType" name="type" class="form-control" required>
                                                             <option value="Standard"
-                                                                {{ isset($row['type']) && $row['type'] == 'Standard' ? 'selected' : '' }}>
+                                                                {{ $row['values'][2] == 'Standard' ? 'selected' : '' }}>
                                                                 Standard</option>
                                                             <option value="Premium"
-                                                                {{ isset($row['type']) && $row['type'] == 'Premium' ? 'selected' : '' }}>
+                                                                {{ $row['values'][2] == 'Premium' ? 'selected' : '' }}>
                                                                 Premium</option>
                                                         </select>
                                                         <label for="userRole" class="mt-3">User Role:</label>
                                                         <select id="userRole" name="role" class="form-control" required>
                                                             <option value="user"
-                                                                {{ isset($row['role']) && $row['role'] == 'user' ? 'selected' : '' }}>
+                                                                {{ $row['values'][3] == 'user' ? 'selected' : '' }}>
                                                                 User
                                                             </option>
                                                             <option value="agent"
-                                                                {{ isset($row['role']) && $row['role'] == 'agent' ? 'selected' : '' }}>
+                                                                {{ $row['values'][3] == 'agent' ? 'selected' : '' }}>
                                                                 Agent
                                                             </option>
                                                             <option value="admin"
-                                                                {{ isset($row['role']) && $row['role'] == 'admin' ? 'selected' : '' }}>
+                                                                {{ $row['values'][3] == 'admin' ? 'selected' : '' }}>
                                                                 Admin
                                                             </option>
                                                         </select>
