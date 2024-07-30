@@ -5,7 +5,7 @@
 
 @section('content')
     @php
-        $columns = ['Customer', 'Summary', '', 'Number', 'Last Updated', 'Assigned To', 'latitude', 'longitude'];
+        $columns = ['Customer', 'Summary', '', 'Number', 'Last Updated', 'Assigned To', 'References', 'latitude', 'longitude'];
         $data = $tickets
             ->map(function ($ticket) {
                 return [
@@ -18,6 +18,7 @@
                         $ticket->id,
                         $ticket->last_updated,
                         $ticket->assignedTo->name ?? 'Unassigned', // Perubahan di sini
+                        $ticket->references ?? 'No references', // Added references
                         $ticket->latitude,
                         $ticket->longitude,
                     ],
@@ -172,7 +173,7 @@
                             <tbody>
                                 @forelse ($data as $row)
                                     <tr style="cursor: pointer" data-id="{{ $row['id'] }}"
-                                        data-coordinates="{{ $row['values'][6] }},{{ $row['values'][7] }}"
+                                        data-coordinates="{{ $row['values'][7] }},{{ $row['values'][8] }}"
                                         onclick="handleRowClick(event)">
                                         @foreach ($row['values'] as $value)
                                             <td>
@@ -276,13 +277,13 @@
                                                                         <label for="latitude">Latitude</label>
                                                                         <input type="text" class="form-control"
                                                                             id="latitude" name="latitude"
-                                                                            value="{{ $row['values'][6] }}">
+                                                                            value="{{ $row['values'][7] }}">
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label for="longitude">Longitude</label>
                                                                         <input type="text" class="form-control"
                                                                             id="longitude" name="longitude"
-                                                                            value="{{ $row['values'][7] }}">
+                                                                            value="{{ $row['values'][8] }}">
                                                                     </div>
                                                                 </div>
                                                                 <div class="modal-footer">
@@ -331,8 +332,8 @@
 
                                 @empty
                                     <tr>
-                                        <td colspan="9">No articles available</td>
-                                        <!-- Updated colspan to 9 to include Actions column -->
+                                        <td colspan="10">No articles available</td>
+                                        <!-- Updated colspan to 10 to include Actions column -->
                                     </tr>
                                 @endforelse
                             </tbody>

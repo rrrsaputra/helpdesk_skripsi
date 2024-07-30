@@ -4,7 +4,9 @@
 @endsection
 
 @section('content')
+
     @if (isset($messages) && $messages->count() > 0)
+    
         <div class="messages-list" style="height: 100%;">
             <div id="messages-container" style="max-height: 61.5vh; overflow-y: auto;">
                 @foreach ($messages as $message)

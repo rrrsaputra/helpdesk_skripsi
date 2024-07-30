@@ -15,48 +15,38 @@ class AdminTicketController extends Controller
     public function index(Request $request)
     {
         $agents = User::role('agent')->get();
-        $inbox = $request->query('inbox', 'unassigned'); // 'default_value' can be replaced with a default value if 'inbox' is not provided
-        if (is_null($inbox)) {
-            // Redirect to the default URL with 'inbox=unassigned'
-            return redirect()->route('admin.ticket.index', ['inbox' => 'unassigned']);
-        }
+        $inbox = $request->query('inbox', 'unassigned');
 
         $search = $request->input('search');
-        $paginationCount = 5; // Adjusted pagination count
+        $paginationCount = 5;
 
-        if ($inbox == 'unassigned') {
-            $tickets = Ticket::opened()->where('assigned_to', null)->orderBy('created_at', 'desc')
-                ->when($search, function ($query) use ($search) {
-                    $query->where('title', 'like', "%{$search}%")
-                        ->orWhere('category', 'like', "%{$search}%")
-                        ->orWhere('message', 'like', "%{$search}%");
-                })
-                ->paginate($paginationCount); // Fixed pagination
-            return view('admin.ticket.index', compact('tickets', 'inbox', 'agents'));
-        } else if ($inbox == 'mine') {
-            $tickets = Ticket::opened()->where('assigned_to', Auth::id())->orderBy('created_at', 'desc')
-                ->when($search, function ($query) use ($search) {
-                    $query->where('title', 'like', "%{$search}%")
-                        ->orWhere('category', 'like', "%{$search}%")
-                        ->orWhere('message', 'like', "%{$search}%");
-                })->paginate($paginationCount); // Fixed pagination
-            return view('agent.index', compact('tickets', 'inbox'));
-        } else if ($inbox == 'assigned') {
-            $tickets = Ticket::opened()->whereNotNull('assigned_to')->orderBy('created_at', 'desc')
-                ->when($search, function ($query) use ($search) {
-                    $query->where('title', 'like', "%{$search}%")
-                        ->orWhere('category', 'like', "%{$search}%")
-                        ->orWhere('message', 'like', "%{$search}%");
-                })->paginate($paginationCount); // Fixed pagination
-            return view('admin.ticket.index', compact('tickets', 'inbox', 'agents'));
-        } else if ($inbox == 'closed') {
-            $tickets = Ticket::closed()->orderBy('created_at', 'desc')
-                ->when($search, function ($query) use ($search) {
-                    $query->where('title', 'like', "%{$search}%")
-                        ->orWhere('category', 'like', "%{$search}%")
-                        ->orWhere('message', 'like', "%{$search}%");
-                })->paginate($paginationCount); // Fixed pagination
-            return view('admin.ticket.index', compact('tickets', 'inbox', 'agents'));
+        $ticketsQuery = Ticket::opened()->orderBy('created_at', 'desc')
+            ->when($search, function ($query) use ($search) {
+                $query->where('title', 'like', "%{$search}%")
+                    ->orWhere('category', 'like', "%{$search}%")
+                    ->orWhere('message', 'like', "%{$search}%");
+            });
+
+        switch ($inbox) {
+            case 'unassigned':
+                $tickets = $ticketsQuery->where('assigned_to', null)->paginate($paginationCount);
+                return view('admin.ticket.index', compact('tickets', 'inbox', 'agents'));
+            case 'mine':
+                $tickets = $ticketsQuery->where('assigned_to', Auth::id())->paginate($paginationCount);
+                return view('agent.index', compact('tickets', 'inbox'));
+            case 'assigned':
+                $tickets = $ticketsQuery->whereNotNull('assigned_to')->paginate($paginationCount);
+                return view('admin.ticket.index', compact('tickets', 'inbox', 'agents'));
+            case 'closed':
+                $tickets = Ticket::closed()->orderBy('created_at', 'desc')
+                    ->when($search, function ($query) use ($search) {
+                        $query->where('title', 'like', "%{$search}%")
+                            ->orWhere('category', 'like', "%{$search}%")
+                            ->orWhere('message', 'like', "%{$search}%");
+                    })->paginate($paginationCount);
+                return view('admin.ticket.index', compact('tickets', 'inbox', 'agents'));
+            default:
+                return redirect()->route('admin.ticket.index', ['inbox' => 'unassigned']);
         }
     }
 

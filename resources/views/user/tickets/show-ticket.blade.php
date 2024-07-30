@@ -1,19 +1,11 @@
 @extends('layouts.user')
 
 @section('content')
+    
     @if (isset($messages) && $messages->count() > 0)
-        <div class="navbar" id="nv"
-            style="background-color: #ffffff; padding: 15px; border-bottom: 2px solid #495057; color: #ffffff;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <button onclick="window.history.back()" class="btn btn-secondary" style="margin-right: 10px;">Back</button>
-                <h4 style="margin: 0; font-weight: bold;">Ticket: {{ $ticket->references }} - {{ $ticket->title }}</h4>
-            </div>
-        </div>
-        <div class="messages-list" id='msglst' style="height: 54vh; margin-right: 10px;margin-left: 10px;">
-            <div id="messages-container" style="height: 100%; overflow-y: auto;">
-                <div style="margin-top: 10px;">
-
-                </div>
+    
+        <div class="messages-list" style="height: 100%;">
+            <div id="messages-container" style="max-height: 61.5vh; overflow-y: auto;">
                 @foreach ($messages as $message)
                     <div class="message-item"
                         style="display: flex; align-items: flex-start; margin-bottom: 10px; {{ $message->user->id == Auth::id() ? 'flex-direction: row-reverse;' : '' }}">
@@ -73,15 +65,13 @@
     @endif
 
     <form id="message-form" action="{{ route('agent.messages.store', ['id' => $ticket_id]) }}" method="POST"
-        style="width: 100%; background: white; padding: 10px; box-shadow: 0 -2px 5px rgba(0,0,0,0.1); position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000;">
+        style="width: 100%; background: white; padding: 10px; box-shadow: 0 -2px 5px rgba(0,0,0,0.1); margin-bottom: 0;">
         @csrf
 
         <link href="https://unpkg.com/filepond/dist/filepond.min.css" rel="stylesheet" />
-
-
-        <button id="btn" type="button" onclick="toggleAttachmentInput()" class="dx-btn dx-btn-md"
+        <button type="button" onclick="toggleAttachmentInput()" class="dx-btn dx-btn-md"
             style="background-color: #007bff; color: white; border: none; border-radius: 5px; padding: 10px 15px; cursor: pointer; transition: background-color 0.3s; margin: 10px 0;">
-            Show Attachment
+            Add Attachment
         </button>
         <div class="dx-form-group" id="attachment-group" style="display: none;">
 
@@ -92,23 +82,7 @@
         <script>
             function toggleAttachmentInput() {
                 var attachmentGroup = document.getElementById('attachment-group');
-                var toggleButton = document.getElementById('btn');
-                var container = document.getElementById('messages-container');
-                var chat = document.getElementById('msglst');
-
-                if (attachmentGroup.style.display === 'none' || attachmentGroup.style.display === '') {
-                    chat.style.height = "44vh"; // Set chat height for attachment visibility
-                    container.scrollTop = container.scrollHeight;
-                    attachmentGroup.style.display = 'block';
-                    toggleButton.textContent = 'Hide Attachment';
-
-                } else {
-                    chat.style.height = '55vh'; // Adjusted height to ensure it works
-                    container.scrollTop = container.scrollHeight;
-                    attachmentGroup.style.display = 'none';
-                    toggleButton.textContent = 'Show Attachment';
-
-                }
+                attachmentGroup.style.display = attachmentGroup.style.display === 'none' ? 'block' : 'none';
             }
         </script>
         <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
@@ -127,14 +101,20 @@
                             'X-CSRF-TOKEN': '{{ csrf_token() }}'
                         }
                     },
+
+
+
+
                 }
             });
             pond.on('addfile', function(file) {
                 // Upload the file to your server
                 const addedFiles = pond.getFiles();
                 addedFiles.forEach(file => {
-                    
+
                 });
+
+
             });
         </script>
         <div class="form-group">
@@ -167,11 +147,7 @@
                 editor.innerHTML = ""; // Clear the editor
             });
         </script>
-    
-
-    
-
-        <button id="btn-send" type="submit" class="btn btn-primary">Send</button>
+        <button id="btn" type="submit" class="btn btn-primary">Send</button>
     </form>
 
     <script>
@@ -179,40 +155,33 @@
             if (event.key === 'Enter' && !event.shiftKey) { // Check if Enter is pressed without Shift
                 event.preventDefault(); // Prevent default behavior (new line)
 
-                document.getElementById('btn-send').click(); // Trigger the button click
+                document.getElementById('btn').click(); // Trigger the button click
 
             }
         });
-
-        // In your JavaScript file
 
 
 
         document.addEventListener('DOMContentLoaded', function() {
             var messagesContainer = document.getElementById('messages-container');
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            
             window.Echo.join(`messages.{{ $ticket_id }}`)
-            .here((users) => {
-                // Set online status based on whether the assigned user is present
-                document.getElementById('hidden_is_online').value = users.some(user => user.id === {{ $ticket->assigned_to }}) ? 1 : 0;
-                
-            })
-            .joining((user) => {
-                // Set online status to 1 if the assigned user joins
-                if (user.id === {{ $ticket->assigned_to }}) {
-                    document.getElementById('hidden_is_online').value = 1;
-                    
-                } 
-            })
-            .leaving((user) => {
-                // Set online status to 0 if the assigned user leaves
-                if (user.id === {{ $ticket->assigned_to }}) {
-                    document.getElementById('hidden_is_online').value = 0;
-                    
-                } 
-            });
-            
+                .here((users) => {
+                    document.getElementById('hidden_is_online').value = users.some(user => user.id ===
+                        {{ $ticket->assigned_to }}) ? 1 : 0;
+                })
+                .joining((user) => {
+                    if (user.id === {{ $ticket->assigned_to }}) {
+                        document.getElementById('hidden_is_online').value = 1;
+                    }
+                })
+                .leaving((user) => {
+                    if (user.id === {{ $ticket->assigned_to }}) {
+                        document.getElementById('hidden_is_online').value = 0;
+                    }
+                });
+
+
             // Listen for new messages
             window.Echo.private('messages.{{ $ticket_id }}')
                 .listen('MessageSent', (e) => {
@@ -268,7 +237,6 @@
                         e.message.attachments.forEach(function(attachment) {
                             var attachmentItem = document.createElement('div');
                             attachmentItem.classList.add('attachment-item');
-
                             var fileExtension = attachment.path.split('.').pop().toLowerCase();
                             if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
                                 var attachmentImg = document.createElement('img');
@@ -283,7 +251,6 @@
                                 attachmentLink.innerText = attachment.name;
                                 attachmentItem.appendChild(attachmentLink);
                             }
-
                             attachmentsContainer.appendChild(attachmentItem);
                         });
 
@@ -295,22 +262,18 @@
 
                     messagesContainer.appendChild(newMessage);
                     messagesContainer.scrollTop = messagesContainer.scrollHeight;
-
-
                 });
-
 
             // Handle form submission without refreshing
             document.getElementById('message-form').addEventListener('submit', function(e) {
                 e.preventDefault();
-               
                 const addedFiles = pond.getFiles();
                 if (addedFiles.length > 0) {
                     const filePaths = addedFiles.map(file => ({
                         serverId: file.serverId,
                         name: file.file.name
                     }));
-                    
+
                     // Append filePaths to a hidden input field
                     const filePathsInput = document.createElement('input');
                     filePathsInput.type = 'hidden';
@@ -318,15 +281,17 @@
                     filePathsInput.value = JSON.stringify(filePaths);
                     event.target.closest('form').appendChild(filePathsInput);
                 } else {
-                   
+
                 }
 
                 var form = this;
                 var formData = new FormData(form);
 
                 pond.removeFiles(); // This will erase all files inside the filepond
-
-
+                var attachmentGroup = document.getElementById('attachment-group');
+                if (attachmentGroup.style.display === 'block') {
+                    attachmentGroup.style.display = 'none';
+                }
                 // Add this on top of the message
                 var loadingIndicator = document.createElement('div');
                 loadingIndicator.classList.add('loading-indicator');
@@ -384,35 +349,51 @@
                             messageContent.appendChild(messageUser);
                             messageContent.appendChild(messageText);
 
-                            if (data.message.attachments && data.message.attachments.length > 0) {
-                                var attachmentsLink = document.createElement('p');
-                                attachmentsLink.style.margin = '0';
-                                attachmentsLink.innerHTML = '<a href="#" onclick="toggleAttachments(' +
-                                    data.message.id +
-                                    ')"><i class="fas fa-paperclip"></i> View Attachments</a>';
+                            if (e.message.attachments.length > 0) {
+                                var attachmentLink = document.createElement('p');
+                                attachmentLink.style.margin = '0';
+                                var attachmentAnchor = document.createElement('a');
+                                attachmentAnchor.href = '#';
+                                attachmentAnchor.onclick = function() {
+                                    toggleAttachments(e.message.id);
+                                };
+                                attachmentAnchor.innerHTML =
+                                    '<i class="fas fa-paperclip"></i> View Attachments';
+                                attachmentLink.appendChild(attachmentAnchor);
+                                messageContent.appendChild(attachmentLink);
 
                                 var attachmentsContainer = document.createElement('div');
-                                attachmentsContainer.id = 'attachments-' + data.message.id;
+                                attachmentsContainer.id = 'attachments-' + e.message.id;
                                 attachmentsContainer.classList.add('attachments-container');
                                 attachmentsContainer.style.cssText =
                                     'display: none; max-height: 400px; overflow-y: auto;';
 
-                                data.message.attachments.forEach(function(attachment) {
+                                e.message.attachments.forEach(function(attachment) {
                                     var attachmentItem = document.createElement('div');
                                     attachmentItem.classList.add('attachment-item');
 
-                                    var attachmentImg = document.createElement('img');
-                                    attachmentImg.src = '{{ asset('storage/') }}/' + attachment
-                                        .path;
-                                    attachmentImg.alt = attachment.name;
-                                    attachmentImg.style.cssText =
-                                        'max-width: 100%; height: auto;';
+                                    var fileExtension = attachment.path.split('.').pop()
+                                        .toLowerCase();
+                                    if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
+                                        var attachmentImg = document.createElement('img');
+                                        attachmentImg.src = '{{ asset('storage/') }}/' +
+                                            attachment.path;
+                                        attachmentImg.alt = attachment.name;
+                                        attachmentImg.style.cssText =
+                                            'max-width: 100%; height: auto;';
+                                        attachmentItem.appendChild(attachmentImg);
+                                    } else {
+                                        var attachmentLink = document.createElement('a');
+                                        attachmentLink.href = '{{ asset('storage/') }}/' +
+                                            attachment.path;
+                                        attachmentLink.target = '_blank';
+                                        attachmentLink.innerText = attachment.name;
+                                        attachmentItem.appendChild(attachmentLink);
+                                    }
 
-                                    attachmentItem.appendChild(attachmentImg);
                                     attachmentsContainer.appendChild(attachmentItem);
                                 });
 
-                                messageContent.appendChild(attachmentsLink);
                                 messageContent.appendChild(attachmentsContainer);
                             }
                             messageContent.appendChild(messageTime);
@@ -433,6 +414,4 @@
             });
         });
     </script>
-
-
 @endsection

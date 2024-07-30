@@ -178,6 +178,9 @@ class UserTicketController extends Controller
         if (!$ticket) {
             return redirect()->back()->with('error', 'Ticket not found');
         }
+        if ($ticket->user_id != Auth::id()) {
+            return redirect()->back()->with('error', 'You do not have permission to view this ticket.');
+        }
 
         $ticket_id = $ticket->id;
         $messages = $ticket->messages;
