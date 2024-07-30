@@ -22,7 +22,7 @@
 
 @section('content')
     @php
-        $columns = ['Message ID', 'Ticket ID', 'From', 'To', 'Path'];
+        $columns = ['Message ID', 'Ticket ID', 'From', 'To', 'Path', 'Ticket References']; // Added 'References' column
         $data = $dataRepositories
             ->map(function ($dataRepository) {
                 $fromUser = $dataRepository->message->user;
@@ -38,12 +38,13 @@
                         $fromUser->email ?? null,
                         $toUser->email ?? null,
                         $dataRepository->path,
+                        $ticket->references ?? null, // Added ticket references
                     ],
                 ];
             })
             ->toArray();
         $columnSizes = array_map(function ($column) {
-            return $column === 'Path' ? '50%' : 'auto';
+            return $column === 'Path' || $column === 'References' ? '50%' : 'auto'; // Adjusted size for 'References'
         }, $columns);
     @endphp
 
@@ -125,8 +126,8 @@
 
                                 @empty
                                     <tr>
-                                        <td colspan="8">No data found</td>
-                                        <!-- Updated colspan to 8 to include Actions column -->
+                                        <td colspan="9">No data found</td>
+                                        <!-- Updated colspan to 9 to include Actions column -->
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -137,9 +138,6 @@
             </div>
         </div>
     </div>
-
-
-
 
     <!-- jQuery -->
     <script src="{{ asset('AdminLTE-3.2.0/plugins/jquery/jquery.min.js') }}"></script>

@@ -17,6 +17,7 @@
             // 'Assigned To',
             // 'Assigned From',
             'Link',
+            'References', // Added References column
         ];
         $data = $scheduledCalls
             ->map(function ($scheduledCall) {
@@ -34,6 +35,7 @@
                         // $scheduledCall->assigned_to,
                         // $scheduledCall->assigned_from,
                         $scheduledCall->link,
+                        $scheduledCall->references, // Added references to values
                     ],
                 ];
             })
@@ -217,8 +219,8 @@
                                     </form>
                                 @empty
                                     <tr>
-                                        <td colspan="9">No scheduled calls available</td>
-                                        <!-- Updated colspan to 9 to include Actions column -->
+                                        <td colspan="10">No scheduled calls available</td>
+                                        <!-- Updated colspan to 10 to include Actions column -->
                                     </tr>
                                 @endforelse
                             </tbody>
