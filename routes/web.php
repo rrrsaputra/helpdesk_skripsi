@@ -137,6 +137,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::patch('/admin/ticket/reopen/{ticket}', [AdminTicketController::class, 'reopen_ticket'])->name('admin.ticket.reopen_ticket');
 
     Route::resource('/admin/user-management', AdminUserManagementController::class)->names('admin.user_management');
+    Route::post('/admin/user-management/{id}/update-password', [AdminUserManagementController::class, 'updatePassword'])->name('admin.user_management.updatePassword');
 });
 
 Route::middleware('auth', 'role:agent')->group(function () {

@@ -18,6 +18,23 @@
             }, 5000);
         </script>
     @endif
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert" id="danger-alert"
+            style="opacity: 1; transition: opacity 0.5s;">
+            {{ session('error') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <script>
+            setTimeout(function() {
+                document.getElementById('danger-alert').style.opacity = '0';
+            }, 4500); // Mengurangi 500ms untuk transisi lebih halus
+            setTimeout(function() {
+                document.getElementById('danger-alert').style.display = 'none';
+            }, 5000);
+        </script>
+    @endif    
     <x-admin.header title='User Management' />
 @endsection
 
@@ -110,6 +127,58 @@
                                             <button class="btn btn-danger btn-sm" data-toggle="modal"
                                                 data-target="#deleteModal-{{ $row['id'] }}">Delete</button>
 
+                                            <!-- Update Password Modal -->
+                                            <div class="modal fade" id="editModal-{{ $row['id'] }}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="editModalLabel">Update Password</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400 mb-6">
+                                                                {{ __('Ensure your account is using a long, random password to stay secure.') }}
+                                                            </p>
+                                                            <form id="updatePasswordForm-{{ $row['id'] }}" action="{{ route('admin.user_management.updatePassword', $row['id']) }}" method="POST" class="mt-6 space-y-6">
+                                                                @csrf
+                                                                @method('POST')
+
+                                                                <div class="form-group">
+                                                                    <label for="current_password-{{ $row['id'] }}" class="form-label">{{ __('Current Password') }}</label>
+                                                                    <input id="current_password-{{ $row['id'] }}" name="current_password" type="password" class="form-control mt-1 block w-full" required>
+                                                                    @if ($errors->has('current_password'))
+                                                                        <span class="text-danger mt-2">{{ $errors->first('current_password') }}</span>
+                                                                    @endif
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label for="password-{{ $row['id'] }}" class="form-label">{{ __('New Password') }}</label>
+                                                                    <input id="password-{{ $row['id'] }}" name="password" type="password" class="form-control mt-1 block w-full" required>
+                                                                    @if ($errors->has('password'))
+                                                                        <span class="text-danger mt-2">{{ $errors->first('password') }}</span>
+                                                                    @endif
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label for="password_confirmation-{{ $row['id'] }}" class="form-label">{{ __('Confirm New Password') }}</label>
+                                                                    <input id="password_confirmation-{{ $row['id'] }}" name="password_confirmation" type="password" class="form-control mt-1 block w-full" required>
+                                                                    @if ($errors->has('password_confirmation'))
+                                                                        <span class="text-danger mt-2">{{ $errors->first('password_confirmation') }}</span>
+                                                                    @endif
+                                                                </div>
+
+                                                                <div class="form-group flex items-center gap-4">
+                                                                    <button type="submit" class="btn btn-primary">{{ __('Update Password') }}</button>
+                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Cancel') }}</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                                
                                             <!-- Delete Confirmation Modal -->
                                             <div class="modal fade" id="deleteModal-{{ $row['id'] }}" tabindex="-1"
                                                 role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -128,7 +197,7 @@
                                                                 {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.') }}
                                                             </p>
                                                             <form id="deleteForm-{{ $row['id'] }}"
-                                                                action="{{ route('admin.user_management.destroy', $row['id']) }}"
+                                                                action="{{ route('profile.destroy', $row['id']) }}"
                                                                 method="POST" class="mt-6 space-y-6">
                                                                 @csrf
                                                                 @method('DELETE')

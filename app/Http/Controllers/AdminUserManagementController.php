@@ -103,6 +103,29 @@ class AdminUserManagementController extends Controller
         }
     }
 
+    public function updatePassword(Request $request, string $id)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        $user = User::find($id);
+
+        if (!$user) {
+            return redirect()->route('admin.user_management.index')->with('error', 'User not found.');
+        }
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return redirect()->back()->withErrors(['current_password' => 'The current password does not match.']);
+        }
+
+        $user->password = bcrypt($request->password);
+        $user->save();
+
+        return redirect()->route('admin.user_management.index')->with('success', 'Password updated successfully.');
+    }
+
     /**
      * Remove the specified resource from storage.
      */
@@ -113,7 +136,7 @@ class AdminUserManagementController extends Controller
             $user->delete();
             return redirect()->route('admin.user_management.index')->with('success', 'User deleted successfully.');
         } else {
-            return redirect()->route('admin.user_management.index')->with('error', 'Invalid password');
+            return redirect()->route('admin.user_management.index')->with('error', 'The password is incorrect.');
         }
     }
 }
