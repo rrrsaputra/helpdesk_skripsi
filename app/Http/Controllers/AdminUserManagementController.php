@@ -19,16 +19,16 @@ class AdminUserManagementController extends Controller
         })
             ->paginate($paginationCount);
 
-            $data = $users->map(function ($user) {
-                return [
-                    'id' => $user->id,
-                    'url' => '/path/to/resource1',
-                    'values' => [$user->name, $user->type],
-                    'ticket_quota' => $user->ticket_quota,
-                    'type' => $user->type,
-                    'role' => $user->roles->pluck('name')->first(), // Assuming a user has one role
-                ];
-            })->toArray();
+        $data = $users->map(function ($user) {
+            return [
+                'id' => $user->id,
+                'url' => '/path/to/resource1',
+                'values' => [$user->name, $user->type],
+                'ticket_quota' => $user->ticket_quota,
+                'type' => $user->type,
+                'role' => $user->roles->pluck('name')->first(), // Assuming a user has one role
+            ];
+        })->toArray();
 
         return view('admin.user_management.index', compact('users', 'data'));
     }
@@ -38,7 +38,7 @@ class AdminUserManagementController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.user_management.create');
     }
 
     /**
@@ -46,7 +46,23 @@ class AdminUserManagementController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        if ($request->password !== $request->password_confirmation) {
+            return redirect()->back()->withErrors(['password' => 'Password tidak cocok.']);
+        }
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+        ]);
+
+        return redirect()->route('admin.user_management.index')->with('success', 'User created successfully.');
     }
 
     /**

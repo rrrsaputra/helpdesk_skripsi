@@ -1,6 +1,23 @@
 @extends('layouts.admin')
 
 @section('header')
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert"
+            style="opacity: 1; transition: opacity 0.5s;">
+            {{ session('success') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <script>
+            setTimeout(function() {
+                document.getElementById('success-alert').style.opacity = '0';
+            }, 4500); // Mengurangi 500ms untuk transisi lebih halus
+            setTimeout(function() {
+                document.getElementById('success-alert').style.display = 'none';
+            }, 5000);
+        </script>
+    @endif
     <x-admin.header title='User Management' />
 @endsection
 
@@ -12,11 +29,7 @@
                 return [
                     'id' => $user->id,
                     'url' => '/path/to/resource1',
-                    'values' => [
-                        $user->email, 
-                        $user->name, 
-                        $user->type, 
-                        $user->roles->pluck('name')->first()],
+                    'values' => [$user->email, $user->name, $user->type, $user->roles->pluck('name')->first()],
                     'ticket_quota' => $user->ticket_quota,
                 ];
             })
@@ -49,6 +62,9 @@
                             <button type="submit" class="btn btn-primary">Search</button>
                         </form>
                     </div>
+
+                    <a href="{{ route('admin.user_management.create') }}" class="btn btn-primary mb-3">Add User</a>
+
                     <div class="table-responsive">
                         <table id="example2" class="table table-hover">
                             <thead>
@@ -107,7 +123,8 @@
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="typeModalLabel">Update User Type and Role</h5>
+                                                        <h5 class="modal-title" id="typeModalLabel">Update User Type and
+                                                            Role</h5>
                                                         <button type="button" class="close" data-dismiss="modal"
                                                             aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
