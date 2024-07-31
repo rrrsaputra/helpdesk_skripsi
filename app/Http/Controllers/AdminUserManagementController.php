@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AdminUserManagementController extends Controller
 {
@@ -105,11 +106,14 @@ class AdminUserManagementController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request, string $id)
     {
         $user = User::find($id);
-        $user->delete();
-
-        return redirect()->route('admin.user_management.index')->with('success', 'User deleted successfully.');
+        if ($user && Hash::check($request->password, $user->password)) {
+            $user->delete();
+            return redirect()->route('admin.user_management.index')->with('success', 'User deleted successfully.');
+        } else {
+            return redirect()->route('admin.user_management.index')->with('error', 'Invalid password');
+        }
     }
 }

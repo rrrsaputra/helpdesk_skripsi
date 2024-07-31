@@ -105,13 +105,59 @@
                                         <td> <!-- Added Actions buttons -->
                                             <button class="btn btn-warning btn-sm" data-toggle="modal"
                                                 data-target="#typeModal-{{ $row['id'] }}">Edit</button>
-                                            <form action="{{ route('admin.user_management.destroy', $row['id']) }}"
-                                                method="POST" style="display:inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm"
-                                                    onclick="return confirm('Are you sure you want to delete this user?')">Delete</button>
-                                            </form>
+                                            <button class="btn btn-danger btn-sm" data-toggle="modal"
+                                                data-target="#deleteModal-{{ $row['id'] }}">Delete</button>
+
+                                            <!-- Delete Confirmation Modal -->
+                                            <div class="modal fade" id="deleteModal-{{ $row['id'] }}" tabindex="-1"
+                                                role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="deleteModalLabel">Confirm Delete
+                                                            </h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p>Are you sure you want to delete this user? Please enter your
+                                                                password to confirm.</p>
+                                                            <form id="deleteForm-{{ $row['id'] }}"
+                                                                action="{{ route('admin.user_management.destroy', $row['id']) }}"
+                                                                method="POST">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <div class="form-group">
+                                                                    <label for="password">Password:</label>
+                                                                    <input type="password"
+                                                                        id="password-{{ $row['id'] }}" name="password"
+                                                                        class="form-control" required>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">Close</button>
+                                                            <button type="button" class="btn btn-danger"
+                                                                onclick="confirmDelete({{ $row['id'] }})">Delete</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <script>
+                                                function confirmDelete(userId) {
+                                                    const password = document.getElementById('password-' + userId).value;
+                                                    // Add your password validation logic here
+                                                    if (password) {
+                                                        document.getElementById('deleteForm-' + userId).submit();
+                                                    } else {
+                                                        alert('Password is required. Please try again.');
+                                                    }
+                                                }
+                                            </script>
                                         </td>
                                     </tr>
                                     <!-- Modal -->
@@ -132,7 +178,8 @@
                                                     </div>
                                                     <div class="modal-body">
                                                         <label for="userType">User Type:</label>
-                                                        <select id="userType" name="type" class="form-control" required>
+                                                        <select id="userType" name="type" class="form-control"
+                                                            required>
                                                             <option value="Standard"
                                                                 {{ $row['values'][2] == 'Standard' ? 'selected' : '' }}>
                                                                 Standard</option>
@@ -141,7 +188,8 @@
                                                                 Premium</option>
                                                         </select>
                                                         <label for="userRole" class="mt-3">User Role:</label>
-                                                        <select id="userRole" name="role" class="form-control" required>
+                                                        <select id="userRole" name="role" class="form-control"
+                                                            required>
                                                             <option value="user"
                                                                 {{ $row['values'][3] == 'user' ? 'selected' : '' }}>
                                                                 User
@@ -159,7 +207,8 @@
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary"
                                                             data-dismiss="modal">Close</button>
-                                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                                        <button type="submit" class="btn btn-primary">Save
+                                                            changes</button>
                                                     </div>
                                                 </div>
                                             </div>
