@@ -103,8 +103,10 @@
                                             </td>
                                         @endforeach
                                         <td> <!-- Added Actions buttons -->
+                                            <button class="btn btn-primary btn-sm" data-toggle="modal"
+                                                data-target="#editModal-{{ $row['id'] }}">Edit</button>
                                             <button class="btn btn-warning btn-sm" data-toggle="modal"
-                                                data-target="#typeModal-{{ $row['id'] }}">Edit</button>
+                                                data-target="#typeModal-{{ $row['id'] }}">Manage</button>
                                             <button class="btn btn-danger btn-sm" data-toggle="modal"
                                                 data-target="#deleteModal-{{ $row['id'] }}">Delete</button>
 
@@ -122,42 +124,27 @@
                                                             </button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <p>Are you sure you want to delete this user? Please enter your
-                                                                password to confirm.</p>
+                                                            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400 mb-6">
+                                                                {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.') }}
+                                                            </p>
                                                             <form id="deleteForm-{{ $row['id'] }}"
                                                                 action="{{ route('admin.user_management.destroy', $row['id']) }}"
-                                                                method="POST">
+                                                                method="POST" class="mt-6 space-y-6">
                                                                 @csrf
                                                                 @method('DELETE')
                                                                 <div class="form-group">
-                                                                    <label for="password">Password:</label>
-                                                                    <input type="password"
-                                                                        id="password-{{ $row['id'] }}" name="password"
-                                                                        class="form-control" required>
+                                                                    <label for="password-{{ $row['id'] }}" class="form-label mb-2">{{ __('Password') }}</label>
+                                                                    <input id="password-{{ $row['id'] }}" name="password" type="password" class="form-control mt-1 block w-full" placeholder="{{ __('Password') }}" required>
+                                                                    @if ($errors->userDeletion->has('password'))
+                                                                        <span class="text-danger mt-2">{{ $errors->userDeletion->first('password') }}</span>
+                                                                    @endif
+                                                                </div>
+                                                                <div class="form-group flex items-center gap-4">
+                                                                    <button type="submit" class="btn btn-danger">{{ __('Delete Account') }}</button>
+                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Cancel') }}</button>
                                                                 </div>
                                                             </form>
                                                         </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary"
-                                                                data-dismiss="modal">Close</button>
-                                                            <button type="button" class="btn btn-danger"
-                                                                onclick="confirmDelete({{ $row['id'] }})">Delete</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <script>
-                                                function confirmDelete(userId) {
-                                                    const password = document.getElementById('password-' + userId).value;
-                                                    // Add your password validation logic here
-                                                    if (password) {
-                                                        document.getElementById('deleteForm-' + userId).submit();
-                                                    } else {
-                                                        alert('Password is required. Please try again.');
-                                                    }
-                                                }
-                                            </script>
                                         </td>
                                     </tr>
                                     <!-- Modal -->
