@@ -186,7 +186,7 @@ class UserTicketController extends Controller
         $messages = $ticket->messages;
 
         foreach ($messages as $message) {
-            $attachments = $message->attachments;
+            $attachments = $message->attachments()->get(); // Ensure $attachments is a collection
             $message->has_attachments = $attachments->isNotEmpty();
             $message->attachments_list = $message->has_attachments ? $message->attachments_list() : null;
         }

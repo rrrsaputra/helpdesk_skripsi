@@ -49,7 +49,7 @@
     <!-- /.content -->
   </div>
   <footer class="main-footer">
-    <strong>Copyright &copy; 2024 <a href="">Earthqualizer</a>.</strong> All rights reserved.
+    <strong>Lorem ipsum dolor sit amet
   </footer>
 
   <!-- Control Sidebar -->

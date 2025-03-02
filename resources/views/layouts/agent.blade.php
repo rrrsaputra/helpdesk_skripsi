@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Agent | Earthqualizer</title>
-    <link rel="icon" type="image/png" href="{{ asset('image/earthqualizer_logo.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('image/images.png') }}">
     
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
@@ -60,7 +60,7 @@
         </div>
         <!-- /.content-wrapper -->
         <footer class="main-footer">
-            <strong>Copyright &copy; 2024 <a href="">Earthqualizer</a>.</strong> All rights reserved.
+            <strong>Lorem ipsum dolor sit amet.
         </footer>
 
         <!-- Control Sidebar -->

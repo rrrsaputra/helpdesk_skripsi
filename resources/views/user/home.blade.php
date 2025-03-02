@@ -9,43 +9,29 @@
 
                     <div class="col-12 col-md-4 col-lg-3 dx-feature-variable">
                         <div class="dx-feature dx-feature-3 dx-feature-color-4 dx-block-decorated">
-                            <div class="dx-feature-icon">
+                            <div class="dx-feature-icon" style="color: #F38F2F;">
                                 <span class="icon pe-7s-ticket"></span>
                             </div>
                             <div class="dx-feature-cont">
                                 <div class="dx-feature-title"><a href="{{ route('tickets.index') }}">Ticket System</a></div>
-                                <div class="dx-feature-text">Report your issue and track your ticket status online</div>
+                                <div class="dx-feature-text">Lorem ipsum dolor sit amet.</div>
                                 <a href="{{ route('tickets.index') }}"
-                                    class="dx-btn dx-btn-link d-flex dx-feature-link">View Tickets<span
+                                    class="dx-btn dx-btn-link d-flex dx-feature-link">Lorem ipsum<span
                                         class="icon pe-7s-angle-right"></span></a>
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-md-4 col-lg-3 dx-feature-variable">
-                        <div class="dx-feature dx-feature-3 dx-feature-color-4 dx-block-decorated">
-                            <div class="dx-feature-icon">
-                                <span class="icon fas fa-phone-alt"></span>
-                            </div>
-                            <div class="dx-feature-cont">
-                                <div class="dx-feature-title"><a href="{{ route('scheduled_call.index') }}">Scheduled
-                                        Call</a></div>
-                                <div class="dx-feature-text">Arrange a call with our team for immediate assistance</div>
-                                <a href="{{ route('scheduled_call.index') }}"
-                                    class="dx-btn dx-btn-link d-flex dx-feature-link">Schedule a Call<span
-                                        class="icon pe-7s-angle-right"></span></a>
-                            </div>
-                        </div>
-                    </div>
+                    
                     <div class="col-12 col-md-4 col-lg-3 dx-feature-variable">
                         <div class="dx-feature dx-feature-3 dx-feature-color-2 dx-block-decorated">
-                            <div class="dx-feature-icon">
+                            <div class="dx-feature-icon" style="color: #F38F2F;">
                                 <span class="icon pe-7s-notebook"></span>
                             </div>
                             <div class="dx-feature-cont">
                                 <div class="dx-feature-title"><a href="{{ route('article.index') }}">Article</a></div>
-                                <div class="dx-feature-text">Read the latest articles and find useful information here</div>
+                                <div class="dx-feature-text">Lorem ipsum dolor sit amet.</div>
                                 <a href="{{ route('article.index') }}"
-                                    class="dx-btn dx-btn-link d-flex dx-feature-link">Read Article<span
+                                    class="dx-btn dx-btn-link d-flex dx-feature-link">Lorem ipsum<span
                                         class="icon pe-7s-angle-right"></span></a>
                             </div>
                         </div>

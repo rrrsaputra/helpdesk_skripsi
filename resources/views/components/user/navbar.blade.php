@@ -1,11 +1,12 @@
 <nav
-    class="dx-navbar dx-navbar-top dx-navbar-collapse dx-navbar-sticky dx-navbar-expand-lg dx-navbar-dropdown-triangle dx-navbar-autohide">
+    class="dx-navbar dx-navbar-top dx-navbar-collapse dx-navbar-sticky dx-navbar-expand-lg dx-navbar-dropdown-triangle dx-navbar-autohide"
+    style="background-color: #85171A;">
     <div class="container">
         @if (request()->routeIs('user.ticket.show'))
             <a href="{{ route('user.ticket.index') }}" style="top: 20px; left: 20px; margin-right:10px" class="btn btn-secondary">Back</a>
         @endif
         <a href="index.html" class="dx-nav-logo">
-            <img src="{{asset('image/logoeq.png')}}" alt="" width="140px">
+            <img src="{{asset('image/logounggul.png')}}" alt="" width="250px" width="340px --}}">
         </a>
         <button class="dx-navbar-burger">
             <span></span><span></span><span></span>
@@ -14,19 +15,16 @@
             <ul class="dx-nav ">
 
                 <li><a href="/" style="color: white; transition: color 0.3s;"
-                        onmouseover="this.style.color='grey'" onmouseout="this.style.color='white'">Home</a></li>
+                        onmouseover="this.style.color='grey'" onmouseout="this.style.color='white'"><strong>Home</strong></a></li>
                 <li><a href="{{ route('tickets.index') }}"
                         style="color: white; transition: color 0.3s;"onmouseover="this.style.color='grey'"
-                        onmouseout="this.style.color='white'">Ticket System</a></li>
-                <li><a href="{{ route('scheduled_call.index') }}"
-                        style="color: white; transition: color 0.3s;"onmouseover="this.style.color='grey'"
-                        onmouseout="this.style.color='white'">Scheduled Calls</a></li>
+                        onmouseout="this.style.color='white'"><strong>Ticket</strong></a></li>
                 <li><a href="{{ route('article.index') }}"
                         style="color: white; transition: color 0.3s;"onmouseover="this.style.color='grey'"
-                        onmouseout="this.style.color='white'">Articles</a></li>
+                        onmouseout="this.style.color='white'"><strong>Articles</strong></a></li>
                 <li><a href="{{ route('user.feedback.index') }}"
                         style="color: white; transition: color 0.3s;"onmouseover="this.style.color='grey'"
-                        onmouseout="this.style.color='white'">Feedback</a></li>
+                        onmouseout="this.style.color='white'"><strong>Feedback</strong></a></li>
 
             </ul>
             <ul class="dx-nav dx-nav-align-right">
@@ -82,7 +80,7 @@
         </div>
     </div>
 </nav>
-<div class="dx-navbar dx-navbar-fullscreen">
+<div class="dx-navbar dx-navbar-fullscreen" style="background-color: #85171A;">
     <div class="container">
         <button class="dx-navbar-burger">
             <span></span><span></span><span></span>

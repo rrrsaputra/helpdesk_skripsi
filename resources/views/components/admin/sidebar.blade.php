@@ -2,7 +2,7 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="{{ route('admin.dashboard.index') }}">
-        <img src="{{ asset('image/logoeq.png')}}" alt="AdminLTE Logo" width="200px" class="mt-3 mx-auto d-block mb-4">
+        <img src="{{ asset('image/images.png')}}" alt="AdminLTE Logo" width="50px" class="mt-3 mx-auto d-block mb-4">
         
     </a>
 

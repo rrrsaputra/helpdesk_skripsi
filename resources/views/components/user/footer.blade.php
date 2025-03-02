@@ -1,4 +1,4 @@
-<footer class="dx-footer">
+<footer class="dx-footer" style="background-color: #85171A;">
     <div class="dx-box-1">
         <div class="container">
             <div class="row">
@@ -6,11 +6,11 @@
                     <div class="dx-widget-footer">
                         <div class="dx-widget-title">
                             <a href="{{ route('home') }}" class="dx-widget-logo">
-                                <img src="{{ asset('image/logoeq.png') }}" alt="Earthqualizer Logo" width="200px">
+                                <img src="{{ asset('image/images.png') }}" alt="Earthqualizer Logo" width="50px"{{-- width="200px" --}}>
                             </a>
                         </div>
                         <div class="dx-widget-text">
-                                    <p>&copy 2024 Earthqualizer. All rights reserved.</p>
+                                    <p>Lorem ipsum dolor sit amet.</p>
                         </div>
                         <div class="dx-widget-text">
                             <ul class="dx-social-links mnt-3">
@@ -22,27 +22,27 @@
                 </div>
                 <div class="col-sm-6 col-lg-3">
                     <div class="dx-widget-footer">
-                        <div class="dx-widget-title"> HEADQUARTERS </div>
+                        <div class="dx-widget-title"> LOREM </div>
                         <div class="dx-widget-portfolio">
                             <p style="color: lightgrey">
-                                Jln. Anggrek No. 6
+                                Lorem ipsum dolor sit amet
                                 <br>
-                                Pontianak City,
+                                Lorem ipsum dolor sit amet
                                 <br>
-                                West Kalimantan, Indonesia
+                                Lorem ipsum dolor sit amet
                             </p>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-6 col-lg-3">
                     <div class="dx-widget-footer">
-                        <div class="dx-widget-title"> CONTACT </div>
+                        <div class="dx-widget-title"> LOREM </div>
                         <a href="tel:+622518371219" style="color: lightgrey">
-                            +62 (251) 837 1219
+                            Lorem ipsum dolor sit amet
                         </a>
                         <br>
                         <a href="mailto:secretariat@earthqualizer.org" style="color: lightgrey">
-                            secretariat@earthqualizer.org
+                            Lorem ipsum dolor sit amet
                         </a>
                     </div>
                 </div>
