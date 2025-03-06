@@ -2,7 +2,7 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="{{ route('agent.dashboard.index') }}">
-        <img src="{{ asset('image/logoeq.png') }}" alt="AdminLTE Logo" width="200px" class="mt-3 mx-auto d-block mb-4">
+        <img src="{{ asset('image/logounggul.png') }}" alt="AdminLTE Logo" width="200px" class="mt-3 mx-auto d-block mb-4">
 
     </a>
 
@@ -95,7 +95,7 @@
                     </ul>
                 </li>
 
-                <li class="nav-item menu-close">
+                {{-- <li class="nav-item menu-close">
                     <a href="{{ route('agent.scheduled_call.index') }}"
                         class="nav-link {{ request()->routeIs('agent.scheduled_call.index') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-phone-alt"></i>
@@ -103,7 +103,7 @@
                             SCHEDULED CALLS
                         </p>
                     </a>
-                </li>
+                </li> --}}
 
             </ul>
         </nav>

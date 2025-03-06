@@ -1,12 +1,12 @@
-<nav
-    class="dx-navbar dx-navbar-top dx-navbar-collapse dx-navbar-sticky dx-navbar-expand-lg dx-navbar-dropdown-triangle dx-navbar-autohide"
+<nav class="dx-navbar dx-navbar-top dx-navbar-collapse dx-navbar-sticky dx-navbar-expand-lg dx-navbar-dropdown-triangle dx-navbar-autohide"
     style="background-color: #85171A;">
     <div class="container">
         @if (request()->routeIs('user.ticket.show'))
-            <a href="{{ route('user.ticket.index') }}" style="top: 20px; left: 20px; margin-right:10px" class="btn btn-secondary">Back</a>
+            <a href="{{ route('user.ticket.index') }}" style="top: 20px; left: 20px; margin-right:10px"
+                class="btn btn-secondary">Back</a>
         @endif
         <a href="index.html" class="dx-nav-logo">
-            <img src="{{asset('image/logounggul.png')}}" alt="" width="250px" width="340px --}}">
+            <img src="{{ asset('image/logounggul.png') }}" alt="" width="250px" width="340px --}}">
         </a>
         <button class="dx-navbar-burger">
             <span></span><span></span><span></span>
@@ -15,32 +15,35 @@
             <ul class="dx-nav ">
 
                 <li><a href="/" style="color: white; transition: color 0.3s;"
-                        onmouseover="this.style.color='grey'" onmouseout="this.style.color='white'"><strong>Home</strong></a></li>
+                        onmouseover="this.style.color='grey'"
+                        onmouseout="this.style.color='white'"><strong>Beranda</strong></a></li>
                 <li><a href="{{ route('tickets.index') }}"
                         style="color: white; transition: color 0.3s;"onmouseover="this.style.color='grey'"
-                        onmouseout="this.style.color='white'"><strong>Ticket</strong></a></li>
+                        onmouseout="this.style.color='white'"><strong>Tiket</strong></a></li>
                 <li><a href="{{ route('article.index') }}"
                         style="color: white; transition: color 0.3s;"onmouseover="this.style.color='grey'"
-                        onmouseout="this.style.color='white'"><strong>Articles</strong></a></li>
+                        onmouseout="this.style.color='white'"><strong>Artikel</strong></a></li>
                 <li><a href="{{ route('user.feedback.index') }}"
                         style="color: white; transition: color 0.3s;"onmouseover="this.style.color='grey'"
-                        onmouseout="this.style.color='white'"><strong>Feedback</strong></a></li>
+                        onmouseout="this.style.color='white'"><strong>Umpan Balik</strong></a></li>
 
             </ul>
             <ul class="dx-nav dx-nav-align-right">
                 @auth
-                    @if(Auth::check() && (Auth::user()->hasRole('admin') || Auth::user()->hasRole('agent')))
+                    @if (Auth::check() && (Auth::user()->hasRole('admin') || Auth::user()->hasRole('agent')))
                         <li class="dx-nav-item">
-                            <a href="{{ route('dashboard') }}" style="color: white; transition: color 0.3s;" onmouseover="this.style.color='grey'" onmouseout="this.style.color='white'">
+                            <a href="{{ route('dashboard') }}" style="color: white; transition: color 0.3s;"
+                                onmouseover="this.style.color='grey'" onmouseout="this.style.color='white'">
                                 Dashboard
                             </a>
                         </li>
                     @endif
                 @endauth
-                                
+
                 @auth
                     <li class="dx-nav-item">
-                        <a href="{{ route('profile.edit') }}" style="color: white; transition: color 0.3s;" onmouseover="this.style.color='grey'" onmouseout="this.style.color='white'">
+                        <a href="{{ route('profile.edit') }}" style="color: white; transition: color 0.3s;"
+                            onmouseover="this.style.color='grey'" onmouseout="this.style.color='white'">
                             {{ Auth::user()->name }}
                         </a>
                     </li>
@@ -53,8 +56,9 @@
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
 
-                                    <a href="" onclick="event.preventDefault(); this.closest('form').submit();" style="color: white; transition: color 0.3s;"
-                                        onmouseover="this.style.color='white'" onmouseout="this.style.color='white'"
+                                    <a href="" onclick="event.preventDefault(); this.closest('form').submit();"
+                                        style="color: white; transition: color 0.3s;" onmouseover="this.style.color='white'"
+                                        onmouseout="this.style.color='white'"
                                         class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
                                         Log Out
                                     </a>
@@ -87,49 +91,58 @@
         </button>
         <div class="dx-navbar-content">
             <ul class="dx-nav dx-nav-align-left">
-                <li><a href="/" class="dx-nav-link" onmouseover="this.style.color='grey'" onmouseout="this.style.color='white'">Home</a></li>
-                <li><a href="{{ route('tickets.index') }}" class="dx-nav-link" onmouseover="this.style.color='grey'" onmouseout="this.style.color='white'">Ticket System</a></li>
-                <li><a href="{{ route('scheduled_call.index') }}" class="dx-nav-link" onmouseover="this.style.color='grey'" onmouseout="this.style.color='white'">Scheduled Calls</a></li>
-                <li><a href="{{ route('article.index') }}" class="dx-nav-link" onmouseover="this.style.color='grey'" onmouseout="this.style.color='white'">Articles</a></li>
-                <li><a href="{{ route('user.feedback.index') }}" class="dx-nav-link" onmouseover="this.style.color='grey'" onmouseout="this.style.color='white'">Feedback</a></li>
+                <li><a href="/" style="color: white; transition: color 0.3s;"
+                        onmouseover="this.style.color='grey'"
+                        onmouseout="this.style.color='white'"><strong>Beranda</strong></a></li>
+                <li><a href="{{ route('tickets.index') }}"
+                        style="color: white; transition: color 0.3s;"onmouseover="this.style.color='grey'"
+                        onmouseout="this.style.color='white'"><strong>Tiket</strong></a></li>
+                <li><a href="{{ route('article.index') }}"
+                        style="color: white; transition: color 0.3s;"onmouseover="this.style.color='grey'"
+                        onmouseout="this.style.color='white'"><strong>Artikel</strong></a></li>
+                <li><a href="{{ route('user.feedback.index') }}"
+                        style="color: white; transition: color 0.3s;"onmouseover="this.style.color='grey'"
+                        onmouseout="this.style.color='white'"><strong>Umpan Balik</strong></a></li>
             </ul>
             <ul class="dx-nav dx-nav-align-right">
                 <li class="dx-nav-item">
                     @auth
                     <li class="dx-nav-item">
-                        <a href="" style="color: white; transition: color 0.3s;" onmouseover="this.style.color='grey'" onmouseout="this.style.color='white'">
+                        <a href="" style="color: white; transition: color 0.3s;"
+                            onmouseover="this.style.color='grey'" onmouseout="this.style.color='white'">
                             {{ Auth::user()->name }}
                         </a>
                     </li>
                 @endauth
                 </li>
-                
+
                 <li class="dx-nav-item">
                     @if (Route::has('login'))
                         <nav class="-mx-3 flex flex-1 justify-end">
                             @auth
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
 
-                                <a href="" onclick="event.preventDefault(); this.closest('form').submit();" style="color: white; transition: color 0.3s;"
-                                    onmouseover="this.style.color='white'" onmouseout="this.style.color='white'"
-                                    class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
-                                    Log Out
-                                </a>
+                                    <a href="" onclick="event.preventDefault(); this.closest('form').submit();"
+                                        style="color: white; transition: color 0.3s;" onmouseover="this.style.color='white'"
+                                        onmouseout="this.style.color='white'"
+                                        class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
+                                        Log Out
+                                    </a>
 
-                            </form>
+                                </form>
                             @else
-                            <a href="{{ route('login') }}"
-                                class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
-                                Log in
-                            </a>
-
-                            @if (Route::has('register'))
-                                <a href="{{ route('register') }}"
+                                <a href="{{ route('login') }}"
                                     class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
-                                    Register
+                                    Log in
                                 </a>
-                            @endif
+
+                                @if (Route::has('register'))
+                                    <a href="{{ route('register') }}"
+                                        class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
+                                        Register
+                                    </a>
+                                @endif
                             @endauth
                         </nav>
                     @endif

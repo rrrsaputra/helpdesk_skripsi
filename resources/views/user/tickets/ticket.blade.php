@@ -8,13 +8,13 @@
 
                 <div class="row align-items-center justify-content-between vertical-gap mnt-30 sm-gap mb-50">
                     <div class="col-auto">
-                        <h2 class="h4 mb-0 mt-0">Your Tickets</h2>
+                        <h2 class="h4 mb-0 mt-0">Pertanyaan Anda</h2>
                     </div>
                     <div class="col pl-30 pr-30 d-none d-sm-block">
                         <div class="dx-separator ml-10 mr-10"></div>
                     </div>
                     <div class="col-auto">
-                        <a href="{{ route('user.ticket.create') }}" class="dx-btn dx-btn-md">Submit a ticket</a>
+                        <a href="{{ route('user.ticket.create') }}" class="dx-btn dx-btn-md" style="background-color: #F38F2F;">Buat Tiket</a>
                     </div>
                 </div>
 
@@ -70,7 +70,7 @@
         <div class="dx-box-5 pb-100">
             <div class="container mt-4 mnb-7">
                 <div class="row align-items-center justify-content-between vertical-gap mnt-30 sm-gap mb-50">
-                    <h2 class="col-auto h4 mb-0 mt-0">Featured Articles</h2>
+                    <h2 class="col-auto h4 mb-0 mt-0">Artikel Unggulan</h2>
                     <div class="col pl-30 pr-30 d-none d-sm-block">
                         <div class="dx-separator ml-10 mr-10"></div>
                     </div>

@@ -32,7 +32,7 @@
         @if (Request::is('/'))
             <div class="row justify-content-center">
                 <div class="col-xl-7">
-                    <h1 class="h2 mb-30 text-white text-center">Lorem, {{ Auth::user()->name }}!<br>Lorem ipsum dolor sit amet?</h1>
+                    <h1 class="h2 mb-30 text-white text-center">Halo, {{ Auth::user()->name }}!<br>Apa yang bisa kami bantu?</h1>
                     <form action="{{ route('article.index') }}" class="dx-form dx-form-group-inputs">
                         <input type="search" name="search" value="{{ request()->query('search') }}"
                             class="form-control" placeholder="Keyword search...">
@@ -43,10 +43,10 @@
         @elseif(Request::is('tickets'))
             <div class="row justify-content-center">
                 <div class="col-xl-7">
-                    <h1 class="h2 mb-30 text-white text-center">Tickets</h1>
+                    <h1 class="h2 mb-30 text-white text-center">Tiket</h1>
                 </div>
             </div>
-        @elseif(Request::is('scheduled-calls'))
+        {{-- @elseif(Request::is('scheduled-calls'))
             <div class="row justify-content-center">
                 <div class="col-xl-7">
                     <h1 class="h2 mb-30 text-white text-center">Scheduled Calls</h1>
@@ -63,41 +63,41 @@
                 <div class="col-xl-7">
                     <h1 class="h2 mb-30 text-white text-center">Book Scheduled Call</h1>
                 </div>
-            </div>
+            </div> --}}
         @elseif(Request::is('article'))
             <div class="row justify-content-center">
                 <div class="col-xl-7">
-                    <h1 class="h2 mb-30 text-white text-center">Articles</h1>
+                    <h1 class="h2 mb-30 text-white text-center">Artikel</h1>
                 </div>
             </div>
         @elseif(Request::is('feedback'))
             <div class="row justify-content-center">
                 <div class="col-xl-7">
-                    <h1 class="h2 mb-30 text-white text-center">Feedbacks</h1>
+                    <h1 class="h2 mb-30 text-white text-center">Umpan Balik</h1>
                 </div>
             </div>
         @elseif(Request::is('article/*'))
             <div class="row justify-content-center">
                 <div class="col-xl-7">
-                    <h1 class="h2 mb-30 text-white text-center">Article</h1>
+                    <h1 class="h2 mb-30 text-white text-center">Artikel</h1>
                 </div>
             </div>
         @elseif(Request::is('article'))
             <div class="row justify-content-center">
                 <div class="col-xl-7">
-                    <h1 class="h2 mb-30 text-white text-center">Articles</h1>
+                    <h1 class="h2 mb-30 text-white text-center">Artikel</h1>
                 </div>
             </div>
         @elseif(Request::is('category/*'))
             <div class="row justify-content-center">
                 <div class="col-xl-7">
-                    <h1 class="h2 mb-30 text-white text-center">Article Categories</h1>
+                    <h1 class="h2 mb-30 text-white text-center">Kategori Artikel</h1>
                 </div>
             </div>
         @elseif(Request::is('profile'))
             <div class="row justify-content-center">
                 <div class="col-xl-7">
-                    <h1 class="h2 mb-30 text-white text-center">Profile</h1>
+                    <h1 class="h2 mb-30 text-white text-center">Profil</h1>
                 </div>
             </div>
         @endif

@@ -14,7 +14,7 @@
                         <div class="dx-box dx-box-decorated">
                             <div class="dx-blog-post">
                                 <div class="dx-blog-post-box pt-30 pb-30">
-                                    <h2 class="h4 mnt-5 mb-5">Browse Article</h2>
+                                    <h2 class="h4 mnt-5 mb-5">Telusuri Artikel</h2>
                                 </div>
                                 <div class="dx-separator"></div>
                                 <div class="dx-blog-post-box">
@@ -28,7 +28,7 @@
                                                             {{ Str::limit(strip_tags($article->content), 150) }}
                                                         </div>
                                                         <a href="{{ route('article.show', $article->id) }}"
-                                                            class="btn btn-outline-primary mt-10" style="border-radius: 20px">Read More</a>
+                                                            class="btn btn-outline-primary mt-10" style="border-radius: 20px" >Selengkapnya</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -52,7 +52,7 @@
                             </form>
                         </div>
                         <div class="dx-widget dx-box dx-box-decorated">
-                            <div class="dx-widget-title">Articles Categories</div>
+                            <div class="dx-widget-title">Kategori Artikel</div>
                             <ul class="dx-widget-categories">
                                 @foreach ($articleCategories as $articleCategory)
                                     <li>

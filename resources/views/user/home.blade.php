@@ -13,10 +13,10 @@
                                 <span class="icon pe-7s-ticket"></span>
                             </div>
                             <div class="dx-feature-cont">
-                                <div class="dx-feature-title"><a href="{{ route('tickets.index') }}">Ticket System</a></div>
-                                <div class="dx-feature-text">Lorem ipsum dolor sit amet.</div>
+                                <div class="dx-feature-title"><a href="{{ route('tickets.index') }}">Tiket</a></div>
+                                <div class="dx-feature-text">Laporkan masalah Anda secara online kepada ahlinya.</div>
                                 <a href="{{ route('tickets.index') }}"
-                                    class="dx-btn dx-btn-link d-flex dx-feature-link">Lorem ipsum<span
+                                    class="dx-btn dx-btn-link d-flex dx-feature-link">Lihat Tiket<span
                                         class="icon pe-7s-angle-right"></span></a>
                             </div>
                         </div>
@@ -28,10 +28,10 @@
                                 <span class="icon pe-7s-notebook"></span>
                             </div>
                             <div class="dx-feature-cont">
-                                <div class="dx-feature-title"><a href="{{ route('article.index') }}">Article</a></div>
-                                <div class="dx-feature-text">Lorem ipsum dolor sit amet.</div>
+                                <div class="dx-feature-title"><a href="{{ route('article.index') }}">Artikel</a></div>
+                                <div class="dx-feature-text">Baca artikel terbaru dan temukan informasi bermanfaat di sini.</div>
                                 <a href="{{ route('article.index') }}"
-                                    class="dx-btn dx-btn-link d-flex dx-feature-link">Lorem ipsum<span
+                                    class="dx-btn dx-btn-link d-flex dx-feature-link">Baca Artikel<span
                                         class="icon pe-7s-angle-right"></span></a>
                             </div>
                         </div>
@@ -43,7 +43,7 @@
         <div class="dx-box-5 pb-100">
             <div class="container mt-4 mnb-7">
                 <div class="row align-items-center vertical-gap mnt-30 sm-gap mb-50">
-                    <h2 class="col-auto h4 mb-0 mt-0">Popular Articles</h2>
+                    <h2 class="col-auto h4 mb-0 mt-0">Artikel Populer</h2>
                     <div class="col pl-30 pr-30 d-none d-sm-block">
                         <div class="dx-separator"></div>
                     </div>
