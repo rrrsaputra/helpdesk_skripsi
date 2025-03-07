@@ -12,6 +12,6 @@
 
     <p>Thank you</p>
     <p>Regards</p>
-    <p>Earthqualizer</p>
+    <p>Biro Administrasi Akademik</p>
 </body>
 </html>

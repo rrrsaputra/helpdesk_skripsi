@@ -29,8 +29,8 @@ class ProcessTicket implements ShouldQueue
      */
     public function handle(): void
     {
-        $title = "You have made a Ticket";
-        $message = "Your scheduled call titled '{$this->ticket->title}' has been successfully created.";
+        $title = "Your Ticket Has Been Created!";
+        $message = "Your ticket titled '{$this->ticket->title}' has been successfully submitted. Our team will review your request and respond as soon as possible. You can track the status of your ticket in your dashboard.";
         Mail::to($this->userEmail)->send(new SendMail($title, $message));
     }
 }

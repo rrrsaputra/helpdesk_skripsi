@@ -5,7 +5,17 @@
 
 @section('content')
     @php
-        $columns = ['Customer', 'Summary', '', 'Number', 'Last Updated', 'Assigned To', 'References', 'latitude', 'longitude'];
+        $columns = [
+            'Customer',
+            'Summary',
+            '',
+            'Number',
+            'Last Updated',
+            'Assigned To',
+            'References',
+            'latitude',
+            'longitude',
+        ];
         $data = $tickets
             ->map(function ($ticket) {
                 return [
@@ -30,112 +40,6 @@
         }, $columns);
     @endphp
 
-
-
-    <link href='https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css' rel='stylesheet' />
-    <script src='https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js'></script>
-    <style>
-        #map {
-            height: 400px;
-        }
-    </style>
-
-    <div id="map"></div>
-    <button id="resetMapButton" class="btn btn-primary my-3 mx-1">Reset Map Position</button>
-    <form action="{{ route('getemail') }}" method="GET" style="display: inline;">
-        <button type="submit" class="btn btn-dark text-white my-3 mx-1 float-left">Fetch Emails</button>
-    </form>
-    <script>
-        document.getElementById('resetMapButton').addEventListener('click', function() {
-            map.flyTo({
-                center: [113.9213, -0.7893], // Default center coordinates
-                zoom: 4 // Default zoom level
-            });
-        });
-        document.addEventListener('DOMContentLoaded', function() {
-            mapboxgl.accessToken =
-                "pk.eyJ1IjoiYmFtYmFuZzI4MDIiLCJhIjoiY2x4a2ViM3R0MDB0bDJqcXU0OWxwN3I3biJ9.Ihq2fCxZXYpw-sveeATkvw";
-            var map = new mapboxgl.Map({
-                container: 'map',
-                style: 'mapbox://styles/mapbox/light-v10',
-                center: [113.9213, -0.7893],
-                zoom: 4,
-                scrollZoom: false // Disable map scrolling
-            });
-            map.addControl(new mapboxgl.NavigationControl());
-            var points = {!! json_encode(
-                $tickets->map(function ($ticket) {
-                        return [
-                            'id' => $ticket->id,
-                            'coordinates' => [$ticket->longitude, $ticket->latitude],
-                            'title' => $ticket->title,
-                            'description' => $ticket->message ?? 'No description available.',
-                        ];
-                    })->toArray(),
-            ) !!};
-
-            var markers = {};
-
-            points.forEach(function(point) {
-                var el = document.createElement('div');
-                el.className = 'marker';
-                el.style.backgroundImage =
-                    'url(https://upload.wikimedia.org/wikipedia/commons/0/0e/Basic_red_dot.png)';
-                el.style.width = '8px';
-                el.style.height = '8px';
-                el.style.backgroundSize = '100%';
-
-                var marker = new mapboxgl.Marker(el)
-                    .setLngLat(point.coordinates)
-                    .addTo(map);
-
-                var popup = new mapboxgl.Popup({
-                        offset: 25
-                    })
-                    .setText(point.title + ': ' + point.description);
-
-                marker.getElement().addEventListener('click', function() {
-                   
-                    popup.addTo(map);
-                    map.flyTo({
-                        center: point.coordinates,
-                        zoom: 10
-                    });
-                });
-
-                marker.getElement().addEventListener('mouseleave', function() {
-                    popup.remove();
-                });
-
-                markers[point.id] = marker;
-            });
-
-
-
-            window.map = map;
-            window.markers = markers;
-        });
-
-        function handleRowClick(event) {
-            var row = event.currentTarget;
-            var coordinates = row.getAttribute('data-coordinates');
-            if (coordinates) {
-                var coords = coordinates.split(',').map(parseFloat);
-                var lng = coords[1];
-                var lat = coords[0];
-                if (!isNaN(lat) && !isNaN(lng)) {
-                    window.map.flyTo({
-                        center: [lng, lat],
-                        zoom: 13
-                    });
-                } else {
-                    console.error('Invalid coordinates: ', coordinates);
-                }
-            } else {
-                console.error('No coordinates data attribute found.');
-            }
-        }
-    </script>
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('AdminLTE-3.2.0/plugins/fontawesome-free/css/all.min.css') }}">
@@ -439,7 +343,7 @@
 
             $('#example2').on('click', 'tr', function() {
                 var coordinates = $(this).data('coordinates');
-                
+
                 if (coordinates) {
                     var [lng, lat] = coordinates.split(',').map(parseFloat);
                     if (!isNaN(lat) && !isNaN(lng)) {

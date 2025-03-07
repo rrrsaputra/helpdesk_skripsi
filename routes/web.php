@@ -5,6 +5,7 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MailController;
 use Spatie\Permission\Models\Permission;
 use App\Http\Controllers\AgentController;
 use Coderflex\LaravelTicket\Models\Label;
@@ -18,6 +19,7 @@ use App\Http\Controllers\UserHomeController;
 use Coderflex\LaravelTicket\Models\Category;
 use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\UserTicketController;
+use App\Http\Controllers\AdminReportController;
 use App\Http\Controllers\AdminTicketController;
 use App\Http\Controllers\AgentTicketController;
 use App\Http\Controllers\UserArticleController;
@@ -39,7 +41,6 @@ use App\Http\Controllers\AdminUserManagementController;
 use App\Http\Controllers\UserArticleCategoryController;
 use App\Http\Controllers\AdminArticleCategoryController;
 use App\Http\Controllers\AdminScheduledCallCategoryController;
-use App\Http\Controllers\MailController;
 
 Route::get('send-email',[MailController::class, 'sendEmail']);
 
@@ -138,6 +139,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::resource('/admin/user-management', AdminUserManagementController::class)->names('admin.user_management');
     Route::post('/admin/user-management/{id}/update-password', [AdminUserManagementController::class, 'updatePassword'])->name('admin.user_management.updatePassword');
+
+    Route::resource('/admin/report', AdminReportController::class)->names('admin.report');
+    Route::get('admin/reports/export', [AdminReportController::class, 'export'])->name('admin.report.export');
 });
 
 Route::middleware('auth', 'role:agent')->group(function () {

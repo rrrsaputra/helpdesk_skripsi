@@ -49,7 +49,7 @@
     <!-- /.content -->
   </div>
   <footer class="main-footer">
-    <strong>Lorem ipsum dolor sit amet
+    <strong>© 2025 Universitas Bakrie. All rights reserved.
   </footer>
 
   <!-- Control Sidebar -->

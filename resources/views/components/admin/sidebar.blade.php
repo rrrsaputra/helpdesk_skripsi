@@ -2,7 +2,7 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="{{ route('admin.dashboard.index') }}">
-        <img src="{{ asset('image/images.png')}}" alt="AdminLTE Logo" width="50px" class="mt-3 mx-auto d-block mb-4">
+        <img src="{{ asset('image/logounggul.png')}}" alt="AdminLTE Logo" width="200px" class="mt-3 mx-auto d-block mb-4">
         
     </a>
 
@@ -92,32 +92,32 @@
                     </ul>
                 </li>
                 
-                <li class="nav-item menu-close">
+                {{-- <li class="nav-item menu-close">
                     <a href="{{ route('admin.scheduled_call.index') }}" class="nav-link {{ request()->routeIs('admin.scheduled_call.index') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-phone-alt"></i>
                         <p>
                             SCHEDULED CALLS
                         </p>
                     </a>
-                </li>
+                </li> --}}
 
-                <li class="nav-item menu-close">
+                {{-- <li class="nav-item menu-close">
                     <a href="{{ route('admin.scheduled_call_category.index') }}" class="nav-link {{ request()->routeIs('admin.scheduled_call_category.index') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-list"></i>
                         <p>
                             CALL CATEGORY
                         </p>
                     </a>
-                </li>
+                </li> --}}
 
-                <li class="nav-item menu-close">
+                {{-- <li class="nav-item menu-close">
                     <a href="{{ route('admin.ticket_quota.index') }}" class="nav-link {{ request()->routeIs('admin.ticket_quota.index') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-ticket-alt"></i>
                         <p>
                             TICKET QUOTA
                         </p>
                     </a>
-                </li>
+                </li> --}}
 
                 <li class="nav-item menu-close">
                     <a href="{{ route('admin.ticket_category.index') }}" class="nav-link {{ request()->routeIs('admin.ticket_category.index') ? 'active' : '' }}">
@@ -155,14 +155,14 @@
                     </a>
                 </li>
 
-                <li class="nav-item menu-close">
+                {{-- <li class="nav-item menu-close">
                     <a href="{{ route('admin.triggers.index') }}" class="nav-link {{ request()->routeIs('admin.triggers.index') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-bell"></i>
                         <p>
                             TRIGGER
                         </p>
                     </a>
-                </li>
+                </li> --}}
 
                 <li class="nav-item menu-close">
                     <a href="{{ route('admin.data_repository.index') }}" class="nav-link {{ request()->routeIs('admin.data_repository.index') ? 'active' : '' }}">
@@ -178,6 +178,15 @@
                         <i class="nav-icon fas fa-user"></i>
                         <p>
                             USER MANAGEMENT
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item menu-close">
+                    <a href="{{ route('admin.report.index') }}" class="nav-link {{ request()->routeIs('admin.report.index') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-file-excel"></i>
+                        <p>
+                            REPORT
                         </p>
                     </a>
                 </li>
