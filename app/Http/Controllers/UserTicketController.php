@@ -2,22 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\MessageSent;
-use App\Events\TicketCreated;
-use App\Events\TicketSent;
-use App\Jobs\ProcessTicket;
-use App\Models\Article;
-use App\Models\Attachment;
 use App\Models\User;
-use App\Notifications\TicketNotification;
+use App\Models\Article;
+use App\Events\TicketSent;
+use App\Models\Attachment;
+use App\Events\MessageSent;
+use App\Jobs\ProcessTicket;
 use Illuminate\Http\Request;
+use App\Events\TicketCreated;
+use App\Mail\NotifyAgentNewTicket;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Notifications\TicketNotification;
 use Coderflex\LaravelTicket\Models\Label;
 use Coderflex\LaravelTicket\Models\Ticket;
 use Coderflex\LaravelTicket\Models\Message;
 use Coderflex\LaravelTicket\Models\Category;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 
 
@@ -78,12 +80,6 @@ class UserTicketController extends Controller
             'longitude' => $request->longitude,
             'references' => $this->generateTicketReference()
         ]);
-        // $ticket->categories()->create(
-        //     [
-        //         'name' => $request->category,
-        //         'slug' => \Illuminate\Support\Str::slug($request->category)
-        //     ]);
-
 
         $message = Message::create([
             'user_id' =>  $user->id,
@@ -111,24 +107,14 @@ class UserTicketController extends Controller
                 ]);
             }
         }
-        // if ($request->hasFile('filepond')) {
-        //     foreach ($request->file('filepond') as $file) {
-        //         $path = $file->store('uploads', 'public');
-        //         if ($path) {
-        //             Attachment::create([
-        //                 'name' => $file->getClientOriginalName(),
-        //                 'path' => $path,
-        //                 'message_id'=> $message->id
-        //             ]);
-        //         } else {
-        //             return redirect()->back()->with('error', 'Failed to upload file. Please try again.');
-        //         }
-        //     }
-        // }
 
         $agents = User::whereHas('roles', function ($query) {
             $query->where('name', 'agent');
         })->get();
+
+        foreach ($agents as $agent) {
+            Mail::to($agent->email)->send(new NotifyAgentNewTicket($ticket));
+        }
 
 
         foreach ($agents as $agent) {
@@ -143,9 +129,11 @@ class UserTicketController extends Controller
             ];
             DB::table('notifications')->insert($notification);
         }
+
         event(new TicketSent($ticket));
         $toEmailAddress = Auth::user()->email;
         ProcessTicket::dispatch($ticket, $toEmailAddress);
+
         // Kurangi ticket quota user
         if (!$this->decrementTicketQuota($user)) {
             return redirect()->back()->with('error', 'You do not have enough ticket quota to create a new ticket. Please contact admin.');
