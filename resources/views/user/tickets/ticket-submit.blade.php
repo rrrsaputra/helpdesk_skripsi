@@ -1,8 +1,6 @@
 @extends('layouts.user')
 
 @section('css')
-    <link href="https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.css" rel="stylesheet">
-    <script src="https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.js"></script>
     <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
 @endsection
@@ -63,8 +61,6 @@
                                     </div>
                                 </div>
 
-                                <div class="dx-separator"></div>
-
                                 <div class="dx-box-content">
                                     <link
                                         href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css"
@@ -75,6 +71,9 @@
                                         <label for="subject" class="mnt-7">Subject</label>
                                         <input type="text" class="form-control form-control-style-2" id="subject"
                                             placeholder="Enter Subject" name="title">
+                                        @error('title')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     <div class="dx-form-group">
                                         <label class="mnt-7">Attachments</label>
@@ -87,60 +86,13 @@
                                             style="min-height: 150px; max-height: 250px;">
                                         </div>
                                         <input type="hidden" name="message" id="message">
+                                        @error('message')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
 
                                 <div class="dx-separator"></div>
-
-
-
-                                <div class="dx-box-content">
-                                    <div class="dx-form-group">
-                                        <div class="row align-items-center">
-                                            <div class="col-12 col-md-6 mb-20">
-                                                <label for="latitude" class="mnt-7">Lat:</label>
-                                                <input type="text" class="form-control form-control-style-2"
-                                                    id="latitude" placeholder="Enter Latitude" name='latitude'>
-                                            </div>
-                                            <div class="col-12 col-md-6 mb-20">
-                                                <label for="longitude" class="mnt-7">Long:</label>
-                                                <input type="text" class="form-control form-control-style-2"
-                                                    id="longitude" placeholder="Enter Longitude" name='longitude'>
-                                            </div>
-                                        </div>
-                                        <div class="row align-items-center mt-3">
-                                            <div class="col-12 col-md-6 mb-20">
-                                                <button type="button" class="btn btn-primary w-100"
-                                                    id="check_location">Check Location</button>
-                                            </div>
-                                            <div class="col-12 col-md-6 mb-20">
-                                                <button type="button" class="btn btn-primary w-100"
-                                                    id="get_location">Get
-                                                    Current Location</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="dx-separator"></div>
-
-
-
-                                {{-- GET LOCATION --}}
-                                <div class="dx-box-content">
-
-                                    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
-                                    <link rel="stylesheet"
-                                        href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
-                                        type="text/css">
-
-                                    <div id="map" style="height: 400px;"></div>
-
-
-                                    <input type="hidden" name="latitude" id="hidden_latitude">
-                                    <input type="hidden" name="longitude" id="hidden_longitude">
-
-                                </div>
 
                                 <div class="dx-separator"></div>
                                 <div class="dx-box-content">
@@ -179,7 +131,7 @@
                     serverId: file.serverId,
                     name: file.file.name
                 }));
-                
+
                 // Append filePaths to a hidden input field
                 const filePathsInput = document.createElement('input');
                 filePathsInput.type = 'hidden';
@@ -187,7 +139,7 @@
                 filePathsInput.value = JSON.stringify(filePaths);
                 event.target.closest('form').appendChild(filePathsInput);
             } else {
-            
+
             }
             // Kirim form setelah mengambil file
             event.target.closest('form').submit();
@@ -220,7 +172,7 @@
             // Upload the file to your server
             const addedFiles = pond.getFiles();
             addedFiles.forEach(file => {
-                
+
             });
 
 
@@ -250,107 +202,6 @@
                 quill.root.style.height = `${editorHeight}px`;
             }
             document.getElementById('message').value = quill.root.innerHTML;
-        });
-    </script>
-
-
-    <script id="search-js" defer src="https://api.mapbox.com/search-js/v1.0.0-beta.21/web.js"></script>
-    <script>
-        ACCESS_TOKEN = "pk.eyJ1IjoiYmFtYmFuZzI4MDIiLCJhIjoiY2x4a2ViM3R0MDB0bDJqcXU0OWxwN3I3biJ9.Ihq2fCxZXYpw-sveeATkvw";
-        mapboxgl.accessToken = ACCESS_TOKEN;
-        const map = new mapboxgl.Map({
-            container: 'map',
-            // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
-            style: 'mapbox://styles/mapbox/streets-v12',
-            center: [106.8456, -6.2088],
-            zoom: 8
-        });
-
-        // Add the control to the map.
-        const geocoder = new MapboxGeocoder({
-            accessToken: mapboxgl.accessToken,
-            mapboxgl: mapboxgl,
-        });
-
-        map.addControl(geocoder);
-
-
-        geocoder.on('result', function(e) {
-
-            if (marker) {
-                marker.remove();
-            }
-            const coords = e.result.geometry.coordinates;
-            document.getElementById('latitude').value = coords[1];
-            document.getElementById('longitude').value = coords[0];
-            document.getElementById('hidden_latitude').value = coords[1];
-            document.getElementById('hidden_longitude').value = coords[0];
-        });
-
-        var marker;
-
-        document.getElementById('get_location').addEventListener('click', function() {
-            const clearButton = document.querySelector('.mapboxgl-ctrl-geocoder--button[aria-label="Clear"]');
-            if (clearButton) {
-                clearButton.click();
-            }
-
-
-            if (navigator.geolocation) {
-
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    const latitude = position.coords.latitude;
-                    const longitude = position.coords.longitude;
-                    document.getElementById('latitude').value = latitude;
-                    document.getElementById('longitude').value = longitude;
-                    document.getElementById('hidden_latitude').value = latitude;
-                    document.getElementById('hidden_longitude').value = longitude;
-                    map.flyTo({
-                        center: [longitude, latitude],
-                        zoom: 14,
-                        essential: true // this animation is considered essential with respect to prefers-reduced-motion
-                    });
-
-                    // Add a marker to the map at the user's current location, but remove any existing marker first
-                    if (marker) {
-                        marker.remove();
-                    }
-                    marker = new mapboxgl.Marker()
-                        .setLngLat([longitude, latitude])
-                        .addTo(map);
-
-
-                }, function(error) {
-                    console.error('Error occurred while fetching location: ', error);
-                });
-            } else {
-                console.error('Geolocation is not supported by this browser.');
-            }
-        });
-
-        document.getElementById('check_location').addEventListener('click', function() {
-            const latitude = parseFloat(document.getElementById('latitude').value);
-            const longitude = parseFloat(document.getElementById('longitude').value);
-
-            if (!isNaN(latitude) && !isNaN(longitude)) {
-                document.getElementById('hidden_latitude').value = latitude;
-                document.getElementById('hidden_longitude').value = longitude;
-                map.flyTo({
-                    center: [longitude, latitude],
-                    zoom: 14,
-                    essential: true // this animation is considered essential with respect to prefers-reduced-motion
-                });
-
-                // Add a marker to the map at the specified location, but remove any existing marker first
-                if (marker) {
-                    marker.remove();
-                }
-                marker = new mapboxgl.Marker()
-                    .setLngLat([longitude, latitude])
-                    .addTo(map);
-            } else {
-                console.error('Invalid latitude or longitude values.');
-            }
         });
     </script>
 @endpush

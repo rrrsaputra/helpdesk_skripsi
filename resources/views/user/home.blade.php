@@ -61,15 +61,7 @@
                                     <h4 class="h6 mt-0">{{ $articleCategory->name }}</h4>
                                     <ul class="dx-list">
                                         @foreach ($articleCategory->articles as $article)
-                                            @if (auth()->user()->type == 'Standard' && $article->for_user == 'Standard')
-                                                <li><a
-                                                        href="{{ route('article.show', $article->id) }}">{{ $article->title }}</a>
-                                                </li>
-                                            @elseif(auth()->user()->type == 'Premium' && in_array($article->for_user, ['Standard', 'Premium']))
-                                                <li><a
-                                                        href="{{ route('article.show', $article->id) }}">{{ $article->title }}</a>
-                                                </li>
-                                            @endif
+                                            <li><a href="{{ route('article.show', $article->id) }}">{{ $article->title }}</a></li>
                                         @endforeach
                                     </ul>
                                 </div>

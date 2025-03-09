@@ -102,11 +102,7 @@
                                                 <span
                                                     class="dx-widget-categories-category">{{ $articleCategory->name }}</span>
                                                 <span class="dx-widget-categories-badge">
-                                                    @if (auth()->user()->type == 'Standard')
-                                                        {{ $articleCategory->articles->where('for_user', 'Standard')->count() }}
-                                                    @elseif(auth()->user()->type == 'Premium')
-                                                        {{ $articleCategory->articles->whereIn('for_user', ['Standard', 'Premium'])->count() }}
-                                                    @endif
+                                                    {{ $articleCategory->articles->count() }}
                                                 </span>
                                             </a>
                                         </li>
@@ -116,19 +112,11 @@
                             <div class="dx-widget dx-box dx-box-decorated">
                                 <div class="dx-widget-title"> Latest Articles </div>
                                 @foreach ($articles as $article)
-                                    @if (auth()->user()->type == 'Standard' && $article->for_user == 'Standard')
-                                        <a href="{{ route('article.show', $article->id) }}" class="dx-widget-link">
-                                            <span class="dx-widget-link-text">{{ $article->title }}</span>
-                                            <span
-                                                class="dx-widget-link-date">{{ $article->created_at->format('d F Y') }}</span>
-                                        </a>
-                                    @elseif (auth()->user()->type == 'Premium' && in_array($article->for_user, ['Standard', 'Premium']))
-                                        <a href="{{ route('article.show', $article->id) }}" class="dx-widget-link">
-                                            <span class="dx-widget-link-text">{{ $article->title }}</span>
-                                            <span
-                                                class="dx-widget-link-date">{{ $article->created_at->format('d F Y') }}</span>
-                                        </a>
-                                    @endif
+                                    <a href="{{ route('article.show', $article->id) }}" class="dx-widget-link">
+                                        <span class="dx-widget-link-text">{{ $article->title }}</span>
+                                        <span
+                                            class="dx-widget-link-date">{{ $article->created_at->format('d F Y') }}</span>
+                                    </a>
                                 @endforeach
                             </div>
                         </div>

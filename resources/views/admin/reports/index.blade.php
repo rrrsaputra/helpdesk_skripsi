@@ -139,7 +139,9 @@
                                                 </td>
                                             @endforeach
                                             <td>
-                                                <button type="submit" class="btn btn-primary">Save</button>
+                                                <button type="submit" class="btn btn-primary" title="Save">
+                                                    <i class="fas fa-save"></i>
+                                                </button>
                                             </td>
                                         </form>
                                     </tr>

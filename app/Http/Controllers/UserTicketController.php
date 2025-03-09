@@ -65,6 +65,11 @@ class UserTicketController extends Controller
 
         $user = Auth::user();
 
+        $request->validate([
+        'title' => 'required|string|max:255',
+        'message' => 'required|string',
+    ]);
+
 
         // Cek apakah user memiliki ticket quota yang cukup
         if ($user->ticket_quota <= 0) {

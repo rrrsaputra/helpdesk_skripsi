@@ -15,7 +15,7 @@ class AdminUserManagementController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-    $paginationCount = 50;
+    $paginationCount = 10;
     $users = User::when($search, function ($query) use ($search) {
         $query->where('name', 'like', "%{$search}%");
     })

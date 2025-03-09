@@ -55,11 +55,11 @@ class AdminReportController extends Controller
         // Update the ticket fields based on the values array
         $ticket->created_at = $values[1];
         $ticket->category = $values[2];
-        $ticket->title = $values[7];
-        $ticket->message = $values[8]; // Assuming title and message are combined
-        $ticket->created_at = $values[9];
-        $ticket->updated_at = $values[10];
-        $ticket->status = $values[12];
+        $ticket->title = $values[3];
+        $ticket->message = $values[4]; // Assuming title and message are combined
+        $ticket->created_at = $values[5];
+        $ticket->updated_at = $values[6];
+        $ticket->status = $values[7];
 
         // Save the updated ticket
         $ticket->save();

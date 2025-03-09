@@ -30,7 +30,12 @@ class FeedbackController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {   
+    {
+        $request->validate([
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string',
+        ]);
+
         $category = $request->input('category');
         $feedback = $request->input('message');
         $subject = $request->input('subject');

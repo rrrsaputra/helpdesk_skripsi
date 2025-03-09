@@ -5,7 +5,7 @@
 
 @section('content')
     @php
-        $columns = ['Title', 'Content', 'Category', 'Created By', 'For User'];
+        $columns = ['Title', 'Content', 'Category', 'Created By'];
         $data = $articles
             ->map(function ($article) {
                 return [
@@ -90,13 +90,17 @@
                                         @endforeach
                                         <td> <!-- Added Actions buttons -->
                                             <a href="{{ route('admin.article.edit', $row['id']) }}"
-                                                class="btn btn-sm btn-primary">Edit</a>
+                                                class="btn btn-sm btn-warning" title="Edit Article">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
 
                                             <form action="{{ route('admin.article.destroy', $row['id']) }}" method="POST"
                                                 style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                                <button type="submit" class="btn btn-sm btn-danger" title="Delete Article">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
                                             </form>
                                         </td>
                                     </tr>

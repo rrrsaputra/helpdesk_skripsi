@@ -9,6 +9,7 @@ use App\Models\StudyProgram;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Coderflex\LaravelTicket\Models\Ticket;
 
 class DatabaseSeeder extends Seeder
 {
@@ -65,5 +66,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(StudyProgramSeeder::class);
         $this->call(CategorySeeder::class);
+
+        User::factory()->count(25)->create();
     }
 }

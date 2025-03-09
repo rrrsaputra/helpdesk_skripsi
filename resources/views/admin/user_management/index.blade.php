@@ -120,12 +120,18 @@
                                             </td>
                                         @endforeach
                                         <td> <!-- Added Actions buttons -->
-                                            <button class="btn btn-primary btn-sm" data-toggle="modal"
-                                                data-target="#editModal-{{ $row['id'] }}">Edit</button>
                                             <button class="btn btn-warning btn-sm" data-toggle="modal"
-                                                data-target="#typeModal-{{ $row['id'] }}">Manage</button>
+                                                data-target="#editModal-{{ $row['id'] }}" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-primary btn-sm" data-toggle="modal"
+                                                data-target="#typeModal-{{ $row['id'] }}" title="Manage">
+                                                <i class="fas fa-cogs"></i>
+                                            </button>
                                             <button class="btn btn-danger btn-sm" data-toggle="modal"
-                                                data-target="#deleteModal-{{ $row['id'] }}">Delete</button>
+                                                data-target="#deleteModal-{{ $row['id'] }}" title="Delete">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
 
                                             <!-- Update Password Modal -->
                                             <div class="modal fade" id="editModal-{{ $row['id'] }}" tabindex="-1"
@@ -341,7 +347,8 @@
                 "responsive": true,
                 "lengthChange": false,
                 "autoWidth": false,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"], // Tambahkan koma di sini
+                "order": [[3, 'asc']] // Mengurutkan berdasarkan kolom "Role"
             }).buttons().container().appendTo('#example2_wrapper .col-md-6:eq(0)');
         });
     </script>

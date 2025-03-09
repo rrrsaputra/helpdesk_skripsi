@@ -7,7 +7,7 @@
 
 @section('content')
     <div class="dx-main">
-        
+
         <div class="dx-main">
             <div class="dx-separator"></div>
             @if (session('success'))
@@ -48,7 +48,7 @@
                                     </div>
                                     <div class="dx-separator"></div>
 
-                                   
+
                                     <div class="dx-box-content">
                                         <link
                                             href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css"
@@ -67,6 +67,9 @@
                                             <label for="subject" class="mnt-7">Subjek</label>
                                             <input type="text" class="form-control form-control-style-2" id="subject"
                                                 placeholder="Enter Subject" name='subject'>
+                                            @error('subject')
+                                                <div class="alert alert-danger">{{ $message }}</div>
+                                            @enderror
                                         </div>
 
                                         <div class="dx-form-group">
@@ -106,6 +109,9 @@
                                                 });
                                             </script>
                                             <input type="hidden" name="message" id="message">
+                                            @error('message')
+                                                <div class="alert alert-danger">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
 
@@ -114,7 +120,8 @@
                                     <div class="dx-box-content">
                                         <div class="row justify-content-end mt-3">
                                             <div class="col-auto mb-20">
-                                                <button type="submit"  class="dx-btn dx-btn-lg mx-4 float-right my-3" id="send_feedback">Kirim</button>
+                                                <button type="submit" class="dx-btn dx-btn-lg mx-4 float-right my-3"
+                                                    id="send_feedback">Kirim</button>
                                             </div>
                                         </div>
                                     </div>
@@ -138,7 +145,7 @@
                     serverId: file.serverId,
                     name: file.file.name
                 }));
-                
+
                 // Append filePaths to a hidden input field
                 const filePathsInput = document.createElement('input');
                 filePathsInput.type = 'hidden';
@@ -146,7 +153,7 @@
                 filePathsInput.value = JSON.stringify(filePaths);
                 event.target.closest('form').appendChild(filePathsInput);
             } else {
-               
+
             }
             // Kirim form setelah mengambil file
             event.target.closest('form').submit();
@@ -179,7 +186,7 @@
             // Upload the file to your server
             const addedFiles = pond.getFiles();
             addedFiles.forEach(file => {
-                
+
             });
 
 
@@ -211,9 +218,4 @@
             document.getElementById('message').value = quill.root.innerHTML;
         });
     </script>
-
-
-
-
-
 @endpush

@@ -20,7 +20,6 @@
 
                 <div class="row vertical-gap md-gap">
                     <div class="col-lg-8">
-                        <p class="mb-0">Remaining Tickets: {{ $remainingTickets->ticket_quota }}</p>
                         @foreach ($tickets as $ticket)
                             <a href=" {{ route('user.ticket.show', $ticket->id) }} "
                                 class="dx-ticket-item dx-ticket-new dx-ticket-open dx-block-decorated">
@@ -83,31 +82,17 @@
                     data-swiper-grabCursor="true">
                     <div class="swiper-wrapper">
                         @foreach ($articles as $article)
-                            @if (auth()->user()->type == 'Standard' && $article->for_user == 'Standard')
-                                <div class="swiper-slide">
-                                    <div class="dx-article dx-article-block">
-                                        <h4 class="h6 dx-article-title">{{ $article->title }}</h4>
-                                        <div class="dx-article-text">
-                                            <p class="mb-0">{{ Str::limit(strip_tags($article->content), 150) }}</p>
-                                        </div>
-                                        <a href="{{ route('article.show', $article->id) }}"
-                                            class="dx-btn dx-btn-link d-flex dx-article-link">Read More
-                                            <span class="icon pe-7s-angle-right"></span></a>
+                            <div class="swiper-slide">
+                                <div class="dx-article dx-article-block">
+                                    <h4 class="h6 dx-article-title">{{ $article->title }}</h4>
+                                    <div class="dx-article-text">
+                                        <p class="mb-0">{{ Str::limit(strip_tags($article->content), 150) }}</p>
                                     </div>
+                                    <a href="{{ route('article.show', $article->id) }}"
+                                        class="dx-btn dx-btn-link d-flex dx-article-link">Read More
+                                        <span class="icon pe-7s-angle-right"></span></a>
                                 </div>
-                            @elseif (auth()->user()->type == 'Premium' && in_array($article->for_user, ['Standard', 'Premium']))
-                                <div class="swiper-slide">
-                                    <div class="dx-article dx-article-block">
-                                        <h4 class="h6 dx-article-title">{{ $article->title }}</h4>
-                                        <div class="dx-article-text">
-                                            <p class="mb-0">{{ Str::limit(strip_tags($article->content), 150) }}</p>
-                                        </div>
-                                        <a href="{{ route('article.show', $article->id) }}"
-                                            class="dx-btn dx-btn-link d-flex dx-article-link">Read More
-                                            <span class="icon pe-7s-angle-right"></span></a>
-                                    </div>
-                                </div>
-                            @endif
+                            </div>
                         @endforeach
                     </div>
                     <div class="swiper-button-prev"><span class="icon pe-7s-angle-left"></span></div>
