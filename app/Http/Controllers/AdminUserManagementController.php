@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\StudyProgram;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -14,24 +15,25 @@ class AdminUserManagementController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-        $paginationCount = 50;
-        $users = User::when($search, function ($query) use ($search) {
-            $query->where('name', 'like', "%{$search}%");
-        })
-            ->paginate($paginationCount);
+    $paginationCount = 50;
+    $users = User::when($search, function ($query) use ($search) {
+        $query->where('name', 'like', "%{$search}%");
+    })
+        ->paginate($paginationCount);
 
-        $data = $users->map(function ($user) {
-            return [
-                'id' => $user->id,
-                'url' => '/path/to/resource1',
-                'values' => [$user->name, $user->type],
-                'ticket_quota' => $user->ticket_quota,
-                'type' => $user->type,
-                'role' => $user->roles->pluck('name')->first(), // Assuming a user has one role
-            ];
-        })->toArray();
+    $data = $users->map(function ($user) {
+        $studyProgramName = StudyProgram::find($user->study_program_id)->name ?? 'N/A';
+        return [
+            'id' => $user->id,
+            'url' => '/path/to/resource1',
+            'values' => [$user->email, $user->name, $studyProgramName, $user->roles->pluck('name')->first()],
+            'ticket_quota' => $user->ticket_quota,
+        ];
+    })->toArray();
 
-        return view('admin.user_management.index', compact('users', 'data'));
+    $studyPrograms = StudyProgram::all(); // Ambil semua program studi
+
+    return view('admin.user_management.index', compact('users', 'data', 'studyPrograms'));
     }
 
     /**
@@ -89,8 +91,8 @@ class AdminUserManagementController extends Controller
     {
         $user = User::find($id);
         if ($user) {
-            $user->type = $request->input('type');
-            $user->save();
+            $user->study_program_id = $request->input('type'); // Ubah 'type' menjadi 'study_program_id'
+        $user->save();
 
             $role = $request->input('role');
             if ($role) {

@@ -26,14 +26,6 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="for_user">For User</label>
-                    <select class="form-control" name="for_user" id="for_user">
-                        <option value="Standard" {{ $article->for_user == 'Standard' ? 'selected' : '' }}>Standard</option>
-                        <option value="Premium" {{ $article->for_user == 'Premium' ? 'selected' : '' }}>Premium</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
                     <label for="content">Content</label>
                     <div id="editor" style="height: 300px; min-height: 300px;"></div>
                     <input type="hidden" name="content" id="content" value="{{ $article->content }}">

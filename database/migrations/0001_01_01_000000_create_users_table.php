@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->enum('type', ['Standard', 'Premium']);
             $table->integer('ticket_quota')->default(20);
             $table->foreignId('study_program_id')->nullable()->constrained('study_programs')->onDelete('cascade');
             $table->rememberToken();

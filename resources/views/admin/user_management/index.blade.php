@@ -34,19 +34,19 @@
                 document.getElementById('danger-alert').style.display = 'none';
             }, 5000);
         </script>
-    @endif    
+    @endif
     <x-admin.header title='User Management' />
 @endsection
 
 @section('content')
     @php
-        $columns = ['Email', 'Customer', 'Type', 'Role'];
+        $columns = ['Email', 'Customer', 'Study Program', 'Role'];
         $data = $users
             ->map(function ($user) {
                 return [
                     'id' => $user->id,
                     'url' => '/path/to/resource1',
-                    'values' => [$user->email, $user->name, $user->type, $user->roles->pluck('name')->first()],
+                    'values' => [$user->email, $user->name, $user->studyProgram->name ?? 'N/A', $user->roles->pluck('name')->first()],
                     'ticket_quota' => $user->ticket_quota,
                 ];
             })
@@ -128,12 +128,14 @@
                                                 data-target="#deleteModal-{{ $row['id'] }}">Delete</button>
 
                                             <!-- Update Password Modal -->
-                                            <div class="modal fade" id="editModal-{{ $row['id'] }}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                                            <div class="modal fade" id="editModal-{{ $row['id'] }}" tabindex="-1"
+                                                role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
                                                             <h5 class="modal-title" id="editModalLabel">Update Password</h5>
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
                                                         </div>
@@ -141,44 +143,60 @@
                                                             <p class="mt-1 text-sm text-gray-600 dark:text-gray-400 mb-6">
                                                                 {{ __('Ensure your account is using a long, random password to stay secure.') }}
                                                             </p>
-                                                            <form id="updatePasswordForm-{{ $row['id'] }}" action="{{ route('admin.user_management.updatePassword', $row['id']) }}" method="POST" class="mt-6 space-y-6">
+                                                            <form id="updatePasswordForm-{{ $row['id'] }}"
+                                                                action="{{ route('admin.user_management.updatePassword', $row['id']) }}"
+                                                                method="POST" class="mt-6 space-y-6">
                                                                 @csrf
                                                                 @method('POST')
 
                                                                 <div class="form-group">
-                                                                    <label for="current_password-{{ $row['id'] }}" class="form-label">{{ __('Current Password') }}</label>
-                                                                    <input id="current_password-{{ $row['id'] }}" name="current_password" type="password" class="form-control mt-1 block w-full" required>
+                                                                    <label for="current_password-{{ $row['id'] }}"
+                                                                        class="form-label">{{ __('Current Password') }}</label>
+                                                                    <input id="current_password-{{ $row['id'] }}"
+                                                                        name="current_password" type="password"
+                                                                        class="form-control mt-1 block w-full" required>
                                                                     @if ($errors->has('current_password'))
-                                                                        <span class="text-danger mt-2">{{ $errors->first('current_password') }}</span>
+                                                                        <span
+                                                                            class="text-danger mt-2">{{ $errors->first('current_password') }}</span>
                                                                     @endif
                                                                 </div>
 
                                                                 <div class="form-group">
-                                                                    <label for="password-{{ $row['id'] }}" class="form-label">{{ __('New Password') }}</label>
-                                                                    <input id="password-{{ $row['id'] }}" name="password" type="password" class="form-control mt-1 block w-full" required>
+                                                                    <label for="password-{{ $row['id'] }}"
+                                                                        class="form-label">{{ __('New Password') }}</label>
+                                                                    <input id="password-{{ $row['id'] }}"
+                                                                        name="password" type="password"
+                                                                        class="form-control mt-1 block w-full" required>
                                                                     @if ($errors->has('password'))
-                                                                        <span class="text-danger mt-2">{{ $errors->first('password') }}</span>
+                                                                        <span
+                                                                            class="text-danger mt-2">{{ $errors->first('password') }}</span>
                                                                     @endif
                                                                 </div>
 
                                                                 <div class="form-group">
-                                                                    <label for="password_confirmation-{{ $row['id'] }}" class="form-label">{{ __('Confirm New Password') }}</label>
-                                                                    <input id="password_confirmation-{{ $row['id'] }}" name="password_confirmation" type="password" class="form-control mt-1 block w-full" required>
+                                                                    <label for="password_confirmation-{{ $row['id'] }}"
+                                                                        class="form-label">{{ __('Confirm New Password') }}</label>
+                                                                    <input id="password_confirmation-{{ $row['id'] }}"
+                                                                        name="password_confirmation" type="password"
+                                                                        class="form-control mt-1 block w-full" required>
                                                                     @if ($errors->has('password_confirmation'))
-                                                                        <span class="text-danger mt-2">{{ $errors->first('password_confirmation') }}</span>
+                                                                        <span
+                                                                            class="text-danger mt-2">{{ $errors->first('password_confirmation') }}</span>
                                                                     @endif
                                                                 </div>
 
                                                                 <div class="form-group flex items-center gap-4">
-                                                                    <button type="submit" class="btn btn-primary">{{ __('Update Password') }}</button>
-                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Cancel') }}</button>
+                                                                    <button type="submit"
+                                                                        class="btn btn-primary">{{ __('Update Password') }}</button>
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                        data-dismiss="modal">{{ __('Cancel') }}</button>
                                                                 </div>
                                                             </form>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                                
+
                                             <!-- Delete Confirmation Modal -->
                                             <div class="modal fade" id="deleteModal-{{ $row['id'] }}" tabindex="-1"
                                                 role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -202,22 +220,30 @@
                                                                 @csrf
                                                                 @method('DELETE')
                                                                 <div class="form-group">
-                                                                    <label for="password-{{ $row['id'] }}" class="form-label mb-2">{{ __('Password') }}</label>
-                                                                    <input id="password-{{ $row['id'] }}" name="password" type="password" class="form-control mt-1 block w-full" placeholder="{{ __('Password') }}" required>
+                                                                    <label for="password-{{ $row['id'] }}"
+                                                                        class="form-label mb-2">{{ __('Password') }}</label>
+                                                                    <input id="password-{{ $row['id'] }}"
+                                                                        name="password" type="password"
+                                                                        class="form-control mt-1 block w-full"
+                                                                        placeholder="{{ __('Password') }}" required>
                                                                     @if ($errors->userDeletion->has('password'))
-                                                                        <span class="text-danger mt-2">{{ $errors->userDeletion->first('password') }}</span>
+                                                                        <span
+                                                                            class="text-danger mt-2">{{ $errors->userDeletion->first('password') }}</span>
                                                                     @endif
                                                                 </div>
                                                                 <div class="form-group flex items-center gap-4">
-                                                                    <button type="submit" class="btn btn-danger">{{ __('Delete Account') }}</button>
-                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Cancel') }}</button>
+                                                                    <button type="submit"
+                                                                        class="btn btn-danger">{{ __('Delete Account') }}</button>
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                        data-dismiss="modal">{{ __('Cancel') }}</button>
                                                                 </div>
                                                             </form>
                                                         </div>
                                         </td>
                                     </tr>
                                     <!-- Modal -->
-                                    <form method="POST" action="{{ route('admin.user_management.update', $row['id']) }}">
+                                    <form method="POST"
+                                        action="{{ route('admin.user_management.update', $row['id']) }}">
                                         @csrf
                                         @method('PATCH')
                                         <div class="modal fade" id="typeModal-{{ $row['id'] }}" tabindex="-1"
@@ -233,15 +259,15 @@
                                                         </button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <label for="userType">User Type:</label>
+                                                        <label for="userType">PIC:</label>
                                                         <select id="userType" name="type" class="form-control"
                                                             required>
-                                                            <option value="Standard"
-                                                                {{ $row['values'][2] == 'Standard' ? 'selected' : '' }}>
-                                                                Standard</option>
-                                                            <option value="Premium"
-                                                                {{ $row['values'][2] == 'Premium' ? 'selected' : '' }}>
-                                                                Premium</option>
+                                                            @foreach ($studyPrograms as $program)
+                                                                <option value="{{ $program->id }}"
+                                                                    {{ $row['values'][2] == $program->name ? 'selected' : '' }}>
+                                                                    {{ $program->name }}
+                                                                </option>
+                                                            @endforeach
                                                         </select>
                                                         <label for="userRole" class="mt-3">User Role:</label>
                                                         <select id="userRole" name="role" class="form-control"

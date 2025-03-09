@@ -16,7 +16,6 @@
                         strip_tags(Str::limit($article->content, 50)),
                         $article->articleCategory->name,
                         $article->user->name,
-                        $article->for_user,
                     ],
                 ];
             })

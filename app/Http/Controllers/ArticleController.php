@@ -45,14 +45,12 @@ class ArticleController extends Controller
             'title' => 'required',
             'content' => 'required',
             'category' => 'required',
-            'for_user' => 'required',
         ]);
 
         $articleData = [
             'title' => $validatedData['title'],
             'content' => $validatedData['content'],
             'article_category_id' => $validatedData['category'],
-            'for_user' => $validatedData['for_user'],
             'user_id' => auth()->id(),
         ];
 
@@ -95,7 +93,6 @@ class ArticleController extends Controller
             $file = $request->file('image')->store('articles');
             $article->image = $file;
         }
-        $article->for_user = $request->for_user;
         $article->save();
         return redirect()->route('admin.article.index');
     }
