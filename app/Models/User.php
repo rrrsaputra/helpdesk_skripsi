@@ -58,4 +58,8 @@ class User extends Authenticatable implements CanUseTickets
     //     return $this->hasMany(ScheduledCall::class);
     // }
 
+    public function StudyProgram()
+    {
+        return $this->belongsTo(StudyProgram::class);
+    }
 }

@@ -32,6 +32,7 @@ use App\Http\Controllers\AgentDashboardController;
 use App\Http\Controllers\UserSuperSearchController;
 use App\Http\Controllers\UserTicketQuotaController;
 use App\Http\Controllers\AdminBusinessHourController;
+use App\Http\Controllers\AdminStudyProgramController;
 use App\Http\Controllers\UserScheduledCallController;
 use App\Http\Controllers\AdminScheduledCallController;
 use App\Http\Controllers\AgentScheduledCallController;
@@ -142,6 +143,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::resource('/admin/report', AdminReportController::class)->names('admin.report');
     Route::get('admin/reports/export', [AdminReportController::class, 'export'])->name('admin.report.export');
+
+    Route::resource('/admin/study_programs', AdminStudyProgramController::class)->names('admin.study_programs');
 });
 
 Route::middleware('auth', 'role:agent')->group(function () {

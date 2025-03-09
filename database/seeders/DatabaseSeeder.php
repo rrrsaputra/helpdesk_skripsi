@@ -2,9 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Category;
 use App\Models\User;
+use App\Models\Category;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\StudyProgram;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -62,17 +63,7 @@ class DatabaseSeeder extends Seeder
         // Assigning the admin role to the user
         $agent->assignRole($agentRole);
 
-    // Creating categories
-    $categories = [
-        ['name' => 'Technology', 'slug' => 'technology'],
-        ['name' => 'Health', 'slug' => 'health'],
-        ['name' => 'Education', 'slug' => 'education'],
-        ['name' => 'Business', 'slug' => 'business'],
-        ['name' => 'Entertainment', 'slug' => 'entertainment'],
-    ];
-
-    foreach ($categories as $category) {
-        Category::create($category);
-    }
+        $this->call(StudyProgramSeeder::class);
+        $this->call(CategorySeeder::class);
     }
 }

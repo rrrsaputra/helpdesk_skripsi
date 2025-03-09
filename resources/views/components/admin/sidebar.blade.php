@@ -190,6 +190,15 @@
                         </p>
                     </a>
                 </li>
+
+                <li class="nav-item menu-close">
+                    <a href="{{ route('admin.study_programs.index') }}" class="nav-link {{ request()->routeIs('admin.study_programs.index') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-graduation-cap"></i>
+                        <p>
+                            STUDY PROGRAMS
+                        </p>
+                    </a>
+                </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
