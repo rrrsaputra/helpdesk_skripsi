@@ -34,18 +34,20 @@ class UserTicketController extends Controller
         $search = $request->input('search');
         $paginationCount = 5;
         $user = Auth::user();
-        $remainingTickets = $user;
-        $tickets = Ticket::where('user_id', $user->id)->orderBy('created_at', 'desc')
+
+        $tickets = Ticket::where('user_id', $user->id)
             ->when($search, function ($query) use ($search) {
-                $query->where('title', 'like', "%{$search}%")
-                    ->orWhere('message', 'like', "%{$search}%");
+                $query->where(function ($query) use ($search) {
+                    $query->where('title', 'like', "%{$search}%")
+                        ->orWhere('message', 'like', "%{$search}%");
+                });
             })
+            ->orderBy('created_at', 'desc')
             ->paginate($paginationCount);
 
         $articles = Article::all();
-        // $ticketCategory = Category::whereIn('id', $tickets->pluck('category_id'))->paginate($paginationCount);
 
-        return view('user.tickets.ticket', compact('tickets', 'remainingTickets', 'articles'));
+        return view('user.tickets.ticket', compact('tickets', 'articles'));
     }
     /**
      * Show the form for creating a new resource.
@@ -66,9 +68,9 @@ class UserTicketController extends Controller
         $user = Auth::user();
 
         $request->validate([
-        'title' => 'required|string|max:255',
-        'message' => 'required|string',
-    ]);
+            'title' => 'required|string|max:255',
+            'message' => 'required|string',
+        ]);
 
 
         // Cek apakah user memiliki ticket quota yang cukup

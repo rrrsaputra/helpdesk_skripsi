@@ -14,37 +14,39 @@
                         <div class="dx-separator ml-10 mr-10"></div>
                     </div>
                     <div class="col-auto">
-                        <a href="{{ route('user.ticket.create') }}" class="dx-btn dx-btn-md" style="background-color: #F38F2F;">Buat Tiket</a>
+                        <a href="{{ route('user.ticket.create') }}" class="dx-btn dx-btn-md"
+                            style="background-color: #F38F2F;">Buat Tiket</a>
                     </div>
                 </div>
 
                 <div class="row vertical-gap md-gap">
                     <div class="col-lg-8">
-                        @foreach ($tickets as $ticket)
-                            <a href=" {{ route('user.ticket.show', $ticket->id) }} "
-                                class="dx-ticket-item dx-ticket-new dx-ticket-open dx-block-decorated">
-                                <span class="dx-ticket-cont">
-                                    <span class="dx-ticket-name">{{ $ticket->user->name }}</span>
-                                    <span class="dx-ticket-title h5" style="color: black">{{ $ticket->references." - ".$ticket->title }}</span>
-                                    <p class="dx-ticket-paragraph mt-8" style="color: black">{{ strip_tags($ticket->message) }}
-                                    </p>
-                                    <ul class="dx-ticket-info">
-                                        <li>Created: {{ $ticket->updated_at->format('d M Y') }}</li>
-                                        <li>Category: {{ $ticket->category }}</li>
-                                        @php $newMessagesCount = $ticket->messages->where('user_id', '!=', Auth::id())->where('is_read', '')->count(); @endphp
-                                        @if ($newMessagesCount > 0)
-                                            <li style="color: blue; font-weight: bold;">New Messages: {{ $newMessagesCount }}</li>
-                                        @endif
-                                        @if ($ticket->is_new)
-                                            <li class="dx-ticket-new">New</li>
-                                        @endif
-                                    </ul>
-                                </span>
-                                <span class="dx-ticket-status">{{ $ticket->status }}</span>
-                               
-                                
-                            </a>
-                        @endforeach
+                        @if ($tickets->isEmpty())
+                            <p class="text-center">Tiket Pertanyaan Tidak Ditemukan</p>
+                        @else
+                            @foreach ($tickets as $ticket)
+                                <a href="{{ route('user.ticket.show', $ticket->id) }}"
+                                    class="dx-ticket-item dx-ticket-new dx-ticket-open dx-block-decorated">
+                                    <span class="dx-ticket-cont">
+                                        <span class="dx-ticket-name">{{ $ticket->user->name }}</span>
+                                        <span class="dx-ticket-title h5" style="color: black">{{ $ticket->references . ' - ' . $ticket->title }}</span>
+                                        <p class="dx-ticket-paragraph mt-8" style="color: black">{{ strip_tags($ticket->message) }}</p>
+                                        <ul class="dx-ticket-info">
+                                            <li>Created: {{ $ticket->updated_at->format('d M Y') }}</li>
+                                            <li>Category: {{ $ticket->category }}</li>
+                                            @php $newMessagesCount = $ticket->messages->where('user_id', '!=', Auth::id())->where('is_read', '')->count(); @endphp
+                                            @if ($newMessagesCount > 0)
+                                                <li style="color: blue; font-weight: bold;">New Messages: {{ $newMessagesCount }}</li>
+                                            @endif
+                                            @if ($ticket->is_new)
+                                                <li class="dx-ticket-new">New</li>
+                                            @endif
+                                        </ul>
+                                    </span>
+                                    <span class="dx-ticket-status">{{ $ticket->status }}</span>
+                                </a>
+                            @endforeach
+                        @endif
                         <div class="mt-20">
                             {{ $tickets->links() }}
                         </div>

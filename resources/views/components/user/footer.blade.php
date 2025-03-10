@@ -24,24 +24,26 @@
                     <div class="dx-widget-footer">
                         <div class="dx-widget-title"> ALAMAT </div>
                         <div class="dx-widget-portfolio">
-                            <p style="color: lightgrey">
-                                Jl. H.R Rasuna Said Kav. C22
-                                <br>
-                                Jakarta Selatan
-                                <br>
-                                DKI Jakarta, Indonesia
-                            </p>
+                            <a href="https://maps.app.goo.gl/Uukd3y26wWHrAp3G7" target="_blank" style="color: lightgrey; text-decoration: none;" onmouseover="this.style.color='white'" onmouseout="this.style.color='lightgrey'">
+                                <p>
+                                    Jl. H.R Rasuna Said Kav. C22
+                                    <br>
+                                    Jakarta Selatan
+                                    <br>
+                                    DKI Jakarta, Indonesia
+                                </p>
+                            </a>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-6 col-lg-3">
                     <div class="dx-widget-footer">
-                        <div class="dx-widget-title"> CONTACT </div>
-                        <a href="tel:+622518371219" style="color: lightgrey">
+                        <div class="dx-widget-title"> KONTAK </div>
+                        <a href="tel:+622518371219" style="color: lightgrey; text-decoration: none;" onmouseover="this.style.color='white'" onmouseout="this.style.color='lightgrey'">
                             +62 812 3456 7890
                         </a>
                         <br>
-                        <a href="mailto:baa@bakrie.ac.id" style="color: lightgrey">
+                        <a href="mailto:baa@bakrie.ac.id" style="color: lightgrey; text-decoration: none;" onmouseover="this.style.color='white'" onmouseout="this.style.color='lightgrey'">
                             baa@bakrie.ac.id
                         </a>
                     </div>
