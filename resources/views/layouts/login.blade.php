@@ -4,8 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title', 'Earthqualizer')</title>
-    <link rel="icon" type="image/png" href="{{ asset('image/earthqualizer_logo.png') }}">
+    <title>@yield('title', 'Helpdesk BAA')</title>
+    <link rel="icon" type="image/png" href="{{ asset('image/ubakrie.png') }}">
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"

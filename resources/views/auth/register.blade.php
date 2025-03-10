@@ -1,6 +1,6 @@
 @extends('layouts.login')
 
-<title>Earthqualizer Register</title>
+<title>Helpdesk BAA Register</title>
 
 @section('content')
     <div class="register-box">

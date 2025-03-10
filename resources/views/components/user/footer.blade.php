@@ -6,7 +6,7 @@
                     <div class="dx-widget-footer">
                         <div class="dx-widget-title">
                             <a href="{{ route('home') }}" class="dx-widget-logo">
-                                <img src="{{ asset('image/logounggul.png') }}" alt="Earthqualizer Logo" width="250px"{{-- width="200px" --}}>
+                                <img src="{{ asset('image/logounggul.png') }}" alt="Universitas Bakrie Logo" width="250px"{{-- width="200px" --}}>
                             </a>
                         </div>
                         <div class="dx-widget-text">
@@ -14,8 +14,8 @@
                         </div>
                         <div class="dx-widget-text">
                             <ul class="dx-social-links mnt-3">
-                                <li><a href="https://www.linkedin.com/company/earthqualizer" target="_blank"><span class="fab fa-linkedin"></span></a></li>
-                                <li><a href="#" target="_blank"><span class="fab fa-instagram"></span></a></li>
+                                <li><a href="https://www.linkedin.com/school/ubakrie/" target="_blank"><span class="fab fa-linkedin"></span></a></li>
+                                <li><a href="https://www.instagram.com/ubakriecampus/" target="_blank"><span class="fab fa-instagram"></span></a></li>
                             </ul>
                         </div>
                     </div>

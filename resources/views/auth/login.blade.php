@@ -1,6 +1,6 @@
 @extends('layouts.login')
 
-<title>Earthqualizer Login</title>
+<title>Helpdesk BAA Login</title>
 
 @section('content')
 

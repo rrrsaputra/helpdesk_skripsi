@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Agent | Earthqualizer</title>
+    <title>Agent | Helpdesk BAA</title>
     <link rel="icon" type="image/png" href="{{ asset('image/images.png') }}">
     
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
