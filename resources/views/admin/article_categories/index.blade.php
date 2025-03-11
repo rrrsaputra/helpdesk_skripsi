@@ -103,23 +103,17 @@
                                         @endforeach
                                         <td> <!-- Added Actions buttons -->
                                             <a href="{{ route('admin.article_category.edit', $row['id']) }}"
-                                                class="btn btn-sm btn-primary">Edit</a>
+                                                class="btn btn-sm btn-warning" title="Edit Article Category"><i
+                                                    class="fas fa-edit"></i></a>
 
                                             <form action="{{ route('admin.article_category.destroy', $row['id']) }}"
                                                 method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                                <button type="submit" class="btn btn-sm btn-danger"
+                                                    title="Delete Article Category"><i class="fas fa-trash"></i></button>
                                             </form>
 
-                                            {{-- <button class="btn btn-danger btn-sm"
-                                                    onclick="event.preventDefault(); document.getElementById('delete-form-{{ $row['id'] }}').submit();">Delete</button>
-                                                <form id="delete-form-{{ $row['id'] }}"
-                                                    action="{{ route('admin.article_category.destroy', $row['id']) }}"
-                                                    method="POST" style="display: none;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                </form> --}}
                                         </td>
                                     </tr>
                                     <!-- Modal -->

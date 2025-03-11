@@ -1,5 +1,39 @@
 @extends('layouts.admin')
 @section('header')
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert"
+            style="opacity: 1; transition: opacity 0.5s;">
+            {{ session('success') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <script>
+            setTimeout(function() {
+                document.getElementById('success-alert').style.opacity = '0';
+            }, 4500); // Mengurangi 500ms untuk transisi lebih halus
+            setTimeout(function() {
+                document.getElementById('success-alert').style.display = 'none';
+            }, 5000);
+        </script>
+    @endif
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert" id="danger-alert"
+            style="opacity: 1; transition: opacity 0.5s;">
+            {{ session('error') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <script>
+            setTimeout(function() {
+                document.getElementById('danger-alert').style.opacity = '0';
+            }, 4500); // Mengurangi 500ms untuk transisi lebih halus
+            setTimeout(function() {
+                document.getElementById('danger-alert').style.display = 'none';
+            }, 5000);
+        </script>
+    @endif
     <x-admin.header title="List of Articles" />
 @endsection
 
@@ -50,7 +84,7 @@
                     </div>
 
                     <a href="{{ route('admin.article.create') }}" class="btn btn-primary mb-3">Create Article</a>
-                    
+
                     <div class="table-responsive">
                         <table id="example2" class="table table-hover">
                             <thead>
@@ -88,20 +122,50 @@
                                                 @endif
                                             </td>
                                         @endforeach
-                                        <td> <!-- Added Actions buttons -->
-                                            <a href="{{ route('admin.article.edit', $row['id']) }}"
-                                                class="btn btn-sm btn-warning" title="Edit Article">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-
-                                            <form action="{{ route('admin.article.destroy', $row['id']) }}" method="POST"
-                                                style="display:inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger" title="Delete Article">
+                                        <td>
+                                            <!-- Added Actions buttons -->
+                                            <div class="btn-group" role="group" aria-label="Action buttons" style="gap: 5px;">
+                                                <a href="{{ route('admin.article.edit', $row['id']) }}"
+                                                    class="btn btn-sm btn-warning" title="Edit Article">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <button class="btn btn-danger btn-sm" data-toggle="modal"
+                                                    data-target="#deleteModal-{{ $row['id'] }}" title="Delete Article">
                                                     <i class="fas fa-trash-alt"></i>
                                                 </button>
-                                            </form>
+                                            </div>
+
+                                            {{-- Delete Confirmation Modal --}}
+                                            <div class="modal fade" id="deleteModal-{{ $row['id'] }}" tabindex="-1"
+                                                role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="deleteModalLabel">Confirm Delete
+                                                            </h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Are you sure you want to delete this article?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <form method="POST"
+                                                                action="{{ route('admin.article.destroy', $row['id']) }}">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit"
+                                                                    class="btn btn-danger">Delete</button>
+                                                            </form>
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">Cancel</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                         </td>
                                     </tr>
                                 @empty

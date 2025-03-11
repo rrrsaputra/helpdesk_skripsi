@@ -108,18 +108,17 @@ class AdminUserManagementController extends Controller
     public function updatePassword(Request $request, string $id)
     {
         $request->validate([
-            'current_password' => 'required',
             'password' => 'required|min:8|confirmed',
         ]);
 
         $user = User::find($id);
 
         if (!$user) {
-            return redirect()->route('admin.user_management.index')->with('error', 'User not found.');
+            return redirect()->route('admin.user_management.index')->with('error', 'Pengguna tidak ditemukan.');
         }
 
-        if (!Hash::check($request->current_password, $user->password)) {
-            return redirect()->back()->withErrors(['current_password' => 'The current password does not match.']);
+        if ($request->password !== $request->password_confirmation) {
+            return redirect()->route('admin.user_management.index')->with('error', 'Konfirmasi kata sandi tidak cocok.');
         }
 
         $user->password = bcrypt($request->password);
@@ -134,11 +133,8 @@ class AdminUserManagementController extends Controller
     public function destroy(Request $request, string $id)
     {
         $user = User::find($id);
-        if ($user && Hash::check($request->password, $user->password)) {
-            $user->delete();
-            return redirect()->route('admin.user_management.index')->with('success', 'User deleted successfully.');
-        } else {
-            return redirect()->route('admin.user_management.index')->with('error', 'The password is incorrect.');
-        }
+        $user->delete();
+
+        return redirect()->route('admin.user_management.index')->with('success', 'User deleted successfully.');
     }
 }

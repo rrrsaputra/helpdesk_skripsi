@@ -5,17 +5,7 @@
 
 @section('content')
     @php
-        $columns = [
-            'Customer',
-            'Summary',
-            '',
-            'Number',
-            'Last Updated',
-            'Assigned To',
-            'References',
-            'latitude',
-            'longitude',
-        ];
+        $columns = ['Customer', 'Summary', '', 'Number', 'Last Updated', 'Assigned To', 'References'];
         $data = $tickets
             ->map(function ($ticket) {
                 return [
@@ -27,10 +17,8 @@
                         '',
                         $ticket->id,
                         $ticket->last_updated,
-                        $ticket->assignedTo->name ?? 'Unassigned', // Perubahan di sini
+                        $ticket->assignedToUser->name ?? 'Unassigned', // Perubahan di sini
                         $ticket->references ?? 'No references', // Added references
-                        $ticket->latitude,
-                        $ticket->longitude,
                     ],
                 ];
             })
@@ -71,13 +59,12 @@
                                     @foreach ($columns as $index => $column)
                                         <th style="width: {{ $columnSizes[$index] ?? 'auto' }}">{{ $column }}</th>
                                     @endforeach
-                                    <th>Actions</th> <!-- Added Actions column -->
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse ($data as $row)
                                     <tr style="cursor: pointer" data-id="{{ $row['id'] }}"
-                                        data-coordinates="{{ $row['values'][7] }},{{ $row['values'][8] }}"
                                         onclick="handleRowClick(event)">
                                         @foreach ($row['values'] as $value)
                                             <td>
@@ -103,8 +90,9 @@
                                                 @endif
                                             </td>
                                         @endforeach
-                                        <td> <!-- Added Actions buttons -->
-
+                                        <td>
+                                            <!-- Added Actions buttons -->
+                                            {{-- UNNASIGNED --}}
                                             @if (request()->input('inbox') == 'unassigned' || request()->input('inbox') == '')
                                                 <form action="{{ route('admin.ticket.update', $row['id']) }}"
                                                     method="POST" style="display:inline;">
@@ -112,11 +100,12 @@
                                                     @method('PATCH')
 
                                                     <button type="button" class="btn btn-primary btn-sm"
-                                                        data-toggle="modal"
-                                                        data-target="#assignToModal-{{ $row['id'] }}">Assign</button>
-                                                    <button type="button" class="btn btn-warning btn-sm"
-                                                        data-toggle="modal"
-                                                        data-target="#editModal{{ $row['id'] }}">Edit</button>
+                                                        title="Assign Ticket" data-toggle="modal"
+                                                        data-target="#assignToModal-{{ $row['id'] }}">
+                                                        <i class="fas fa-user-plus"></i>
+                                                    </button>
+
+                                                    {{-- ASSIGN MODAL --}}
                                                     <div class="modal fade" id="assignToModal-{{ $row['id'] }}"
                                                         tabindex="-1" role="dialog"
                                                         aria-labelledby="assignToModalLabel-{{ $row['id'] }}"
@@ -157,87 +146,44 @@
                                                     </div>
                                                 </form>
 
-                                                <form action="{{ route('admin.ticket.update', $row['id']) }}"
-                                                    method="POST" style="display:inline;">
-                                                    @csrf
-                                                    @method('PATCH')
-                                                    <div class="modal fade" id="editModal{{ $row['id'] }}"
-                                                        tabindex="-1" role="dialog"
-                                                        aria-labelledby="editModalLabel{{ $row['id'] }}"
-                                                        aria-hidden="true">
-                                                        <div class="modal-dialog" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title"
-                                                                        id="editModalLabel{{ $row['id'] }}">Update
-                                                                        Latitude and Longitude</h5>
-                                                                    <button type="button" class="close"
-                                                                        data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">&times;</span>
-                                                                    </button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <div class="form-group">
-                                                                        <label for="latitude">Latitude</label>
-                                                                        <input type="text" class="form-control"
-                                                                            id="latitude" name="latitude"
-                                                                            value="{{ $row['values'][7] }}">
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <label for="longitude">Longitude</label>
-                                                                        <input type="text" class="form-control"
-                                                                            id="longitude" name="longitude"
-                                                                            value="{{ $row['values'][8] }}">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary"
-                                                                        data-dismiss="modal">Close</button>
-                                                                    <button type="submit" class="btn btn-primary">Save
-                                                                        changes</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </form>
+                                                {{-- ASSIGNED TO --}}
                                             @elseif(request()->input('inbox') == 'assigned')
-                                                <form action="{{ route('admin.ticket.close', $row['id']) }}"
-                                                    method="POST" style="display:inline;"
-                                                    onclick="event.stopPropagation();">
+                                                <form action="{{ route('admin.ticket.close', $row['id']) }}" method="POST"
+                                                    style="display:inline;" onclick="event.stopPropagation();">
                                                     @csrf
                                                     @method('PATCH')
-
-                                                    <button type="submit" class="btn btn-success btn-sm">Close</button>
+                                                    <button type="submit" class="btn btn-success btn-sm"
+                                                        title="Close Ticket"><i class="fas fa-check"></i></button>
                                                 </form>
+
                                                 <form action="{{ route('admin.ticket.unassign', $row['id']) }}"
                                                     method="POST" style="display:inline;"
                                                     onclick="event.stopPropagation();">
                                                     @csrf
                                                     @method('PATCH')
-                                                    <button type="submit" class="btn btn-danger btn-sm">Unassign</button>
+                                                    <button type="submit"
+                                                        class="btn btn-danger btn-sm"title="Unassign Ticket">
+                                                        <i class="fas fa-times"></i></button>
                                                 </form>
+
+                                                {{-- CLOSED --}}
                                             @elseif(request()->input('inbox') == 'closed')
                                                 <form action="{{ route('admin.ticket.reopen_ticket', $row['id']) }}"
                                                     method="POST" style="display:inline;"
                                                     onclick="event.stopPropagation();">
                                                     @csrf
                                                     @method('PATCH')
-                                                    <button type="submit" class="btn btn-info btn-sm">Reopen</button>
+                                                    <button type="submit" class="btn btn-warning btn-sm"
+                                                        title="Reopen Ticket">
+                                                        <i class="fas fa-redo"></i>
+                                                    </button>
                                                 </form>
                                             @endif
                                         </td>
                                     </tr>
-
-
-                                    <!-- Modal for updating latitude and longitude -->
-
-
-
-
                                 @empty
                                     <tr>
                                         <td colspan="10">No articles available</td>
-                                        <!-- Updated colspan to 10 to include Actions column -->
                                     </tr>
                                 @endforelse
                             </tbody>

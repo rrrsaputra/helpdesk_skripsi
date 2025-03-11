@@ -109,30 +109,26 @@
                                         <td> <!-- Added Actions buttons -->
                                             @if ($row['is_visible'])
                                                 <a href="{{ route('admin.ticket_category.hide_visible', $row['id']) }}"
-                                                    class="btn btn-sm btn-warning">Hide</a>
+                                                    class="btn btn-sm btn-warning" title="Visible"><i
+                                                        class="fas fa-eye-slash"></i></a>
                                             @else
                                                 <a href="{{ route('admin.ticket_category.show_visible', $row['id']) }}"
-                                                    class="btn btn-sm btn-warning">Show</a>
+                                                    class="btn btn-sm btn-warning" title="Hidden"><i
+                                                        class="fas fa-eye"></i></a>
                                             @endif
 
                                             <a href="{{ route('admin.ticket_category.edit', $row['id']) }}"
-                                                class="btn btn-sm btn-primary">Edit</a>
+                                                class="btn btn-sm btn-primary" title="Edit Ticket Category"><i
+                                                    class="fas fa-edit"></i></a>
 
                                             <form action="{{ route('admin.ticket_category.destroy', $row['id']) }}"
                                                 method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                                <button type="submit" class="btn btn-sm btn-danger"
+                                                    title="Delete Ticket Category"><i class="fas fa-trash"></i></button>
                                             </form>
 
-                                            {{-- <button class="btn btn-danger btn-sm"
-                                                    onclick="event.preventDefault(); document.getElementById('delete-form-{{ $row['id'] }}').submit();">Delete</button>
-                                                <form id="delete-form-{{ $row['id'] }}"
-                                                    action="{{ route('admin.article_category.destroy', $row['id']) }}"
-                                                    method="POST" style="display: none;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                </form> --}}
                                         </td>
                                     </tr>
                                     <!-- Modal -->

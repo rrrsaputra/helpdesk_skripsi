@@ -56,7 +56,7 @@ class ArticleController extends Controller
 
         Article::create($articleData);
 
-        return redirect()->route('admin.article.index');
+        return redirect()->route('admin.article.index')->with('success', 'Article created successfully');
     }
 
     /**
@@ -85,6 +85,12 @@ class ArticleController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $validatedData = $request->validate([
+            'title' => 'required',
+            'content' => 'required',
+            'category' => 'required',
+        ]);
+
         $article = Article::find($id);
         $article->title = $request->title;
         $article->content = $request->content;
@@ -94,7 +100,7 @@ class ArticleController extends Controller
             $article->image = $file;
         }
         $article->save();
-        return redirect()->route('admin.article.index');
+        return redirect()->route('admin.article.index')->with('success', 'Article updated successfully');
     }
 
     /**
@@ -104,6 +110,6 @@ class ArticleController extends Controller
     {
         $article = Article::find($id);
         $article->delete();
-        return redirect()->route('admin.article.index');
+        return redirect()->route('admin.article.index')->with('success', 'Article deleted successfully');
     }
 }

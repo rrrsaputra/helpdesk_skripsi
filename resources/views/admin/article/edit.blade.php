@@ -14,6 +14,9 @@
                     <label for="title">Title</label>
                     <input type="text" name="title" class="form-control" id="title" placeholder="Enter title"
                         value="{{ $article->title }}">
+                    @if ($errors->has('title'))
+                        <span class="text-danger">{{ $errors->first('title') }}</span>
+                    @endif
                 </div>
 
                 <div class="form-group">
@@ -23,12 +26,18 @@
                             <option value="{{ $articleCategory->id }}">{{ $articleCategory->name }}</option>
                         @endforeach
                     </select>
+                    @if ($errors->has('category'))
+                        <span class="text-danger">{{ $errors->first('category') }}</span>
+                    @endif
                 </div>
 
                 <div class="form-group">
                     <label for="content">Content</label>
                     <div id="editor" style="height: 300px; min-height: 300px;"></div>
                     <input type="hidden" name="content" id="content" value="{{ $article->content }}">
+                    @if ($errors->has('content'))
+                        <span class="text-danger">{{ $errors->first('content') }}</span>
+                    @endif
                 </div>
                 <script src="//cdn.quilljs.com/1.3.6/quill.min.js"></script>
                 <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
@@ -37,9 +46,15 @@
                         theme: 'snow',
                         modules: {
                             toolbar: [
-                                [{ 'header': [1, 2, false] }],
+                                [{
+                                    'header': [1, 2, false]
+                                }],
                                 ['bold', 'italic', 'underline'],
-                                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                                [{
+                                    'list': 'ordered'
+                                }, {
+                                    'list': 'bullet'
+                                }],
                                 ['image', 'code-block', 'video'],
                             ]
                         }
