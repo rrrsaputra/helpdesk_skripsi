@@ -3,6 +3,31 @@
 @section('content')
     <div class="dx-main">
         <div class="dx-separator"></div>
+
+        <div class="dx-banner" style="font-size: 1.2em;">
+            <div class="overflow-hidden whitespace-nowrap">
+                <p id="marquee-text" class="inline-block pl-full">
+                    Jam Operasional BAA: Senin - Jumat, 08:00 - 17:00 | Sabtu: 08:00 - 13:00 | Tutup pada hari Minggu
+                </p>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const marqueeText = document.getElementById('marquee-text');
+                let startPosition = marqueeText.offsetWidth;
+                function animateMarquee() {
+                    startPosition--;
+                    if (startPosition < -marqueeText.offsetWidth) {
+                        startPosition = marqueeText.parentElement.offsetWidth;
+                    }
+                    marqueeText.style.transform = `translateX(${startPosition}px)`;
+                    requestAnimationFrame(animateMarquee);
+                }
+                animateMarquee();
+            });
+        </script>
+
         <div class="dx-box-5 bg-grey-6">
             <div class="container">
                 <div class="row justify-content-center vertical-gap">
