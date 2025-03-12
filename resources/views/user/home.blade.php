@@ -6,22 +6,34 @@
 
         <div class="dx-banner" style="font-size: 1.2em;">
             <div class="overflow-hidden whitespace-nowrap">
-                <p id="marquee-text" class="inline-block pl-full">
-                    Jam Operasional BAA: Senin - Jumat, 08:00 - 17:00 | Sabtu: 08:00 - 13:00 | Tutup pada hari Minggu
-                </p>
+                <div id="marquee-container" class="inline-block pl-full">
+                    <p id="marquee-text" class="inline-block">
+                        Jam Operasional BAA: Senin - Jumat: 08:00 - 17:00, Sabtu: 08:00 - 13:00, Tutup pada hari Minggu
+                        &nbsp;&nbsp;&nbsp;||&nbsp;&nbsp;&nbsp;Info layanan BAA dapat diakses melalui link <a
+                            href="https://linktr.ee/baaubakrie" target="_blank">linktr.ee/baaubakrie</a>
+                    </p>
+                    <p id="marquee-text-duplicate" class="inline-block">
+                        &nbsp;&nbsp;&nbsp;||&nbsp;&nbsp;&nbsp;Jam Operasional BAA: Senin - Jumat, 08:00 - 17:00 | Sabtu: 08:00 - 13:00 | Tutup pada hari Minggu
+                        &nbsp;&nbsp;&nbsp;||&nbsp;&nbsp;&nbsp;Info layanan BAA dapat diakses melalui link <a
+                            href="https://linktr.ee/baaubakrie" target="_blank">linktr.ee/baaubakrie</a>
+                    </p>
+                </div>
             </div>
         </div>
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {
+                const marqueeContainer = document.getElementById('marquee-container');
                 const marqueeText = document.getElementById('marquee-text');
-                let startPosition = marqueeText.offsetWidth;
+                const marqueeTextDuplicate = document.getElementById('marquee-text-duplicate');
+                let startPosition = 0;
+
                 function animateMarquee() {
                     startPosition--;
                     if (startPosition < -marqueeText.offsetWidth) {
-                        startPosition = marqueeText.parentElement.offsetWidth;
+                        startPosition = 0;
                     }
-                    marqueeText.style.transform = `translateX(${startPosition}px)`;
+                    marqueeContainer.style.transform = `translateX(${startPosition}px)`;
                     requestAnimationFrame(animateMarquee);
                 }
                 animateMarquee();
@@ -46,7 +58,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="col-12 col-md-4 col-lg-3 dx-feature-variable">
                         <div class="dx-feature dx-feature-3 dx-feature-color-2 dx-block-decorated">
                             <div class="dx-feature-icon" style="color: #F38F2F;">
@@ -54,7 +66,8 @@
                             </div>
                             <div class="dx-feature-cont">
                                 <div class="dx-feature-title"><a href="{{ route('article.index') }}">Artikel</a></div>
-                                <div class="dx-feature-text">Baca artikel terbaru dan temukan informasi bermanfaat di sini.</div>
+                                <div class="dx-feature-text">Baca artikel terbaru dan temukan informasi bermanfaat di sini.
+                                </div>
                                 <a href="{{ route('article.index') }}"
                                     class="dx-btn dx-btn-link d-flex dx-feature-link">Baca Artikel<span
                                         class="icon pe-7s-angle-right"></span></a>
@@ -86,7 +99,9 @@
                                     <h4 class="h6 mt-0">{{ $articleCategory->name }}</h4>
                                     <ul class="dx-list">
                                         @foreach ($articleCategory->articles as $article)
-                                            <li><a href="{{ route('article.show', $article->id) }}">{{ $article->title }}</a></li>
+                                            <li><a
+                                                    href="{{ route('article.show', $article->id) }}">{{ $article->title }}</a>
+                                            </li>
                                         @endforeach
                                     </ul>
                                 </div>
