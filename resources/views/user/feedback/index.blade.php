@@ -121,7 +121,9 @@
                                         <div class="row justify-content-end mt-3">
                                             <div class="col-auto mb-20">
                                                 <button type="submit" class="dx-btn dx-btn-lg mx-4 float-right my-3"
-                                                    id="send_feedback">Kirim</button>
+                                                    id="send_feedback"
+                                                    style="background-color: #F38F2F; color: white; font-weight: bold;">Kirim
+                                                </button>
                                             </div>
                                         </div>
                                     </div>

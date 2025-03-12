@@ -14,22 +14,34 @@
                                 </div>
                                 <div class="dx-separator"></div>
                                 <div class="dx-blog-post-box">
-                                    @foreach ($articles as $article)
-                                        <div class="row vertical-gap lg-gap mb-4">
-                                            <div class="col-md-12">
-                                                <div class="card shadow-sm border-0">
-                                                    <div class="card-body">
-                                                        <h5 class="card-title">{{ $article->title }}</h5>
-                                                        <div class="card-text text-muted">
-                                                            {{ Str::limit(strip_tags($article->content), 150) }}
+                                    @if ($articles->isEmpty())
+                                        <p>Tidak ada artikel yang tersedia dalam kategori {{ $category->name }}.</p>
+                                    @else
+                                        @foreach ($articles as $article)
+                                            <div class="row vertical-gap lg-gap mb-4">
+                                                <div class="col-md-12 position-relative">
+                                                    <div class="card shadow-sm border-0">
+                                                        <div class="card-body">
+                                                            <h5 class="card-title"
+                                                                style="font-weight: bold; color:#333; font-size: 20px">
+                                                                {{ $article->title }}</h5>
+                                                            <div class="card-text text-muted" style="font-size: 16px">
+                                                                {{ Str::limit(strip_tags($article->content), 150) }}
+                                                            </div>
+                                                            <a href="{{ route('article.show', $article->id) }}"
+                                                                class="btn mt-10 position-relative"
+                                                                style="border-radius: 20px; z-index: 1; background-color: #F38F2F; color: white; border-color: #F38F2F;"
+                                                                onmouseover="this.style.backgroundColor='#85171A'; this.style.color='white';"
+                                                                onmouseout="this.style.backgroundColor='#F38F2F'; this.style.color='white';">Selengkapnya ></a>
                                                         </div>
-                                                        <a href="{{ route('article.show', $article->id) }}"
-                                                            class="btn btn-outline-primary mt-10">Read More</a>
                                                     </div>
                                                 </div>
                                             </div>
+                                        @endforeach
+                                        <div class="mt-20">
+                                            {{ $articles->links() }}
                                         </div>
-                                    @endforeach
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -52,11 +64,7 @@
                                             <span class="icon pe-7s-angle-right"></span>
                                             <span class="dx-widget-categories-category">{{ $articleCategory->name }}</span>
                                             <span class="dx-widget-categories-badge">
-                                                @if(auth()->user()->type == 'Standard')
-                                                    {{ $articleCategory->articles->where('for_user', 'Standard')->count() }}
-                                                @elseif(auth()->user()->type == 'Premium')
-                                                    {{ $articleCategory->articles->whereIn('for_user', ['Standard', 'Premium'])->count() }}
-                                                @endif
+                                                {{ $articleCategory->articles->count() }}
                                             </span>
                                         </a>
                                     </li>

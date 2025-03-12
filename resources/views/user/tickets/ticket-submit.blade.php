@@ -94,33 +94,24 @@
 
                                 <div class="dx-separator"></div>
 
-                                <div class="dx-separator"></div>
                                 <div class="dx-box-content">
                                     <div class="row justify-content-end mt-3">
                                         <div class="col-auto mb-20">
-                                            <button type="submit" class="btn btn-primary" id="send_ticket">Send
-                                                Ticket</button>
-
-
+                                            <button type="submit" class="dx-btn dx-btn-lg mx-4 float-right my-3" id="send_ticket"
+                                                style="background-color: #F38F2F; color: white; font-weight: bold;">Kirim
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
-
-
-
-
-
                             </div>
-
-
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 @endsection
+
 @push('js')
     <script>
         document.getElementById('send_ticket').addEventListener('click', function(event) {

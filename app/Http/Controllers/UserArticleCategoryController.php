@@ -12,7 +12,11 @@ class UserArticleCategoryController extends Controller
     {
         $paginationCount = 10;
         $category = ArticleCategory::where('slug', $slug)->firstOrFail();
-        $articles = Article::orderBy('created_at', 'desc')->paginate($paginationCount);
+
+        $articles = Article::orderBy('created_at', 'desc')
+            ->where('article_category_id', $category->id)
+            ->paginate($paginationCount);
+
         $articleCategories = ArticleCategory::all();
 
         return view('user.category.show', compact('category', 'articles', 'articleCategories'));
