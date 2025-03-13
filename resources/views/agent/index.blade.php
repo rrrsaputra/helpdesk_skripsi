@@ -5,20 +5,20 @@
 
 @section('content')
     @php
-        $columns = ['', 'Customer', 'Summary', 'New Messages', '', 'Number', 'Last Updated'];
+        $columns = ['Reference', 'Name', 'Study Program', 'Summary', 'New Messages', 'Last Updated'];
         $data = $tickets
             ->map(function ($ticket) {
+                
                 return [
                     'id' => $ticket->id,
                     'url' => '/path/to/resource1',
                     'values' => [
-                        '',
+                        $ticket->references,
                         $ticket->user->name,
+                        $ticket->user->studyProgram->name ?? '',
                         [$ticket->title, $ticket->category, $ticket->message ?? ''],
                         $ticket->messages->where('user_id', '!=', Auth::id())->where('is_read', '')->count(),
-                        '',
-                        $ticket->references,
-                        $ticket->last_updated,
+                        $ticket->updated_at->format('d M Y H:i'),
                     ],
                 ];
             })

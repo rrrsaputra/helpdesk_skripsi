@@ -17,9 +17,6 @@
                             <div class="dx-box-content">
                                 @include('profile.partials.update-password-form')
                             </div>
-                            <div class="dx-box-content">
-                                @include('profile.partials.delete-user-form')
-                            </div>
                         </div>
                     </div>
                 </div>

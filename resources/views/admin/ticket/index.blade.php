@@ -5,20 +5,19 @@
 
 @section('content')
     @php
-        $columns = ['Customer', 'Summary', '', 'Number', 'Last Updated', 'Assigned To', 'References'];
+        $columns = ['Reference', 'Name', 'Study Program', 'Summary', 'Assigned To', 'Last Updated'];
         $data = $tickets
             ->map(function ($ticket) {
                 return [
                     'id' => $ticket->id,
                     'url' => '/path/to/resource1',
                     'values' => [
-                        $ticket->user->name,
-                        [$ticket->title, $ticket->category, $ticket->message ?? ''],
-                        '',
-                        $ticket->id,
-                        $ticket->last_updated,
-                        $ticket->assignedToUser->name ?? 'Unassigned', // Perubahan di sini
                         $ticket->references ?? 'No references', // Added references
+                        $ticket->user->name,
+                        $ticket->user->studyProgram->name ?? '',
+                        [$ticket->title, $ticket->category, $ticket->message ?? ''],
+                        $ticket->assignedToUser->name ?? 'Unassigned',
+                        $ticket->updated_at->format('d M Y H:i'),
                     ],
                 ];
             })

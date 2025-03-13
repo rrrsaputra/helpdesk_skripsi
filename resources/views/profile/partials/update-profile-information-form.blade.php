@@ -51,6 +51,11 @@
             @endif
         </div>
 
+        <div class="form-group">
+            <label for="study_program" class="form-label">{{ __('Study Program') }}</label>
+            <input id="study_program" name="study_program" type="text" class="form-control mt-1 block w-full" value="{{ $user->studyProgram->name }}" readonly disabled>
+        </div>
+
         <div class="form-group flex items-center gap-4">
             <button type="submit" class="btn btn-primary">{{ __('Save') }}</button>
 
