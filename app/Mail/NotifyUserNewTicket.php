@@ -10,7 +10,7 @@ use Illuminate\Mail\Mailables\Envelope;
 use Coderflex\LaravelTicket\Models\Ticket;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class NotifyAgentNewTicket extends Mailable
+class NotifyUserNewTicket extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -30,7 +30,7 @@ class NotifyAgentNewTicket extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Agent New Ticket',
+            subject: 'User New Ticket',
         );
     }
 
@@ -40,7 +40,7 @@ class NotifyAgentNewTicket extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'email.email_agent',
+            view: 'email.email_user',
         );
     }
 
@@ -52,17 +52,5 @@ class NotifyAgentNewTicket extends Mailable
     public function attachments(): array
     {
         return [];
-    }
-
-    public function build()
-    {
-        return $this->subject('New Helpdesk Ticket - Action Required')
-            ->view('email.email_agent')
-            ->with([
-                'ticket_id' => $this->ticket->id,
-                'user_name' => $this->ticket->user->name,
-                'subject' => $this->ticket->title,
-                'description' => $this->ticket->message,
-            ]);
     }
 }

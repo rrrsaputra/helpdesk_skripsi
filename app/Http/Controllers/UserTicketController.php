@@ -10,6 +10,7 @@ use App\Events\MessageSent;
 use App\Jobs\ProcessTicket;
 use Illuminate\Http\Request;
 use App\Events\TicketCreated;
+use App\Mail\NotifyUserNewTicket;
 use App\Mail\NotifyAgentNewTicket;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -123,19 +124,7 @@ class UserTicketController extends Controller
             Mail::to($agent->email)->send(new NotifyAgentNewTicket($ticket));
         }
 
-
-        foreach ($agents as $agent) {
-            $notification = [
-                'id' => (string) \Illuminate\Support\Str::uuid(),
-                'type' => 'App\Notifications\TicketNotification',
-                'notifiable_type' => 'App\Models\User',
-                'notifiable_id' => $agent->id,
-                'data' => json_encode(['ticket_id' => $ticket->id, 'message' => 'A new ticket has been created.']),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ];
-            DB::table('notifications')->insert($notification);
-        }
+        Mail::to(Auth::user()->email)->send(new NotifyUserNewTicket($ticket));
 
         event(new TicketSent($ticket));
         $toEmailAddress = Auth::user()->email;
