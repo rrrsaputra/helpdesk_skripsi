@@ -13,6 +13,7 @@ use Coderflex\LaravelTicket\Models\Ticket;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TriggerController;
+use App\Http\Controllers\AdminFaqController;
 use App\Http\Controllers\DropzoneController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\UserHomeController;
@@ -31,6 +32,7 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AgentDashboardController;
 use App\Http\Controllers\UserSuperSearchController;
 use App\Http\Controllers\UserTicketQuotaController;
+use App\Http\Controllers\AdminFaqCategoryController;
 use App\Http\Controllers\AdminBusinessHourController;
 use App\Http\Controllers\AdminStudyProgramController;
 use App\Http\Controllers\UserScheduledCallController;
@@ -145,6 +147,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('admin/reports/export', [AdminReportController::class, 'export'])->name('admin.report.export');
 
     Route::resource('/admin/study_programs', AdminStudyProgramController::class)->names('admin.study_programs');
+
+    Route::resource('admin/faq', AdminFaqController::class)->names('admin.faq');
+    Route::resource('admin/faq-category', AdminFaqCategoryController::class)->names('admin.faq_category');
 });
 
 Route::middleware('auth', 'role:agent')->group(function () {

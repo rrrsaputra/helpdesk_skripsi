@@ -128,23 +128,41 @@
                     </a>
                 </li>
 
-                <li class="nav-item menu-close">
+                {{-- <li class="nav-item menu-close">
                     <a href="{{ route('admin.article.index') }}" class="nav-link {{ request()->routeIs('admin.article.index') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-newspaper"></i>
                         <p>
                             ARTICLE
                         </p>
                     </a>
+                </li> --}}
+
+                <li class="nav-item menu-close">
+                    <a href="{{ route('admin.faq.index') }}" class="nav-link {{ request()->routeIs('admin.faq.index') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-question-circle"></i>
+                        <p>
+                            FAQ
+                        </p>
+                    </a>
                 </li>
 
                 <li class="nav-item menu-close">
+                    <a href="{{ route('admin.faq_category.index') }}" class="nav-link {{ request()->routeIs('admin.faq_category.index') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-folder"></i>
+                        <p>
+                            FAQ CATEGORY
+                        </p>
+                    </a>
+                </li>
+
+                {{-- <li class="nav-item menu-close">
                     <a href="{{ route('admin.article_category.index') }}" class="nav-link {{ request()->routeIs('admin.article_category.index') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-list"></i>
                         <p>
                             ARTICLE CATEGORY
                         </p>
                     </a>
-                </li>
+                </li> --}}
                 
                 <li class="nav-item menu-close">
                     <a href="{{ route('admin.feedback.index') }}" class="nav-link {{ request()->routeIs('admin.feedback.index') ? 'active' : '' }}">
