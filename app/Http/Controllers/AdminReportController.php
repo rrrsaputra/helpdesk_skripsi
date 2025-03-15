@@ -19,9 +19,15 @@ class AdminReportController extends Controller
         $direction = $request->input('direction', 'asc');
         $paginationCount = 10;
 
+        $validSortColumns = ['created_at', 'references', 'status'];
+
+        if (!in_array($sort, $validSortColumns)) {
+            $sort = 'created_at'; // Default jika sort tidak valid
+        }
+
         $tickets = Ticket::orderBy($sort, $direction)
             ->when($search, function ($query) use ($search) {
-                $query->where('category', 'like', "%{$search}%");
+                $query->where('title', 'like', "%{$search}%");
             })
             ->when($since, function ($query) use ($since) {
                 $query->where('created_at', '>=', $since);
@@ -45,26 +51,5 @@ class AdminReportController extends Controller
         $direction = $request->input('direction', 'asc');
 
         return Excel::download(new TicketsExport($since, $until, $search, $sort, $direction), 'tickets.xlsx');
-    }
-
-    public function update(Request $request, $id)
-    {
-        $ticket = Ticket::findOrFail($id);
-        $values = $request->input('values');
-
-        // Update the ticket fields based on the values array
-        $ticket->created_at = $values[1];
-        $ticket->category = $values[2];
-        $ticket->title = $values[3];
-        $ticket->message = $values[4]; // Assuming title and message are combined
-        $ticket->created_at = $values[5];
-        $ticket->updated_at = $values[6];
-        $ticket->status = $values[7];
-
-        // Save the updated ticket
-        $ticket->save();
-
-        // Redirect back with a success message
-        return redirect()->route('admin.report.index')->with('success', 'Ticket updated successfully.');
     }
 }

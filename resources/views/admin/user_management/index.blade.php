@@ -40,7 +40,7 @@
 
 @section('content')
     @php
-        $columns = ['Email', 'Customer', 'Study Program', 'Role'];
+        $columns = ['Email', 'User Name', 'NIM', 'Study Program', 'Role'];
         $data = $users
             ->map(function ($user) {
                 return [
@@ -49,6 +49,7 @@
                     'values' => [
                         $user->email,
                         $user->name,
+                        $user->username,
                         $user->studyProgram->name ?? 'N/A',
                         $user->roles->pluck('name')->first(),
                     ],
@@ -57,7 +58,7 @@
             })
             ->toArray();
         $columnSizes = array_map(function ($column) {
-            return $column === 'Customer' ? '30%' : 'auto';
+            return $column === 'User Name' ? '30%' : 'auto';
         }, $columns);
     @endphp
 

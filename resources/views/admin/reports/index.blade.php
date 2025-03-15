@@ -8,11 +8,12 @@
         $columns = [
             'Reference',
             'Date',
+            'User Name',
+            'NIM',
+            'Agent Name',
             'Category',
-            'Topic',
-            'Case',
-            'Time Received',
-            'Time Delivered',
+            'Subject',
+            'Message',
             'Status',
             'Link',
         ];
@@ -24,13 +25,14 @@
                     'values' => [
                         $ticket->references,
                         $ticket->created_at,
+                        $ticket->user->name,
+                        $ticket->user->username,
+                        $ticket->assignedToUser->name ?? 'Unassigned',
                         $ticket->category,
                         $ticket->title,
                         strip_tags($ticket->message),
-                        $ticket->created_at,
-                        $ticket->updated_at,
                         $ticket->status,
-                        env('APP_URL'). '/admin/data-repository?ticket=' . $ticket->references,
+                        env('APP_URL') . '/admin/data-repository?ticket=' . $ticket->references,
                     ],
                 ];
             })
@@ -59,7 +61,7 @@
                             <form action="{{ route('admin.report.index') }}" method="GET" class="form-inline mr-2">
                                 <div class="form-group">
                                     <input type="search" class="form-control" id="search" name="search"
-                                        style="width: 200px;" placeholder="Search by category"
+                                        style="width: 200px;" placeholder="Search by subject"
                                         value="{{ request('search') }}">
                                 </div>
                                 <div class="form-group mx-sm-2">
@@ -79,18 +81,18 @@
                                     class="btn btn-success">Export to Excel</a>
                             </div>
                         </div>
-                    </div>
+                </div>
                     <div class="table-responsive">
                         <table id="example2" class="table table-hover">
                             <thead>
                                 <tr>
                                     @foreach ($columns as $index => $column)
                                         <th style="width: {{ $columnSizes[$index] ?? 'auto' }}">
-                                            @if ($column === 'Date')
+                                            @if ($column === 'Date' || $column === 'Reference' || $column === 'Status')
                                                 <a
-                                                    href="{{ route('admin.report.index', array_merge(request()->all(), ['sort' => 'created_at', 'direction' => request('direction') === 'asc' ? 'desc' : 'asc'])) }}">
+                                                    href="{{ route('admin.report.index', array_merge(request()->all(), ['sort' => $column === 'Reference' ? 'references' : ($column === 'Status' ? 'status' : 'created_at'), 'direction' => request('direction') === 'asc' ? 'desc' : 'asc'])) }}">
                                                     {{ $column }}
-                                                    @if (request('sort') === 'created_at')
+                                                    @if (request('sort') === ($column === 'Reference' ? 'references' : ($column === 'Status' ? 'status' : 'created_at')))
                                                         <i
                                                             class="fas fa-sort-{{ request('direction') === 'asc' ? 'up' : 'down' }}"></i>
                                                     @endif
@@ -105,45 +107,13 @@
                             <tbody>
                                 @forelse ($data as $row)
                                     <tr style="cursor: pointer" data-id="{{ $row['id'] }}">
-                                        <form action="{{ route('admin.report.update', $row['id']) }}" method="POST">
-                                            @csrf
-                                            @method('PATCH')
-                                            @foreach ($row['values'] as $index => $value)
-                                                <td>
-                                                    @if (in_array($index, [0, 12]))
-                                                        <!-- Assuming 13 is the index for 'references' -->
-                                                        <input type="text" name="values[]" value="{{ $value }}"
-                                                            class="form-control" readonly style="width: 75px">
-                                                    @elseif ($index === 13)
-                                                        <!-- Assuming 14 is the index for 'link' -->
-                                                        <input type="text" name="values[]" value="{{ $value }}"
-                                                            class="form-control" readonly style="width: 200px;">
-                                                    @elseif (in_array($index, [1, 9, 10]))
-                                                        <!-- Date, Time Received, Time Delivered -->
-                                                        <input type="datetime-local" name="values[]"
-                                                            value="{{ $value }}" class="form-control">
-                                                    @elseif ($index === 2)
-                                                        <!-- General Category as Dropdown -->
-                                                        <select name="values[]" class="form-control" style="width: 200px;">
-                                                            @foreach ($categories as $category)
-                                                                <option value="{{ $category->name }}"
-                                                                    {{ $category->name == $value ? 'selected' : '' }}>
-                                                                    {{ $category->name }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    @else
-                                                        <input type="text" name="values[]" value="{{ $value }}"
-                                                            class="form-control" style="width: 200px;">
-                                                    @endif
-                                                </td>
-                                            @endforeach
+                                        @foreach ($row['values'] as $index => $value)
                                             <td>
-                                                <button type="submit" class="btn btn-primary" title="Save">
-                                                    <i class="fas fa-save"></i>
-                                                </button>
+                                                <input type="text" name="values[]" value="{{ $value }}"
+                                                    class="form-control" readonly
+                                                    style="width: 200px; pointer-events: none;">
                                             </td>
-                                        </form>
+                                        @endforeach
                                     </tr>
                                 @empty
                                     <tr>

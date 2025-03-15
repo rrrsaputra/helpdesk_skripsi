@@ -23,33 +23,35 @@ class TicketsExport implements FromCollection, WithHeadings
         $this->sort = $sort;
         $this->direction = $direction;
     }
-    
+
     public function collection()
     {
         return Ticket::when($this->since, function ($query) {
             $query->where('created_at', '>=', $this->since);
         })
-        ->when($this->until, function ($query) {
-            $query->where('created_at', '<=', $this->until);
-        })
-        ->when($this->search, function ($query) {
-            $query->where('category', 'like', "%{$this->search}%");
-        })
-        ->orderBy($this->sort, $this->direction)
-        ->with('user')
-        ->get()
-        ->map(function ($ticket) {
-            return [
-                'references' => $ticket->references,
-                'created_at' => $ticket->created_at,
-                'category' => $ticket->category,
-                'title_message' => $ticket->title . ' - ' . strip_tags($ticket->message),
-                'time_received' => $ticket->created_at,
-                'time_delivered' => $ticket->updated_at,
-                'status' => $ticket->status,
-                'link' => env('APP_URL') . '/admin/data-repository?ticket=' . $ticket->references,
-            ];
-        });
+            ->when($this->until, function ($query) {
+                $query->where('created_at', '<=', $this->until);
+            })
+            ->when($this->search, function ($query) {
+                $query->where('category', 'like', "%{$this->search}%");
+            })
+            ->orderBy($this->sort, $this->direction)
+            ->with('user')
+            ->get()
+            ->map(function ($ticket) {
+                return [
+                    'references' => $ticket->references,
+                    'created_at' => $ticket->created_at,
+                    'user_name' => $ticket->user->name,
+                    'nim' => $ticket->user->username,
+                    'agent_name' => $ticket->assignedToUser->name,
+                    'category' => $ticket->category,
+                    'subject' => $ticket->title,
+                    'message'   => strip_tags($ticket->message),
+                    'status' => $ticket->status,
+                    'link' => env('APP_URL') . '/admin/data-repository?ticket=' . $ticket->references,
+                ];
+            });
     }
 
     public function headings(): array
@@ -57,10 +59,12 @@ class TicketsExport implements FromCollection, WithHeadings
         return [
             'Reference',
             'Date',
+            'User Name',
+            'NIM',
+            'Agent Name',
             'Category',
-            'Topic/Case',
-            'Time Received',
-            'Time Delivered',
+            'Subject',
+            'Message',
             'Status',
             'Link',
         ];
