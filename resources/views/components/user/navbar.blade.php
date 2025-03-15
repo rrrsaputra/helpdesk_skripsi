@@ -20,9 +20,6 @@
                 <li><a href="{{ route('tickets.index') }}"
                         style="color: white; transition: color 0.3s;"onmouseover="this.style.color='grey'"
                         onmouseout="this.style.color='white'"><strong>Tiket</strong></a></li>
-                <li><a href="{{ route('article.index') }}"
-                        style="color: white; transition: color 0.3s;"onmouseover="this.style.color='grey'"
-                        onmouseout="this.style.color='white'"><strong>Artikel</strong></a></li>
                 <li><a href="{{ route('user.faq.index') }}"
                         style="color: white; transition: color 0.3s;"onmouseover="this.style.color='grey'"
                         onmouseout="this.style.color='white'"><strong>FaQ</strong></a></li>
@@ -100,9 +97,6 @@
                 <li><a href="{{ route('tickets.index') }}"
                         style="color: white; transition: color 0.3s;"onmouseover="this.style.color='grey'"
                         onmouseout="this.style.color='white'"><strong>Tiket</strong></a></li>
-                <li><a href="{{ route('article.index') }}"
-                        style="color: white; transition: color 0.3s;"onmouseover="this.style.color='grey'"
-                        onmouseout="this.style.color='white'"><strong>Artikel</strong></a></li>
                 <li><a href="{{ route('user.faq.index') }}"
                         style="color: white; transition: color 0.3s;"onmouseover="this.style.color='grey'"
                         onmouseout="this.style.color='white'"><strong>FaQ</strong></a></li>
