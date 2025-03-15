@@ -1,6 +1,6 @@
 @extends('layouts.user')
 @section('header')
-    <x-agent.header title="Ticket: {{ $ticket->references }} - {{ $ticket->title }}" />
+    <h1>Ticket: {{ $ticket->references }} - {{ $ticket->category }} - {{ $ticket->title }}</h1>
 @endsection
 
 @section('content')
@@ -76,8 +76,8 @@
             <div style="display: flex; align-items: center; justify-content: space-between;">
                 <div>
                 <button type="button" onclick="toggleAttachmentInput()" class="dx-btn dx-btn-md"
-                    style="background-color: #007bff; color: white; border: none; border-radius: 5px; padding: 10px 15px; cursor: pointer; transition: background-color 0.3s; margin: 10px 0; display: inline-block;">
-                    Add Attachment
+                    style="background-color: #F38F2F; color: white; border: none; border-radius: 5px; padding: 10px 15px; cursor: pointer; transition: background-color 0.3s; margin: 10px 0; display: inline-block;">
+                    Tambah Lampiran
                 </button>
                 <p style="margin: 0; color: #888; display: inline-block; margin-left: 10px;">
                     <small>Remaining messages: {{ 20 - $ticket->messages()->where('user_id', Auth::id())->count() }}</small>
@@ -182,7 +182,7 @@
                     editor.innerHTML = ""; // Clear the editor
                 });
             </script>
-            <button id="btn" type="submit" class="btn btn-primary">Send</button>
+            <button id="btn" type="submit" class="btn btn-primary" style="background-color: #F38F2F; border-color: #F38F2F">Kirim</button>
         </form>
     @else
         @if ($ticket->status == 'closed')

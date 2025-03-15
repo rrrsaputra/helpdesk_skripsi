@@ -2,8 +2,10 @@
     style="background-color: #85171A;">
     <div class="container">
         @if (request()->routeIs('user.ticket.show'))
-            <a href="{{ route('user.ticket.index') }}" style="top: 20px; left: 20px; margin-right:10px"
-                class="btn btn-secondary">Back</a>
+            <a href="{{ route('user.ticket.index') }}" style="top: 20px; left: 20px; margin-right: 10px; background-color: #F38F2F; border-color: #F38F2F;"
+                class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i>
+            </a>
         @endif
         <a href="{{route('home')}}" class="dx-nav-logo">
             <img src="{{ asset('image/logounggul.png') }}" alt="" width="250px" width="340px --}}">

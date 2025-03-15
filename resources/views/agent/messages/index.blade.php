@@ -1,6 +1,6 @@
 @extends('layouts.agent')
 @section('header')
-    <x-agent.header title="Ticket: {{ $ticket->references }} - {{ $ticket->title }}" />
+    <x-agent.header title="Ticket: {{ $ticket->references }} - {{ $ticket->category }} - {{ $ticket->title }}" />
 @endsection
 
 @section('content')
@@ -85,7 +85,7 @@
                 <p id="ticket-info"
                     style="margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; cursor: pointer;"
                     onclick="showModal()">
-                    {{ $ticket->references }} - {{ $ticket->title }}
+                    {{ $ticket->references }} - {{ $ticket->category }}
                 </p>
             </div>
 
@@ -96,7 +96,7 @@
                     style="background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%;">
                     <span class="close" style="color: #aaa; float: right; font-size: 28px; font-weight: bold;"
                         onclick="closeModal()">&times;</span>
-                    <p>{{ $ticket->references }} - {{ $ticket->title }}</p>
+                    <p>{{ $ticket->references }} - {{ $ticket->category }}</p>
                 </div>
             </div>
 
