@@ -23,13 +23,17 @@
 
 @section('content')
     @php
-        $columns = ['Category Name', 'Slug'];
+        $columns = ['Category Name', 'Description', 'Slug'];
         $data = $faqCategories
             ->map(function ($faqCategory) {
                 return [
                     'id' => $faqCategory->id,
                     'url' => '/path/to/resource1',
-                    'values' => [$faqCategory->name, $faqCategory->slug],
+                    'values' => [
+                        $faqCategory->name, 
+                        Str::limit($faqCategory->description, 50),
+                        $faqCategory->slug,
+                        ],
                 ];
             })
             ->toArray();

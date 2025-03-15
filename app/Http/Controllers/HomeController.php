@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FaqCategory;
 use Illuminate\Http\Request;
 use App\Models\ArticleCategory;
 use Illuminate\Support\Facades\Auth;
@@ -15,9 +16,9 @@ class HomeController extends Controller
         if ($role == 'admin') {
             return redirect()->route('admin.dashboard.index');
         } else if ($role == 'user') {
-            $articleCategories = ArticleCategory::all();
+            $faqCategories = FaqCategory::all();
 
-            return view('user.home', compact('articleCategories'));
+            return view('user.home', compact('faqCategories'));
         } else if ($role == 'agent') {
             return redirect()->route('agent.dashboard.index');
         } else {

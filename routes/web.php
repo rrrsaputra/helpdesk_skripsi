@@ -13,6 +13,7 @@ use Coderflex\LaravelTicket\Models\Ticket;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TriggerController;
+use App\Http\Controllers\UserFaqController;
 use App\Http\Controllers\AdminFaqController;
 use App\Http\Controllers\DropzoneController;
 use App\Http\Controllers\FeedbackController;
@@ -30,6 +31,7 @@ use App\Http\Controllers\AdminTriggersController;
 use App\Http\Controllers\AgentMessagesController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AgentDashboardController;
+use App\Http\Controllers\UserFaqCategoryController;
 use App\Http\Controllers\UserSuperSearchController;
 use App\Http\Controllers\UserTicketQuotaController;
 use App\Http\Controllers\AdminFaqCategoryController;
@@ -88,6 +90,8 @@ Route::middleware(['auth', 'role:user'])->group(function () {
         Route::get('/category/{slug}', [UserArticleCategoryController::class, 'show'])->name('category.show');
         Route::resource('/user/ticket', UserTicketController::class)->names('user.ticket');
         Route::resource('/user/scheduled-ticket', UserScheduledCallController::class)->names('user.scheduled-ticket');
+        Route::resource('/faq', UserFaqController::class)->names('user.faq');
+        Route::get('/category/{slug}', [UserFaqCategoryController::class, 'show'])->name('user.faq_category.show');
         
     
         // Route::get('/user/scheduled_calls/{id}', [UserScheduledCallController::class, 'show'])->name('user.scheduled_calls.single-scheduled-call');

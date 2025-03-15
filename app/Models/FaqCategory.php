@@ -11,7 +11,9 @@ class FaqCategory extends Model
 
     protected $fillable = [
         'name',
-        'slug'
+        'description',
+        'slug',
+        'image'
     ];
 
     public function faqs()

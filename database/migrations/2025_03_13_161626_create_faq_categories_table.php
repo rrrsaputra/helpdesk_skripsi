@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('faq_categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('description')->nullable();
             $table->string('slug');
+            $table->string('image')->nullable(); // Menambahkan kolom image yang bisa bernilai null
             $table->timestamps();
         });
     }

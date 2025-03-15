@@ -12,11 +12,6 @@
                         &nbsp;&nbsp;&nbsp;||&nbsp;&nbsp;&nbsp;Info layanan BAA dapat diakses melalui link <a
                             href="https://linktr.ee/baaubakrie" target="_blank">linktr.ee/baaubakrie</a>
                     </p>
-                    <p id="marquee-text-duplicate" class="inline-block">
-                        &nbsp;&nbsp;&nbsp;||&nbsp;&nbsp;&nbsp;Jam Operasional BAA: Senin - Jumat, 08:00 - 17:00 | Sabtu: 08:00 - 13:00 | Tutup pada hari Minggu
-                        &nbsp;&nbsp;&nbsp;||&nbsp;&nbsp;&nbsp;Info layanan BAA dapat diakses melalui link <a
-                            href="https://linktr.ee/baaubakrie" target="_blank">linktr.ee/baaubakrie</a>
-                    </p>
                 </div>
             </div>
         </div>
@@ -25,7 +20,6 @@
             document.addEventListener('DOMContentLoaded', function() {
                 const marqueeContainer = document.getElementById('marquee-container');
                 const marqueeText = document.getElementById('marquee-text');
-                const marqueeTextDuplicate = document.getElementById('marquee-text-duplicate');
                 let startPosition = 0;
 
                 function animateMarquee() {
@@ -42,10 +36,44 @@
 
         <div class="dx-box-5 bg-grey-6">
             <div class="container">
+                <div class="row align-items-center vertical-gap mnt-30 sm-gap mb-50">
+                    <h2 class="col-auto h4 mb-0 mt-0">Pertanyaan yang Sering Diajukan</h2>
+                    <div class="col pl-30 pr-30 d-none d-sm-block">
+                        <div class="dx-separator"></div>
+                    </div>
+                </div>
                 <div class="row justify-content-center vertical-gap">
+                    @foreach ($faqCategories as $faqCategory)
+                        <div class="col-12 col-md-4 col-lg-3 dx-feature-variable">
+                            <div class="dx-feature dx-feature-3 dx-feature-color-4 dx-block-decorated" style="height: 300px;">
+                                <div class="dx-feature-icon" style="color: #F38F2F;">
+                                    <span class="icon pe-7s-help1"></span>
+                                </div>
+                                <div class="dx-feature-cont">
+                                    <div class="dx-feature-title">{{ $faqCategory->name }}</div>
+                                    <div class="dx-feature-text">{{ $faqCategory->description }}</div>
+                                    <a href="{{ route('user.faq_category.show', $faqCategory->slug) }}"
+                                        class="dx-btn dx-btn-link d-flex dx-feature-link">Lihat FAQ<span
+                                            class="icon pe-7s-angle-right"></span></a>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
 
+        <div class="dx-box-5 bg-grey-6">
+            <div class="container">
+                <div class="row align-items-center vertical-gap mnt-30 sm-gap mb-50">
+                    <h2 class="col-auto h4 mb-0 mt-0">Tidak Menemukan Jawaban yang Dicari?</h2>
+                    <div class="col pl-30 pr-30 d-none d-sm-block">
+                        <div class="dx-separator"></div>
+                    </div>
+                </div>
+                <div class="row justify-content-center vertical-gap">
                     <div class="col-12 col-md-4 col-lg-3 dx-feature-variable">
-                        <div class="dx-feature dx-feature-3 dx-feature-color-4 dx-block-decorated">
+                        <div class="dx-feature dx-feature-3 dx-feature-color-4 dx-block-decorated" style="height: 300px;">
                             <div class="dx-feature-icon" style="color: #F38F2F;">
                                 <span class="icon pe-7s-ticket"></span>
                             </div>
@@ -58,26 +86,10 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="col-12 col-md-4 col-lg-3 dx-feature-variable">
-                        <div class="dx-feature dx-feature-3 dx-feature-color-2 dx-block-decorated">
-                            <div class="dx-feature-icon" style="color: #F38F2F;">
-                                <span class="icon pe-7s-notebook"></span>
-                            </div>
-                            <div class="dx-feature-cont">
-                                <div class="dx-feature-title"><a href="{{ route('article.index') }}">Artikel</a></div>
-                                <div class="dx-feature-text">Baca artikel terbaru dan temukan informasi bermanfaat di sini.
-                                </div>
-                                <a href="{{ route('article.index') }}"
-                                    class="dx-btn dx-btn-link d-flex dx-feature-link">Baca Artikel<span
-                                        class="icon pe-7s-angle-right"></span></a>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
-        <div class="dx-separator"></div>
+        {{-- <div class="dx-separator"></div>
         <div class="dx-box-5 pb-100">
             <div class="container mt-4 mnb-7">
                 <div class="row align-items-center vertical-gap mnt-30 sm-gap mb-50">
@@ -112,5 +124,5 @@
                     <div class="swiper-button-next"><span class="icon pe-7s-angle-right"></span></div>
                 </div>
             </div>
-        </div>
+        </div> --}}
     @endsection

@@ -38,7 +38,8 @@ class AdminFaqCategoryController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' =>'required|string|max:255',
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
         ]);
 
         $slug = Str::slug($validatedData['name']);
@@ -72,7 +73,8 @@ class AdminFaqCategoryController extends Controller
     public function update(Request $request, string $id)
     {
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255'
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
         ]);
 
         $slug = Str::slug($validatedData['name']);

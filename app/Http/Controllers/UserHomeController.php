@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\FaqCategory;
 use Illuminate\Http\Request;
 
 class UserHomeController extends Controller
@@ -20,7 +21,7 @@ class UserHomeController extends Controller
 
     public function show(string $id)
     {
-        $article = Article::find($id);
-        return view('user.articles.single-article', compact('article'));
+        $faqCategory = FaqCategory::find($id);
+        return view('user.faq_category.show)', compact('faqCategory'));
     }
 }

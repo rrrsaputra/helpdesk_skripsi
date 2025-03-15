@@ -15,6 +15,10 @@
                     <input type="text" name="name" class="form-control" id="name" placeholder="Masukkan nama kategori" value="{{ old('name', $faqCategory->name) }}">
                 </div>
                 <div class="form-group">
+                    <label for="description">Deskripsi</label>
+                    <textarea name="description" class="form-control" id="description" placeholder="Masukkan deskripsi">{{ old('description', $faqCategory->description) }}</textarea>
+                </div>
+                <div class="form-group">
                     <button type="submit" class="btn btn-primary">Submit</button>
                     <a href="{{ route('admin.faq_category.index') }}" class="btn btn-secondary">Cancel</a>
                 </div>
