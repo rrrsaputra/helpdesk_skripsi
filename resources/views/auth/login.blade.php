@@ -58,14 +58,14 @@
 
                     <!-- Email Address -->
                     <div class="input-group mb-3">
-                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
-                            name="email" value="{{ old('email') }}" required autofocus placeholder="Email" style="border-color: #85171A;">
+                        <input id="username" type="text" class="form-control @error('username') is-invalid @enderror"
+                            name="username" value="{{ old('username') }}" required autofocus placeholder="Masukkan Akun Pengguna" style="border-color: #85171A;">
                         <div class="input-group-append">
                             <span class="input-group-text" style="background-color: #85171A; color: white;">
-                                <i class="fas fa-envelope"></i>
+                                <i class="fas fa-user"></i>
                             </span>
                         </div>
-                        @error('email')
+                        @error('username')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -75,7 +75,7 @@
                     <!-- Password -->
                     <div class="input-group mb-3">
                         <input id="password" type="password" class="form-control @error('password') is-invalid @enderror"
-                            name="password" required autocomplete="current-password" placeholder="Password" style="border-color: #85171A;">
+                            name="password" required autocomplete="current-password" placeholder="Masukkan Kata Sandi" style="border-color: #85171A;">
                         <div class="input-group-append">
                             <span class="input-group-text" style="background-color: #85171A; color: white;">
                                 <i class="fas fa-lock"></i>
@@ -99,7 +99,7 @@
                 </form>
 
                 <!-- Link tambahan -->
-                @if (Route::has('password.request'))
+                {{-- @if (Route::has('password.request'))
                     <p class="mt-3">
                         <a href="{{ route('password.request') }}">I forgot my password</a>
                     </p>
@@ -109,7 +109,7 @@
                     <a href="{{ route('register') }}" class="text-center">
                         Register a new account
                     </a>
-                </p>
+                </p> --}}
             </div>
         </div>
     </div>

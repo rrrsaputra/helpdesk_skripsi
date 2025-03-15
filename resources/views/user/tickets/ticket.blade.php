@@ -29,14 +29,17 @@
                                     class="dx-ticket-item dx-ticket-new dx-ticket-open dx-block-decorated">
                                     <span class="dx-ticket-cont">
                                         <span class="dx-ticket-name">{{ $ticket->user->name }}</span>
-                                        <span class="dx-ticket-title h5" style="color: black">{{ $ticket->references . ' - ' . $ticket->title }}</span>
-                                        <p class="dx-ticket-paragraph mt-8" style="color: black">{{ strip_tags($ticket->message) }}</p>
+                                        <span class="dx-ticket-title h5"
+                                            style="color: black">{{ $ticket->references . ' - ' . $ticket->title }}</span>
+                                        <p class="dx-ticket-paragraph mt-8" style="color: black">
+                                            {{ strip_tags($ticket->message) }}</p>
                                         <ul class="dx-ticket-info">
                                             <li>Created: {{ $ticket->updated_at->format('d M Y') }}</li>
                                             <li>Category: {{ $ticket->category }}</li>
                                             @php $newMessagesCount = $ticket->messages->where('user_id', '!=', Auth::id())->where('is_read', '')->count(); @endphp
                                             @if ($newMessagesCount > 0)
-                                                <li style="color: blue; font-weight: bold;">New Messages: {{ $newMessagesCount }}</li>
+                                                <li style="color: blue; font-weight: bold;">New Messages:
+                                                    {{ $newMessagesCount }}</li>
                                             @endif
                                             @if ($ticket->is_new)
                                                 <li class="dx-ticket-new">New</li>
@@ -67,41 +70,7 @@
 
             </div>
         </div>
-        <div class="dx-separator"></div>
-        <div class="dx-box-5 pb-100">
-            <div class="container mt-4 mnb-7">
-                <div class="row align-items-center justify-content-between vertical-gap mnt-30 sm-gap mb-50">
-                    <h2 class="col-auto h4 mb-0 mt-0">Artikel Unggulan</h2>
-                    <div class="col pl-30 pr-30 d-none d-sm-block">
-                        <div class="dx-separator ml-10 mr-10"></div>
-                    </div>
-                    <div class="col-auto dx-slider-arrows-clone"></div>
-                </div>
 
-                <div class="swiper-container dx-slider dx-slider-arrows dx-slider-articles" data-swiper-speed="400"
-                    data-swiper-space="50" data-swiper-slides="3" data-swiper-breakpoints="true" data-swiper-arrows="true"
-                    data-swiper-arrows-clone="true" data-swiper-loop="true" data-swiper-autoHeight="true"
-                    data-swiper-grabCursor="true">
-                    <div class="swiper-wrapper">
-                        @foreach ($articles as $article)
-                            <div class="swiper-slide">
-                                <div class="dx-article dx-article-block">
-                                    <h4 class="h6 dx-article-title">{{ $article->title }}</h4>
-                                    <div class="dx-article-text">
-                                        <p class="mb-0">{{ Str::limit(strip_tags($article->content), 150) }}</p>
-                                    </div>
-                                    <a href="{{ route('article.show', $article->id) }}"
-                                        class="dx-btn dx-btn-link d-flex dx-article-link">Read More
-                                        <span class="icon pe-7s-angle-right"></span></a>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                    <div class="swiper-button-prev"><span class="icon pe-7s-angle-left"></span></div>
-                    <div class="swiper-button-next"><span class="icon pe-7s-angle-right"></span></div>
-                </div>
-            </div>
-        </div>
         @if (session('error'))
             <div class="alert alert-danger">
                 {{ session('error') }}

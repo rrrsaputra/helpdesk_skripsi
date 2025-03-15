@@ -76,6 +76,7 @@
 
                                             <label class="mnt-7">Lampiran</label>
                                             <input type="file" class="filepond" id="fileInput" multiple>
+                                            <small class="form-text text-muted">Maksimal ukuran total lampiran: 10 MB</small>
                                             <input type="hidden" name="filepond" id="hidden_filePaths">
                                         </div>
                                         <div class="dx-form-group">

@@ -64,34 +64,28 @@
                     <h1 class="h2 mb-30 text-white text-center">Book Scheduled Call</h1>
                 </div>
             </div> --}}
-        @elseif(Request::is('article'))
-            <div class="row justify-content-center">
-                <div class="col-xl-7">
-                    <h1 class="h2 mb-30 text-white text-center">Artikel</h1>
-                </div>
-            </div>
         @elseif(Request::is('feedback'))
             <div class="row justify-content-center">
                 <div class="col-xl-7">
                     <h1 class="h2 mb-30 text-white text-center">Umpan Balik</h1>
                 </div>
             </div>
-        @elseif(Request::is('article/*'))
+        @elseif(Request::is('faq/*'))
             <div class="row justify-content-center">
                 <div class="col-xl-7">
-                    <h1 class="h2 mb-30 text-white text-center">Artikel</h1>
+                    <h1 class="h2 mb-30 text-white text-center">Pertanyaan yang Sering Diajukan</h1>
                 </div>
             </div>
-        @elseif(Request::is('article'))
+        @elseif(Request::is('faq'))
             <div class="row justify-content-center">
                 <div class="col-xl-7">
-                    <h1 class="h2 mb-30 text-white text-center">Artikel</h1>
+                    <h1 class="h2 mb-30 text-white text-center">Pertanyaan yang Sering Diajukan</h1>
                 </div>
             </div>
-        @elseif(Request::is('category/*'))
+        @elseif(Request::is('faq_category/*'))
             <div class="row justify-content-center">
                 <div class="col-xl-7">
-                    <h1 class="h2 mb-30 text-white text-center">Kategori Artikel</h1>
+                    <h1 class="h2 mb-30 text-white text-center">Kategori FAQ</h1>
                 </div>
             </div>
         @elseif(Request::is('profile'))

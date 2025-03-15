@@ -70,7 +70,7 @@
                             </form>
                         </div>
                         <div class="dx-widget dx-box dx-box-decorated">
-                            <div class="dx-widget-title">Kategori Artikel</div>
+                            <div class="dx-widget-title">Kategori FAQ</div>
                             <ul class="dx-widget-categories">
                                 @foreach ($faqCategories as $faqCategory)
                                     <li>

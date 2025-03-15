@@ -25,8 +25,9 @@ class DatabaseSeeder extends Seeder
 
         // Creating a new user
         $user = User::create([
-            'name' => 'New User',
-            'email' => 'user@gmail.com',
+            'name' => 'Raka Dimas Saputra',
+            'email' => '1212002026@student.bakrie.ac.id',
+            'username' => 1212002026,
             'password' => bcrypt('password'),
         ]);
 
@@ -35,8 +36,9 @@ class DatabaseSeeder extends Seeder
 
         // Creating an admin user
         $admin = User::create([
-            'name' => 'Admin User',
+            'name' => 'Admin',
             'email' => 'admin@gmail.com',
+            'username' => 8912,
             'password' => bcrypt('password'),
         ]);
 
@@ -47,6 +49,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Agent User',
                 'email' => 'agent@gmail.com',
+                'username' => 7654,
                 'password' => bcrypt('password'),
             ]
         );
@@ -57,6 +60,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Agent User2',
                 'email' => 'agent2@gmail.com',
+                'username' => 4321,
                 'password' => bcrypt('password'),
             ]
         );

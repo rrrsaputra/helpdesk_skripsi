@@ -39,10 +39,9 @@
                                     <!-- START: Breadcrumbs -->
                                     <nav aria-label="breadcrumb">
                                         <uo class="breadcrumb">
-                                            <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-                                            <li class="breadcrumb-item"><a href="{{ route('tickets.index') }}">Ticket
-                                                    System</a></li>
-                                            <li class="breadcrumb-item active" aria-current="page">Submit a Ticket</li>
+                                            <li class="breadcrumb-item"><a href="{{ route('home') }}">Beranda</a></li>
+                                            <li class="breadcrumb-item"><a href="{{ route('tickets.index') }}">Tiket</a></li>
+                                            <li class="breadcrumb-item active" aria-current="page">Buat Tiket</li>
                                             </ol>
                                     </nav>
                                     <!-- END: Breadcrumbs -->
@@ -51,7 +50,7 @@
 
                                 <div class="dx-box-content">
                                     <div class="dx-form-group">
-                                        <label for="category" class="mnt-7">Ticket Category</label>
+                                        <label for="category" class="mnt-7">Kategori Pertanyaan</label>
                                         <select class="form-control form-control-style-2" id="category" name="category">
                                             @foreach ($ticketCategories as $ticketCategory)
                                                 <option value="{{ $ticketCategory->name }}">{{ $ticketCategory->name }}
@@ -68,7 +67,7 @@
                                     <link href="https://unpkg.com/filepond/dist/filepond.min.css" rel="stylesheet" />
 
                                     <div class="dx-form-group">
-                                        <label for="subject" class="mnt-7">Subject</label>
+                                        <label for="subject" class="mnt-7">Subjek</label>
                                         <input type="text" class="form-control form-control-style-2" id="subject"
                                             placeholder="Enter Subject" name="title">
                                         @error('title')
@@ -76,12 +75,13 @@
                                         @enderror
                                     </div>
                                     <div class="dx-form-group">
-                                        <label class="mnt-7">Attachments</label>
+                                        <label class="mnt-7">Lampiran</label>
                                         <input type="file" class="filepond" id="fileInput" multiple>
+                                        <small class="form-text text-muted">Maksimal ukuran total lampiran: 10 MB</small>
                                         <input type="hidden" name="filepond" id="hidden_filePaths">
                                     </div>
                                     <div class="dx-form-group">
-                                        <label class="mnt-7">Message</label>
+                                        <label class="mnt-7">Pesan</label>
                                         <div class="dx-editors" data-editor-height="150" data-editor-maxheight="250"
                                             style="min-height: 150px; max-height: 250px;">
                                         </div>
