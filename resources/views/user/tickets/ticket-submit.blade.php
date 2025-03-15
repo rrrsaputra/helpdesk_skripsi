@@ -1,7 +1,9 @@
 @extends('layouts.user')
 
 @section('css')
-    <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
+    <link href="https://unpkg.com/filepond@4.30.4/dist/filepond.min.css" rel="stylesheet" />
+    <link href="https://unpkg.com/filepond-plugin-image-preview@4.6.11/dist/filepond-plugin-image-preview.min.css"
+        rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
 @endsection
 
@@ -35,12 +37,13 @@
                             @csrf
                             <div class="dx-box dx-box-decorated">
                                 <div class="dx-box-content">
-                                    <h2 class="h6 mb-6">Submit a Ticket</h2>
+                                    <h2 class="h6 mb-6">Buat Tiket</h2>
                                     <!-- START: Breadcrumbs -->
                                     <nav aria-label="breadcrumb">
                                         <uo class="breadcrumb">
                                             <li class="breadcrumb-item"><a href="{{ route('home') }}">Beranda</a></li>
-                                            <li class="breadcrumb-item"><a href="{{ route('tickets.index') }}">Tiket</a></li>
+                                            <li class="breadcrumb-item"><a href="{{ route('tickets.index') }}">Tiket</a>
+                                            </li>
                                             <li class="breadcrumb-item active" aria-current="page">Buat Tiket</li>
                                             </ol>
                                     </nav>
@@ -97,7 +100,8 @@
                                 <div class="dx-box-content">
                                     <div class="row justify-content-end mt-3">
                                         <div class="col-auto mb-20">
-                                            <button type="submit" class="dx-btn dx-btn-lg mx-4 float-right my-3" id="send_ticket"
+                                            <button type="submit" class="dx-btn dx-btn-lg mx-4 float-right my-3"
+                                                id="send_ticket"
                                                 style="background-color: #F38F2F; color: white; font-weight: bold;">Kirim
                                             </button>
                                         </div>
@@ -137,7 +141,8 @@
         });
     </script>
 
-    <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
+    <script src="https://unpkg.com/filepond@4.30.4/dist/filepond.min.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-preview@4.6.11/dist/filepond-plugin-image-preview.min.js"></script>
     <script>
         // Get a reference to the file input element
         const inputElement = document.getElementById('fileInput');
@@ -153,10 +158,6 @@
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     }
                 },
-
-
-
-
             }
         });
         pond.on('addfile', function(file) {

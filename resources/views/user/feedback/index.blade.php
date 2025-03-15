@@ -1,7 +1,9 @@
 @extends('layouts.user')
 
 @section('css')
-    <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
+    <link href="https://unpkg.com/filepond@4.30.4/dist/filepond.min.css" rel="stylesheet" />
+    <link href="https://unpkg.com/filepond-plugin-image-preview@4.6.11/dist/filepond-plugin-image-preview.min.css"
+        rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
 @endsection
 
@@ -36,7 +38,7 @@
                                 @csrf
                                 <div class="dx-box dx-box-decorated">
                                     <div class="dx-box-content">
-                                        <h2 class="h6 mb-6">Feedback</h2>
+                                        <h2 class="h6 mb-6">Umpan Balik</h2>
                                         <nav aria-label="breadcrumb">
                                             <uo class="breadcrumb">
                                                 <li class="breadcrumb-item"><a href="{{ route('home') }}">Beranda</a></li>
@@ -76,7 +78,8 @@
 
                                             <label class="mnt-7">Lampiran</label>
                                             <input type="file" class="filepond" id="fileInput" multiple>
-                                            <small class="form-text text-muted">Maksimal ukuran total lampiran: 10 MB</small>
+                                            <small class="form-text text-muted">Maksimal ukuran total lampiran: 10
+                                                MB</small>
                                             <input type="hidden" name="filepond" id="hidden_filePaths">
                                         </div>
                                         <div class="dx-form-group">
@@ -163,7 +166,8 @@
         });
     </script>
 
-    <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
+    <script src="https://unpkg.com/filepond@4.30.4/dist/filepond.min.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-preview@4.6.11/dist/filepond-plugin-image-preview.min.js"></script>
     <script>
         // Get a reference to the file input element
         const inputElement = document.getElementById('fileInput');
