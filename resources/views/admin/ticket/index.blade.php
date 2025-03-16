@@ -5,7 +5,7 @@
 
 @section('content')
     @php
-        $columns = ['Reference', 'Name', 'Study Program', 'Summary', 'Assigned To', 'Last Updated'];
+        $columns = ['Reference', 'Name', 'Study Program', 'Summary', 'Assigned To', 'Last Updated', 'Status'];
         $data = $tickets
             ->map(function ($ticket) {
                 return [
@@ -18,6 +18,7 @@
                         [$ticket->title, $ticket->category, $ticket->message ?? ''],
                         $ticket->assignedToUser->name ?? 'Unassigned',
                         $ticket->updated_at->format('d M Y H:i'),
+                        $ticket->status,
                     ],
                 ];
             })

@@ -5,10 +5,9 @@
 
 @section('content')
     @php
-        $columns = ['Reference', 'Name', 'Study Program', 'Summary', 'New Messages', 'Last Updated'];
+        $columns = ['Reference', 'Name', 'Study Program', 'Summary', 'New Messages', 'Last Updated', 'status'];
         $data = $tickets
             ->map(function ($ticket) {
-                
                 return [
                     'id' => $ticket->id,
                     'url' => '/path/to/resource1',
@@ -19,6 +18,7 @@
                         [$ticket->title, $ticket->category, $ticket->message ?? ''],
                         $ticket->messages->where('user_id', '!=', Auth::id())->where('is_read', '')->count(),
                         $ticket->updated_at->format('d M Y H:i'),
+                        $ticket->status,
                     ],
                 ];
             })
@@ -123,7 +123,15 @@
                                                         <i class="fas fa-check"></i>
                                                     </button>
                                                 </form>
-
+                                                <form action="{{ route('agent.ticket.hold', $row['id']) }}" method="POST"
+                                                    style="display:inline;" onclick="event.stopPropagation();">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <button type="submit" class="btn btn-secondary btn-sm"
+                                                        title="Hold Ticket">
+                                                        <i class="fas fa-pause"></i>
+                                                    </button>
+                                                </form>
                                                 <form action="{{ route('agent.ticket.unassign', $row['id']) }}"
                                                     method="POST" style="display:inline;"
                                                     onclick="event.stopPropagation();">
@@ -132,6 +140,16 @@
                                                     <button type="submit" class="btn btn-danger btn-sm"
                                                         title="Unassign Ticket">
                                                         <i class="fas fa-times"></i>
+                                                    </button>
+                                                </form>
+                                                <form action="{{ route('agent.ticket.reopen_ticket', $row['id']) }}"
+                                                    method="POST" style="display:inline;"
+                                                    onclick="event.stopPropagation();">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <button type="submit" class="btn btn-warning btn-sm"
+                                                        title="Reopen Ticket">
+                                                        <i class="fas fa-redo"></i>
                                                     </button>
                                                 </form>
 

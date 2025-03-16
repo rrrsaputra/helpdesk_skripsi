@@ -81,6 +81,15 @@ class AgentTicketController extends Controller
     /**
      * Display the specified resource.
      */
+
+    public function onhold(string $id)
+    {
+        $ticket = Ticket::where('id', $id)->first();
+        $ticket->status = "on hold";
+        $ticket->save();
+
+        return redirect(route('agent.index', ['inbox' => 'mine']));
+    }
     public function show(string $id)
     {
         //

@@ -67,6 +67,12 @@
         <p>No messages found.</p>
     @endif
 
+    @if ($ticket->status === 'on hold')
+                <div class="alert alert-info text-center" role="alert" style="margin-top: 10px;">
+                    <strong>Info:</strong> Tiket Anda sedang dalam status <em>On Hold</em>. Kami masih memproses permintaan Anda dan akan segera menindaklanjutinya.
+                </div>
+            @endif
+
     @if ($ticket->status !== 'closed' && $ticket->messages()->where('user_id', Auth::id())->count() < 20)
         <form id="message-form" action="{{ route('agent.messages.store', ['id' => $ticket_id]) }}" method="POST"
             style="width: 100%; background: white; padding: 10px; box-shadow: 0 -2px 5px rgba(0,0,0,0.1); margin-bottom: 0;">

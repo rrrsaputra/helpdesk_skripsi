@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Coderflex\LaravelTicket\Enums\Status;
 use Coderflex\LaravelTicket\Models\Ticket;
 
 class AdminTicketController extends Controller
@@ -35,7 +36,9 @@ class AdminTicketController extends Controller
                 $tickets = $ticketsQuery->where('assigned_to', Auth::id())->paginate($paginationCount);
                 return view('agent.index', compact('tickets', 'inbox'));
             case 'assigned':
-                $tickets = $ticketsQuery->whereNotNull('assigned_to')->paginate($paginationCount);
+                $tickets = $ticketsQuery->whereNotNull('assigned_to')
+                    ->orWhere('status', 'on hold')
+                    ->paginate($paginationCount);
                 return view('admin.ticket.index', compact('tickets', 'inbox', 'agents'));
             case 'closed':
                 $tickets = Ticket::closed()->orderBy('created_at', 'desc')

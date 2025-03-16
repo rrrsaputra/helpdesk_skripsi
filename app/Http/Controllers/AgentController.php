@@ -30,7 +30,14 @@ class AgentController extends Controller
             return view('agent.index', compact('tickets', 'inbox','notifications'));
         }
         else if ($inbox == 'mine') {
-            $tickets = Ticket::opened()->where('assigned_to', Auth::id())->orderBy('created_at', 'desc')
+            $tickets = Ticket::where(function ($query) {
+                $query->where('assigned_to', Auth::id())
+                      ->orWhere(function ($query) {
+                          $query->where('status', 'open')
+                                ->whereNotNull('assigned_to');
+                      })
+                      ->orWhere('status', 'on hold');
+            })->orderBy('created_at', 'desc')
             ->when($search, function ($query) use ($search) {
                 $query->where('title', 'like', "%{$search}%")
                     ->orWhere('category', 'like', "%{$search}%")

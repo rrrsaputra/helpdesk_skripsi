@@ -173,6 +173,7 @@ Route::middleware('auth', 'role:agent')->group(function () {
     Route::patch('/agent/ticket/unassign/{ticket}', [AgentTicketController::class, 'unassign'])->name('agent.ticket.unassign');
     Route::patch('/agent/ticket/close/{ticket}', [AgentTicketController::class, 'close'])->name('agent.ticket.close');
     Route::patch('/agent/ticket/reopen/{ticket}', [AgentTicketController::class, 'reopen_ticket'])->name('agent.ticket.reopen_ticket');
+    Route::patch('/agent/ticket/hold/{ticket}', [AgentTicketController::class, 'onhold'])->name('agent.ticket.hold');
 });
 
 
