@@ -37,9 +37,15 @@ class AdminReportController extends Controller
             })
             ->paginate($paginationCount);
 
+        // Summary data
+        $totalTickets = Ticket::count();
+        $totalOpen = Ticket::where('status', 'open')->count();
+        $totalOnHold = Ticket::where('status', 'on hold')->count();
+        $totalClosed = Ticket::where('status', 'closed')->count();
+
         $categories = Category::all();
 
-        return view('admin.reports.index', compact('tickets', 'categories', 'sort', 'direction'));
+        return view('admin.reports.index', compact('tickets', 'categories', 'sort', 'direction', 'totalTickets', 'totalOpen', 'totalOnHold', 'totalClosed'));
     }
 
     public function export(Request $request)

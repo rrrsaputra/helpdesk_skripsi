@@ -52,6 +52,42 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('AdminLTE-3.2.0/dist/css/adminlte.min.css') }}">
 
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-white bg-primary">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-ticket-alt"></i> Total Tiket</h5>
+                    <p class="card-text h4"><strong>{{ $totalTickets }}</strong></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-success">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-folder-open"></i> Tiket Open</h5>
+                    <p class="card-text h4"><strong>{{ $totalOpen }}</strong></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-warning">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-pause-circle"></i> Tiket On Hold</h5>
+                    <p class="card-text h4"><strong>{{ $totalOnHold }}</strong></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-danger">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-times-circle"></i> Tiket Closed</h5>
+                    <p class="card-text h4"><strong>{{ $totalClosed }}</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
     <div class="card">
         <div class="row">
             <div class="col-12">
