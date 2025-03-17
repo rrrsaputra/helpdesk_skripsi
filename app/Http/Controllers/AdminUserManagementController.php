@@ -41,7 +41,9 @@ class AdminUserManagementController extends Controller
      */
     public function create()
     {
-        return view('admin.user_management.create');
+        $studyPrograms = StudyProgram::all();
+
+        return view('admin.user_management.create', compact('studyPrograms'));
     }
 
     /**
@@ -51,8 +53,10 @@ class AdminUserManagementController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
+            'study_program_id' => 'required|exists:study_programs,id',
         ]);
 
         if ($request->password !== $request->password_confirmation) {
@@ -61,8 +65,10 @@ class AdminUserManagementController extends Controller
 
         $user = User::create([
             'name' => $request->name,
+            'username' => $request->username,
             'email' => $request->email,
             'password' => bcrypt($request->password),
+            'study_program_id' => $request->study_program_id,
         ]);
 
         return redirect()->route('admin.user_management.index')->with('success', 'User created successfully.');

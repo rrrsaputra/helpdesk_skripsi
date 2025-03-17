@@ -91,7 +91,31 @@
                             <thead>
                                 <tr>
                                     @foreach ($columns as $index => $column)
-                                        <th style="width: {{ $columnSizes[$index] ?? 'auto' }}">{{ $column }}</th>
+                                        <th style="width: {{ $columnSizes[$index] ?? 'auto' }}">
+                                            @php
+                                                // Mapping nama kolom dengan nama kolom di database
+                                                $columnMap = [
+                                                    'Title' => 'title',
+                                                    'Content' => 'content',
+                                                    'Category' => 'faq_category_id',
+                                                    'Created By' => 'user_id',
+                                                ];
+                                                $sortColumn = $columnMap[$column] ?? null;
+                                            @endphp
+
+                                            @if ($sortColumn)
+                                                <a
+                                                    href="{{ route('admin.faq.index', array_merge(request()->all(), ['sort' => $sortColumn, 'direction' => request('direction') === 'asc' ? 'desc' : 'asc'])) }}">
+                                                    {{ $column }}
+                                                    @if (request('sort') === $sortColumn)
+                                                        <i
+                                                            class="fas fa-sort-{{ request('direction') === 'asc' ? 'up' : 'down' }}"></i>
+                                                    @endif
+                                                </a>
+                                            @else
+                                                {{ $column }}
+                                            @endif
+                                        </th>
                                     @endforeach
                                     <th>Actions</th> <!-- Added Actions column -->
                                 </tr>

@@ -23,6 +23,7 @@ class User extends Authenticatable implements CanUseTickets
     protected $fillable = [
         'name',
         'email',
+        'study_program_id',
         'username',
         'password',
     ];

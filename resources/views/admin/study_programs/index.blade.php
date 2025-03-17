@@ -102,13 +102,17 @@
                                         @endforeach
                                         <td> <!-- Added Actions buttons -->
                                             <a href="{{ route('admin.study_programs.edit', $row['id']) }}"
-                                                class="btn btn-sm btn-primary">Edit</a>
+                                                class="btn btn-sm btn-warning" title="Edit Study Program">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
 
                                             <form action="{{ route('admin.study_programs.destroy', $row['id']) }}"
                                                 method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                                <button type="submit" class="btn btn-sm btn-danger" title="Delete Study Program">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
                                             </form>
                                         </td>
                                     </tr>

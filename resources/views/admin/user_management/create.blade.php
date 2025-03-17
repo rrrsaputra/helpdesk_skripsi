@@ -35,8 +35,21 @@
                     <input type="text" name="name" class="form-control" id="name" placeholder="Masukkan nama">
                 </div>
                 <div class="form-group">
+                    <label for="username">NIM</label>
+                    <input type="text" name="username" class="form-control" id="username" placeholder="Masukkan username">
+                </div>
+                <div class="form-group">
                     <label for="email">Email</label>
                     <input type="email" name="email" class="form-control" id="email" placeholder="Masukkan email">
+                </div>
+                <div class="form-group">
+                    <label for="study_program_id">Study Program</label>
+                    <select name="study_program_id" class="form-control" id="study_program_id">
+                        <option value="">Choose Study Program</option>
+                        @foreach($studyPrograms as $studyProgram)
+                            <option value="{{ $studyProgram->id }}">{{ $studyProgram->name }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>

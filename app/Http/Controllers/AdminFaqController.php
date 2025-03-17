@@ -14,14 +14,17 @@ class AdminFaqController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
+        $sort = $request->input('sort', 'created_at'); // default sort
+        $direction = $request->input('direction', 'desc'); // default direction
         $paginationCount = 10;
-        $faqs = Faq::orderBy('created_at', 'desc')
+
+        $faqs = Faq::orderBy($sort, $direction)
             ->when($search, function ($query) use ($search) {
                 $query->where('title', 'like', "%{$search}%");
             })
             ->paginate($paginationCount);
 
-        return view('admin.faq.index', compact('faqs'));
+        return view('admin.faq.index', compact('faqs', 'sort', 'direction'));
     }
 
     /**

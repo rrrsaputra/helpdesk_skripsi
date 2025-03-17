@@ -115,6 +115,7 @@ class AdminTicketController extends Controller
     {
         $ticket = Ticket::where('id', $id)->first();
         $ticket->assigned_to = null;
+        $ticket->status = "open";
         $ticket->save();
 
 
