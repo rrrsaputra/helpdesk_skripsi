@@ -41,7 +41,7 @@ class AdminStudyProgramController extends Controller
 
         StudyProgram::create($validatedData);
 
-        return redirect()->route('admin.study_programs.index');
+        return redirect()->route('admin.study_programs.index')->with('success', 'Study program created successfully');
     }
 
     /**
@@ -62,6 +62,7 @@ class AdminStudyProgramController extends Controller
         return view('admin.study_programs.edit', compact('studyProgram'));
     }
 
+
     /**
      * Update the specified resource in storage.
      */
@@ -74,7 +75,7 @@ class AdminStudyProgramController extends Controller
         $studyProgram = StudyProgram::find($id);
         $studyProgram->update($validatedData);
 
-        return redirect()->route('admin.study_programs.index');
+        return redirect()->route('admin.study_programs.index')->with('success', 'Study program updated successfully');
     }
 
     /**
@@ -85,6 +86,6 @@ class AdminStudyProgramController extends Controller
         $studyProgram = StudyProgram::find($id);
         $studyProgram->delete();
 
-        return redirect()->route('admin.study_programs.index');
+        return redirect()->route('admin.study_programs.index')->with('success', 'Study program deleted successfully');
     }
 }
