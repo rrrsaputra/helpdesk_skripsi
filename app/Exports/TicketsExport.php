@@ -44,7 +44,7 @@ class TicketsExport implements FromCollection, WithHeadings
                     'created_at' => $ticket->created_at,
                     'user_name' => $ticket->user->name,
                     'nim' => $ticket->user->username,
-                    'agent_name' => $ticket->assignedToUser->name,
+                    'agent_name' => $ticket->assignedToUser->name ?? 'Unassigned',
                     'category' => $ticket->category,
                     'subject' => $ticket->title,
                     'message'   => strip_tags($ticket->message),
