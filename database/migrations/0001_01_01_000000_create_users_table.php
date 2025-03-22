@@ -19,6 +19,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->integer('ticket_quota')->default(20);
+            $table->string('lecture_program')->nullable();
             $table->foreignId('study_program_id')->nullable()->constrained('study_programs')->onDelete('cascade');
             $table->rememberToken();
             $table->timestamps();
