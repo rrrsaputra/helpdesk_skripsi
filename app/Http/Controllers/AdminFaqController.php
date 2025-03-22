@@ -20,7 +20,13 @@ class AdminFaqController extends Controller
 
         $faqs = Faq::orderBy($sort, $direction)
             ->when($search, function ($query) use ($search) {
-                $query->where('title', 'like', "%{$search}%");
+                $query->where(function ($query) use ($search) {
+                    $query->where('title', 'like', "%{$search}%")
+                        ->orWhere('content', 'like', "%{$search}%")
+                        ->orWhereHas('faqCategory', function ($query) use ($search) {
+                            $query->where('name', 'like', "%{$search}%");
+                        });
+                });
             })
             ->paginate($paginationCount);
 

@@ -44,19 +44,40 @@ class AdminDashboardController extends Controller
             return $status->count();
         })->values();
 
-        // Proses data untuk tabel Agent Performance
+        // TABEL AGENT PERFORMANCE
         $paginationCount = 5;
         $agents = User::role('agent')->paginate($paginationCount);
         $agentPerformance = $agents->map(function ($agent) use ($tickets) {
             $agentTickets = $tickets->where('assigned_to', $agent->id);
-
+        
+            $openTickets = $agentTickets->where('status', 'open');
+            $closedTickets = $agentTickets->where('status', 'closed');
+            $onHoldTickets = $agentTickets->where('status', 'on hold');
+        
+            // Durasi dari tiket open sampai diambil oleh agent
+            $avgGet = $agentTickets->filter(function ($ticket) {
+                return $ticket->created_at && $ticket->assigned_at; // Pastikan ada assigned_at
+            })->map(function ($ticket) {
+                return $ticket->created_at->diffInMinutes($ticket->assigned_at); // atau use diffInHours kalau mau
+            })->avg();
+        
+            // Durasi dari ticket diambil sampai ditutup
+            $avgClosed = $closedTickets->filter(function ($ticket) {
+                return $ticket->assigned_at && $ticket->updated_at;
+            })->map(function ($ticket) {
+                return \Carbon\Carbon::parse($ticket->assigned_at)->diffInMinutes($ticket->updated_at);
+            })->avg();
+        
             return [
                 'name' => $agent->name,
                 'total' => $agentTickets->count(),
-                'open' => $agentTickets->where('status', 'open')->count(),
-                'closed' => $agentTickets->where('status', 'closed')->count(),
+                'open' => $openTickets->count(),
+                'on hold' => $onHoldTickets->count(),
+                'closed' => $closedTickets->count(),
+                'avg_get' => $avgGet ? round($avgGet, 2) : 0,
+                'avg_closed' => $avgClosed ? round($avgClosed, 2) : 0,
             ];
-        })->sortByDesc('total');
+        });
 
         $hoursUntilFirstReply = Ticket::selectRaw('TIMESTAMPDIFF(HOUR, created_at, updated_at) as hours_until_reply')
             ->get()

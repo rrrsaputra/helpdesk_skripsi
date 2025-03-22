@@ -10,7 +10,7 @@
         </div>
         <script>
             setTimeout(function() {
-                document.getElementById('success-alert').style.opacity = '0';
+                document.getElementById('success-alert').mstyle.opacity = '0';
             }, 4500); // Mengurangi 500ms untuk transisi lebih halus
             setTimeout(function() {
                 document.getElementById('success-alert').style.display = 'none';
@@ -22,7 +22,7 @@
 
 @section('content')
     @php
-        $columns = ['Message ID', 'Ticket ID', 'From', 'To', 'Path', 'Ticket References']; // Added 'References' column
+        $columns = ['Ticket References', 'From', 'To', 'Path']; // Added 'References' column
         $data = $dataRepositories
             ->map(function ($dataRepository) {
                 $fromUser = $dataRepository->message->user;
@@ -33,12 +33,10 @@
                     'id' => $dataRepository->id,
                     'url' => '/path/to/resource1',
                     'values' => [
-                        $dataRepository->message_id,
-                        $dataRepository->message->ticket_id,
+                        $ticket->references ?? null,
                         $fromUser->email ?? null,
                         $toUser->email ?? null,
                         $dataRepository->path,
-                        $ticket->references ?? null, // Added ticket references
                     ],
                 ];
             })

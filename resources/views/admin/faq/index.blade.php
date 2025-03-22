@@ -35,12 +35,12 @@
             }, 5000);
         </script>
     @endif
-    <x-admin.header title="List of FaQ" />
+    <x-admin.header title="List of FAQ" />
 @endsection
 
 @section('content')
     @php
-        $columns = ['Title', 'Content', 'Category', 'Created By'];
+        $columns = ['Question', 'Answer', 'Category', 'Created By'];
         $data = $faqs
             ->map(function ($faq) {
                 return [
@@ -78,13 +78,13 @@
                         <form action="{{ route('admin.faq.index') }}" method="GET" class="form-inline">
                             <div class="form-group">
                                 <input type="search" class="form-control" id="search" name="search"
-                                    style="width: 500px;" placeholder="Search by title">
+                                    style="width: 500px;" placeholder="Search FAQ">
                             </div>
                             <button type="submit" class="btn btn-primary">Search</button>
                         </form>
                     </div>
 
-                    <a href="{{ route('admin.faq.create') }}" class="btn btn-primary mb-3">Create FaQ</a>
+                    <a href="{{ route('admin.faq.create') }}" class="btn btn-primary mb-3">Create FAQ</a>
 
                     <div class="table-responsive">
                         <table id="example2" class="table table-hover">
@@ -95,8 +95,8 @@
                                             @php
                                                 // Mapping nama kolom dengan nama kolom di database
                                                 $columnMap = [
-                                                    'Title' => 'title',
-                                                    'Content' => 'content',
+                                                    'Question' => 'title',
+                                                    'Answer' => 'content',
                                                     'Category' => 'faq_category_id',
                                                     'Created By' => 'user_id',
                                                 ];
@@ -196,7 +196,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="8">No faq found</td>
+                                        <td colspan="8">No FAQ found</td>
                                     </tr>
                                 @endforelse
                             </tbody>

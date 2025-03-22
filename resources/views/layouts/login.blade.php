@@ -90,7 +90,7 @@
                 <div class="overlay">
                     <div class="overlay-text">
                         <h1>Welcome to Biro Administrasi Akademik Helpdesk</h1>
-                        <h4>Get Support, Stay Informed, and Be Heard</h4>
+                        <h4>Competent, Assurance, Responsive, Empathy</h4>
                         <p>Academic Year 2024/2025<br>
                             Have a question or concern? We’re here to help you succeed.</p>
                     </div>

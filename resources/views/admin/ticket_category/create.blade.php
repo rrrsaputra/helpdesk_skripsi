@@ -11,8 +11,11 @@
             @csrf
             <div class="card-body">
                 <div class="form-group">
-                    <label for="name">Category Name</label>
+                    <label for="name">Category Name <span class="text-danger" title="This field is required">*</span></label>
                     <input type="text" name="name" class="form-control" id="name" placeholder="Enter category name">
+                    @if ($errors->has('name'))
+                        <span class="text-danger">{{ $errors->first('name') }}</span>
+                    @endif
                 </div>
                 <div >
                     <button type="submit" class="btn btn-primary">Submit</button>

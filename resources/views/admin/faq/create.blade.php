@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('header')
-    <x-admin.header title="Create FaQ" />
+    <x-admin.header title="Create FAQ" />
 @endsection
 
 @section('content')
@@ -10,16 +10,19 @@
             @csrf
             <div class="card-body">
                 <div class="form-group">
-                    <label for="title">Title</label>
-                    <input type="text" name="title" class="form-control" id="title" placeholder="Enter title">
+                    <label for="title">
+                        Question <span class="text-danger" title="This field is required">*</span>
+                    </label>
+                    <input type="text" name="title" class="form-control" id="title" placeholder="Enter question">
                     @if ($errors->has('title'))
                         <span class="text-danger">{{ $errors->first('title') }}</span>
                     @endif
                 </div>
 
                 <div class="form-group">
-                    <label for="category">Category</label>
+                    <label for="category">Category <span class="text-danger" title="This field is required">*</span></label>
                     <select class="form-control" id="category" name="category">
+                        <option value="">Choose FAQ Category</option>
                         @foreach ($faqCategories as $faqCategory)
                             <option value="{{ $faqCategory->id }}">{{ $faqCategory->name }}</option>
                         @endforeach
@@ -30,7 +33,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="content">Content</label>
+                    <label for="content">Answer <span class="text-danger" title="This field is required">*</span></label>
                     <div id="editor" style="height: 300px; min-height: 300px;"></div>
                     <input type="hidden" name="content" id="content">
                     @if ($errors->has('content'))

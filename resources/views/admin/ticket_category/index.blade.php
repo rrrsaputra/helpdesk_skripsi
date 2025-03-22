@@ -60,7 +60,7 @@
                         <form action="{{ route('admin.ticket_category.index') }}" method="GET" class="form-inline">
                             <div class="form-group">
                                 <input type="search" class="form-control" id="search" name="search"
-                                    style="width: 500px;" placeholder="Search by title, message, and status">
+                                    style="width: 500px;" placeholder="Search ticket category">
                             </div>
                             <button type="submit" class="btn btn-primary">Search</button>
                         </form>
@@ -74,7 +74,30 @@
                             <thead>
                                 <tr>
                                     @foreach ($columns as $index => $column)
-                                        <th style="width: {{ $columnSizes[$index] ?? 'auto' }}">{{ $column }}</th>
+                                        <th style="width: {{ $columnSizes[$index] ?? 'auto' }}">
+                                            @php
+                                                // Mapping nama kolom dengan nama kolom di database
+                                                $columnMap = [
+                                                    'Category Name' => 'name',
+                                                    'Slug' => 'slug',
+                                                    'Status' => 'is_visible',
+                                                ];
+                                                $sortColumn = $columnMap[$column] ?? null;
+                                            @endphp
+
+                                            @if ($sortColumn)
+                                                <a
+                                                    href="{{ route('admin.ticket_category.index', array_merge(request()->all(), ['sort' => $sortColumn, 'direction' => request('direction') === 'asc' ? 'desc' : 'asc'])) }}">
+                                                    {{ $column }}
+                                                    @if (request('sort') === $sortColumn)
+                                                        <i
+                                                            class="fas fa-sort-{{ request('direction') === 'asc' ? 'up' : 'down' }}"></i>
+                                                    @endif
+                                                </a>
+                                            @else
+                                                {{ $column }}
+                                            @endif
+                                        </th>
                                     @endforeach
                                     <th>Actions</th> <!-- Added Actions column -->
                                 </tr>
@@ -120,14 +143,40 @@
                                             <a href="{{ route('admin.ticket_category.edit', $row['id']) }}"
                                                 class="btn btn-sm btn-primary" title="Edit Ticket Category"><i
                                                     class="fas fa-edit"></i></a>
+                                            <button class="btn btn-danger btn-sm" data-toggle="modal"
+                                                data-target="#deleteModal-{{ $row['id'] }}" title="Delete FaQ">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
 
-                                            <form action="{{ route('admin.ticket_category.destroy', $row['id']) }}"
-                                                method="POST" style="display:inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger"
-                                                    title="Delete Ticket Category"><i class="fas fa-trash"></i></button>
-                                            </form>
+                                            <div class="modal fade" id="deleteModal-{{ $row['id'] }}" tabindex="-1"
+                                                role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="deleteModalLabel">Confirm Delete
+                                                            </h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Are you sure you want to delete this ticket category?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <form method="POST"
+                                                                action="{{ route('admin.ticket_category.destroy', $row['id']) }}">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit"
+                                                                    class="btn btn-danger">Delete</button>
+                                                            </form>
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">Cancel</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
 
                                         </td>
                                     </tr>

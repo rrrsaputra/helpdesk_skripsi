@@ -46,6 +46,11 @@ class AgentTicketController extends Controller
         $user = Auth::user();
         $ticket = Ticket::where('id', $id)->first();
         $ticket->assigned_to = $user->id;
+
+        if (!$ticket->assigned_at) {
+            $ticket->assigned_at = now();
+        }
+        
         $ticket->save();
 
 

@@ -14,14 +14,18 @@ class AdminTicketCategoryController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
+        $sort = $request->input('sort', 'created_at');
+        $direction = $request->input('direction', 'desc');
         $paginationCount = 10;
-        $ticketCategories = Category::orderBy('name', 'asc')
+
+        $ticketCategories = Category::orderBy($sort, $direction)
             ->when($search, function ($query) use ($search) {
-                $query->where('name', 'like', "%{$search}%");
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('slug', 'like', "%{$search}%");
             })
             ->paginate($paginationCount);
 
-        return view('admin.ticket_category.index', compact('ticketCategories'));
+        return view('admin.ticket_category.index', compact('ticketCategories', 'sort', 'direction'));
     }
 
     /**

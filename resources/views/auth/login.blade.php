@@ -44,7 +44,8 @@
         <!-- Logo / Judul Aplikasi -->
         <div class="login-logo text-center mb-4">
             <a href="{{ route('home') }}" class="d-flex justify-content-center">
-                <img src="{{ asset('image/logounggul.png') }}" alt="Logo Universitas Bakrie" class="mb-2" style="width: 300px;">
+                <img src="{{ asset('image/logounggul.png') }}" alt="Logo Universitas Bakrie" class="mb-2"
+                    style="width: 300px;">
             </a>
         </div>
 
@@ -59,7 +60,8 @@
                     <!-- Email Address -->
                     <div class="input-group mb-3">
                         <input id="username" type="text" class="form-control @error('username') is-invalid @enderror"
-                            name="username" value="{{ old('username') }}" required autofocus placeholder="Masukkan Akun Pengguna" style="border-color: #85171A;">
+                            name="username" value="{{ old('username') }}" required autofocus
+                            placeholder="Masukkan Akun Pengguna" style="border-color: #85171A;">
                         <div class="input-group-append">
                             <span class="input-group-text" style="background-color: #85171A; color: white;">
                                 <i class="fas fa-user"></i>
@@ -75,8 +77,13 @@
                     <!-- Password -->
                     <div class="input-group mb-3">
                         <input id="password" type="password" class="form-control @error('password') is-invalid @enderror"
-                            name="password" required autocomplete="current-password" placeholder="Masukkan Kata Sandi" style="border-color: #85171A;">
+                            name="password" required autocomplete="current-password" placeholder="Masukkan Kata Sandi"
+                            style="border-color: #85171A;">
                         <div class="input-group-append">
+                            <span class="input-group-text" style="cursor: pointer; background-color: #85171A; color: white;"
+                                onclick="togglePasswordVisibility()">
+                                <i class="fas fa-eye" id="togglePasswordIcon"></i>
+                            </span>
                             <span class="input-group-text" style="background-color: #85171A; color: white;">
                                 <i class="fas fa-lock"></i>
                             </span>
@@ -87,6 +94,22 @@
                             </span>
                         @enderror
                     </div>
+
+                    <script>
+                        function togglePasswordVisibility() {
+                            const passwordInput = document.getElementById('password');
+                            const toggleIcon = document.getElementById('togglePasswordIcon');
+                            if (passwordInput.type === 'password') {
+                                passwordInput.type = 'text';
+                                toggleIcon.classList.remove('fa-eye');
+                                toggleIcon.classList.add('fa-eye-slash');
+                            } else {
+                                passwordInput.type = 'password';
+                                toggleIcon.classList.remove('fa-eye-slash');
+                                toggleIcon.classList.add('fa-eye');
+                            }
+                        }
+                    </script>
 
                     <!-- Tombol Submit -->
                     <div class="row">

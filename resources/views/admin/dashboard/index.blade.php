@@ -53,7 +53,7 @@
 
                         </form>
                     </div>
-                    <div class="col-lg-2 col-6">
+                    <div class="col-lg-3 col-6">
                         <div class="small-box bg-primary">
                             <div class="inner">
                                 <h3>{{ $tickets->count() }}</h3>
@@ -64,7 +64,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-2 col-6">
+                    <div class="col-lg-3 col-6">
                         <div class="small-box bg-secondary">
                             <div class="inner">
                                 <h3>{{ $tickets->where('assigned_to', null)->count() }}</h3>
@@ -75,7 +75,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-2 col-6">
+                    <div class="col-lg-3 col-6">
                         <div class="small-box bg-success">
                             <div class="inner">
                                 <h3>{{ $tickets->where('status', 'open')->count() }}</h3>
@@ -86,7 +86,18 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-2 col-6">
+                    <div class="col-lg-3 col-6">
+                        <div class="small-box bg-dark">
+                            <div class="inner">
+                                <h3>{{ $tickets->where('status', 'on hold')->count() }}</h3>
+                                <p>On Hold Tickets</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-stats-bars"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-6">
                         <div class="small-box bg-warning">
                             <div class="inner">
                                 <h3>{{ $tickets->where('status', 'closed')->count() }}</h3>
@@ -97,7 +108,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-2 col-6">
+                    <div class="col-lg-3 col-6">
                         <div class="small-box bg-danger">
                             <div class="inner">
                                 <h3>{{ $agents->count() }}</h3>
@@ -108,7 +119,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-2 col-6">
+                    <div class="col-lg-3 col-6">
                         <div class="small-box bg-info">
                             <div class="inner">
                                 <h3>{{ $users->count() }}</h3>
@@ -369,7 +380,10 @@
                                             <th>Agent</th>
                                             <th>Total Tickets</th>
                                             <th>Open Tickets</th>
+                                            <th>On Hold Tickets</th>
                                             <th>Closed Tickets</th>
+                                            <th>Avg Get Ticket (min)</th>
+                                            <th>Avg Close Ticket (min)</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -378,7 +392,10 @@
                                                 <td>{{ $performance['name'] }}</td>
                                                 <td>{{ $performance['total'] }}</td>
                                                 <td>{{ $performance['open'] }}</td>
+                                                <td>{{ $performance['on hold'] }}</td>
                                                 <td>{{ $performance['closed'] }}</td>
+                                                <td>{{ $performance['avg_get'] }} min</td>
+                                                <td>{{ $performance['avg_closed'] }} min</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -439,7 +456,7 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-lg-4 col-12">
+                    <div class="col-lg-6 col-12">
                         <div class="small-box bg-primary">
                             <div class="inner">
                                 <p>Name</p>
@@ -450,7 +467,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-12">
+                    <div class="col-lg-6 col-12">
                         <div class="small-box bg-success">
                             <div class="inner">
                                 <h3 id="selected-user-tickets">0</h3>
@@ -461,17 +478,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-12">
-                        <div class="small-box bg-warning">
-                            <div class="inner">
-                                <h3 id="selected-user-calls">0</h3>
-                                <p>Total Calls</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-bag"></i>
-                            </div>
-                        </div>
-                    </div>
+                    
                 </div>
 
                 <div class="row" id="user-charts" style="display: none;">
@@ -586,7 +593,6 @@
             .then(data => {
                 document.getElementById('selected-user-name').innerText = data.name;
                 document.getElementById('selected-user-tickets').innerText = data.tickets_count;
-                document.getElementById('selected-user-calls').innerText = data.calls_count;
 
                 // Render charts
                 document.getElementById('user-charts').style.display = 'flex';
@@ -596,7 +602,6 @@
                 if (window.userTotalTicketsChart) {
                     window.userTotalTicketsChart.data.labels = data.userTicketLabels;
                     window.userTotalTicketsChart.data.datasets[0].data = data.userTicketData;
-                    window.userTotalTicketsChart.data.datasets[1].data = data.userCallData;
                     window.userTotalTicketsChart.update();
                 } else {
                     window.userTotalTicketsChart = new Chart(ctxLine, {
@@ -608,12 +613,6 @@
                                 data: data.userTicketData,
                                 backgroundColor: 'rgba(54, 162, 235, 0.2)',
                                 borderColor: 'rgba(54, 162, 235, 1)',
-                                borderWidth: 1
-                            }, {
-                                label: 'Total Calls',
-                                data: data.userCallData,
-                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                                borderColor: 'rgba(255, 99, 132, 1)',
                                 borderWidth: 1
                             }]
                         },

@@ -26,6 +26,7 @@ return new class extends Migration
             $table->boolean('is_resolved')->default(false);
             $table->boolean('is_locked')->default(false);
             $table->string('references')->unique();
+            $table->timestamp('assigned_at')->nullable();
             $table->timestamps();
         });
     }

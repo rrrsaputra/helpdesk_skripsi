@@ -11,8 +11,11 @@
             @method('PUT') 
             <div class="card-body">
                 <div class="form-group">
-                    <label for="name">Nama Kategori</label>
+                    <label for="name">Nama Kategori <span class="text-danger" title="This field is required">*</span></label>
                     <input type="text" name="name" class="form-control" id="name" placeholder="Masukkan nama kategori" value="{{ old('name', $ticketCategory->name) }}">
+                    @if ($errors->has('name'))
+                        <span class="text-danger">{{ $errors->first('name') }}</span>
+                    @endif
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">Submit</button>
