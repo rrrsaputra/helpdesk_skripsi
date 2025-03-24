@@ -199,10 +199,16 @@
                                                     data-target="#editModal-{{ $row['id'] }}" title="Password">
                                                     <i class="fas fa-edit"></i>
                                                 </button>
-                                                <button class="btn btn-primary btn-sm" data-toggle="modal"
-                                                    data-target="#typeModal-{{ $row['id'] }}" title="Edit User">
-                                                    <i class="fas fa-cogs"></i>
-                                                </button>
+                                                @php
+                                                    $userModel = $users->find($row['id']);
+                                                @endphp
+
+                                                @if ($userModel->hasRole('agent') || $userModel->hasRole('admin') || $userModel->roles->isEmpty())
+                                                    <button class="btn btn-primary btn-sm" data-toggle="modal"
+                                                        data-target="#typeModal-{{ $row['id'] }}" title="Edit User">
+                                                        <i class="fas fa-cogs"></i>
+                                                    </button>
+                                                @endif
                                                 <button class="btn btn-danger btn-sm" data-toggle="modal"
                                                     data-target="#deleteModal-{{ $row['id'] }}" title="Delete User">
                                                     <i class="fas fa-trash-alt"></i>
@@ -314,61 +320,67 @@
                                     </tr>
 
                                     <!-- UPDATE STUDY PROGRAM AND ROLE -->
-                                    <form method="POST"
-                                        action="{{ route('admin.user_management.update', $row['id']) }}">
-                                        @csrf
-                                        @method('PATCH')
-                                        <div class="modal fade" id="typeModal-{{ $row['id'] }}" tabindex="-1"
-                                            role="dialog" aria-labelledby="typeModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="typeModalLabel">Update Study Program
-                                                            and
-                                                            Role</h5>
-                                                        <button type="button" class="close" data-dismiss="modal"
-                                                            aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <label for="userType">Study Program:</label>
-                                                        <select id="userType" name="type" class="form-control"
-                                                            required>
-                                                            @foreach ($studyPrograms as $program)
-                                                                <option value="{{ $program->id }}"
-                                                                    {{ $row['values'][2] == $program->name ? 'selected' : '' }}>
-                                                                    {{ $program->name }}
+                                    @if ($userModel->hasRole('agent') || $userModel->hasRole('admin') || $userModel->roles->isEmpty())
+                                        <form method="POST"
+                                            action="{{ route('admin.user_management.update', $row['id']) }}">
+                                            @csrf
+                                            @method('PATCH')
+                                            <div class="modal fade" id="typeModal-{{ $row['id'] }}" tabindex="-1"
+                                                role="dialog" aria-labelledby="typeModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="typeModalLabel">Update Study
+                                                                Program
+                                                                and
+                                                                Role</h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <label for="userType">Study Program:</label>
+                                                            <select id="userType" name="type" class="form-control"
+                                                                required>
+                                                                @foreach ($studyPrograms as $program)
+                                                                    <option value="{{ $program->id }}"
+                                                                        {{ $row['values'][3] == $program->name ? 'selected' : '' }}>
+                                                                        {{ $program->name }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                            <label for="userRole" class="mt-3">User Role:</label>
+                                                            <select id="userRole" name="role" class="form-control"
+                                                                required>
+                                                                @php
+                                                                    $userModel = $users->find($row['id']);
+                                                                    $currentRole = $userModel->roles
+                                                                        ->pluck('name')
+                                                                        ->first(); // default-nya null kalau belum ada role
+                                                                @endphp
+                                                                <option value="user"
+                                                                    {{ $currentRole == 'user' ? 'selected' : '' }}>User
                                                                 </option>
-                                                            @endforeach
-                                                        </select>
-                                                        <label for="userRole" class="mt-3">User Role:</label>
-                                                        <select id="userRole" name="role" class="form-control"
-                                                            required>
-                                                            <option value="user"
-                                                                {{ $row['values'][3] == 'user' ? 'selected' : '' }}>
-                                                                User
-                                                            </option>
-                                                            <option value="agent"
-                                                                {{ $row['values'][3] == 'agent' ? 'selected' : '' }}>
-                                                                Agent
-                                                            </option>
-                                                            <option value="admin"
-                                                                {{ $row['values'][3] == 'admin' ? 'selected' : '' }}>
-                                                                Admin
-                                                            </option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-dismiss="modal">Close</button>
-                                                        <button type="submit" class="btn btn-primary">Save
-                                                            changes</button>
+                                                                <option value="agent"
+                                                                    {{ $currentRole == 'agent' ? 'selected' : '' }}>Agent
+                                                                </option>
+                                                                <option value="admin"
+                                                                    {{ $currentRole == 'admin' ? 'selected' : '' }}>Admin
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-primary">Save
+                                                                changes</button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </form>
+                                        </form>
+                                    @endif
                                 @empty
                                     <tr>
                                         <td colspan="8">No users found.</td>
