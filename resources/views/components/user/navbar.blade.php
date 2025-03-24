@@ -2,12 +2,13 @@
     style="background-color: #85171A;">
     <div class="container">
         @if (request()->routeIs('user.ticket.show'))
-            <a href="{{ route('user.ticket.index') }}" style="top: 20px; left: 20px; margin-right: 10px; background-color: #F38F2F; border-color: #F38F2F;"
+            <a href="{{ route('user.ticket.index') }}"
+                style="top: 20px; left: 20px; margin-right: 10px; background-color: #F38F2F; border-color: #F38F2F;"
                 class="btn btn-secondary">
                 <i class="fas fa-arrow-left"></i>
             </a>
         @endif
-        <a href="{{route('home')}}" class="dx-nav-logo">
+        <a href="{{ route('home') }}" class="dx-nav-logo">
             <img src="{{ asset('image/logounggul.png') }}" alt="" width="250px" width="340px --}}">
         </a>
         <button class="dx-navbar-burger">
@@ -24,7 +25,7 @@
                         onmouseout="this.style.color='white'"><strong>Tiket</strong></a></li>
                 <li><a href="{{ route('user.faq.index') }}"
                         style="color: white; transition: color 0.3s;"onmouseover="this.style.color='grey'"
-                        onmouseout="this.style.color='white'"><strong>FaQ</strong></a></li>
+                        onmouseout="this.style.color='white'"><strong>FAQ</strong></a></li>
                 <li><a href="{{ route('user.feedback.index') }}"
                         style="color: white; transition: color 0.3s;"onmouseover="this.style.color='grey'"
                         onmouseout="this.style.color='white'"><strong>Umpan Balik</strong></a></li>
@@ -92,19 +93,34 @@
             <span></span><span></span><span></span>
         </button>
         <div class="dx-navbar-content">
-            <ul class="dx-nav dx-nav-align-left">
-                <li><a href="/" style="color: white; transition: color 0.3s;"
-                        onmouseover="this.style.color='grey'"
-                        onmouseout="this.style.color='white'"><strong>Beranda</strong></a></li>
-                <li><a href="{{ route('tickets.index') }}"
-                        style="color: white; transition: color 0.3s;"onmouseover="this.style.color='grey'"
-                        onmouseout="this.style.color='white'"><strong>Tiket</strong></a></li>
-                <li><a href="{{ route('user.faq.index') }}"
-                        style="color: white; transition: color 0.3s;"onmouseover="this.style.color='grey'"
-                        onmouseout="this.style.color='white'"><strong>FaQ</strong></a></li>
-                <li><a href="{{ route('user.feedback.index') }}"
-                        style="color: white; transition: color 0.3s;"onmouseover="this.style.color='grey'"
-                        onmouseout="this.style.color='white'"><strong>Umpan Balik</strong></a></li>
+            <ul class="dx-nav dx-nav-align-left d-flex align-items-center gap-3 mb-0">
+                <li>
+                    <a href="/" class="text-white fw-bold nav-link px-2" style="transition: color 0.3s; font-weight: bold;"
+                        onmouseover="this.style.color='lightgray'" onmouseout="this.style.color='white'">
+                        Beranda
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('tickets.index') }}" class="text-white fw-bold nav-link px-2"
+                        style="transition: color 0.3s; font-weight: bold;" onmouseover="this.style.color='lightgray'"
+                        onmouseout="this.style.color='white'">
+                        Tiket
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('user.faq.index') }}" class="text-white fw-bold nav-link px-2"
+                        style="transition: color 0.3s; font-weight: bold;" onmouseover="this.style.color='lightgray'"
+                        onmouseout="this.style.color='white'">
+                        FAQ
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('user.feedback.index') }}" class="text-white fw-bold nav-link px-2"
+                        style="transition: color 0.3s; font-weight: bold;" onmouseover="this.style.color='lightgray'"
+                        onmouseout="this.style.color='white'">
+                        Umpan Balik
+                    </a>
+                </li>
             </ul>
             <ul class="dx-nav dx-nav-align-right">
                 <li class="dx-nav-item">
