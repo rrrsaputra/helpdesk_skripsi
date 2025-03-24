@@ -100,53 +100,70 @@
         <div class="row">
             <div class="col-12">
                 <div class="card-body">
-                    <div class="form-group">
-                        <div class="form-inline">
-                            <form action="{{ route('admin.report.index') }}" method="GET" class="form-inline mr-2">
-                                <div class="form-group">
-                                    <input type="search" class="form-control" id="search" name="search"
-                                        style="width: 200px;" placeholder="Search report"
-                                        value="{{ request('search') }}">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <form action="{{ route('admin.report.index') }}" method="GET">
+                                <div class="row align-items-end">
+                                    <!-- Search -->
+                                    <div class="col-md-3 col-sm-6 mb-3">
+                                        <label for="search">Search</label>
+                                        <input type="search" class="form-control" id="search" name="search"
+                                            placeholder="Search report" value="{{ request('search') }}">
+                                    </div>
+                    
+                                    <!-- Since -->
+                                    <div class="col-md-2 col-sm-6 mb-3">
+                                        <label for="since">Since</label>
+                                        <input type="date" class="form-control" id="since" name="since"
+                                            value="{{ request('since') }}">
+                                    </div>
+                    
+                                    <!-- Until -->
+                                    <div class="col-md-2 col-sm-6 mb-3">
+                                        <label for="until">Until</label>
+                                        <input type="date" class="form-control" id="until" name="until"
+                                            value="{{ request('until') }}">
+                                    </div>
+                    
+                                    <!-- Search Button -->
+                                    <div class="col-md-2 col-sm-6 mb-3">
+                                        <button type="submit" class="btn btn-primary w-100">
+                                            <i class="fas fa-search"></i> Search
+                                        </button>
+                                    </div>
+                    
+                                    <!-- Export Buttons -->
+                                    <div class="col-md-3 col-sm-12 text-md-right text-left mb-3">
+                                        <a href="{{ route('admin.report.export', [
+                                            'since' => request('since'),
+                                            'until' => request('until'),
+                                            'search' => request('search'),
+                                            'sort' => request('sort'),
+                                            'direction' => request('direction'),
+                                            'format' => 'xlsx',
+                                        ]) }}"
+                                            class="btn btn-outline-success mb-1">
+                                            <i class="fas fa-file-excel"></i> Excel
+                                        </a>
+                    
+                                        <a href="{{ route('admin.report.export', [
+                                            'since' => request('since'),
+                                            'until' => request('until'),
+                                            'search' => request('search'),
+                                            'sort' => request('sort'),
+                                            'direction' => request('direction'),
+                                            'format' => 'csv',
+                                        ]) }}"
+                                            class="btn btn-outline-info mb-1">
+                                            <i class="fas fa-file-csv"></i> CSV
+                                        </a>
+                                    </div>
                                 </div>
-                                <div class="form-group mx-sm-2">
-                                    <label for="since">Since: </label>
-                                    <input type="date" class="form-control" id="since" name="since"
-                                        placeholder="Since" value="{{ request('since') }}">
-                                </div>
-                                <div class="form-group mx-sm-2">
-                                    <label for="until">Until: </label>
-                                    <input type="date" class="form-control" id="until" name="until"
-                                        placeholder="Until" value="{{ request('until') }}">
-                                </div>
-                                <button type="submit" class="btn btn-primary">Search</button>
                             </form>
-                            <div class="ml-auto">
-                                <a href="{{ route('admin.report.export', [
-                                    'since' => request('since'),
-                                    'until' => request('until'),
-                                    'search' => request('search'),
-                                    'sort' => request('sort'),
-                                    'direction' => request('direction'),
-                                    'format' => 'xlsx',
-                                ]) }}"
-                                    class="btn btn-outline-success">
-                                    <i class="fas fa-file-excel"></i> Export to Excel
-                                </a>
-
-                                <a href="{{ route('admin.report.export', [
-                                    'since' => request('since'),
-                                    'until' => request('until'),
-                                    'search' => request('search'),
-                                    'sort' => request('sort'),
-                                    'direction' => request('direction'),
-                                    'format' => 'csv',
-                                ]) }}"
-                                    class="btn btn-outline-info">
-                                    <i class="fas fa-file-csv"></i> Export to CSV
-                                </a>
-                            </div>
                         </div>
                     </div>
+                    
+                    
                     <div class="table-responsive">
                         <table id="example2" class="table table-hover">
                             <thead>

@@ -43,14 +43,26 @@
         <div class="row">
             <div class="col-12">
                 <div class="card-body">
-                    <div class="form-group">
-                        <form action="{{ route('admin.ticket.index') }}" method="GET" class="form-inline">
-                            <div class="form-group">
-                                <input type="search" class="form-control" id="search" name="search"
-                                    style="width: 500px;" placeholder="Search by title, message, and category">
-                            </div>
-                            <button type="submit" class="btn btn-primary">Search</button>
-                        </form>
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <form action="{{ route('admin.ticket.index') }}" method="GET">
+                                <div class="row align-items-end">
+                                    <!-- Search Input -->
+                                    <div class="col-md-10 col-sm-12 mb-2">
+                                        <label for="search">Search Ticket</label>
+                                        <input type="search" class="form-control" id="search" name="search"
+                                            placeholder="Search Ticket..." value="{{ request('search') }}">
+                                    </div>
+                    
+                                    <!-- Search Button -->
+                                    <div class="col-md-2 col-sm-6 mb-2">
+                                        <button type="submit" class="btn btn-primary w-100">
+                                            <i class="fas fa-search"></i> Search
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                     <div class="table-responsive">
                         <table id="example2" class="table table-hover">
@@ -183,7 +195,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="10">No articles available</td>
+                                        <td colspan="10">No message available</td>
                                     </tr>
                                 @endforelse
                             </tbody>

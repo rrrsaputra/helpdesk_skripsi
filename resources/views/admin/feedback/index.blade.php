@@ -45,15 +45,28 @@
         <div class="row">
             <div class="col-12">
                 <div class="card-body">
-                    <div class="form-group">
-                        <form action="{{ route('admin.feedback.index') }}" method="GET" class="form-inline">
-                            <div class="form-group">
-                                <input type="search" class="form-control" id="search" name="search"
-                                    style="width: 500px;" placeholder="Search by category, subject, and message">
-                            </div>
-                            <button type="submit" class="btn btn-primary">Search</button>
-                        </form>
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <form action="{{ route('admin.feedback.index') }}" method="GET">
+                                <div class="row align-items-end">
+                                    <!-- Search Input -->
+                                    <div class="col-md-10 col-sm-12 mb-2">
+                                        <label for="search">Search Feedback</label>
+                                        <input type="search" class="form-control" id="search" name="search"
+                                            placeholder="Search by category, subject, or message..." value="{{ request('search') }}">
+                                    </div>
+                    
+                                    <!-- Search Button -->
+                                    <div class="col-md-2 col-sm-6 mb-2">
+                                        <button type="submit" class="btn btn-primary w-100">
+                                            <i class="fas fa-search"></i> Search
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
+                    
                     <div class="table-responsive">
                         <table id="example2" class="table table-hover">
                             <thead>

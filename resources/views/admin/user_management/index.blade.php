@@ -77,35 +77,58 @@
         <div class="row">
             <div class="col-12">
                 <div class="card-body">
-                    <div class="form-group">
-                        <form action="{{ route('admin.user_management.index') }}" method="GET" class="form-inline">
-                            <div class="form-group">
-                                <input type="search" class="form-control" id="search" name="search"
-                                    style="width: 500px;" placeholder="Search User">
+                    <!-- Search + Role Filter -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <form action="{{ route('admin.user_management.index') }}" method="GET">
+                                <div class="row align-items-end">
+                                    <!-- Search -->
+                                    <div class="col-md-8 col-sm-12 mb-2">
+                                        <label for="search">Search User</label>
+                                        <input type="search" class="form-control" id="search" name="search"
+                                            placeholder="Search user" value="{{ request('search') }}">
+                                    </div>
+
+                                    <!-- Search Button -->
+                                    <div class="col-md-2 col-sm-6 mb-2">
+                                        <button type="submit" class="btn btn-primary w-100">
+                                            <i class="fas fa-search"></i> Search
+                                        </button>
+                                    </div>
+
+                                    <!-- Add User -->
+                                    <div class="col-md-2 col-sm-6 mb-2 text-md-right">
+                                        <a href="{{ route('admin.user_management.create') }}" class="btn btn-success w-100">
+                                            <i class="fas fa-user-plus"></i> Add User
+                                        </a>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <!-- Role Filter -->
+                            <div class="row mt-3">
+                                <div class="col-12 d-flex flex-wrap gap-2">
+                                    <a href="{{ route('admin.user_management.index') }}"
+                                        class="btn {{ request('role') == null ? 'btn-secondary' : 'btn-outline-secondary' }} rounded-pill shadow-sm">
+                                        <i class="fas fa-users"></i> Semua
+                                    </a>
+                                    <a href="{{ route('admin.user_management.index', array_merge(request()->all(), ['role' => 'user'])) }}"
+                                        class="btn {{ request('role') == 'user' ? 'btn-primary' : 'btn-outline-primary' }} rounded-pill shadow-sm">
+                                        <i class="fas fa-user-graduate"></i> Mahasiswa
+                                    </a>
+                                    <a href="{{ route('admin.user_management.index', array_merge(request()->all(), ['role' => 'agent'])) }}"
+                                        class="btn {{ request('role') == 'agent' ? 'btn-success' : 'btn-outline-success' }} rounded-pill shadow-sm">
+                                        <i class="fas fa-user-cog"></i> Staf
+                                    </a>
+                                    <a href="{{ route('admin.user_management.index', array_merge(request()->all(), ['role' => 'admin'])) }}"
+                                        class="btn {{ request('role') == 'admin' ? 'btn-danger' : 'btn-outline-danger' }} rounded-pill shadow-sm">
+                                        <i class="fas fa-user-shield"></i> Admin
+                                    </a>
+                                </div>
                             </div>
-                            <button type="submit" class="btn btn-primary">Search</button>
-                        </form>
-                    </div>
-                    <div class="mb-4 d-flex flex-wrap gap-2">
-                        <a href="{{ route('admin.user_management.index') }}"
-                            class="btn {{ request('role') == null ? 'btn-secondary' : 'btn-outline-secondary' }} rounded-pill shadow-sm">
-                            <i class="fas fa-users"></i> Semua
-                        </a>
-                        <a href="{{ route('admin.user_management.index', array_merge(request()->all(), ['role' => 'user'])) }}"
-                            class="btn {{ request('role') == 'user' ? 'btn-primary' : 'btn-outline-primary' }} rounded-pill shadow-sm">
-                            <i class="fas fa-user-graduate"></i> Mahasiswa
-                        </a>
-                        <a href="{{ route('admin.user_management.index', array_merge(request()->all(), ['role' => 'agent'])) }}"
-                            class="btn {{ request('role') == 'agent' ? 'btn-success' : 'btn-outline-success' }} rounded-pill shadow-sm">
-                            <i class="fas fa-user-cog"></i> Staf
-                        </a>
-                        <a href="{{ route('admin.user_management.index', array_merge(request()->all(), ['role' => 'admin'])) }}"
-                            class="btn {{ request('role') == 'admin' ? 'btn-danger' : 'btn-outline-danger' }} rounded-pill shadow-sm">
-                            <i class="fas fa-user-shield"></i> Admin
-                        </a>
+                        </div>
                     </div>
 
-                    <a href="{{ route('admin.user_management.create') }}" class="btn btn-primary mb-3">Add User</a>
 
                     <div class="table-responsive">
                         <table id="example2" class="table table-hover">
@@ -192,7 +215,8 @@
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="editModalLabel">Update Password</h5>
+                                                            <h5 class="modal-title" id="editModalLabel">Update Password
+                                                            </h5>
                                                             <button type="button" class="close" data-dismiss="modal"
                                                                 aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>

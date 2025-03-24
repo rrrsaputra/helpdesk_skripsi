@@ -74,17 +74,35 @@
         <div class="row">
             <div class="col-12">
                 <div class="card-body">
-                    <div class="form-group">
-                        <form action="{{ route('admin.faq.index') }}" method="GET" class="form-inline">
-                            <div class="form-group">
-                                <input type="search" class="form-control" id="search" name="search"
-                                    style="width: 500px;" placeholder="Search FAQ">
-                            </div>
-                            <button type="submit" class="btn btn-primary">Search</button>
-                        </form>
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <form action="{{ route('admin.faq.index') }}" method="GET">
+                                <div class="row align-items-end">
+                                    <!-- Search Input -->
+                                    <div class="col-md-8 col-sm-12 mb-2">
+                                        <label for="search">Search FAQ</label>
+                                        <input type="search" class="form-control" id="search" name="search"
+                                            placeholder="Search FAQ" value="{{ request('search') }}">
+                                    </div>
+                    
+                                    <!-- Search Button -->
+                                    <div class="col-md-2 col-sm-6 mb-2">
+                                        <button type="submit" class="btn btn-primary w-100">
+                                            <i class="fas fa-search"></i> Search
+                                        </button>
+                                    </div>
+                    
+                                    <!-- Create FAQ Button -->
+                                    <div class="col-md-2 col-sm-6 mb-2 text-md-right">
+                                        <a href="{{ route('admin.faq.create') }}" class="btn btn-success w-100">
+                                            <i class="fas fa-plus-circle"></i> Create FAQ
+                                        </a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-
-                    <a href="{{ route('admin.faq.create') }}" class="btn btn-primary mb-3">Create FAQ</a>
+                    
 
                     <div class="table-responsive">
                         <table id="example2" class="table table-hover">
