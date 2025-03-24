@@ -55,7 +55,7 @@
                         <form action="{{ route('admin.study_programs.index') }}" method="GET" class="form-inline">
                             <div class="form-group">
                                 <input type="search" class="form-control" id="search" name="search"
-                                    style="width: 500px;" placeholder="Search by category name">
+                                    style="width: 500px;" placeholder="Search study program">
                             </div>
                             <button type="submit" class="btn btn-primary">Search</button>
                         </form>
@@ -68,7 +68,28 @@
                             <thead>
                                 <tr>
                                     @foreach ($columns as $index => $column)
-                                        <th style="width: {{ $columnSizes[$index] ?? 'auto' }}">{{ $column }}</th>
+                                        <th style="width: {{ $columnSizes[$index] ?? 'auto' }}">
+                                            @php
+                                                // Mapping nama kolom dengan nama kolom di database
+                                                $columnMap = [
+                                                    'Study Program' => 'name',
+                                                ];
+                                                $sortColumn = $columnMap[$column] ?? null;
+                                            @endphp
+
+                                            @if ($sortColumn)
+                                                <a
+                                                    href="{{ route('admin.study_programs.index', array_merge(request()->all(), ['sort' => $sortColumn, 'direction' => request('direction') === 'asc' ? 'desc' : 'asc'])) }}">
+                                                    {{ $column }}
+                                                    @if (request('sort') === $sortColumn)
+                                                        <i
+                                                            class="fas fa-sort-{{ request('direction') === 'asc' ? 'up' : 'down' }}"></i>
+                                                    @endif
+                                                </a>
+                                            @else
+                                                {{ $column }}
+                                            @endif
+                                        </th>
                                     @endforeach
                                     <th>Actions</th> <!-- Added Actions column -->
                                 </tr>

@@ -19,23 +19,54 @@ class AdminReportController extends Controller
         $direction = $request->input('direction', 'asc');
         $paginationCount = 10;
 
-        $validSortColumns = ['created_at', 'references', 'status'];
+        $query = Ticket::with(['user.studyProgram', 'assignedToUser']);
 
-        if (!in_array($sort, $validSortColumns)) {
-            $sort = 'created_at'; // Default jika sort tidak valid
+        // Sorting dinamis berdasarkan kolom relasi
+        if ($sort === 'user_name') {
+            $query->join('users as u', 'tickets.user_id', '=', 'u.id')
+                ->orderBy('u.name', $direction)
+                ->select('tickets.*');
+        } elseif ($sort === 'study_program_name') {
+            $query->join('users as u', 'tickets.user_id', '=', 'u.id')
+                ->join('study_programs as sp', 'u.study_program_id', '=', 'sp.id')
+                ->orderBy('sp.name', $direction)
+                ->select('tickets.*');
+        } elseif ($sort === 'agent_name') {
+            $query->join('users as a', 'tickets.assigned_to', '=', 'a.id')
+                ->orderBy('a.name', $direction)
+                ->select('tickets.*');
+        } else {
+            $query->orderBy($sort, $direction);
         }
 
-        $tickets = Ticket::orderBy($sort, $direction)
-            ->when($search, function ($query) use ($search) {
-                $query->where('title', 'like', "%{$search}%");
-            })
-            ->when($since, function ($query) use ($since) {
-                $query->where('created_at', '>=', $since);
-            })
-            ->when($until, function ($query) use ($until) {
-                $query->where('created_at', '<=', $until);
-            })
-            ->paginate($paginationCount);
+        // Pencarian semua kolom, termasuk relasi
+        $query->when($search, function ($query) use ($search) {
+            $query->where('tickets.title', 'like', "%{$search}%")
+                ->orWhere('tickets.message', 'like', "%{$search}%")
+                ->orWhere('tickets.references', 'like', "%{$search}%")
+                ->orWhere('tickets.status', 'like', "%{$search}%")
+                ->orWhere('tickets.category', 'like', "%{$search}%")
+                ->orWhereHas('user', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                        ->orWhere('username', 'like', "%{$search}%")
+                        ->orWhere('lecture_program', 'like', "%{$search}%")
+                        ->orWhereHas('studyProgram', function ($sp) use ($search) {
+                            $sp->where('name', 'like', "%{$search}%");
+                        });
+                })
+                ->orWhereHas('assignedToUser', function ($aq) use ($search) {
+                    $aq->where('name', 'like', "%{$search}%");
+                });
+        });
+
+        // Filter berdasarkan tanggal
+        $query->when($since, function ($q) use ($since) {
+            $q->where('tickets.created_at', '>=', $since);
+        })->when($until, function ($q) use ($until) {
+            $q->where('tickets.created_at', '<=', $until);
+        });
+
+        $tickets = $query->paginate($paginationCount);
 
         // Summary data
         $totalTickets = Ticket::count();
@@ -45,8 +76,19 @@ class AdminReportController extends Controller
 
         $categories = Category::all();
 
-        return view('admin.reports.index', compact('tickets', 'categories', 'sort', 'direction', 'totalTickets', 'totalOpen', 'totalOnHold', 'totalClosed'));
+        return view('admin.reports.index', compact(
+            'tickets',
+            'categories',
+            'sort',
+            'direction',
+            'totalTickets',
+            'totalOpen',
+            'totalOnHold',
+            'totalClosed'
+        ));
     }
+
+
 
     public function export(Request $request)
     {
@@ -55,7 +97,16 @@ class AdminReportController extends Controller
         $search = $request->input('search');
         $sort = $request->input('sort', 'created_at');
         $direction = $request->input('direction', 'asc');
+        $format = $request->input('format', 'xlsx');
 
-        return Excel::download(new TicketsExport($since, $until, $search, $sort, $direction), 'tickets.xlsx');
+        $exportFormat = $format === 'csv'
+            ? \Maatwebsite\Excel\Excel::CSV
+            : \Maatwebsite\Excel\Excel::XLSX;
+
+        return Excel::download(
+            new \App\Exports\TicketsExport($since, $until, $search, $sort, $direction),
+            'tickets.' . $format,
+            $exportFormat
+        );
     }
 }

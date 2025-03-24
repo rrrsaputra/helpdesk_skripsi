@@ -43,26 +43,9 @@ class AdminUserManagementController extends Controller
         })
         ->paginate($paginationCount);
 
-    $data = $users->map(function ($user) {
-        $studyProgramName = $user->studyProgram->name ?? 'N/A';
-        return [
-            'id' => $user->id,
-            'url' => '/path/to/resource1',
-            'values' => [
-                $user->email,
-                $user->name,
-                $user->username,
-                $studyProgramName,
-                $user->lecture_program ?? 'N/A',
-                $user->roles->pluck('name')->first(),
-            ],
-            'ticket_quota' => $user->ticket_quota,
-        ];
-    })->toArray();
-
     $studyPrograms = StudyProgram::all();
 
-    return view('admin.user_management.index', compact('users', 'data', 'studyPrograms', 'sort', 'direction', 'roleFilter'));
+    return view('admin.user_management.index', compact('users', 'studyPrograms', 'sort', 'direction', 'roleFilter'));
 }
 
     /**

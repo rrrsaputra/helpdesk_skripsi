@@ -40,16 +40,20 @@ class TicketsExport implements FromCollection, WithHeadings
             ->get()
             ->map(function ($ticket) {
                 return [
-                    'references' => $ticket->references,
-                    'created_at' => $ticket->created_at,
-                    'user_name' => $ticket->user->name,
-                    'nim' => $ticket->user->username,
-                    'agent_name' => $ticket->assignedToUser->name ?? 'Unassigned',
-                    'category' => $ticket->category,
-                    'subject' => $ticket->title,
-                    'message'   => strip_tags($ticket->message),
-                    'status' => $ticket->status,
-                    'link' => env('APP_URL') . '/admin/data-repository?ticket=' . $ticket->references,
+                    $ticket->references,
+                    $ticket->created_at->format('d/m/Y'),
+                    $ticket->created_at->format('H:i:s'),
+                    $ticket->updated_at->format('d/m/Y'),
+                    $ticket->status,
+                    $ticket->user->name ?? 'N/A',
+                    $ticket->user->username ?? 'N/A',
+                    $ticket->user->studyProgram->name ?? 'N/A',
+                    $ticket->lecture_program ?? 'N/A',
+                    $ticket->assignedToUser->name ?? 'Unassigned',
+                    $ticket->category,
+                    $ticket->title,
+                    strip_tags($ticket->message),
+                    $ticket->feedback ?? '-'
                 ];
             });
     }
@@ -59,14 +63,18 @@ class TicketsExport implements FromCollection, WithHeadings
         return [
             'Reference',
             'Date',
-            'User Name',
+            'Time',
+            'Date Closed',
+            'Status',
+            'Name',
             'NIM',
+            'Study Program',
+            'Lecture Program',
             'Agent Name',
             'Category',
             'Subject',
             'Message',
-            'Status',
-            'Link',
+            'Feedback',
         ];
     }
 }

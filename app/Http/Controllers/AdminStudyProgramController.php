@@ -13,13 +13,16 @@ class AdminStudyProgramController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
+        $sort = $request->input('sort', 'created_at');
+        $direction = $request->input('direction', 'desc');
         $paginationCount = 10;
-        $studyPrograms = StudyProgram::orderBy('name', 'asc')
+
+        $studyPrograms = StudyProgram::orderBy($sort, $direction)
             ->when($search, function ($query) use ($search) {
                 $query->where('name', 'like', "%{$search}%");
             })->paginate($paginationCount);
 
-        return view('admin.study_programs.index', compact('studyPrograms'));
+        return view('admin.study_programs.index', compact('studyPrograms', 'sort', 'direction'));
     }
 
     /**

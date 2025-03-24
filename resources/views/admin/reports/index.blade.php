@@ -8,14 +8,18 @@
         $columns = [
             'Reference',
             'Date',
-            'User Name',
+            'Time',
+            'Date Closed',
+            'Status',
+            'Name',
             'NIM',
+            'Study Program',
+            'Lecture Program',
             'Agent Name',
             'Category',
             'Subject',
             'Message',
-            'Status',
-            'Link',
+            'Feedback',
         ];
         $data = $tickets
             ->map(function ($ticket) {
@@ -24,15 +28,19 @@
                     'url' => '/path/to/resource1',
                     'values' => [
                         $ticket->references,
-                        $ticket->created_at,
+                        $ticket->created_at->format('d/m/Y'),
+                        $ticket->created_at->format('H:i:s'),
+                        $ticket->updated_at->format('d/m/Y'),
+                        $ticket->status,
                         $ticket->user->name,
                         $ticket->user->username,
+                        $ticket->user->studyProgram->name ?? 'N/A',
+                        $ticket->lecture_program ?? 'N/A',
                         $ticket->assignedToUser->name ?? 'Unassigned',
                         $ticket->category,
                         $ticket->title,
                         strip_tags($ticket->message),
-                        $ticket->status,
-                        env('APP_URL') . '/admin/data-repository?ticket=' . $ticket->references,
+                        '',
                     ],
                 ];
             })
@@ -86,7 +94,7 @@
             </div>
         </div>
     </div>
-    
+
 
     <div class="card">
         <div class="row">
@@ -97,7 +105,7 @@
                             <form action="{{ route('admin.report.index') }}" method="GET" class="form-inline mr-2">
                                 <div class="form-group">
                                     <input type="search" class="form-control" id="search" name="search"
-                                        style="width: 200px;" placeholder="Search by subject"
+                                        style="width: 200px;" placeholder="Search report"
                                         value="{{ request('search') }}">
                                 </div>
                                 <div class="form-group mx-sm-2">
@@ -113,22 +121,64 @@
                                 <button type="submit" class="btn btn-primary">Search</button>
                             </form>
                             <div class="ml-auto">
-                                <a href="{{ route('admin.report.export', ['since' => request('since'), 'until' => request('until'), 'search' => request('search'), 'sort' => request('sort'), 'direction' => request('direction')]) }}"
-                                    class="btn btn-success">Export to Excel</a>
+                                <a href="{{ route('admin.report.export', [
+                                    'since' => request('since'),
+                                    'until' => request('until'),
+                                    'search' => request('search'),
+                                    'sort' => request('sort'),
+                                    'direction' => request('direction'),
+                                    'format' => 'xlsx',
+                                ]) }}"
+                                    class="btn btn-outline-success">
+                                    <i class="fas fa-file-excel"></i> Export to Excel
+                                </a>
+
+                                <a href="{{ route('admin.report.export', [
+                                    'since' => request('since'),
+                                    'until' => request('until'),
+                                    'search' => request('search'),
+                                    'sort' => request('sort'),
+                                    'direction' => request('direction'),
+                                    'format' => 'csv',
+                                ]) }}"
+                                    class="btn btn-outline-info">
+                                    <i class="fas fa-file-csv"></i> Export to CSV
+                                </a>
                             </div>
                         </div>
-                </div>
+                    </div>
                     <div class="table-responsive">
                         <table id="example2" class="table table-hover">
                             <thead>
                                 <tr>
                                     @foreach ($columns as $index => $column)
                                         <th style="width: {{ $columnSizes[$index] ?? 'auto' }}">
-                                            @if ($column === 'Date' || $column === 'Reference' || $column === 'Status')
+                                            @php
+                                                // Mapping nama kolom dengan nama kolom di database
+                                                $columnMap = [
+                                                    'Reference' => 'references',
+                                                    'Date' => 'created_at',
+                                                    'Time' => 'created_at',
+                                                    'Date Closed' => 'updated_at',
+                                                    'Status' => 'status',
+                                                    'Name' => 'user_name', // ganti nama mapping untuk user
+                                                    'NIM' => 'username',
+                                                    'Study Program' => 'study_program_name',
+                                                    'Lecture Program' => 'lecture_program',
+                                                    'Agent Name' => 'agent_name', // ganti nama mapping untuk assignedToUser
+                                                    'Category' => 'category',
+                                                    'Subject' => 'title',
+                                                    'Message' => 'message',
+                                                    'Feedback' => 'feedback',
+                                                ];
+                                                $sortColumn = $columnMap[$column] ?? null;
+                                            @endphp
+
+                                            @if ($sortColumn)
                                                 <a
-                                                    href="{{ route('admin.report.index', array_merge(request()->all(), ['sort' => $column === 'Reference' ? 'references' : ($column === 'Status' ? 'status' : 'created_at'), 'direction' => request('direction') === 'asc' ? 'desc' : 'asc'])) }}">
+                                                    href="{{ route('admin.report.index', array_merge(request()->all(), ['sort' => $sortColumn, 'direction' => request('direction') === 'asc' ? 'desc' : 'asc'])) }}">
                                                     {{ $column }}
-                                                    @if (request('sort') === ($column === 'Reference' ? 'references' : ($column === 'Status' ? 'status' : 'created_at')))
+                                                    @if (request('sort') === $sortColumn)
                                                         <i
                                                             class="fas fa-sort-{{ request('direction') === 'asc' ? 'up' : 'down' }}"></i>
                                                     @endif
@@ -139,7 +189,6 @@
                                         </th>
                                     @endforeach
                                 </tr>
-                            </thead>
                             <tbody>
                                 @forelse ($data as $row)
                                     <tr style="cursor: pointer" data-id="{{ $row['id'] }}">
