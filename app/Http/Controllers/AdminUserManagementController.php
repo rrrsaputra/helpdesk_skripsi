@@ -13,28 +13,57 @@ class AdminUserManagementController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-    {
-        $search = $request->input('search');
+{
+    $search = $request->input('search');
+    $roleFilter = $request->input('role');
+    $sort = $request->input('sort', 'created_at');
+    $direction = $request->input('direction', 'desc');
     $paginationCount = 10;
-    $users = User::when($search, function ($query) use ($search) {
-        $query->where('name', 'like', "%{$search}%");
-    })
+
+    $users = User::with('studyProgram', 'roles')
+        ->when($roleFilter, function ($query) use ($roleFilter) {
+            $query->whereHas('roles', function ($q) use ($roleFilter) {
+                $q->where('name', $roleFilter);
+            });
+        })
+        ->when($sort === 'study_program_name', function ($query) use ($direction) {
+            $query->leftJoin('study_programs', 'users.study_program_id', '=', 'study_programs.id')
+                ->orderBy('study_programs.name', $direction)
+                ->select('users.*');
+        }, function ($query) use ($sort, $direction) {
+            $query->orderBy($sort, $direction);
+        })
+        ->when($search, function ($query) use ($search) {
+            $query->where('name', 'like', "%{$search}%")
+                ->orWhere('email', 'like', "%{$search}%")
+                ->orWhere('username', 'like', "%{$search}%")
+                ->orWhereHas('studyProgram', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%");
+                });
+        })
         ->paginate($paginationCount);
 
     $data = $users->map(function ($user) {
-        $studyProgramName = StudyProgram::find($user->study_program_id)->name ?? 'N/A';
+        $studyProgramName = $user->studyProgram->name ?? 'N/A';
         return [
             'id' => $user->id,
             'url' => '/path/to/resource1',
-            'values' => [$user->email, $user->name, $studyProgramName, $user->roles->pluck('name')->first()],
+            'values' => [
+                $user->email,
+                $user->name,
+                $user->username,
+                $studyProgramName,
+                $user->lecture_program ?? 'N/A',
+                $user->roles->pluck('name')->first(),
+            ],
             'ticket_quota' => $user->ticket_quota,
         ];
     })->toArray();
 
-    $studyPrograms = StudyProgram::all(); // Ambil semua program studi
+    $studyPrograms = StudyProgram::all();
 
-    return view('admin.user_management.index', compact('users', 'data', 'studyPrograms'));
-    }
+    return view('admin.user_management.index', compact('users', 'data', 'studyPrograms', 'sort', 'direction', 'roleFilter'));
+}
 
     /**
      * Show the form for creating a new resource.
@@ -98,7 +127,7 @@ class AdminUserManagementController extends Controller
         $user = User::find($id);
         if ($user) {
             $user->study_program_id = $request->input('type'); // Ubah 'type' menjadi 'study_program_id'
-        $user->save();
+            $user->save();
 
             $role = $request->input('role');
             if ($role) {

@@ -40,7 +40,7 @@
 
 @section('content')
     @php
-        $columns = ['Email', 'User Name', 'NIM', 'Study Program', 'Role'];
+        $columns = ['Email', 'Name', 'NIM', 'Study Program', 'Program Kuliah', 'Role'];
         $data = $users
             ->map(function ($user) {
                 return [
@@ -51,6 +51,7 @@
                         $user->name,
                         $user->username,
                         $user->studyProgram->name ?? 'N/A',
+                        $user->lecture_program ?? 'N/A',
                         $user->roles->pluck('name')->first(),
                     ],
                     'ticket_quota' => $user->ticket_quota,
@@ -80,10 +81,28 @@
                         <form action="{{ route('admin.user_management.index') }}" method="GET" class="form-inline">
                             <div class="form-group">
                                 <input type="search" class="form-control" id="search" name="search"
-                                    style="width: 500px;" placeholder="Search by customer name">
+                                    style="width: 500px;" placeholder="Search User">
                             </div>
                             <button type="submit" class="btn btn-primary">Search</button>
                         </form>
+                    </div>
+                    <div class="mb-4 d-flex flex-wrap gap-2">
+                        <a href="{{ route('admin.user_management.index') }}"
+                            class="btn {{ request('role') == null ? 'btn-secondary' : 'btn-outline-secondary' }} rounded-pill shadow-sm">
+                            <i class="fas fa-users"></i> Semua
+                        </a>
+                        <a href="{{ route('admin.user_management.index', array_merge(request()->all(), ['role' => 'user'])) }}"
+                            class="btn {{ request('role') == 'user' ? 'btn-primary' : 'btn-outline-primary' }} rounded-pill shadow-sm">
+                            <i class="fas fa-user-graduate"></i> Mahasiswa
+                        </a>
+                        <a href="{{ route('admin.user_management.index', array_merge(request()->all(), ['role' => 'agent'])) }}"
+                            class="btn {{ request('role') == 'agent' ? 'btn-success' : 'btn-outline-success' }} rounded-pill shadow-sm">
+                            <i class="fas fa-user-cog"></i> Staf
+                        </a>
+                        <a href="{{ route('admin.user_management.index', array_merge(request()->all(), ['role' => 'admin'])) }}"
+                            class="btn {{ request('role') == 'admin' ? 'btn-danger' : 'btn-outline-danger' }} rounded-pill shadow-sm">
+                            <i class="fas fa-user-shield"></i> Admin
+                        </a>
                     </div>
 
                     <a href="{{ route('admin.user_management.create') }}" class="btn btn-primary mb-3">Add User</a>
@@ -93,7 +112,32 @@
                             <thead>
                                 <tr>
                                     @foreach ($columns as $index => $column)
-                                        <th style="width: {{ $columnSizes[$index] ?? 'auto' }}">{{ $column }}</th>
+                                        <th style="width: {{ $columnSizes[$index] ?? 'auto' }}">
+                                            @php
+                                                // Mapping nama kolom dengan nama kolom di database
+                                                $columnMap = [
+                                                    'Email' => 'email',
+                                                    'Name' => 'name',
+                                                    'NIM' => 'username',
+                                                    'Study Program' => 'study_program_name',
+                                                    'Program Kuliah' => 'lecture_program',
+                                                ];
+                                                $sortColumn = $columnMap[$column] ?? null;
+                                            @endphp
+
+                                            @if ($sortColumn)
+                                                <a
+                                                    href="{{ route('admin.user_management.index', array_merge(request()->all(), ['sort' => $sortColumn, 'direction' => request('direction') === 'asc' ? 'desc' : 'asc'])) }}">
+                                                    {{ $column }}
+                                                    @if (request('sort') === $sortColumn)
+                                                        <i
+                                                            class="fas fa-sort-{{ request('direction') === 'asc' ? 'up' : 'down' }}"></i>
+                                                    @endif
+                                                </a>
+                                            @else
+                                                {{ $column }}
+                                            @endif
+                                        </th>
                                     @endforeach
                                     <th>Actions</th> <!-- Added Actions column -->
                                 </tr>

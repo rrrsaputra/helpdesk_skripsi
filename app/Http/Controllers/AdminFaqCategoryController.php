@@ -14,14 +14,20 @@ class AdminFaqCategoryController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
+        $sort = $request->input('sort', 'created_at'); // default sort
+        $direction = $request->input('direction', 'desc'); // default direction
         $paginationCount = 10;
-        $faqCategories = FaqCategory::orderBy('name', 'asc')
-        ->when($search, function ($query) use ($search) {
-            $query->where('name', 'like', "%{$search}%");
-        })
-        ->paginate($paginationCount);
 
-        return view('admin.faq_categories.index', compact('faqCategories'));
+
+        $faqCategories = FaqCategory::orderBy($sort, $direction)
+            ->when($search, function ($query) use ($search) {
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%")
+                    ->orWhere('slug', 'like', "%{$search}%");
+            })
+            ->paginate($paginationCount);
+
+        return view('admin.faq_categories.index', compact('faqCategories', 'sort', 'direction'));
     }
 
     /**
@@ -29,7 +35,7 @@ class AdminFaqCategoryController extends Controller
      */
     public function create()
     {
-        return view ('admin.faq_categories.create');
+        return view('admin.faq_categories.create');
     }
 
     /**
@@ -46,7 +52,7 @@ class AdminFaqCategoryController extends Controller
         $faqCategory = FaqCategory::create(array_merge($validatedData, ['slug' => $slug]));
         $faqCategory->save();
 
-        return redirect()->route('admin.faq_category.index')->with('success', 'FaQ category added successfully.');
+        return redirect()->route('admin.faq_category.index')->with('success', 'FAQ category added successfully.');
     }
 
     /**
@@ -81,7 +87,7 @@ class AdminFaqCategoryController extends Controller
         $faqCategory = FaqCategory::find($id);
         $faqCategory->update(array_merge($validatedData, ['slug' => $slug]));
 
-        return redirect()->route('admin.faq_category.index')->with('success', 'FaQ category updated successfully.');
+        return redirect()->route('admin.faq_category.index')->with('success', 'FAQ category updated successfully.');
     }
 
     /**
@@ -92,6 +98,6 @@ class AdminFaqCategoryController extends Controller
         $faqCategory = FaqCategory::find($id);
         $faqCategory->delete();
 
-        return redirect()->route('admin.faq_category.index')->with('success', 'FaQ category deleted successfully.');
+        return redirect()->route('admin.faq_category.index')->with('success', 'FAQ category deleted successfully.');
     }
 }

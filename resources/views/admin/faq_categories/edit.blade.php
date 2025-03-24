@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('header')
-    <x-admin.header title="Update FaQ Category" />
+    <x-admin.header title="Update FAQ Category" />
 @endsection
 
 @section('content')
@@ -11,12 +11,15 @@
             @method('PUT') 
             <div class="card-body">
                 <div class="form-group">
-                    <label for="name">Nama Kategori</label>
+                    <label for="name">Nama Kategori <span class="text-danger" title="This field is required">*</label>
                     <input type="text" name="name" class="form-control" id="name" placeholder="Masukkan nama kategori" value="{{ old('name', $faqCategory->name) }}">
+                    @if ($errors->has('name'))
+                        <span class="text-danger">{{ $errors->first('name') }}</span>
+                    @endif
                 </div>
                 <div class="form-group">
-                    <label for="description">Deskripsi</label>
-                    <textarea name="description" class="form-control" id="description" placeholder="Masukkan deskripsi">{{ old('description', $faqCategory->description) }}</textarea>
+                    <label for="description">Deskripsi <span class="text-danger" title="This field is required">*</label>
+                    <textarea name="description" class="form-control" id="description" placeholder="Masukkan deskripsi" required>{{ old('description', $faqCategory->description) }}</textarea>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">Submit</button>

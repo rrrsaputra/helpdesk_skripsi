@@ -18,7 +18,7 @@
             }, 5000);
         </script>
     @endif
-    <x-admin.header title="FaQ Categories" />
+    <x-admin.header title="FAQ Categories" />
 @endsection
 
 @section('content')
@@ -29,11 +29,7 @@
                 return [
                     'id' => $faqCategory->id,
                     'url' => '/path/to/resource1',
-                    'values' => [
-                        $faqCategory->name, 
-                        Str::limit($faqCategory->description, 50),
-                        $faqCategory->slug,
-                        ],
+                    'values' => [$faqCategory->name, Str::limit($faqCategory->description, 50), $faqCategory->slug],
                 ];
             })
             ->toArray();
@@ -60,13 +56,13 @@
                         <form action="{{ route('admin.faq_category.index') }}" method="GET" class="form-inline">
                             <div class="form-group">
                                 <input type="search" class="form-control" id="search" name="search"
-                                    style="width: 500px;" placeholder="Search by category name">
+                                    style="width: 500px;" placeholder="Search FAQ Category">
                             </div>
                             <button type="submit" class="btn btn-primary">Search</button>
                         </form>
                     </div>
 
-                    <a href="{{ route('admin.faq_category.create') }}" class="btn btn-primary mb-3">Add FaQ
+                    <a href="{{ route('admin.faq_category.create') }}" class="btn btn-primary mb-3">Add FAQ
                         Category</a>
 
                     <div class="table-responsive">
@@ -74,7 +70,30 @@
                             <thead>
                                 <tr>
                                     @foreach ($columns as $index => $column)
-                                        <th style="width: {{ $columnSizes[$index] ?? 'auto' }}">{{ $column }}</th>
+                                        <th style="width: {{ $columnSizes[$index] ?? 'auto' }}">
+                                            @php
+                                                // Mapping nama kolom dengan nama kolom di database
+                                                $columnMap = [
+                                                    'Category Name' => 'name',
+                                                    'Description' => 'description',
+                                                    'Slug' => 'slug',
+                                                ];
+                                                $sortColumn = $columnMap[$column] ?? null;
+                                            @endphp
+
+                                            @if ($sortColumn)
+                                                <a
+                                                    href="{{ route('admin.faq_category.index', array_merge(request()->all(), ['sort' => $sortColumn, 'direction' => request('direction') === 'asc' ? 'desc' : 'asc'])) }}">
+                                                    {{ $column }}
+                                                    @if (request('sort') === $sortColumn)
+                                                        <i
+                                                            class="fas fa-sort-{{ request('direction') === 'asc' ? 'up' : 'down' }}"></i>
+                                                    @endif
+                                                </a>
+                                            @else
+                                                {{ $column }}
+                                            @endif
+                                        </th>
                                     @endforeach
                                     <th>Actions</th> <!-- Added Actions column -->
                                 </tr>
@@ -111,13 +130,40 @@
                                                 class="btn btn-sm btn-warning" title="Edit FaQ Category"><i
                                                     class="fas fa-edit"></i></a>
 
-                                            <form action="{{ route('admin.faq_category.destroy', $row['id']) }}"
-                                                method="POST" style="display:inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger"
-                                                    title="Delete FaQ Category"><i class="fas fa-trash"></i></button>
-                                            </form>
+                                            <button class="btn btn-danger btn-sm" data-toggle="modal"
+                                                data-target="#deleteModal-{{ $row['id'] }}" title="Delete FaQ">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+
+                                            <div class="modal fade" id="deleteModal-{{ $row['id'] }}" tabindex="-1"
+                                                role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="deleteModalLabel">Confirm Delete
+                                                            </h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Are you sure you want to delete this FAQ category?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <form method="POST"
+                                                                action="{{ route('admin.faq_category.destroy', $row['id']) }}">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit"
+                                                                    class="btn btn-danger">Delete</button>
+                                                            </form>
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">Cancel</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
 
                                         </td>
                                     </tr>

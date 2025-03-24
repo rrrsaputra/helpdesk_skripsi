@@ -31,19 +31,19 @@
             @csrf
             <div class="card-body">
                 <div class="form-group">
-                    <label for="name">Name</label>
+                    <label for="name">Name <span class="text-danger" title="This field is required">*</label>
                     <input type="text" name="name" class="form-control" id="name" placeholder="Masukkan nama">
                 </div>
                 <div class="form-group">
-                    <label for="username">NIM</label>
+                    <label for="username">NIM <span class="text-danger" title="This field is required">*</label>
                     <input type="text" name="username" class="form-control" id="username" placeholder="Masukkan username">
                 </div>
                 <div class="form-group">
-                    <label for="email">Email</label>
+                    <label for="email">Email <span class="text-danger" title="This field is required">*</label>
                     <input type="email" name="email" class="form-control" id="email" placeholder="Masukkan email">
                 </div>
                 <div class="form-group">
-                    <label for="study_program_id">Study Program</label>
+                    <label for="study_program_id">Study Program <span class="text-danger" title="This field is required">*</label>
                     <select name="study_program_id" class="form-control" id="study_program_id">
                         <option value="">Choose Study Program</option>
                         @foreach($studyPrograms as $studyProgram)
@@ -52,7 +52,7 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="password">Password</label>
+                    <label for="password">Password <span class="text-danger" title="This field is required">*</label>
                     <div class="input-group">
                         <input type="password" name="password" class="form-control" id="password" placeholder="Masukkan password" minlength="8">
                         <div class="input-group-append">
@@ -75,7 +75,7 @@
                     });
                 </script>
                 <div class="form-group">
-                    <label for="password_confirmation">Confirm Password</label>
+                    <label for="password_confirmation">Confirm Password <span class="text-danger" title="This field is required">*</label>
                     <input type="password" name="password_confirmation" class="form-control" id="password_confirmation" placeholder="Konfirmasi password">
                     <small id="passwordMismatch" class="form-text text-danger" style="display: none;">The password and confirmation password do not match.</small>
                 </div>

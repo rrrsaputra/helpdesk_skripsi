@@ -13,17 +13,34 @@ class AdminDataRepositoryController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
+        $sort = $request->input('sort', 'created_at');
+        $direction = $request->input('direction', 'desc');
         $paginationCount = 10;
-        $dataRepositories = Attachment::orderBy('created_at', 'desc')
+
+        $dataRepositories = Attachment::orderBy($sort, $direction)
             ->when($search, function ($query) use ($search) {
-                $query->whereHas('message.user', function ($query) use ($search) {
-                        $query->where('name', 'like', "%{$search}%")
-                            ->orWhere('ticket_id', 'like', "%{$search}%");
-                    });
+                $query->where(function ($query) use ($search) {
+                    $query->where('path', 'like', "%{$search}%")
+                        ->orWhereHas('message.user', function ($query) use ($search) {
+                            $query->where('name', 'like', "%{$search}%")
+                                ->orWhere('email', 'like', "%{$search}%");
+                        })
+                        ->orWhereHas('message.ticket', function ($query) use ($search) {
+                            $query->where('references', 'like', "%{$search}%")
+                                ->orWhereHas('assignedToUser', function ($query) use ($search) {
+                                    $query->where('name', 'like', "%{$search}%")
+                                        ->orWhere('email', 'like', "%{$search}%");
+                                })
+                                ->orWhereHas('user', function ($query) use ($search) {
+                                    $query->where('name', 'like', "%{$search}%")
+                                        ->orWhere('email', 'like', "%{$search}%");
+                                });
+                        });
+                });
             })
             ->paginate($paginationCount);
 
-        return view('admin.data_repositories.index', compact('dataRepositories'));
+        return view('admin.data_repositories.index', compact('dataRepositories', 'sort', 'direction'));
     }
 
     /**
@@ -74,6 +91,6 @@ class AdminDataRepositoryController extends Controller
         $dataRepository = Attachment::find($id);
         $dataRepository->delete();
 
-        return redirect()->route('admin.data_repositories.index');
+        return redirect()->route('admin.data_repository.index')->with('success', 'Data deleted successfully');
     }
 }
