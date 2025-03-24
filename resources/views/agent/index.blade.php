@@ -5,9 +5,11 @@
 
 @section('content')
     @php
-        $columns = ['Reference', 'Name', 'Study Program', 'Summary', 'New Messages', 'Last Updated', 'status'];
+        $columns = ['Reference', 'Name', 'Study Program', 'Summary', 'New Messages', 'Last Updated', 'Status'];
         $data = $tickets
             ->map(function ($ticket) {
+                $newMessages = $ticket->messages->where('user_id', '!=', Auth::id())->where('is_read', '')->count();
+
                 return [
                     'id' => $ticket->id,
                     'url' => '/path/to/resource1',
@@ -16,7 +18,11 @@
                         $ticket->user->name,
                         $ticket->user->studyProgram->name ?? '',
                         [$ticket->title, $ticket->category, $ticket->message ?? ''],
-                        $ticket->messages->where('user_id', '!=', Auth::id())->where('is_read', '')->count(),
+                        $newMessages > 0
+                            ? '<span class="badge badge-danger animate__animated animate__flash animate__infinite">' .
+                                $newMessages .
+                                '</span>'
+                            : '<span class="text-muted">0</span>',
                         $ticket->updated_at->format('d M Y H:i'),
                         $ticket->status,
                     ],
@@ -37,6 +43,7 @@
     <link rel="stylesheet" href="{{ asset('AdminLTE-3.2.0/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('AdminLTE-3.2.0/dist/css/adminlte.min.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
     <div class="card">
 
@@ -87,7 +94,7 @@
                                                         </div>
                                                     @endforeach
                                                 @else
-                                                    {{ $value }}
+                                                    {!! $value !!}
                                                 @endif
                                             </td>
                                         @endforeach

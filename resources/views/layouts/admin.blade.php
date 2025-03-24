@@ -33,7 +33,7 @@
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 </head>
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
   <x-admin.navbar/>
   <x-admin.sidebar/>
@@ -65,6 +65,8 @@
 <script src="{{asset('AdminLTE-3.2.0/plugins/jquery/jquery.min.js')}}"></script>
 <!-- Bootstrap 4 -->
 <script src="{{asset('AdminLTE-3.2.0/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+<!-- AdminLTE App -->
+<script src="{{asset('AdminLTE-3.2.0/dist/js/adminlte.min.js')}}"></script>
 <!-- Select2 -->
 <script src="{{asset('AdminLTE-3.2.0/plugins/select2/js/select2.full.min.js')}}"></script>
 <!-- Bootstrap4 Duallistbox -->
@@ -84,8 +86,7 @@
 <script src="{{asset('AdminLTE-3.2.0/plugins/bs-stepper/js/bs-stepper.min.js')}}"></script>
 <!-- dropzonejs -->
 <script src="{{asset('AdminLTE-3.2.0/plugins/dropzone/min/dropzone.min.js')}}"></script>
-<!-- AdminLTE App -->
-<script src="{{asset('AdminLTE-3.2.0/dist/js/adminlte.min.js')}}"></script>
+
 
 
 

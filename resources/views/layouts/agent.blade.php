@@ -6,11 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Agent | Helpdesk BAA</title>
     <link rel="icon" type="image/png" href="{{ asset('image/images.png') }}">
-    
+
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -43,7 +42,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
         <x-agent.navbar />
         <x-agent.sidebar />
@@ -75,6 +74,8 @@
     <script src="{{ asset('AdminLTE-3.2.0/plugins/jquery/jquery.min.js') }}"></script>
     <!-- Bootstrap 4 -->
     <script src="{{ asset('AdminLTE-3.2.0/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <!-- AdminLTE App -->
+    <script src="{{ asset('AdminLTE-3.2.0/dist/js/adminlte.min.js') }}"></script>
     <!-- Select2 -->
     <script src="{{ asset('AdminLTE-3.2.0/plugins/select2/js/select2.full.min.js') }}"></script>
     <!-- Bootstrap4 Duallistbox -->
@@ -96,8 +97,6 @@
     <script src="{{ asset('AdminLTE-3.2.0/plugins/bs-stepper/js/bs-stepper.min.js') }}"></script>
     <!-- dropzonejs -->
     <script src="{{ asset('AdminLTE-3.2.0/plugins/dropzone/min/dropzone.min.js') }}"></script>
-    <!-- AdminLTE App -->
-    <script src="{{ asset('AdminLTE-3.2.0/dist/js/adminlte.min.js') }}"></script>
 
 
 
