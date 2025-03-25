@@ -33,7 +33,7 @@
             <div class="row justify-content-center">
                 <div class="col-xl-7">
                     <h1 class="h2 mb-30 text-white text-center">Halo, {{ Auth::user()->name }}!<br>Apa yang bisa kami bantu?</h1>
-                    <form action="{{ route('article.index') }}" class="dx-form dx-form-group-inputs">
+                    <form action="{{ route('user.faq.index') }}" class="dx-form dx-form-group-inputs">
                         <input type="search" name="search" value="{{ request()->query('search') }}"
                             class="form-control" placeholder="Keyword search...">
                         <button class="dx-btn dx-btn-lg" style="background-color: #F38F2F;">Search</button>

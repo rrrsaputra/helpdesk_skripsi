@@ -80,7 +80,7 @@ Route::middleware('auth')->group(function () {
 
 
 
-Route::middleware(['auth', 'role:user'])->group(function () {
+Route::middleware(['auth', 'role:user|admin'])->group(function () {
     
         
         Route::resource('/feedback', FeedbackController::class)->names('user.feedback');

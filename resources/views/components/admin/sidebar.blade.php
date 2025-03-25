@@ -217,6 +217,15 @@
                         </p>
                     </a>
                 </li>
+
+                <li class="nav-item menu-close">
+                    <a href="{{ route('user.ticket.index') }}" class="nav-link {{ request()->routeIs('user.ticket.index') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-home"></i>
+                        <p>
+                            USER VIEW
+                        </p>
+                    </a>
+                </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
