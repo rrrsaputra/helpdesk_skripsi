@@ -7,115 +7,94 @@
 @section('content')
     <div class="container-fluid" id="dashboard-content">
         <div class="card-body">
-            <div class="row mb-1">
-                <div class="col-lg-12">
-                    <button id="show-tickets" class="btn btn-outline-primary active">Tickets</button>
-                    <button id="show-users" class="btn btn-outline-primary">Users</button>
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2 mb-3">
+                <div class="btn-group" role="group">
+                    <button id="show-tickets" class="btn btn-outline-primary active"><i class="fas fa-ticket-alt mr-1"></i> Tickets</button>
+                    <button id="show-users" class="btn btn-outline-primary"><i class="fas fa-users mr-1"></i> Users</button>
                 </div>
-                <div class="col-lg-12 mt-1">
-                    <button id="save-pdf" class="btn btn-danger mb-1">Save as PDF</button>
-                </div>
+                <button id="save-pdf" class="btn btn-danger"><i class="fas fa-file-pdf mr-1"></i> Save as PDF</button>
             </div>
             <div id="tickets-dashboard">
                 <div class="row">
                     <div class="col-lg-12">
-                        <form id="date-range-form" method="GET" action="{{ route('agent.dashboard.index') }}"
-                            class="mb-3">
-                            <div class="form-row">
-                                <div class="form-group col-md-12 d-flex flex-wrap align-items-end">
-                                    <div class="col-md-5 mb-2">
-                                        <label for="start_date">Start Date:</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
-                                            </div>
-                                            <input type="date" id="start_date" name="start_date" class="form-control"
-                                                value="{{ request('start_date') ?? now()->addDay()->subWeek()->startOfDay()->format('Y-m-d') }}"
-                                                required>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-5 mb-2">
-                                        <label for="end_date">End Date:</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
-                                            </div>
-                                            <input type="date" id="end_date" name="end_date" class="form-control"
-                                                value="{{ request('end_date') ?? now()->addDay()->endOfDay()->format('Y-m-d') }}"
-                                                required>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2 mb-2">
-                                        <button type="submit" class="btn btn-primary" style="width: 103%">Filter</button>
+                        <form id="date-range-form" method="GET" action="{{ route('agent.dashboard.index') }}" class="mb-4">
+                            <div class="row g-3 align-items-end">
+                                <div class="col-md-5">
+                                    <label for="start_date" class="form-label">Start Date:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                        <input type="date" id="start_date" name="start_date" class="form-control"
+                                            value="{{ request('start_date') ?? now()->addDay()->subWeek()->startOfDay()->format('Y-m-d') }}"
+                                            required>
                                     </div>
                                 </div>
+                                <div class="col-md-5">
+                                    <label for="end_date" class="form-label">End Date:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                        <input type="date" id="end_date" name="end_date" class="form-control"
+                                            value="{{ request('end_date') ?? now()->addDay()->endOfDay()->format('Y-m-d') }}"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="submit" class="btn btn-primary w-100"><i class="fas fa-filter"></i> Filter</button>
+                                </div>
                             </div>
-
                         </form>
                     </div>
-                    <div class="col-lg-2 col-6">
-                        <div class="small-box bg-primary">
+                    <div class="col-lg-3 col-6">
+                        <div class="small-box bg-primary shadow-sm hover-shadow">
                             <div class="inner">
                                 <h3>{{ $tickets->count() }}</h3>
-                                <p>Total Tickets</p>
+                                <p class="mb-0">Total Tickets</p>
                             </div>
                             <div class="icon">
-                                <i class="ion ion-bag"></i>
+                                <i class="fas fa-ticket-alt"></i>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-2 col-6">
-                        <div class="small-box bg-secondary">
+                    <div class="col-lg-3 col-6">
+                        <div class="small-box bg-secondary shadow-sm hover-shadow">
                             <div class="inner">
                                 <h3>{{ $tickets->where('assigned_to', null)->count() }}</h3>
-                                <p>Unassigned Tickets</p>
+                                <p class="mb-0">Unassigned Tickets</p>
                             </div>
                             <div class="icon">
-                                <i class="ion ion-bag"></i>
+                                <i class="fas fa-user-clock"></i>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-2 col-6">
-                        <div class="small-box bg-success">
+                        <div class="small-box bg-success shadow-sm hover-shadow">
                             <div class="inner">
                                 <h3>{{ $tickets->where('status', 'open')->count() }}</h3>
-                                <p>Open Tickets</p>
+                                <p class="mb-0">Open Tickets</p>
                             </div>
                             <div class="icon">
-                                <i class="ion ion-stats-bars"></i>
+                                <i class="fas fa-envelope-open-text"></i>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-2 col-6">
-                        <div class="small-box bg-warning">
+                        <div class="small-box bg-dark shadow-sm hover-shadow">
+                            <div class="inner">
+                                <h3>{{ $tickets->where('status', 'on hold')->count() }}</h3>
+                                <p class="mb-0">On Hold Tickets</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-pause-circle"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-6">
+                        <div class="small-box bg-warning shadow-sm hover-shadow">
                             <div class="inner">
                                 <h3>{{ $tickets->where('status', 'closed')->count() }}</h3>
-                                <p>Closed Tickets</p>
+                                <p class="mb-0">Closed Tickets</p>
                             </div>
                             <div class="icon">
-                                <i class="ion ion-person-add"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-6">
-                        <div class="small-box bg-danger">
-                            <div class="inner">
-                                <h3>{{ $agents->count() }}</h3>
-                                <p>Total Agents</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-pie-graph"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-6">
-                        <div class="small-box bg-info">
-                            <div class="inner">
-                                <h3>{{ $users->count() }}</h3>
-                                <p>Total Users</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-pie-graph"></i>
+                                <i class="fas fa-check-circle"></i>
                             </div>
                         </div>
                     </div>
@@ -351,44 +330,6 @@
                         </div>
                     </section>
                 </div>
-
-                <div class="row">
-                    <section class="col-lg-12 connectedSortable">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">
-                                    <i class="fas fa-chart-line mr-1"></i>
-                                    Agent Performance
-                                </h3>
-                            </div>
-                            <div class="card-body">
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>Agent</th>
-                                            <th>Total Tickets</th>
-                                            <th>Open Tickets</th>
-                                            <th>Closed Tickets</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($agentPerformance as $performance)
-                                            <tr @if ($performance['name'] == Auth::user()->name) class="table-info" @endif>
-                                                <td>{{ $performance['name'] }}</td>
-                                                <td>{{ $performance['total'] }}</td>
-                                                <td>{{ $performance['open'] }}</td>
-                                                <td>{{ $performance['closed'] }}</td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                                <div class="mt-20">
-                                    {{ $agents->links() }}
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </div>
             </div>
 
             {{-- USERS DASHBOARD --}}
@@ -460,17 +401,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-12">
-                        <div class="small-box bg-warning">
-                            <div class="inner">
-                                <h3 id="selected-user-calls">0</h3>
-                                <p>Total Calls</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-bag"></i>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="row" id="user-charts" style="display: none;">
@@ -479,7 +409,7 @@
                             <div class="card-header">
                                 <h3 class="card-title">
                                     <i class="fas fa-chart-line mr-1"></i>
-                                    Total Tickets and Calls per Week
+                                    Total Tickets per Week
                                 </h3>
                             </div>
                             <div class="card-body">
@@ -586,7 +516,6 @@
                 .then(data => {
                     document.getElementById('selected-user-name').innerText = data.name;
                     document.getElementById('selected-user-tickets').innerText = data.tickets_count;
-                    document.getElementById('selected-user-calls').innerText = data.calls_count;
 
                     // Render charts
                     document.getElementById('user-charts').style.display = 'flex';
@@ -596,7 +525,6 @@
                     if (window.userTotalTicketsChart) {
                         window.userTotalTicketsChart.data.labels = data.userTicketLabels;
                         window.userTotalTicketsChart.data.datasets[0].data = data.userTicketData;
-                        window.userTotalTicketsChart.data.datasets[1].data = data.userCallData;
                         window.userTotalTicketsChart.update();
                     } else {
                         window.userTotalTicketsChart = new Chart(ctxLine, {
@@ -608,12 +536,6 @@
                                     data: data.userTicketData,
                                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
                                     borderColor: 'rgba(54, 162, 235, 1)',
-                                    borderWidth: 1
-                                }, {
-                                    label: 'Total Calls',
-                                    data: data.userCallData,
-                                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                                    borderColor: 'rgba(255, 99, 132, 1)',
                                     borderWidth: 1
                                 }]
                             },

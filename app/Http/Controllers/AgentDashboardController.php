@@ -20,7 +20,10 @@ class AgentDashboardController extends Controller
         // Ambil rentang tanggal dari request
         $startDate = $request->input('start_date', now()->addDay()->subWeek()->startOfDay());
         $endDate = $request->input('end_date', now()->addDay()->endOfDay());
-        $tickets = Ticket::whereBetween('created_at', [$startDate, $endDate])->get();
+        $tickets = Ticket::where('assigned_to', Auth::id())
+                ->whereBetween('created_at', [$startDate, $endDate])
+                ->get();
+
 
         // Ticket per Day
         $ticketLabels = $tickets->groupBy(function ($date) {
