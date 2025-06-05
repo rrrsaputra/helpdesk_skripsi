@@ -30,7 +30,7 @@
    php artisan key:generate
    ```
 
-   ### Database Configuration
+   ### Database Configuration di `.env` file.
 
 ```sh
 DB_CONNECTION=mysql
@@ -41,23 +41,20 @@ DB_USERNAME=root
 DB_PASSWORD=
 ```
 
-6. Run Database Migrations and Seed the Databse:
+7. Run Database Migrations and Seed the Databse:
    
    ```sh
    php artisan migrate:fresh --seed
    ```
-7. Link Storage:
+8. Link Storage:
 
    ```sh
    php artisan storage:link
    ```
-8. NPM Install:
+9. NPM Install:
     ```sh
     npm install
     ```
-## Configuration
-
-Before running the application, you need to configure the `.env` file.
 
 
 
