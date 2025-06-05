@@ -10,7 +10,7 @@
 2. Get inside the folder:
 
    ```sh
-   cd ticketing_hd
+   cd helpdesk_skripsi
    ```
 
 3. Install Composer Dependencies:
